@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import * as fromFeature from "../reducers";
 
-export const getWorkorderState = createSelector(
+export const getPlanItemsState = createSelector(
     fromFeature.getSchedulerState,
-    (state: fromFeature.SchedulerState) => state.workorders
+    (state: fromFeature.SchedulerState) => state.planitems
 );

@@ -1,1 +1,1 @@
-export * from './workorders.selectors';
+export * from './planitems.selectors';

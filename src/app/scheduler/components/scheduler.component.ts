@@ -14,11 +14,11 @@ export class SchedulerComponent implements OnInit {
     this.store.select(fromStore.getSchedulerState).subscribe(
       state => console.log(state)
     );
-    this.store.select(fromStore.getWorkorderState).subscribe(
+    this.store.select(fromStore.getPlanItemsState).subscribe(
       state => console.log(state)
     );
 
-    this.store.dispatch(new fromStore.LoadWorkorders);
+    this.store.dispatch(new fromStore.LoadPlanItems());
   }
 
 }

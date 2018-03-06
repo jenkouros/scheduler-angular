@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+//import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -9,6 +10,7 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRouterModule } from './app-router.module';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -16,9 +18,11 @@ import { AppRouterModule } from './app-router.module';
   ],
   imports: [
     BrowserModule,
+    //ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
     SchedulerModule,
     StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],

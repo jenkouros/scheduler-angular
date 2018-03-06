@@ -1,0 +1,36 @@
+{
+    "planitems":
+    {
+        "status": "ok",
+        "code": 200,
+        "messages": [],
+        "result": {
+            "metadata": {
+                "page": 2,
+                "page_size": 15,
+                "page_count": 10,
+                "total_count": 150
+            },
+            "records": [
+                {
+                    "id": 1,
+                    "code": "100000",
+                    "quantity": 1000,
+                    "quantityBatch": 100,
+                    "quantityPlanned": 0,
+                    "measurementUnit": {
+                        "name": "kilogram",
+                        "code": "kg"
+                    },
+                    "product": {
+                        "id": 52000,
+                        "code": "701233",
+                        "name": "Bencin D40"
+                    },
+                    "limitDateFrom": "1975-08-19T23:15:30.000Z",
+                    "limitDateTo": "1975-08-19T23:15:30.000Z"
+                }
+            ]
+        }
+    }
+}

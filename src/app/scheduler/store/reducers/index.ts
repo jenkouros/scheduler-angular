@@ -1,12 +1,12 @@
-import * as fromWorkorders from './workorders.reducer';
+import * as fromWorkorders from './planitems.reducer';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 export interface SchedulerState {
-    workorders: fromWorkorders.WorkorderState;
+    planitems: fromWorkorders.PlanItemState;
 }
 
 export const reducers: ActionReducerMap<SchedulerState> = {
-    workorders: fromWorkorders.workordersReducer
+    planitems: fromWorkorders.planItemsReducer
 };
 
 export const getSchedulerState = createFeatureSelector<SchedulerState>('scheduler');
