@@ -6,6 +6,7 @@ import * as fromComponents from './components';
 import { SchedulerRouterModule } from "./scheduler-router.module";
 import * as fromServices from "./services";
 import { HttpClientModule } from "@angular/common/http";
+import { PlanitemListComponent } from "./components";
 
 @NgModule({
     imports: [

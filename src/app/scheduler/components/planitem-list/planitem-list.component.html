@@ -1,3 +1,8 @@
 <p>
   planitem-list works!
 </p>
+{{ (planItemState$ | async).loading }}
+
+<div *ngFor="let planItem of (planItemState$ | async).entities">
+  {{ planItem.code }}
+</div>

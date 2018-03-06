@@ -4,7 +4,7 @@ import { Pagination } from "../../../shared/shared.model";
 
 export interface PlanItemState {
     entities: PlanItem[];
-    pagination?: Pagination;
+    pagination: Pagination;
     loading: boolean;
     loaded: boolean;
     //paging entity

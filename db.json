@@ -29,6 +29,24 @@
                     },
                     "limitDateFrom": "1975-08-19T23:15:30.000Z",
                     "limitDateTo": "1975-08-19T23:15:30.000Z"
+                },
+                {
+                    "id": 2,
+                    "code": "100001",
+                    "quantity": 1000,
+                    "quantityBatch": 100,
+                    "quantityPlanned": 0,
+                    "measurementUnit": {
+                        "name": "kilogram",
+                        "code": "kg"
+                    },
+                    "product": {
+                        "id": 52000,
+                        "code": "701233",
+                        "name": "Bencin D40"
+                    },
+                    "limitDateFrom": "1975-08-19T23:15:30.000Z",
+                    "limitDateTo": "1975-08-19T23:15:30.000Z"
                 }
             ]
         }
