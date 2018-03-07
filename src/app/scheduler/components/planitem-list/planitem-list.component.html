@@ -1,8 +1,81 @@
-<p>
-  planitem-list works!
-</p>
-{{ (planItemState$ | async).loading }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
 
-<div *ngFor="let planItem of (planItemState$ | async).entities">
-  {{ planItem.code }}
+<div class="row">
+  <div class="col-md-5">
+
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <!-- <th scope="col">id</th> -->
+          <th scope="col">Šifra naloga</th>
+          <th scope="col">Količina</th>
+          <th scope="col">Št. šarž</th>
+          <th scope="col">Planirana količina</th>
+          <th scope="col">EM</th>
+          <!-- <th scope="col">product.id</th> -->
+          <th scope="col">Šifra artikla</th>
+          <th scope="col">Artikel</th>
+          <th scope="col">Datum od</th>
+          <th scope="col">Datum do</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let planItem of (planItemState$ | async).entities">
+          <!-- <th scope="row">{{ planItem.id }}</th> -->
+          <td>{{ planItem.code }}</td>
+          <td>{{ planItem.quantity }}</td>
+          <td>{{ planItem.quantityBatch }}</td>
+          <td>{{ planItem.quantityPlanned }}</td>
+          <td>{{ planItem.measurementUnit.code }}</td>
+          <!-- <td>{{ planItem.product.id }}</td> -->
+          <td>{{ planItem.product.code }}</td>
+          <td>{{ planItem.product.name }}</td>
+          <td>{{ planItem.limitDateFrom }}</td>
+          <td>{{ planItem.limitDateTo }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+<div class="row">
+  <div class="col-xs-12">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+  </div>
+</div>
+
+</div>
+</div>
+
+    </div>
+    </div>
+
+<!-- <p>
+  planitem-list works!
+</p> -->
+<!-- {{ (planItemState$ | async).loading }} -->
+
+<!-- <div *ngFor="let planItem of (planItemState$ | async).entities">
+  {{ planItem.code }}
+</div> -->
