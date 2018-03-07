@@ -33,9 +33,6 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
-            const planItems = action.payload.records;
-            
-
             return {
                 ...state,
                 loaded: true,

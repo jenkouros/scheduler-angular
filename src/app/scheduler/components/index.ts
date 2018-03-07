@@ -8,6 +8,7 @@ import { PlanViewerComponent } from "./planner/plan-viewer/plan-viewer.component
 import { SchedulerComponent } from "./scheduler.component";
 import { PlanitemListComponent } from "./planitem-list/planitem-list.component";
 import { PlanitemItemComponent } from "./planitem-list/planitem-item/planitem-item.component";
+import { SidebarComponent } from "./sidebar/sidebar.component";
 
 export const components: any[] = [
     FiltersComponent,
@@ -19,7 +20,8 @@ export const components: any[] = [
     PlanViewerComponent,
     SchedulerComponent,
     PlanitemListComponent,
-    PlanitemItemComponent
+    PlanitemItemComponent,
+    SidebarComponent
 ];
 
 export * from "./filters/filters.component";
@@ -32,3 +34,4 @@ export * from "./planner/plan-viewer/plan-viewer.component";
 export * from "./planitem-list/planitem-list.component";
 export * from "./planitem-list/planitem-item/planitem-item.component";
 export * from "./scheduler.component";
+export * from "./sidebar/sidebar.component";

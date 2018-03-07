@@ -1,9 +1,16 @@
-<div>
-  <a routerLink='filters'>Filter</a>
-  <a routerLink='groups'>Skupine</a>
-  <a routerLink='planitems'>Delovni nalogi</a>
-  <a routerLink='planner'>Razporejanje</a>
-  
+
+<nav class="navbar navbar-dark bg-dark fixed-top">
+    <span class="navbar-brand mb-0 h1">Navbar</span>
+  </nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 bg-dark sidebar">
+      <app-sidebar></app-sidebar>
+    </nav>
+    <main class="offset-sm-3 offset-md-2 col-sm pt-3">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
 
-<router-outlet></router-outlet>

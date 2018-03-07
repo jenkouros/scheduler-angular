@@ -1,3 +1,11 @@
 <p>
   filters works!
 </p>
+
+<div *ngFor="let filter of (filtersState$ | async).entities">
+  <div *ngIf="filter.type === FilterTypeEnum.checkbox">
+    
+  </div>
+
+
+</div>

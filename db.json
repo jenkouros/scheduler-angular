@@ -51,29 +51,44 @@
             ]
         }
     },
-    "filters": [
-        {
-            "sequence": 1,
-            "name": "Lokacija",
-            "id": 1,
-            "type": "checkbox", 
-            "values": [
-                { "id": 80, "name": "Ljubljana-Črnuče" },
-                { "id": 81, "name": "Idrija" },
-                { "id": 82, "name": "Maribor" }
-            ]
-        },
-        {
-            "sequence": 2,
-            "name": "Nadzornik",
-            "id": 2,
-            "type": "autocomplete",
-            "values": [
-                { "id": 1, "name": "Tomislav Tomc" },
-                { "id": 2, "name": "Radoslav Radenc" }
-            ]
-        }
-    ],
+    "filters": {
+        "status": "ok",
+        "code": 200,
+        "messages": [],
+        "result": [
+            {
+                "sequence": 1,
+                "name": "Lokacija",
+                "id": 1,
+                "type": "checkbox", 
+                "values": [
+                    { "id": 80, "name": "Ljubljana-Črnuče" },
+                    { "id": 81, "name": "Idrija" },
+                    { "id": 82, "name": "Maribor" }
+                ]
+            },
+            {
+                "sequence": 3,
+                "name": "Vrsta proizvodnje",
+                "id": 3,
+                "type": "checkbox", 
+                "values": [
+                    { "id": 1, "name": "Izdelovalna proizvodnja" },
+                    { "id": 2, "name": "Pakirna proizvodnja" }
+                ]
+            },
+            {
+                "sequence": 2,
+                "name": "Nadzornik",
+                "id": 2,
+                "type": "autocomplete",
+                "values": [
+                    { "id": 1, "name": "Tomislav Tomc" },
+                    { "id": 2, "name": "Radoslav Radenc" }
+                ]
+            }
+        ]
+    },
     "groups": [
         { 
             "id": 1,

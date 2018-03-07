@@ -21,7 +21,8 @@
       "serviceWorker": false,
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "styles.css"
+        "styles.css",
+        "./styles/sidebar.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
