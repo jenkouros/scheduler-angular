@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { PlanItem } from '../../../models/planitem.model';
 
 @Component({
   selector: 'app-planitem-item',
@@ -6,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./planitem-item.component.css']
 })
 export class PlanitemItemComponent implements OnInit {
+  @Input() planItem: PlanItem;
 
   constructor() { }
 

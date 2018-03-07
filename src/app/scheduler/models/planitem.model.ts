@@ -7,7 +7,7 @@ export interface PlanItem {
     quantityBatch: number; // kolicina sarze
     quantityPlanned: number; // ze planirana kolicina
     measurementUnit: MeasurementUnit;
-    //filters: { [id: number]: PlanItemFilter }[];
+    // filters: { [id: number]: PlanItemFilter }[];
     product: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
