@@ -50,5 +50,61 @@
                 }
             ]
         }
-    }
+    },
+    "filters": [
+        {
+            "sequence": 1,
+            "name": "Lokacija",
+            "id": 1,
+            "type": "checkbox", 
+            "values": [
+                { "id": 80, "name": "Ljubljana-Črnuče" },
+                { "id": 81, "name": "Idrija" },
+                { "id": 82, "name": "Maribor" }
+            ]
+        },
+        {
+            "sequence": 2,
+            "name": "Nadzornik",
+            "id": 2,
+            "type": "autocomplete",
+            "values": [
+                { "id": 1, "name": "Tomislav Tomc" },
+                { "id": 2, "name": "Radoslav Radenc" }
+            ]
+        }
+    ],
+    "groups": [
+        { 
+            "id": 1,
+            "name": "Ljubljana-Črnuče",
+            "type": "system",
+            "filters": [
+                { "id": 1, "values": [80] }
+            ]
+        },
+        { 
+            "id": 2,
+            "name": "Tomx",
+            "type": "user",
+            "filters": [
+                { "id": 2, "values": [1] }
+            ],
+            "containers": [
+                1095, 1096, 1097, 1098, 1099
+            ]
+        }
+    ],
+    "containers": [
+        { 
+            "id": 1095, 
+            "name": "PP1", 
+            "code": "PP1",
+            "filters": {
+                "1": [80],
+                "2": [1, 2]
+            }
+        }
+    ]
+
 }
