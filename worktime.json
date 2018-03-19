@@ -1,0 +1,74 @@
+{
+    "calendar": {
+        "status": "ok",
+        "code": 200,
+        "messages": [],
+        "result": {
+                "id": 1,
+                "timeStart": "1975-08-19T23:15:30.000Z",
+                "timeEnd": "1975-08-19T23:15:30.000Z",
+                "description": "",
+                "rules": [
+                {
+                    "id": 1,
+                    "name": "Nedeljski urnik",
+                    "description": "",
+                    "timeStart": "1975-08-19T23:15:30.000Z",
+                    "timeEnd": "1975-08-19T23:15:30.000Z",
+                    "repeat": {
+                        "id": 2,
+                        "name": "tedensko",
+                        "options": {
+                            "1": {
+                                "id": 1,
+                                "name": "Times",
+                                "type": {
+                                    "id": 1,
+                                    "name": "textbox"
+                                },
+                                "values": [
+                                    {
+                                        "id": 1,
+                                        "value": "1",
+                                        "repeatOption": {
+                                            "id": 1,
+                                            "value": "",
+                                            "description": ""
+                                        }
+                                    }
+                                ]                                            
+                            },
+                            "2": {
+                                "id": 2,
+                                "name": "Days",
+                                "type": {
+                                    "id": 2,
+                                    "name": "checkbox"
+                                },
+                                "values": [
+                                    {
+                                        "id": 2,
+                                        "value": "",
+                                        "repeatOption": {
+                                            "id": 4,
+                                            "value": 6,
+                                            "description": "Sunday"
+                                        }
+                                    }
+                                ]
+                            } 
+                        }
+                    },
+                    "finish": {
+                        "id": 1,
+                        "type": {
+                            "id": 1,
+                            "name": "Never"
+                        },
+                        "value": ""
+                    }
+                }
+            ]                     
+        }
+    }
+}

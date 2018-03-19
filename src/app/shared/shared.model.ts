@@ -10,7 +10,6 @@ export interface PaginationResponse<T> {
     records: T[];
 }
 
-// test DJU
 export interface Pagination {
     page: number;
     page_size: number;
