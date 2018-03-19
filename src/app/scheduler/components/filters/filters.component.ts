@@ -15,9 +15,19 @@ export class FiltersComponent implements OnInit {
   filtersState$: Observable<fromStore.FilterState>;
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
+  selectedPeople1 = [];
+
   ngOnInit() {
     this.filtersState$ = this.store.select(fromStore.getFiltersState);
     this.store.dispatch(new fromStore.LoadFilters());
+  }
+
+  onChange($event) {
+    console.log(this.selectedPeople1);
+  }
+
+  clearModel1() {
+    this.selectedPeople1 = [];
   }
 
 }

@@ -1,5 +1,9 @@
 <div class="container">
-  <app-planitem-item *ngFor="let planItemEl of (planItemState$ | async).entities" [planItem]="planItemEl"></app-planitem-item>
+  <div class="class row">
+   <div class="class col-xs-12">
+      <app-planitem-item *ngFor="let planItemEl of (planItemState$ | async).entities" [planItem]="planItemEl"></app-planitem-item>
+   </div>
+  </div>
   <div class="row">
     <div class="col-xs-12">
       <nav aria-label="Page navigation example">

@@ -22,7 +22,8 @@
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css",
-        "./styles/sidebar.css"
+        "./styles/sidebar.css",
+        "../node_modules/@ng-select/ng-select/themes/default.theme.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

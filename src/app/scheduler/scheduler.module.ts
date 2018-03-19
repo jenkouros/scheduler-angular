@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from "../shared/shared.module";
 import { StoreModule } from "@ngrx/store";
 import { reducers } from "./store";
@@ -11,6 +12,8 @@ import { PlanitemListComponent } from "./components";
 @NgModule({
     imports: [
         SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
         SchedulerRouterModule,
         HttpClientModule,
         StoreModule.forFeature('scheduler', reducers)

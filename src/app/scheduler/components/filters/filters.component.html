@@ -1,11 +1,42 @@
-<p>
-  filters works!
-</p>
+<div class="container">
+  <div class="class row">
+    <div class="class col-xs-12">
+      <div *ngFor="let filterElement of (filtersState$ | async).entities">
 
-<div *ngFor="let filter of (filtersState$ | async).entities">
-  <div *ngIf="filter.type === FilterTypeEnum.checkbox">
-    
+        <div *ngIf="filterElement.type === FilterTypeEnum.checkbox">
+          <div>{{ filterElement.name }}</div>
+          <div class="btn-group-vertical" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" *ngFor="let filterValueElement of filterElement.values">{{ filterValueElement.name }}</button>
+          </div>
+
+        </div>
+
+        <div *ngIf="filterElement.type === FilterTypeEnum.autocomplete">
+
+            <label>{{ filterElement.name }}</label>
+
+            <ng-select
+                    [items]="filterElement.values"
+                    [multiple]="true"
+                    [closeOnSelect]="false"
+                    bindLabel="name"
+                    bindValue="name"
+                    placeholder="{{ filterElement.name}}"
+                    [(ngModel)]="selectedPeople1"
+                    (change)="onChange($event)">
+            </ng-select>
+
+            <div class="mt-3">
+                Izbrane vrednosti filtra: <br />
+                <ul>
+                  <li *ngFor="let item of selectedPeople1">{{item }}</li>
+                </ul>
+                <button (click)="clearModel1()" class="btn btn-secondary btn-sm">Pošisti filter</button>
+            </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-
-
 </div>
+<!-- [(ngModel)]="selectedPeople1" -->
