@@ -47,9 +47,27 @@ export function filtersReducer(
             for(let key in action.payload) {
                 selected[key] = [...action.payload[key]];
             }
+
+            let entities = state.entities.map(entity => {
+                let values = entity.values.map(value => {
+                    return {
+                        ...value,
+                        selected: (selected[entity.id] && selected[entity.id].indexOf(value.id) > -1)
+                    }
+                });
+
+                return {
+                    ...entity,
+                    values: values
+                };
+            })
+
+            
+
             return {
                 ...state,
-                selectedEntities: selected
+                selectedEntities: selected,
+                entities: entities
             };
         }
     }

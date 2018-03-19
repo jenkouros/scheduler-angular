@@ -83,7 +83,7 @@
                 "id": 2,
                 "type": "autocomplete",
                 "values": [
-                    { "id": 1, "name": "Tomislav Tomc" },
+                    { "id": 1, "name": "Tomislav Tomc", "selected": true },
                     { "id": 2, "name": "Radoslav Radenc" }
                 ]
             }
