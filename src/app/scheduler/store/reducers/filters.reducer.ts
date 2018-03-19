@@ -3,12 +3,14 @@ import * as formFilters from '../actions/filters.action';
 
 export interface FilterState {
     entities: Filter[];
+    selectedEntities: { [id: string]: number[] };
     loading: boolean;
     loaded: boolean;
 }
 
 export const initialState: FilterState = {
     entities: [],
+    selectedEntities: {},
     loaded: false,
     loading: false
 };
@@ -38,6 +40,16 @@ export function filtersReducer(
                 loaded: true,
                 loading: false,
                 entities: filters
+            };
+        }
+        case formFilters.CHANGE_FILTER: {
+            let selected = {...state.selectedEntities};
+            for(let key in action.payload) {
+                selected[key] = [...action.payload[key]];
+            }
+            return {
+                ...state,
+                selectedEntities: selected
             };
         }
     }
