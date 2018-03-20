@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import '@progress/kendo-ui';
+import * as $ from 'jquery';
+import { PlannerService } from '../planner.service';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlanViewerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private plannerService: PlannerService) { }
 
   ngOnInit() {
+    console.log(kendo);
+    $("#cal").kendoScheduler({
+      date: new Date(), // The current date
+      dataSource: PlannerService.getDataSource(),
+      views: PlannerService.getViewsObject()
+    });
   }
 
 }

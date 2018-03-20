@@ -1,5 +1,5 @@
 import { Filter } from "../../models/filter.model";
-import * as formFilters from '../actions/filters.action';
+import * as fromFilters from '../actions/filters.action';
 
 export interface FilterState {
     entities: Filter[];
@@ -17,23 +17,23 @@ export const initialState: FilterState = {
 
 export function filtersReducer(
     state = initialState, 
-    action: formFilters.filterActions) 
+    action: fromFilters.filterActions) 
 {
     switch(action.type) {
-        case formFilters.LOAD_FILTERS: {
+        case fromFilters.LOAD_FILTERS: {
             return {
                 ...state,
                 loading: true
             };
         }
-        case formFilters.LOAD_FILTERS_FAIL: {
+        case fromFilters.LOAD_FILTERS_FAIL: {
             return {
                 ...state,
                 loaded: false,
                 loading: false
             };
         }
-        case formFilters.LOAD_FILTERS_SUCCESS: {
+        case fromFilters.LOAD_FILTERS_SUCCESS: {
             const filters = [...action.payload];
             return {
                 ...state,
@@ -42,7 +42,7 @@ export function filtersReducer(
                 entities: filters
             };
         }
-        case formFilters.CHANGE_FILTER: {
+        case fromFilters.CHANGE_FILTER: {
             let selected = {...state.selectedEntities};
             for(let key in action.payload) {
                 selected[key] = [...action.payload[key]];
@@ -60,15 +60,90 @@ export function filtersReducer(
                     ...entity,
                     values: values
                 };
-            })
-
-            
+            });
 
             return {
                 ...state,
                 selectedEntities: selected,
                 entities: entities
             };
+        }
+        case fromFilters.SELECT_VALUE_ON_FILTER: {
+            let selected = { ...state.selectedEntities };
+            if(selected[action.payload.id]) {
+                selected[action.payload.id] = [...selected[action.payload.id], action.payload.value];
+            } else {
+                selected[action.payload.id] = [action.payload.value]
+            }
+
+            let updateEntityIndex = state.entities.findIndex(x => x.id === action.payload.id);
+            let valueIndex = state.entities[updateEntityIndex].values.findIndex(x => x.id === action.payload.value);
+            if(updateEntityIndex > -1 && valueIndex > -1) {
+                let updateValue = {
+                    ...state.entities[updateEntityIndex].values[valueIndex], 
+                    selected: true
+                };
+
+                let updateEntity = {
+                    ...state.entities[updateEntityIndex]
+                };
+
+                updateEntity.values[valueIndex] = updateValue
+
+                let updatedEntities = [
+                    ...state.entities
+                ];
+
+                updatedEntities[updateEntityIndex] = updateEntity;
+
+                return {
+                    ...state,
+                    entities: updatedEntities,
+                    selectedEntities: selected
+                };
+            }
+
+            return {
+                ...state                
+            }
+        }
+        case fromFilters.REMOVE_VALUE_ON_FILTER: {
+            let selected = { ...state.selectedEntities };
+            if(selected[action.payload.id]) {
+                let selectedIndex = selected[action.payload.id].findIndex(x => x === action.payload.value);
+                if(selected[action.payload.id].length == 1) {
+                    delete selected[action.payload.id];
+                } else {
+                    selected[action.payload.id].splice(selectedIndex, 1);
+                }
+            }
+
+            let updateEntityIndex = state.entities.findIndex(x => x.id === action.payload.id);
+            let valueIndex = state.entities[updateEntityIndex].values.findIndex(x => x.id === action.payload.value);
+            if(updateEntityIndex > -1 && valueIndex > -1) {
+                let updateValue = {
+                    ...state.entities[updateEntityIndex].values[valueIndex], 
+                    selected: false
+                };
+
+                let updateEntity = {
+                    ...state.entities[updateEntityIndex]
+                };
+
+                updateEntity.values[valueIndex] = updateValue
+
+                let updatedEntities = [
+                    ...state.entities
+                ];
+
+                updatedEntities[updateEntityIndex] = updateEntity;
+
+                return {
+                    ...state,
+                    entities: updatedEntities,
+                    selectedEntities: selected
+                };
+            }
         }
     }
 

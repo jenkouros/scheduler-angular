@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Observable } from 'rxjs/Observable';
@@ -15,19 +15,28 @@ export class FiltersComponent implements OnInit {
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
-  selectedPeople1 = [1,2];
+  selectedPeople1;
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadFilters());
     this.filtersState$ = this.store.select(fromStore.getFiltersState);
 
-    this.store.select(fromStore.getSelectedFilters).subscribe(f => {
+    /*this.store.select(fromStore.getSelectedFilters).subscribe(f => {
       this.selectedPeople1 = f[2];
-    });
+    });*/
   }
 
-  onCheckBoxClick(id, value) {
+
+  counter = 1;
+  onCheckBoxClick(id, value, btnRef: HTMLElement) {
     console.log(id + " " + value);
+    console.log("Active: " + btnRef.classList.contains("active"));
+    if(!btnRef.classList.contains("active")) {
+      this.store.dispatch(new fromStore.SelectValueOnFilter({ id: id, value: value }));
+    } else {
+      this.store.dispatch(new fromStore.RemoveValueOnFilter({ id: id, value: value }));
+    }
+    this.counter++;
   }
 
   onChange($event: number[], id: string) {

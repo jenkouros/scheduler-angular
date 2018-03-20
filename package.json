@@ -27,9 +27,13 @@
     "@ngrx/router-store": "^5.0.1",
     "@ngrx/store": "^5.1.0",
     "@ngrx/store-devtools": "^5.1.0",
+    "@progress/kendo-ui": "^2018.1.312",
+    "@types/jquery": "^3.3.1",
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
+    "jquery": "^3.3.1",
     "json-server": "^0.12.1",
+    "npm": "^5.7.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },

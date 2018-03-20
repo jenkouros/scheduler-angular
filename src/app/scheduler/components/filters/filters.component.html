@@ -6,8 +6,8 @@
         <div *ngIf="filterElement.type === FilterTypeEnum.checkbox">
           <div>{{ filterElement.name }}</div>
           <div class="btn-group-vertical" role="group" aria-label="Basic example">
-            <button type="button" 
-              (click)="onCheckBoxClick(filterElement.id, filterValueElement.id)"
+            <button #btnRef type="button" 
+              (click)="onCheckBoxClick(filterElement.id, filterValueElement.id, btnRef)"
               class="btn btn-secondary" 
               [ngClass]="{active: filterValueElement.selected}" 
               *ngFor="let filterValueElement of filterElement.values">{{ filterValueElement.name }}</button>
