@@ -15,40 +15,17 @@ export class FiltersComponent implements OnInit {
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
-  selectedPeople1;
-
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadFilters());
     this.filtersState$ = this.store.select(fromStore.getFiltersState);
-
-    /*this.store.select(fromStore.getSelectedFilters).subscribe(f => {
-      this.selectedPeople1 = f[2];
-    });*/
   }
 
-
-  counter = 1;
-  onCheckBoxClick(id, value, btnRef: HTMLElement) {
-    console.log(id + " " + value);
-    console.log("Active: " + btnRef.classList.contains("active"));
-    if(!btnRef.classList.contains("active")) {
+  onFilterChange(id: number, value: number, remove: boolean) {
+    if(!remove) {
       this.store.dispatch(new fromStore.SelectValueOnFilter({ id: id, value: value }));
     } else {
       this.store.dispatch(new fromStore.RemoveValueOnFilter({ id: id, value: value }));
     }
-    this.counter++;
-  }
-
-  onChange($event: number[], id: string) {
-    var dict: { [id:number]: number[] } = {};
-    dict[id] = $event;
-
-    console.log($event + ", with parent id: " + id);
-    this.store.dispatch(new fromStore.ChangeFilter(dict));
-  }
-
-  clearModel1() {
-    this.selectedPeople1 = [];
   }
 
 }

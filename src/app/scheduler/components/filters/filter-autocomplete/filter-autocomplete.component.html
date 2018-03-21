@@ -1,0 +1,11 @@
+<ng-select
+  [items]="filterValues"
+  [multiple]="true"
+  [closeOnSelect]="false"
+  bindLabel="name"
+  bindValue="id"
+  [placeholder]="placeholder"
+  [(ngModel)]="selectedValues"
+  (add)="onChange($event.id, false)"
+  (remove)="onChange($event.value.id, true)">
+</ng-select>

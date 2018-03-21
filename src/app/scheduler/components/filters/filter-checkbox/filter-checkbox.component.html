@@ -1,0 +1,9 @@
+<div class="btn-group-vertical" role="group" aria-label="Filter checkbox">
+  <button #btnRef type="button" 
+    *ngFor="let filterValue of filterValues"
+    (click)="onCheckboxClick(filterValue.id, btnRef)"
+    class="btn btn-secondary" 
+    [ngClass]="{active: filterValue.selected}">
+      {{ filterValue.name }}
+    </button>
+</div>

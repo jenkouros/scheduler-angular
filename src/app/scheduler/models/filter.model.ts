@@ -3,7 +3,13 @@ export interface Filter {
     name: string;
     id: number;
     type: string;
-    values: { id: number, name: string, selected: boolean }[];
+    values: FilterValue[];
+}
+
+export interface FilterValue {
+    id: number; 
+    name: string; 
+    selected: boolean;
 }
 
 export enum FilterTypeEnum {

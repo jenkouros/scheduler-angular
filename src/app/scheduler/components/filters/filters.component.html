@@ -1,17 +1,16 @@
-<div class="container">
-  <div class="class row">
-    <div class="class col-xs-12">
+
+  <div class="row">
+    <div class="col-xs-12">
       <div *ngFor="let filterElement of (filtersState$ | async).entities">
 
         <div *ngIf="filterElement.type === FilterTypeEnum.checkbox">
           <div>{{ filterElement.name }}</div>
-          <div class="btn-group-vertical" role="group" aria-label="Basic example">
-            <button #btnRef type="button" 
-              (click)="onCheckBoxClick(filterElement.id, filterValueElement.id, btnRef)"
-              class="btn btn-secondary" 
-              [ngClass]="{active: filterValueElement.selected}" 
-              *ngFor="let filterValueElement of filterElement.values">{{ filterValueElement.name }}</button>
-          </div>
+          <app-filter-checkbox
+            [filterValues]="filterElement.values"
+            (add)="onFilterChange(filterElement.id, $event, false)"
+            (remove)="onFilterChange(filterElement.id, $event, true)"
+            >
+          </app-filter-checkbox>
 
         </div>
 
@@ -19,28 +18,15 @@
 
             <label>{{ filterElement.name }}</label>
 
-            <ng-select
-                    [items]="filterElement.values"
-                    [multiple]="true"
-                    [closeOnSelect]="false"
-                    bindLabel="name"
-                    bindValue="id"
-                    placeholder="{{ filterElement.name}}"
-                    [(ngModel)]="selectedPeople1"
-                    (change)="onChange($event, filterElement.id)">
-            </ng-select>
-
-            <div class="mt-3">
-                Izbrane vrednosti filtra: <br />
-                <ul>
-                  <li *ngFor="let item of selectedPeople1">{{item }}</li>
-                </ul>
-                <button (click)="clearModel1()" class="btn btn-secondary btn-sm">Počisti filter</button>
-            </div>
+            <app-filter-autocomplete
+                    [filterValues]="filterElement.values"
+                    [placeholder]="filterElement.name"
+                    (add)="onFilterChange(filterElement.id, $event, false)"
+                    (remove)="onFilterChange(filterElement.id, $event, true)">
+            </app-filter-autocomplete>
 
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- [(ngModel)]="selectedPeople1" -->
+

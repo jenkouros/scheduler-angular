@@ -9,6 +9,9 @@ import { SchedulerComponent } from "./scheduler.component";
 import { PlanitemListComponent } from "./planitem-list/planitem-list.component";
 import { PlanitemItemComponent } from "./planitem-list/planitem-item/planitem-item.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
+import { FilterCheckboxComponent } from "./filters/filter-checkbox/filter-checkbox.component";
+import { FilterAutocompleteComponent } from "./filters/filter-autocomplete/filter-autocomplete.component";
+
 
 export const components: any[] = [
     FiltersComponent,
@@ -21,7 +24,9 @@ export const components: any[] = [
     SchedulerComponent,
     PlanitemListComponent,
     PlanitemItemComponent,
-    SidebarComponent
+    SidebarComponent,
+    FilterCheckboxComponent,
+    FilterAutocompleteComponent
 ];
 
 export * from "./filters/filters.component";
@@ -35,3 +40,5 @@ export * from "./planitem-list/planitem-list.component";
 export * from "./planitem-list/planitem-item/planitem-item.component";
 export * from "./scheduler.component";
 export * from "./sidebar/sidebar.component";
+export * from "./filters/filter-checkbox/filter-checkbox.component";
+export * from "./filters/filter-autocomplete/filter-autocomplete.component";
