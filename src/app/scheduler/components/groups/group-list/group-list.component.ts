@@ -18,7 +18,34 @@ export class GroupListComponent implements OnInit {
     },
     { 
         "id": 2,
+        "name": "Ljubljana-Zalog",
+        "type": "system",
+        "filters": [
+            { "id": 1, "values": [81] }
+        ]
+    },
+    { 
+        "id": 3,
+        "name": "Maribor",
+        "type": "system",
+        "filters": [
+            { "id": 1, "values": [82] }
+        ]
+    },
+    { 
+        "id": 4,
         "name": "Tomx",
+        "type": "user",
+        "filters": [
+            { "id": 2, "values": [1] }
+        ],
+        "containers": [
+            1095, 1096, 1097, 1098, 1099
+        ]
+    },
+    { 
+        "id": 5,
+        "name": "Romx",
         "type": "user",
         "filters": [
             { "id": 2, "values": [1] }
