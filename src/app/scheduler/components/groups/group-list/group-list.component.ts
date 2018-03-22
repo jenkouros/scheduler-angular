@@ -6,12 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./group-list.component.css']
 })
 export class GroupListComponent implements OnInit {
-
   groups = [
     { 
         "id": 1,
         "name": "Ljubljana-Črnuče",
         "type": "system",
+        "selected": "true",
         "filters": [
             { "id": 1, "values": [80] }
         ]
@@ -20,6 +20,7 @@ export class GroupListComponent implements OnInit {
         "id": 2,
         "name": "Ljubljana-Zalog",
         "type": "system",
+        "selected": "false",
         "filters": [
             { "id": 1, "values": [81] }
         ]
@@ -28,6 +29,7 @@ export class GroupListComponent implements OnInit {
         "id": 3,
         "name": "Maribor",
         "type": "system",
+        "selected": "false",
         "filters": [
             { "id": 1, "values": [82] }
         ]
@@ -36,6 +38,7 @@ export class GroupListComponent implements OnInit {
         "id": 4,
         "name": "Tomx",
         "type": "user",
+        "selected": "false",
         "filters": [
             { "id": 2, "values": [1] }
         ],
@@ -47,6 +50,7 @@ export class GroupListComponent implements OnInit {
         "id": 5,
         "name": "Romx",
         "type": "user",
+        "selected": "false",
         "filters": [
             { "id": 2, "values": [1] }
         ],

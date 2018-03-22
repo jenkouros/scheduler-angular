@@ -1,6 +1,30 @@
 <div class="container">
   <div class="class row">
    <div class="class col-xs-12">
+
+    <div class="row">
+      <div class="col"><span class="border-left">ID</span>
+      </div>
+      <div class="col"><span class="border-left">Šifra naloga</span>
+      </div>
+      <div class="col"><span class="border-left">ERP količina</span>   
+      </div>
+      <div class="col"><span class="border-left">MES količina</span>    
+      </div>
+      <div class="col"><span class="border-left">Preostala količina</span>    
+      </div>
+      <div class="col"><span class="border-left">EM</span>    
+      </div>
+      <div class="col"><span class="border-left">Artikel</span>    
+      </div>
+      <div class="col"><span class="border-left">Šifra artikla</span>   
+      </div>
+      <div class="col"><span class="border-left">Datum ERP od</span>    
+      </div>
+      <div class="col"><span class="border-left">Datum ERP do</span>    
+      </div>
+    </div>
+
       <app-planitem-item *ngFor="let planItemEl of (planItemState$ | async).entities" [planItem]="planItemEl"></app-planitem-item>
    </div>
   </div>
