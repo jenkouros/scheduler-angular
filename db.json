@@ -6,10 +6,10 @@
         "messages": [],
         "result": {
             "metadata": {
-                "page": 2,
-                "page_size": 15,
-                "page_count": 10,
-                "total_count": 150
+                "page": 1,
+                "pageSize": 15,
+                "pageCount": 10,
+                "totalCount": 150
             },
             "records": [
                 {
@@ -83,7 +83,7 @@
                 "id": 2,
                 "type": "autocomplete",
                 "values": [
-                    { "id": 1, "name": "Tomislav Tomc", "selected": true },
+                    { "id": 1, "name": "Tomislav Tomc" },
                     { "id": 2, "name": "Radoslav Radenc" }
                 ]
             }

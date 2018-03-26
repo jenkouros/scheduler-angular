@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row align-middle">
   <div class="col"><span class="border-left">{{ planItem.code }}</span>
 
   </div>
@@ -24,8 +24,8 @@
     {{ planItem.product.code }}
   </div>
   <div class="col"><span class="border-left"></span>
-    {{ planItem.limitDateFrom }}
+    {{ planItem.limitDateFrom | date:'short' }}
   </div>
   <div class="col"><span class="border-left"></span>
-    {{ planItem.limitDateTo }}
+    {{ planItem.limitDateTo | date:'short' }}
   </div>

@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { SchedulerComponent, FiltersComponent, GroupsComponent, PlanitemListComponent, PlannerComponent } from "./components";
-import { EffectsModule } from "@ngrx/effects";
-import { effects } from "./store/effects";
 
 const schedulerRoutes: Routes = [
     { path: '', component: SchedulerComponent, children: [
@@ -16,8 +14,7 @@ const schedulerRoutes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(schedulerRoutes),
-        EffectsModule.forFeature(effects)
+        RouterModule.forChild(schedulerRoutes)
     ],
     exports: [
         RouterModule

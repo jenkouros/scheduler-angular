@@ -33,14 +33,17 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
+            let metadata = {
+                ...state.pagination,
+                ...action.payload.metadata    
+            };
+            metadata.page = metadata.page + 1;
+
             return {
                 ...state,
                 loaded: true,
                 loading: false,
-                pagination: {
-                    ...state.pagination,
-                    ...action.payload.metadata
-                },
+                pagination: metadata,
                 entities: [...action.payload.records]
             };
         }

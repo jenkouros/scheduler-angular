@@ -15,8 +15,8 @@ export class PlanItemsEffects {
     loadPlanItems$ = this.actions$
         .ofType(fromActions.LOAD_PLANITEMS)
         .pipe(
-            switchMap((action) => {
-                return this.planItemsService.getPlanItems()
+            switchMap((action: fromActions.LoadPlanItems) => {
+                return this.planItemsService.getPlanItems(action.payload.page, action.payload.pageSize)
                     .pipe(
                         map(planItems => new fromActions.LoadPlanItemsSuccess(planItems)),
                         catchError(error => of(new fromActions.LoadPlanItemsFail(error)))

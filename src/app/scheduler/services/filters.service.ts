@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { ApiResponse } from "../../shared/shared.model";
+import { ApiResponse, ApiResponseResult } from "../../shared/shared.model";
 import { Filter } from "../models/filter.model";
 import { switchMap, map, catchError } from "rxjs/operators";
 import { Observable } from "rxjs/Observable";
-
-const url = "http://localhost:3000/filters"
+import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class FiltersService {
@@ -14,10 +13,10 @@ export class FiltersService {
 
     getFilters(): Observable<Filter[]> {
         return this.http
-            .get<ApiResponse<Filter[]>>(url)
+            .get<ApiResponse<Filter[]>>(environment.apiUrl + "/filters")
             .pipe(
                 map((response) => {
-                    if(response.status !== "ok") {
+                    if(response.code !== ApiResponseResult.success) {
                         throw response.messages;
                     }
                     return response.result;

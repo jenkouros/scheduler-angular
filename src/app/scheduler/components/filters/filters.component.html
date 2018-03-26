@@ -1,32 +1,22 @@
 
-  <div class="row">
-    <div class="col-xs-12">
-      <div *ngFor="let filterElement of (filtersState$ | async).entities">
 
-        <div *ngIf="filterElement.type === FilterTypeEnum.checkbox">
-          <div>{{ filterElement.name }}</div>
-          <app-filter-checkbox
-            [filterValues]="filterElement.values"
-            (add)="onFilterChange(filterElement.id, $event, false)"
-            (remove)="onFilterChange(filterElement.id, $event, true)"
-            >
-          </app-filter-checkbox>
+    
+<div *ngFor="let filterElement of (filtersState$ | async)">
 
-        </div>
+  <h5 class="text-white mt-3">{{ filterElement.name }}</h5>     
+  <app-filter-checkbox *ngIf="filterElement.type === FilterTypeEnum.checkbox"
+    [filterValues]="filterElement.selectedValues"
+    (add)="onFilterChange(filterElement.id, $event, false)"
+    (remove)="onFilterChange(filterElement.id, $event, true)">
+  </app-filter-checkbox>
 
-        <div *ngIf="filterElement.type === FilterTypeEnum.autocomplete">
+  <app-filter-autocomplete *ngIf="filterElement.type === FilterTypeEnum.autocomplete"
+    [filterValues]="filterElement.selectedValues"
+    [placeholder]="filterElement.name"
+    (add)="onFilterChange(filterElement.id, $event, false)"
+    (remove)="onFilterChange(filterElement.id, $event, true)">
+  </app-filter-autocomplete>
+</div>
 
-            <label>{{ filterElement.name }}</label>
 
-            <app-filter-autocomplete
-                    [filterValues]="filterElement.values"
-                    [placeholder]="filterElement.name"
-                    (add)="onFilterChange(filterElement.id, $event, false)"
-                    (remove)="onFilterChange(filterElement.id, $event, true)">
-            </app-filter-autocomplete>
-
-        </div>
-      </div>
-    </div>
-  </div>
 

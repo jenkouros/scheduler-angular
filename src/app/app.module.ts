@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRouterModule } from './app-router.module';
 import { EffectsModule } from '@ngrx/effects';
+import { initialReducerMap, getInitialState } from './store/app.reducers';
 
 @NgModule({
   declarations: [
@@ -21,9 +22,9 @@ import { EffectsModule } from '@ngrx/effects';
     //ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
     SchedulerModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(initialReducerMap, { initialState: getInitialState }),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule,
+    //StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],

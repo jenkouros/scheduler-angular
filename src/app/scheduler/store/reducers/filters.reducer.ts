@@ -48,6 +48,7 @@ export function filtersReducer(
                 selected[key] = [...action.payload[key]];
             }
 
+            /*
             let entities = state.entities.map(entity => {
                 let values = entity.values.map(value => {
                     return {
@@ -61,11 +62,12 @@ export function filtersReducer(
                     values: values
                 };
             });
-
+            */
+            
             return {
                 ...state,
-                selectedEntities: selected,
-                entities: entities
+                selectedEntities: selected
+                //entities: entities
             };
         }
         case fromFilters.SELECT_VALUE_ON_FILTER: {
@@ -76,6 +78,7 @@ export function filtersReducer(
                 selected[action.payload.id] = [action.payload.value]
             }
 
+            /*
             let updateEntityIndex = state.entities.findIndex(x => x.id === action.payload.id);
             let valueIndex = state.entities[updateEntityIndex].values.findIndex(x => x.id === action.payload.value);
             if(updateEntityIndex > -1 && valueIndex > -1) {
@@ -101,10 +104,11 @@ export function filtersReducer(
                     entities: updatedEntities,
                     selectedEntities: selected
                 };
-            }
+            }*/
 
             return {
-                ...state                
+                ...state,
+                selectedEntities: selected              
             }
         }
         case fromFilters.REMOVE_VALUE_ON_FILTER: {
@@ -117,7 +121,12 @@ export function filtersReducer(
                     selected[action.payload.id].splice(selectedIndex, 1);
                 }
             }
+            return {
+                ...state,
+                selectedEntities: selected
+            };
 
+            /*
             let updateEntityIndex = state.entities.findIndex(x => x.id === action.payload.id);
             let valueIndex = state.entities[updateEntityIndex].values.findIndex(x => x.id === action.payload.value);
             if(updateEntityIndex > -1 && valueIndex > -1) {
@@ -144,7 +153,10 @@ export function filtersReducer(
                     selectedEntities: selected
                 };
             }
+            */
         }
+        default:
+            return state;
     }
 
 }

@@ -3,13 +3,22 @@ import * as fromFilters from './filters.reducer';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 export interface SchedulerState {
-    planitems: fromPlanItems.PlanItemState;
     filters: fromFilters.FilterState;
+    planitems: fromPlanItems.PlanItemState;
+    
+}
+
+export function getInitialState() {
+    return {
+        filters: fromFilters.initialState,
+        planitems: fromPlanItems.initialState
+    } as SchedulerState;
 }
 
 export const reducers: ActionReducerMap<SchedulerState> = {
-    planitems: fromPlanItems.planItemsReducer,
-    filters: fromFilters.filtersReducer
+    filters: fromFilters.filtersReducer,
+    planitems: fromPlanItems.planItemsReducer
+    
 };
 
 export const getSchedulerState = createFeatureSelector<SchedulerState>('scheduler');

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Filter, FilterValue } from '../../../models/filter.model';
+import { FilterSelectValue } from '../../../models/filter.model';
 
 @Component({
   selector: 'app-filter-checkbox',
@@ -7,7 +7,7 @@ import { Filter, FilterValue } from '../../../models/filter.model';
   styleUrls: ['./filter-checkbox.component.css']
 })
 export class FilterCheckboxComponent implements OnInit {
-  @Input() filterValues: FilterValue[];
+  @Input() filterValues: FilterSelectValue[];
   @Output() add = new EventEmitter<number>();
   @Output() remove = new EventEmitter<number>();
   

@@ -2,12 +2,13 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from "../shared/shared.module";
 import { StoreModule } from "@ngrx/store";
-import { reducers } from "./store";
+import * as fromStore from "./store";
 import * as fromComponents from './components';
 import { SchedulerRouterModule } from "./scheduler-router.module";
 import * as fromServices from "./services";
 import { HttpClientModule } from "@angular/common/http";
 import { PlanitemListComponent } from "./components";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { PlanitemListComponent } from "./components";
         ReactiveFormsModule,
         SchedulerRouterModule,
         HttpClientModule,
-        StoreModule.forFeature('scheduler', reducers)
+        StoreModule.forFeature('scheduler', fromStore.reducers),
+        EffectsModule.forFeature(fromStore.effects)
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]

@@ -8,6 +8,7 @@ export const LOAD_PLANITEMS_SUCCESS = "[PlanItem] Load workorders Success";
 
 export class LoadPlanItems implements Action {
     readonly type = LOAD_PLANITEMS;
+    constructor(public payload: { page: number, pageSize: number }) {}
 }
 
 export class LoadPlanItemsFail implements Action {
