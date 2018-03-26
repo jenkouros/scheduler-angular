@@ -4,11 +4,13 @@
         <div>System</div>
       <div class="card-deck">
         <div *ngFor="let group of groups">
-          <div *ngIf="group.type === 'system'" class="card text-white bg-primary mb-3" style="max-width: 12rem;">
-            <!-- <div class="card-header">Header</div> -->
+          <div *ngIf="group.type === 'system'" [ngClass]="{'card bg-light mb-3':group.selected === 'true', 'card border-dark mb-3':group.selected === 'false'}" style="max-width: 12rem; cursor:pointer;">
+            <div class="card-header">{{ group.name }}</div>
             <div class="card-body">
-              <h5 class="card-title">{{ group.name }}</h5>
+              <h5 class="card-title"></h5>
               <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <a href="#" class="card-link">Izberi</a>
+              <a href="#" class="card-link">Uredi</a>
             </div>
           </div>
         </div>
@@ -16,11 +18,13 @@
       <div>Usrer</div>
       <div class="card-deck">
         <div *ngFor="let group of groups">
-          <div *ngIf="group.type === 'user'" class="card text-white bg-danger mb-3" style="max-width: 12rem;">
-            <!-- <div class="card-header">Header</div> -->
+          <div *ngIf="group.type === 'user'" [ngClass]="{'card bg-light mb-3':group.selected === 'true', 'card border-dark mb-3':group.selected === 'false'}" style="max-width: 12rem; cursor:pointer;">
+            <div class="card-header">{{ group.name }}</div>
             <div class="card-body">
-              <h5 class="card-title">{{ group.name }}</h5>
+              <h5 class="card-title"></h5>
               <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <a href="#" class="card-link">Izberi</a>
+              <a href="#" class="card-link">Uredi</a>
             </div>
           </div>
         </div>
@@ -29,3 +33,5 @@
       </div>
     </div>
   </div>
+
+<!-- card classess: selectded = true->card bg-light mb-3 selected = false->card border-dark mb-3 -->

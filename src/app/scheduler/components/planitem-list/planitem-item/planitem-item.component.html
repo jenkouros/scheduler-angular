@@ -1,27 +1,17 @@
 <div class="row align-middle">
   <div class="col"><span class="border-left">{{ planItem.code }}</span>
-
   </div>
-  <div class="col"><span class="border-left">{{ planItem.code }}</span>
-
+  <div class="col"><span class="border-left"> {{ planItem.quantity | number:'1.3-3' }}</span>   
   </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.quantity }}
+  <div class="col"><span class="border-left">{{ planItem.quantityBatch | number:'1.3-3' }}</span>    
   </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.quantityBatch }}
+  <div class="col"><span class="border-left">{{ planItem.quantityPlanned | number:'1.3-3' }}</span>    
   </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.quantityPlanned }}
+  <div class="col"><span class="border-left">{{ planItem.measurementUnit.code }}</span>    
   </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.measurementUnit.code }}
+  <div class="col"><span class="border-left">{{ planItem.product.name }}</span>    
   </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.product.name }}
-  </div>
-  <div class="col"><span class="border-left"></span>
-    {{ planItem.product.code }}
+  <div class="col"><span class="border-left"> {{ planItem.product.code }}</span>   
   </div>
   <div class="col"><span class="border-left"></span>
     {{ planItem.limitDateFrom | date:'short' }}
@@ -29,3 +19,4 @@
   <div class="col"><span class="border-left"></span>
     {{ planItem.limitDateTo | date:'short' }}
   </div>
+</div>
