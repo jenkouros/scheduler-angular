@@ -26,7 +26,10 @@
         "assets/font/css/open-iconic-bootstrap.min.css",
         "styles.css",
         "./styles/sidebar.css",
-        "../node_modules/@ng-select/ng-select/themes/default.theme.css"
+        "../node_modules/@ng-select/ng-select/themes/default.theme.css",
+        "../node_modules/devextreme/dist/css/dx.common.css",
+        "../node_modules/devextreme/dist/css/dx.light.css"
+
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

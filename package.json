@@ -34,6 +34,8 @@
     "@types/jquery": "^3.3.1",
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
+    "devextreme": "^17.2.7",
+    "devextreme-angular": "^17.2.7",
     "jquery": "^3.3.1",
     "json-server": "^0.12.1",
     "npm": "^5.7.1",
