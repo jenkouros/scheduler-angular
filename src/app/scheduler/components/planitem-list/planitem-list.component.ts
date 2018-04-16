@@ -26,6 +26,7 @@ export class PlanitemListComponent implements OnInit {
   ngOnInit() {
     this.loadPlanItemsOnPage();
     this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
+    this.planItemState$.subscribe(store =>console.log(store));
   }
 
   changePageLength(length: number) {
