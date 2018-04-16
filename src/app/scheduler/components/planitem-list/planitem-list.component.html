@@ -25,7 +25,8 @@
                 <th scope="col">EM</th>
                 <th scope="col">ERP količina</th>
                 <th scope="col">Datum ERP od</th>
-                <th scope="col">Datum ERP do</th>    
+                <th scope="col">Datum ERP do</th> 
+                <th scope="col"></th>   
               </tr>
             </thead>
             <tbody>
@@ -37,7 +38,11 @@
                 <td>{{ planItem.measurementUnit.code }}</td>
                 <td>{{ planItem.quantity }}</td>
                 <td>{{ planItem.limitDateFrom | date:'short' }}</td>
-                <td>{{ planItem.limitDateTo | date:'short' }}</td>        
+                <td>{{ planItem.limitDateTo | date:'short' }}</td> 
+                <td><dx-button
+                  class="btn btn-primary btn-sm"
+                  text="Planiraj nalog"
+                  (onClick)="showInfo(planItem.id)"></dx-button></td>
               </tr>
             </tbody>
           </table>
@@ -67,3 +72,95 @@
 <!-- <div *ngFor="let planItem of (planItemState$ | async).entities">
   {{ planItem.code }}
 </div> -->
+
+
+
+
+
+
+<dx-data-grid
+    id="gridContainer"
+    [dataSource]="(planItemState$ | async).entities">
+</dx-data-grid>
+
+
+
+<div id="popup">
+  <!-- <h1>Employees</h1> -->
+  <!-- <ul>
+      <li *ngFor="let planItem of (planItemState$ | async).entities let id = index">
+          <img [src]=""/><br/>
+          <i>{{ planItem.code }} => {{ planItem.product.name }}</i><br/>
+          <dx-button
+              class="button-info"
+              text="Details"
+              (onClick)="showInfo(planItem.id)">
+          </dx-button>
+      </li>
+  </ul> -->
+  <dx-popup
+      class='popup'
+      [width]="300"
+      [height]="250"
+      [showTitle]="true"
+      title="Information"
+      [dragEnabled]="false"
+      [closeOnOutsideClick]="true"
+      [(visible)]="popupVisible">
+      <div *dxTemplate="let data of 'content'">
+        
+        <div class="card-deck">
+          <!-- <div class="card-header"></div> -->
+          <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p>
+                Full Name:
+                <span></span>
+                <span>Test</span>
+            </p>
+            <p>
+                Birth Date:
+                <span>Test</span>
+            </p>
+            <p>
+                Address:
+                <span>Test</span>
+            </p>
+            <p>
+                Hire Date:
+                <span>Test</span>
+            </p>
+            <p>
+                Position:
+                <span>Test</span>
+            </p>
+                <button type="button" class="btn btn-primary">Potdri</button>
+                <button type="button" class="btn btn-secondary">Prekliči</button>
+          </div>
+        </div>  
+        <!-- <p>
+              Full Name:
+              <span>Test</span>
+              <span>Test</span>
+          </p>
+          <p>
+              Birth Date:
+              <span>Test</span>
+          </p>
+          <p>
+              Address:
+              <span>Test</span>
+          </p>
+          <p>
+              Hire Date:
+              <span>Test</span>
+          </p>
+          <p>
+              Position:
+              <span>Test</span>
+          </p> -->
+
+          
+      </div>
+  </dx-popup>
+</div>

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-//import { ServiceWorkerModule } from '@angular/service-worker';
-
+// import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -19,15 +18,17 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
   ],
   imports: [
     BrowserModule,
-    //ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
     SchedulerModule,
     StoreModule.forRoot(initialReducerMap, { initialState: getInitialState }),
     EffectsModule.forRoot([]),
-    //StoreRouterConnectingModule,
+    // StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  //providers: [{ provide: LOCALE_ID, useValue: 'sl-SI' }],
+  providers: [
+  // { provide: LOCALE_ID, useValue: 'sl-SI' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
