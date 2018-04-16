@@ -27,7 +27,8 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
     //StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'sl-SI' }],
+  providers: [// { provide: LOCALE_ID, useValue: 'sl-SI' }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

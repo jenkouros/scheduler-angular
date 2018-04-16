@@ -69,22 +69,22 @@ export class GroupListComponent implements OnInit {
 
     onClick(id: number, selected: string) {
         let index = this.groups.findIndex((x => x.id == id));
-        let group = this.groups.find((x => x.id == id));
+        // let group = this.groups.find((x => x.id == id));
 
         if (this.groups[index].selected == "true") {            
             this.groups[index].selected = "false";  
-            console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);       
+            // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);       
         } else if (this.groups[index].selected == "false") {
             this.groups[index].selected = "true";
-            console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected); 
+            // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected); 
             for (var i = 0; i < this.groups.length; i++) {
                 if (index != i) {
                     this.groups[i].selected = "false";
-                    console.log("index => " + i + "; id => " + this.groups[i].id + "; selected => " + this.groups[i].selected); 
+                    // console.log("index => " + i + "; id => " + this.groups[i].id + "; selected => " + this.groups[i].selected); 
                 }
             }
         }
-        console.log(" ");
+        // console.log(" ");
         
     }
    

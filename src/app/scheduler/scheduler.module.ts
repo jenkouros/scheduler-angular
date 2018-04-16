@@ -10,6 +10,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { PlanitemListComponent } from "./components";
 import { EffectsModule } from "@ngrx/effects";
 
+// Dx Component
+import { DxPopupModule, DxButtonModule, DxTemplateModule, DxDataGridModule } from 'devextreme-angular';
+
 @NgModule({
     imports: [
         SharedModule,
@@ -18,7 +21,12 @@ import { EffectsModule } from "@ngrx/effects";
         SchedulerRouterModule,
         HttpClientModule,
         StoreModule.forFeature('scheduler', fromStore.reducers),
-        EffectsModule.forFeature(fromStore.effects)
+        EffectsModule.forFeature(fromStore.effects),
+        // Dx Component
+        DxPopupModule,
+        DxButtonModule,
+        DxTemplateModule,
+        DxDataGridModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]

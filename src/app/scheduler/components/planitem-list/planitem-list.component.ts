@@ -5,6 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { PlanItemState } from '../../store/reducers/planitems.reducer';
 import { Pagination } from '../../../shared/shared.model';
 
+import { PlanItem } from '../../models/planitem.model';
+import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
+
 @Component({
   selector: 'app-planitem-list',
   templateUrl: './planitem-list.component.html',
@@ -13,6 +16,10 @@ import { Pagination } from '../../../shared/shared.model';
 export class PlanitemListComponent implements OnInit {
   planItemState$: Observable<PlanItemState>;
   numberOfItemsOnPage = 0;
+
+    currentPlanItemStateId: number;
+    cuurentPlanItemState;
+    popupVisible = false;
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
@@ -33,5 +40,16 @@ export class PlanitemListComponent implements OnInit {
   log(test) {
     console.log(test);
   }
+
+  showInfo(id) {
+    // this.planItemState$.subscribe(item => this.cuurentPlanItemState = item); 
+    
+    this.currentPlanItemStateId = id;
+    this.popupVisible = true;
+    this.planItemState$[id]
+
+
+    console.log("=====>" + this);
+}
 
 }
