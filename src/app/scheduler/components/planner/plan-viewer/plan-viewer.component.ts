@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import '@progress/kendo-ui';
 import { PlannerService } from '../planner.service';
 
@@ -18,18 +18,18 @@ import * as events from 'devextreme/events';
     templateUrl: './plan-viewer.component.html',
     styleUrls: ['./plan-viewer.component.css']
 })
-export class PlanViewerComponent implements OnInit {
+export class PlanViewerComponent implements OnInit, AfterViewInit {
     @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
 
     currentDate: Date = new Date(2015, 4, 25);
     data: Data[];
     moviesData: MovieData[];
-    workplaceData: WorkPlaceData[];    
+    workplaceData: WorkPlaceData[];
     schedulerResources: any = [];
     groups: any[];
     groupsHasValue = false;
-    currentView: string = "timelineDay";
-    constructor(private plannerService: PlannerService, private service: Service) {        
+    currentView = 'timelineDay';
+    constructor(private plannerService: PlannerService, private service: Service) {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
         this.workplaceData = service.getWorkPlaceData();
@@ -44,7 +44,7 @@ export class PlanViewerComponent implements OnInit {
     }
 
     optionChanged(e: any) {
-        if (e.name === "resources") {
+        if (e.name === 'resources') {
             debugger;
             this.setGroupValue();
             this.groupsHasValue = true;
@@ -59,24 +59,24 @@ export class PlanViewerComponent implements OnInit {
                 e.preventDefault();
                 e.stopPropagation();
 
-                var el = e.target;
-                if (el.classList.contains("dx-scheduler-date-table-cell")) {
+                const el = e.target;
+                if (el.classList.contains('dx-scheduler-date-table-cell')) {
 
-                    var a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                    console.log(e);
+                    const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                    console.log(a);
 
                     if (e.type === 'dxdrop') {
-                        console.log("dx-droped");
+                        console.log('dx-droped');
                     }
                 }
             });
 
-            events.on(elements[i], 'drop', (e) => {
+            /*events.on(elements[i], 'drop', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                console.log("droped");
-                var el = e.target;
+                console.log('droped');
+                const el = e.target;
                 if (el.classList.contains("dx-scheduler-date-table-cell")) {
                     var data = JSON.parse(e.dataTransfer.getData('text'));
 
@@ -92,7 +92,7 @@ export class PlanViewerComponent implements OnInit {
                     console.log(data);
                 }
 
-            });
+            });*/
 
         }
     }
@@ -105,65 +105,65 @@ export class PlanViewerComponent implements OnInit {
     }
 
     onAppointmentFormCreated(data) {
-        var that = this,
+        let that = this,
             form = data.form,
             movieInfo = that.getMovieById(data.appointmentData.movieId) || {},
             startDate = data.appointmentData.startDate;
 
-        form.option("items", [{
+        form.option('items', [{
             label: {
-                text: "Movie"
+                text: 'Movie'
             },
-            editorType: "dxSelectBox",
-            dataField: "movieId",
+            editorType: 'dxSelectBox',
+            dataField: 'movieId',
             editorOptions: {
                 items: that.moviesData,
-                displayExpr: "text",
-                valueExpr: "id",
+                displayExpr: 'text',
+                valueExpr: 'id',
                 onValueChanged: function (args) {
                     movieInfo = that.getMovieById(args.value);
-                    form.getEditor("director")
-                        .option("value", movieInfo.director);
-                    form.getEditor("endDate")
-                        .option("value", new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
+                    form.getEditor('director')
+                        .option('value', movieInfo.director);
+                    form.getEditor('endDate')
+                        .option('value', new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
                 }.bind(this)
             }
         }, {
             label: {
-                text: "Director"
+                text: 'Director'
             },
-            name: "director",
-            editorType: "dxTextBox",
+            name: 'director',
+            editorType: 'dxTextBox',
             editorOptions: {
                 value: movieInfo.director,
                 readOnly: true
             }
         }, {
-            dataField: "startDate",
-            editorType: "dxDateBox",
+            dataField: 'startDate',
+            editorType: 'dxDateBox',
             editorOptions: {
-                type: "datetime",
+                type: 'datetime',
                 onValueChanged: function (args) {
                     startDate = args.value;
-                    form.getEditor("endDate")
-                        .option("value", new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
+                    form.getEditor('endDate')
+                        .option('value', new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
                 }
             }
         }, {
-            name: "endDate",
-            dataField: "endDate",
-            editorType: "dxDateBox",
+            name: 'endDate',
+            dataField: 'endDate',
+            editorType: 'dxDateBox',
             editorOptions: {
-                type: "datetime",
+                type: 'datetime',
                 readOnly: true
             }
         }, {
-            dataField: "price",
-            editorType: "dxRadioGroup",
+            dataField: 'price',
+            editorType: 'dxRadioGroup',
             editorOptions: {
                 dataSource: [5, 10, 15, 20],
                 itemTemplate: function (itemData) {
-                    return "$" + itemData;
+                    return '$' + itemData;
                 }
             }
         }]);
@@ -175,14 +175,15 @@ export class PlanViewerComponent implements OnInit {
 
     getDataObj(objData) {
         for (var i = 0; i < this.data.length; i++) {
-            if (this.data[i].startDate.getTime() === objData.startDate.getTime() && this.data[i].workplaceId === objData.workplaceId)
+            if (this.data[i].startDate.getTime() === objData.startDate.getTime() && this.data[i].workplaceId === objData.workplaceId) {
                 return this.data[i];
+            }
         }
         return null;
     }
 
     getMovieById(id) {
-        return Query(this.moviesData).filter(["id", "=", id]).toArray()[0];
+        return Query(this.moviesData).filter(['id', '=', id]).toArray()[0];
     }
 }
 
