@@ -27,7 +27,7 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
-    // { provide: LOCALE_ID, useValue: 'sl-SI' }
+  // { provide: LOCALE_ID, useValue: 'sl-SI' }
   ],
   bootstrap: [AppComponent]
 })
