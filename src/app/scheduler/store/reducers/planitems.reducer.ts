@@ -15,7 +15,7 @@ export const initialState: PlanItemState = {
     pagination: null,
     loading: false,
     loaded: false
-}
+};
 
 export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction) {
     switch(action.type) {

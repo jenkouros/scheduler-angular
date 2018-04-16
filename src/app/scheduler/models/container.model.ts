@@ -1,4 +1,5 @@
-export interface Container {
-    name: string;
+export class Container {
+    id: number;
     code: string;
+    name: string;
 }
