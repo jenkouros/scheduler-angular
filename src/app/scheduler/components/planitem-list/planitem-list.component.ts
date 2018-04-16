@@ -7,7 +7,10 @@ import { Pagination } from '../../../shared/shared.model';
 
 import { PlanItem } from '../../models/planitem.model';
 import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
-
+import {
+  DxPopupComponent,
+  DxDataGridComponent
+} from 'devextreme-angular';
 @Component({
   selector: 'app-planitem-list',
   templateUrl: './planitem-list.component.html',
