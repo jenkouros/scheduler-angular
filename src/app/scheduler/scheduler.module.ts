@@ -10,12 +10,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { PlanitemListComponent } from "./components";
 import { EffectsModule } from "@ngrx/effects";
 
-<<<<<<< HEAD
 // Dx Component
-import { DxPopupModule, DxButtonModule, DxTemplateModule, DxDataGridModule } from 'devextreme-angular';
-=======
-import { DxSchedulerModule, DxButtonModule, DxTemplateModule, DxLinearGaugeModule } from 'devextreme-angular';
->>>>>>> cb0cd0328d52c5f7c70298f5b3546fdbc75bbddd
+import { DxPopupModule, DxButtonModule, DxTemplateModule, DxDataGridModule, DxSchedulerModule, DxLinearGaugeModule } from 'devextreme-angular';
 
 @NgModule({
     imports: [
@@ -26,15 +22,13 @@ import { DxSchedulerModule, DxButtonModule, DxTemplateModule, DxLinearGaugeModul
         HttpClientModule,
         StoreModule.forFeature('scheduler', fromStore.reducers),
         EffectsModule.forFeature(fromStore.effects),
-<<<<<<< HEAD
         // Dx Component
         DxPopupModule,
         DxButtonModule,
         DxTemplateModule,
-        DxDataGridModule
-=======
-        DxSchedulerModule,DxButtonModule,DxTemplateModule,DxLinearGaugeModule
->>>>>>> cb0cd0328d52c5f7c70298f5b3546fdbc75bbddd
+        DxDataGridModule,
+        DxSchedulerModule,
+        DxLinearGaugeModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]
