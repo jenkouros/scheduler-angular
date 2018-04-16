@@ -5,6 +5,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { PageLengthComponent } from './components/page-length/page-length.component';
+import { LoaderComponent } from "./components/loader/loader.component";
 import { FormsModule } from "@angular/forms";
 
 @NgModule({
@@ -13,7 +14,8 @@ import { FormsModule } from "@angular/forms";
         NgSelectModule,
         NgbModule,
         PaginationComponent,
-        PageLengthComponent
+        PageLengthComponent,
+        LoaderComponent
     ],
     imports: [
         CommonModule,
@@ -21,7 +23,7 @@ import { FormsModule } from "@angular/forms";
         NgSelectModule,
         NgbModule.forRoot()
     ],
-    declarations: [PaginationComponent, PageLengthComponent]
+    declarations: [PaginationComponent, PageLengthComponent, LoaderComponent]
 })
 export class SharedModule {
 

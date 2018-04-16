@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 //import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { StoreModule } from '@ngrx/store';
@@ -27,7 +27,7 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
     //StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'sl-SI' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
