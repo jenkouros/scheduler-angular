@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import '@progress/kendo-ui';
-import * as $ from 'jquery';
 import { PlannerService } from '../planner.service';
 
 @Component({
