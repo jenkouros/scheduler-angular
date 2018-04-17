@@ -1,3 +1,5 @@
  
-   <button type="button" class="btn btn-default" *ngFor="let container of containers$ | async"
-   (click)="toggleContainer(container)">{{container.name}}</button>     
+   <button type="button" *ngFor="let container of containers"
+   (click)="toggleContainer(container)"
+   [ngClass]="{'btn': true, 'btn-primary': container.selected}"
+   >{{container.name}}</button>     

@@ -7,6 +7,15 @@
     width: 270px;
 }
 
+::ng-deep .dx-scheduler-date-table-row {
+    height: 100px;
+}
+
+::ng-deep .dx-scheduler-group-row {
+    height: 100px;
+}
+
+
 ::ng-deep .movie-tooltip .movie-info {
     display: inline-block;
     margin-left: 10px;

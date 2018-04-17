@@ -22,8 +22,8 @@ export class PlannerComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadContainers());
     this.containers$ = this.store.select(fromStore.getContainers);
     // TEST
-    this.store.select(fromStore.getContainers).subscribe(x => console.log(x));
-    this.onSelectContainer(1);
+    //this.store.select(fromStore.getContainers).subscribe(x => console.log(x));
+    //this.onSelectContainer(1);
   }
 
   onSelectContainer(containerId) {
