@@ -8,18 +8,23 @@ import { PlannedEvent } from '../models/event.model';
 export class EventsService {
     constructor(private http: HttpClient) {}
 
-    getEvents() {
+    getEvents(containerIds: number[], fromDate: Date, toDate: Date) {
         // TODO - go to server
         return new Observable<{[containerId: number]: PlannedEvent[]}>(observer => {
-            observer.next(this.createDummyEvents());
+            observer.next(this.createDummyEvents(containerIds, fromDate, toDate));
         });
     }
 
-    private createDummyEvents() {
+    private createDummyEvents(containerIds: number[], fromDate: Date, toDate: Date) {
         const dummyEvents: { [containerId: number]: PlannedEvent[] } = {};
-        dummyEvents[1] = [];
-        dummyEvents[1].push(new PlannedEvent(1, '1000 Priprava', '', new Date(2018, 4, 17, 7, 0), new Date(2018, 4, 17, 8, 0)));
-        dummyEvents[1].push(new PlannedEvent(2, '2000 Izdelava', '', new Date(2018, 4, 17, 8, 0), new Date(2018, 4, 17, 10, 0)));
+
+        // tslint:disable-next-line:forin
+        for (const i of containerIds) {
+            dummyEvents[i] = [];
+            dummyEvents[i].push(new PlannedEvent(1, '1000 Priprava', '', new Date(2018, 4, 17, 7, 0), new Date(2018, 4, 17, 8, 0)));
+            dummyEvents[i].push(new PlannedEvent(2, '2000 Izdelava', '', new Date(2018, 4, 17, 8, 0), new Date(2018, 4, 17, 10, 0)));
+
+        }
         return dummyEvents;
     }
 }

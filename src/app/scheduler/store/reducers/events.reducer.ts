@@ -24,6 +24,26 @@ export function eventsReducer(
                 loading: true
             };
         }
+        case fromAction.LOAD_EVENTS_SUCCESS: {
+            const events = { ...state.entities };
+            // tslint:disable-next-line:forin
+            for (const key in action.payload) {
+                events[key] = action.payload[key];
+            }
+            return {
+                ...state,
+                loading: false,
+                loaded: true,
+                entities: events
+            };
+        }
+        case fromAction.LOAD_EVENTS_FAIL: {
+            return {
+                ...state,
+                loaded: false,
+                loading: false
+            };
+        }
         default:
             return state;
     }
