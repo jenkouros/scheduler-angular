@@ -20,10 +20,6 @@ export class PlannerComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadContainers());
     this.containers$ = this.store.select(fromStore.getContainers);
     // TEST
-<<<<<<< HEAD
-    //this.store.select(fromStore.getContainers).subscribe(x => console.log(x));
-    //this.onSelectContainer(1);
-=======
     this.store.select(fromStore.getContainers).subscribe(x => console.log(x));
     this.store.dispatch(new fromStore.LoadEvents({
       containerIds: [1, 2],
@@ -31,7 +27,6 @@ export class PlannerComponent implements OnInit {
       dateTo: new Date(2018, 4, 17, 22, 0)
     }));
     this.store.select(fromStore.getEvents).subscribe(x => console.log(x));
->>>>>>> 4d2e18ce1d5cdf653353b9520b7e327b66216a91
   }
 
   onSelectContainer(containerId) {
