@@ -34,7 +34,7 @@ const dummyContainers: Container[] = [
 
 
 @Injectable()
-export class PlannerService {
+export class ContainersService {
     constructor(private http: HttpClient) {}
 
     getContainers(): Observable<Container[]> {

@@ -1,38 +1,38 @@
-import * as fromPlanner from '../actions/planner.action';
+import * as fromAction from '../actions/containers.action';
 import { Container } from '../../models/container.model';
 
-export interface PlannerState {
+export interface ContainerState {
     containers: Container[];
     selectedContainers: number[];
     loading: boolean;
     loaded: boolean;
 }
 
-export const initialState: PlannerState = {
+export const initialState: ContainerState = {
     containers: [],
     selectedContainers: [],
     loaded: false,
     loading: false
 };
 
-export function plannerReducer(
+export function containerReducer (
     state = initialState,
-    action: fromPlanner.PlannerAction) {
+    action: fromAction.ContainersAction): ContainerState {
     switch (action.type) {
-        case fromPlanner.LOAD_CONTAINERS: {
+        case fromAction.LOAD_CONTAINERS: {
             return {
                 ...state,
                 loading: true
             };
         }
-        case fromPlanner.LOAD_CONTAINERS_FAIL: {
+        case fromAction.LOAD_CONTAINERS_FAIL: {
             return {
                 ...state,
                 loaded: false,
                 loading: false
             };
         }
-        case fromPlanner.LOAD_CONTAINERS_SUCCESS: {
+        case fromAction.LOAD_CONTAINERS_SUCCESS: {
             return {
                 ...state,
                 loaded: true,
@@ -40,14 +40,14 @@ export function plannerReducer(
                 containers: [...action.payload]
             };
         }
-        case fromPlanner.SELECT_CONTAINERS: {
+        case fromAction.SELECT_CONTAINERS: {
             const selectionToAdd = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
             return {
                 ...state,
                 selectedContainers: selectionToAdd.concat(state.selectedContainers)
             };
         }
-        case fromPlanner.DESELECT_CONTAINERS: {
+        case fromAction.DESELECT_CONTAINERS: {
             const selectedContainers = [...state.selectedContainers];
             const newSelection = selectedContainers.filter(i => action.payload.indexOf(i) < 0);
             return {
