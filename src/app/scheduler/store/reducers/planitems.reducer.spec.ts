@@ -16,7 +16,7 @@ describe('PlanItemsReducer', () => {
     describe('LOAD_PLANITEMS action', () => {
         it('should set loading to true', () => {
             const { initialState } = fromPlanItems;
-            const action = new fromActions.LoadPlanItems();
+            const action = new fromActions.LoadPlanItems(null);
             const state = fromPlanItems.planItemsReducer(initialState, action);
             expect(state.loaded).toEqual(false);
             expect(state.loading).toEqual(true);
@@ -40,9 +40,9 @@ describe('PlanItemsReducer', () => {
             const response: PaginationResponse<PlanItem> = {
                 metadata: {
                     page: 1,
-                    page_count: 10,
-                    page_size: 15,
-                    total_count: 150
+                    pageCount: 10,
+                    pageSize: 15,
+                    totalCount: 150
                 },
                 records: [
                     PLAN_ITEM

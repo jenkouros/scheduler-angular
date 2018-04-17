@@ -1,11 +1,11 @@
-import * as fromPlanner from "../actions/planner.action";
-import { Container } from "../../models/container.model";
+import * as fromPlanner from '../actions/planner.action';
+import { Container } from '../../models/container.model';
 
 export interface PlannerState {
-    containers: Container[],
-    selectedContainers: number[],
-    loading: boolean,
-    loaded: boolean
+    containers: Container[];
+    selectedContainers: number[];
+    loading: boolean;
+    loaded: boolean;
 }
 
 export const initialState: PlannerState = {
@@ -15,8 +15,10 @@ export const initialState: PlannerState = {
     loading: false
 };
 
-export function plannerReducer(state = initialState, action: fromPlanner.PlannerAction) {
-    switch(action.type) {
+export function plannerReducer(
+    state = initialState,
+    action: fromPlanner.PlannerAction) {
+    switch (action.type) {
         case fromPlanner.LOAD_CONTAINERS: {
             return {
                 ...state,
@@ -36,18 +38,18 @@ export function plannerReducer(state = initialState, action: fromPlanner.Planner
                 loaded: true,
                 loading: false,
                 containers: [...action.payload]
-            }
+            };
         }
         case fromPlanner.SELECT_CONTAINERS: {
-            let selectionToAdd = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
+            const selectionToAdd = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
             return {
                 ...state,
                 selectedContainers: selectionToAdd.concat(state.selectedContainers)
             };
         }
         case fromPlanner.DESELECT_CONTAINERS: {
-            let selectedContainers = [...state.selectedContainers];
-            let newSelection = selectedContainers.filter(i => action.payload.indexOf(i) < 0);
+            const selectedContainers = [...state.selectedContainers];
+            const newSelection = selectedContainers.filter(i => action.payload.indexOf(i) < 0);
             return {
                 ...state,
                 selectedContainers: newSelection
