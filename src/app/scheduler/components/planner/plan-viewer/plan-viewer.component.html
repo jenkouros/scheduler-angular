@@ -1,84 +1,34 @@
-<<<<<<< HEAD
-
-
-<dx-scheduler (dragover)="allowDrop($event)"
-=======
-<dx-scheduler
->>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
-  id="scheduler"
-  [dataSource]="data"
-  [views]="['day', 'week', 'timelineDay']"
-  [(currentView)]="currentView"
-  [firstDayOfWeek]="0"
-  [startDayHour]="8"
-  [endDayHour]="23"
-  [showAllDayPanel]="false"
-  [groups]="['workplaceId']"
-  [resources]="schedulerResources"
-  [currentDate]="currentDate"
-  [crossScrollingEnabled]="true"
-  appointmentTemplate="appointment-template"
-  appointmentTooltipTemplate="tooltip-template"
-<<<<<<< HEAD
-  [dataCellTemplate]="dataCellTemplate"
-=======
->>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
-  (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-  >
+<dx-scheduler id="scheduler" [dataSource]="data" [views]="['day', 'week', 'timelineDay']" [(currentView)]="currentView" [firstDayOfWeek]="0"
+    [startDayHour]="8" [endDayHour]="23" [showAllDayPanel]="false" [groups]="['workplaceId']" [resources]="schedulerResources"
+    [currentDate]="currentDate" [crossScrollingEnabled]="true" appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
 
   <dxo-editing [allowAdding]="false"></dxo-editing>
    
-
-<<<<<<< HEAD
-  <div *dxTemplate="let showtime of 'appointment-template'" dnd-droppable class="panel panel-info" (onDropSuccess)="transferDataSuccess($event)" >
-=======
   <div *dxTemplate="let showtime of 'appointment-template'">
->>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
-      <div class='showtime-preview' *ngIf="currentView==='timelineDay'; else defTemplate" >                        
-          <div>{{getMovieById(showtime.movieId).text}}</div>
           <div>Ticket Price:
-              <strong>{{'$' + showtime.price}}</strong>
           </div>
          <div class='dropdown-appointment-dates'>
               {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}
           </div>
-          <dx-linear-gauge
-          id="fuel-gauge"
-          [value]="showtime.price+35"
-      >
+        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
           <dxo-size [width]="90" [height]="20"></dxo-size>
-          <dxo-scale
-              [startValue]="0"
-              [endValue]="100"
-              [tickInterval]="5"
-              [minorTickInterval]="12.5"
-          >
+            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
               <dxo-minor-tick [visible]="false"></dxo-minor-tick>
               <dxo-label [visible]="false"></dxo-label>
           </dxo-scale>        
       </dx-linear-gauge>
       </div>
+
       <ng-template #defTemplate>
-        <dx-linear-gauge
-          id="fuel-gauge"
-          [value]="showtime.price+35"
-      >
+        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
           <dxo-size [width]="90" [height]="20"></dxo-size>
-          <dxo-scale
-              [startValue]="0"
-              [endValue]="100"
-              [tickInterval]="5"
-              [minorTickInterval]="12.5"
-          >
+            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
               <dxo-minor-tick [visible]="false"></dxo-minor-tick>
               <dxo-label [visible]="false"></dxo-label>
           </dxo-scale>        
       </dx-linear-gauge>
-
-
-
       </ng-template>
-  </div>
 
   <div *dxTemplate="let showtime of 'tooltip-template'">
       <div class='movie-tooltip'>
@@ -93,7 +43,8 @@
               <div>
                   {{'Duration: ' + getMovieById(showtime.movieId).duration + ' minutes'}}
               </div>
-          </div><br />
+            </div>
+            <br />
           <dx-button text='Edit details' (onClick)='editDetails(showtime)'>
           </dx-button>
       </div>

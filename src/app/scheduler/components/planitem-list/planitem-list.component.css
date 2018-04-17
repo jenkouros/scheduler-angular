@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /deep/ #popup {
     padding: 10px;
 }
@@ -23,7 +21,6 @@
     margin-top: 0;
 }
     
->>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
 ::ng-deep .dx-scheduler-timeline .dx-scheduler-date-table-cell {
     height: 100px !important;
 }
