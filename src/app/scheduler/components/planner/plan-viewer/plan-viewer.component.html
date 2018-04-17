@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 
 <dx-scheduler (dragover)="allowDrop($event)"
+=======
+<dx-scheduler
+>>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
   id="scheduler"
   [dataSource]="data"
   [views]="['day', 'week', 'timelineDay']"
@@ -15,14 +19,21 @@
   [crossScrollingEnabled]="true"
   appointmentTemplate="appointment-template"
   appointmentTooltipTemplate="tooltip-template"
+<<<<<<< HEAD
   [dataCellTemplate]="dataCellTemplate"
+=======
+>>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
   (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
   >
 
   <dxo-editing [allowAdding]="false"></dxo-editing>
    
 
+<<<<<<< HEAD
   <div *dxTemplate="let showtime of 'appointment-template'" dnd-droppable class="panel panel-info" (onDropSuccess)="transferDataSuccess($event)" >
+=======
+  <div *dxTemplate="let showtime of 'appointment-template'">
+>>>>>>> bd4741595ed8f57a5a268da59e0cd236ba6277d9
       <div class='showtime-preview' *ngIf="currentView==='timelineDay'; else defTemplate" >                        
           <div>{{getMovieById(showtime.movieId).text}}</div>
           <div>Ticket Price:
