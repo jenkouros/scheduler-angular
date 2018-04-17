@@ -3,50 +3,50 @@
     [currentDate]="currentDate" [crossScrollingEnabled]="true" appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
 
-  <dxo-editing [allowAdding]="false"></dxo-editing>
-   
-  <div *dxTemplate="let showtime of 'appointment-template'">
-          <div>Ticket Price:
-          </div>
-         <div class='dropdown-appointment-dates'>
-              {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}
-          </div>
-        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
-          <dxo-size [width]="90" [height]="20"></dxo-size>
-            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
-              <dxo-minor-tick [visible]="false"></dxo-minor-tick>
-              <dxo-label [visible]="false"></dxo-label>
-          </dxo-scale>        
-      </dx-linear-gauge>
-      </div>
+    <dxo-editing [allowAdding]="false"></dxo-editing>
 
-      <ng-template #defTemplate>
+    <div *dxTemplate="let showtime of 'appointment-template'">
+        <div>Ticket Price:
+        </div>
+        <div class='dropdown-appointment-dates'>
+            {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}
+        </div>
         <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
-          <dxo-size [width]="90" [height]="20"></dxo-size>
+            <dxo-size [width]="90" [height]="20"></dxo-size>
             <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
-              <dxo-minor-tick [visible]="false"></dxo-minor-tick>
-              <dxo-label [visible]="false"></dxo-label>
-          </dxo-scale>        
-      </dx-linear-gauge>
-      </ng-template>
+                <dxo-minor-tick [visible]="false"></dxo-minor-tick>
+                <dxo-label [visible]="false"></dxo-label>
+            </dxo-scale>
+        </dx-linear-gauge>
+    </div>
 
-  <div *dxTemplate="let showtime of 'tooltip-template'">
-      <div class='movie-tooltip'>
-          <img [src]="getMovieById(showtime.movieId).image" />
-          <div class='movie-info'>
-              <div class='movie-title'>
-                  {{getMovieById(showtime.movieId).text + ' (' + getMovieById(showtime.movieId).year + ')'}}
-              </div>
-              <div>
-                  {{'Director: ' + getMovieById(showtime.movieId).director}}
-              </div>
-              <div>
-                  {{'Duration: ' + getMovieById(showtime.movieId).duration + ' minutes'}}
-              </div>
+    <ng-template #defTemplate>
+        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
+            <dxo-size [width]="90" [height]="20"></dxo-size>
+            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
+                <dxo-minor-tick [visible]="false"></dxo-minor-tick>
+                <dxo-label [visible]="false"></dxo-label>
+            </dxo-scale>
+        </dx-linear-gauge>
+    </ng-template>
+    
+    <div *dxTemplate="let showtime of 'tooltip-template'">
+        <div class='movie-tooltip'>
+            <img [src]="getMovieById(showtime.movieId).image" />
+            <div class='movie-info'>
+                <div class='movie-title'>
+                    {{getMovieById(showtime.movieId).text + ' (' + getMovieById(showtime.movieId).year + ')'}}
+                </div>
+                <div>
+                    {{'Director: ' + getMovieById(showtime.movieId).director}}
+                </div>
+                <div>
+                    {{'Duration: ' + getMovieById(showtime.movieId).duration + ' minutes'}}
+                </div>
             </div>
             <br />
-          <dx-button text='Edit details' (onClick)='editDetails(showtime)'>
-          </dx-button>
-      </div>
-  </div>
+            <dx-button text='Edit details' (onClick)='editDetails(showtime)'>
+            </dx-button>
+        </div>
+    </div>
 </dx-scheduler>

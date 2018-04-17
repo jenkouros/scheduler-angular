@@ -24,7 +24,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     currentDate: Date = new Date(2015, 4, 25);
     data: Data[];
     moviesData: MovieData[];
-    workplaceData: WorkPlaceData[];    
+    workplaceData: WorkPlaceData[];
     schedulerResources: any = [];
     groups: any[];
     groupsHasValue = false;

@@ -11,7 +11,7 @@ import { PlanitemItemComponent } from "./planitem-list/planitem-item/planitem-it
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { FilterCheckboxComponent } from "./filters/filter-checkbox/filter-checkbox.component";
 import { FilterAutocompleteComponent } from "./filters/filter-autocomplete/filter-autocomplete.component";
-
+import { ContainerListComponent } from "./container-list/container-list.component";
 
 export const components: any[] = [
     FiltersComponent,
@@ -26,7 +26,8 @@ export const components: any[] = [
     PlanitemItemComponent,
     SidebarComponent,
     FilterCheckboxComponent,
-    FilterAutocompleteComponent
+    FilterAutocompleteComponent,
+    ContainerListComponent
 ];
 
 export * from "./filters/filters.component";
