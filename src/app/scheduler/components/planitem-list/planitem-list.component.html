@@ -81,6 +81,7 @@
 <dx-data-grid
     id="gridContainer"
     [dataSource]="(planItemState$ | async).entities">
+    <dxi-column dataField="measurementUnit.code"></dxi-column>
 </dx-data-grid>
 
 

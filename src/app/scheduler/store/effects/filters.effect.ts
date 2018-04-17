@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { FiltersService } from "../../services";
-import { Actions, Effect } from "@ngrx/effects";
-import * as fromActions from "../actions/filters.action";
-import { switchMap, map, catchError } from "rxjs/operators";
-import { of } from "rxjs/observable/of";
+import { Injectable } from '@angular/core';
+import { FiltersService } from '../../services';
+import { Actions, Effect } from '@ngrx/effects';
+import * as fromActions from '../actions/filters.action';
+import { switchMap, map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class FiltersEffects {
@@ -24,7 +24,7 @@ export class FiltersEffects {
                             console.log(error);
                             return of(new fromActions.LoadFiltersFail());
                         })
-                    )
+                    );
             })
-        )
+        );
 }

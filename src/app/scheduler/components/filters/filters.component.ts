@@ -19,9 +19,9 @@ export class FiltersComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadFilters());
     this.filtersState$ = this.store.select(fromStore.getFilters);
 
-    this.store.select(fromStore.getFilters).subscribe((x) => {
-      console.log(x);
-    });
+    // this.store.select(fromStore.getFilters).subscribe((x) => {
+    //   console.log(x);
+    // });
   }
 
   onFilterChange(id: number, value: number, remove: boolean) {
