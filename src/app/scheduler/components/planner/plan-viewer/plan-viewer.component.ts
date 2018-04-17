@@ -1,7 +1,4 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import '@progress/kendo-ui';
-import { PlannerService } from '../planner.service';
-
 import {
     DxSchedulerModule,
     DxSchedulerComponent,
@@ -31,9 +28,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
-    containers : ContainerSelect[];
-    constructor(private plannerService: PlannerService, private service: Service,
-        private store: Store<fromStore.SchedulerState>) {
+    constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
         this.workplaceData = service.getWorkPlaceData();
@@ -81,7 +76,6 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     optionChanged(e: any) {
         if (e.name === 'resources') {
-            debugger;
             this.setGroupValue();
             this.groupsHasValue = true;
         }
@@ -210,7 +204,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     getDataObj(objData) {
-        for (var i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.data.length; i++) {
             if (this.data[i].startDate.getTime() === objData.startDate.getTime() && this.data[i].workplaceId === objData.workplaceId) {
                 return this.data[i];
             }

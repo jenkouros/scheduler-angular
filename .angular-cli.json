@@ -21,8 +21,6 @@
       "serviceWorker": false,
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../node_modules/@progress/kendo-ui/css/web/kendo.common.min.css",
-        "../node_modules/@progress/kendo-ui/css/web/kendo.default.min.css",
         "assets/font/css/open-iconic-bootstrap.min.css",
         "styles.css",
         "./styles/sidebar.css",

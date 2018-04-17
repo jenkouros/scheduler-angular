@@ -16,12 +16,16 @@ export class EventsEffects {
     loadEvents$ = this.actions$
         .ofType(fromAction.LOAD_EVENTS)
         .pipe(
-            switchMap(action => {
-                return this.eventsService.getEvents()
-                    .pipe(
-                        map(events => new fromAction.LoadEventsSuccess(events)),
-                        catchError(error => of(new fromAction.LoadEventsFail()))
-                    );
+            switchMap((action: fromAction.LoadEvents) => {
+                return this.eventsService.getEvents(
+                    action.payload.containerIds,
+                    action.payload.dateFrom,
+                    action.payload.dateTo
+                )
+                .pipe(
+                    map(events => new fromAction.LoadEventsSuccess(events)),
+                    catchError(error => of(new fromAction.LoadEventsFail()))
+                );
             })
         );
 }
