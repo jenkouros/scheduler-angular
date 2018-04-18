@@ -21,8 +21,8 @@ export class EventsService {
         // tslint:disable-next-line:forin
         for (const i of containerIds) {
             dummyEvents[i] = [];
-            dummyEvents[i].push(new PlannedEvent(1, '1000 Priprava', '', new Date(2018, 4, 17, 7, 0), new Date(2018, 4, 17, 8, 0)));
-            dummyEvents[i].push(new PlannedEvent(2, '2000 Izdelava', '', new Date(2018, 4, 17, 8, 0), new Date(2018, 4, 17, 10, 0)));
+            dummyEvents[i].push(new PlannedEvent(1, i, '1000 Priprava', '', new Date(2018, 4, 17, 7, 0), new Date(2018, 4, 17, 8, 0)));
+            dummyEvents[i].push(new PlannedEvent(2, i, '2000 Izdelava', '', new Date(2018, 4, 17, 8, 0), new Date(2018, 4, 17, 10, 0)));
 
         }
         return dummyEvents;
