@@ -21,17 +21,23 @@ export class PlanItemsService {
             }
         });
 
-        return this.http
-            .get<ApiResponse<PaginationResponse<PlanItem>>>(environment.apiUrl + '/planitems', { params: params })
-            .pipe(
-                map((response) => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return response.result;
-                }),
-                catchError((error: any) => Observable.throw(error.json()))
-            );
+        return new Observable<PaginationResponse<PlanItem>>(observer => {
+            observer.next(dummyPlanItem);
+        });
+
+
+        // REAL DATABASE ACCESS:
+        // return this.http
+        //     .get<ApiResponse<PaginationResponse<PlanItem>>>(environment.apiUrl + '/planitems', { params: params })
+        //     .pipe(
+        //         map((response) => {
+        //             if (response.code !== ApiResponseResult.success) {
+        //                 throw response.messages;
+        //             }
+        //             return response.result;
+        //         }),
+        //         catchError((error: any) => Observable.throw(error.json()))
+        //     );
     }
 
     getPlanItemHierarchy(planItemId) {
@@ -141,6 +147,53 @@ const dummyPlanItemHierarchy: PlanItemHierarchy = {
                     normativeTimeWorker: 30
                 }
             ]
+        }
+    ]
+};
+
+const dummyPlanItem: PaginationResponse<PlanItem> = {
+    metadata: {
+        page: 0,
+        pageCount: 1,
+        pageSize: 10,
+        totalCount: 2
+    },
+    records: [
+        {
+            id: 1,
+            code: '10000',
+            limitDateFrom: new Date(),
+            limitDateTo: new Date(),
+            measurementUnit: {
+                code: 'KOS',
+                name: 'Kos'
+            },
+            quantity: 1000,
+            quantityBatch: 500,
+            quantityPlanned: 0,
+            product: {
+                code: '50D',
+                id: 1,
+                name: 'Bencin 50D'
+            }
+        },
+        {
+            id: 2,
+            code: '20000',
+            limitDateFrom: new Date(),
+            limitDateTo: new Date(),
+            measurementUnit: {
+                code: 'KG',
+                name: 'Kilogram'
+            },
+            quantity: 1000,
+            quantityBatch: 500,
+            quantityPlanned: 0,
+            product: {
+                code: 'Jupol Gold',
+                id: 2,
+                name: 'Jupol Gold'
+            }
         }
     ]
 };

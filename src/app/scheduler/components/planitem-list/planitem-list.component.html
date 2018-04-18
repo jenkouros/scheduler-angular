@@ -93,10 +93,12 @@
     <dxi-column dataField="quantity" caption="ERP količina"></dxi-column>
     <dxi-column dataField="limitDateFrom" caption="Datum ERP od"></dxi-column>
     <dxi-column dataField="limitDateTo" caption="Datum ERP do"></dxi-column>
-    <dxi-column dataField="" caption="Dodaj v delovni nalog"><dx-button
+    <dxi-column dataField="" caption="Dodaj v delovni nalog">
+      <dx-button
         class="btn btn-primary btn-sm"
         text="Planiraj nalog"
-        (onClick)="showInfo(planItem.id)"></dx-button></dxi-column>
+        (onClick)="showInfo(planItem.id)"></dx-button>
+      </dxi-column>
     <dxo-remote-operations
         [sorting]="true"
         [paging]="true">

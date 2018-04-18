@@ -43,11 +43,11 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(id) {
-    
+
     this.popupVisible = true;
-    
+
     this.store.dispatch(new fromStore.LoadPlanItemHierarchy(id));
-    
+
   }
 
 }
