@@ -1,4 +1,4 @@
-import { Product, MeasurementUnit } from "./shared.model";
+import { Product, MeasurementUnit } from './shared.model';
 
 export interface PlanItem {
     id: number;
@@ -10,10 +10,22 @@ export interface PlanItem {
     product: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
-    planSubItems: { [alternativeId: number]: PlanSubItem[] }[];
+    // planSubItems: { [alternativeId: number]: PlanSubItem[] }[];
 }
 
-export interface PlanSubItem extends PlanItem {
+export interface PlanItemHierarchy {
+    idPlanItem: number;
+    alternatives: PlanItemHierarchyAlternative[];
+}
+
+export interface PlanItemHierarchyAlternative {
+    id: number;
+    name: string;
+    code: string;
+    planSubItems: PlanSubItem[];
+}
+
+export interface PlanSubItem {
     name: string;
     code: string;
     normativeTimeMachine: number;
@@ -21,6 +33,7 @@ export interface PlanSubItem extends PlanItem {
     normativeTimeWorker: number;
     sequence: number;
     planable: boolean;
+    quantity: number;
 }
 
 export interface PlanItemFilter {

@@ -4,8 +4,6 @@ import * as fromStore from '../../store';
 import { Container, ContainerSelect } from '../../models/container.model';
 import { Observable } from 'rxjs/Observable';
 
-
-
 @Component({
   selector: 'app-planner',
   templateUrl: './planner.component.html',

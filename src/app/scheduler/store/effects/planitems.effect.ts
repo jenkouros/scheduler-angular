@@ -23,4 +23,17 @@ export class PlanItemsEffects {
                     );
             })
         );
+
+    @Effect()
+    loadPlanItemHierarchy$ = this.actions$
+        .ofType(fromActions.LOAD_PLANITEMHIERARCHY)
+        .pipe(
+            switchMap((action: fromActions.LoadPlanItemHierarchy) => {
+                return this.planItemsService.getPlanItemHierarchy(action.payload.planItemId)
+                    .pipe(
+                        map(planItemHierarchy => new fromActions.LoadPlanItemHierarchySuccess(planItemHierarchy)),
+                        catchError(error => of(new fromActions.LoadPlanItemHierarchyFail()))
+                    );
+            })
+        );
 }

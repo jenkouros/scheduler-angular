@@ -1,24 +1,30 @@
-import { PlanItem } from "../../models/planitem.model";
-import * as fromPlanItems from "../actions/planitems.action";
-import { Pagination } from "../../../shared/shared.model";
+import { PlanItem, PlanItemHierarchy } from '../../models/planitem.model';
+import * as fromPlanItems from '../actions/planitems.action';
+import { Pagination } from '../../../shared/shared.model';
 
 export interface PlanItemState {
     entities: PlanItem[];
     pagination: Pagination;
     loading: boolean;
     loaded: boolean;
-    //paging entity
+    selectedPlanItemHierarchy: PlanItemHierarchy;
+    loadingHierarchy: boolean;
+    loadedHierarchy: boolean;
+    // paging entity
 }
 
 export const initialState: PlanItemState = {
     entities: [],
     pagination: null,
     loading: false,
-    loaded: false
+    loaded: false,
+    selectedPlanItemHierarchy: null,
+    loadedHierarchy: false,
+    loadingHierarchy: false
 };
 
-export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction) {
-    switch(action.type) {
+export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction): PlanItemState {
+    switch (action.type) {
         case fromPlanItems.LOAD_PLANITEMS: {
             return {
                 ...state,
@@ -33,9 +39,9 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
-            let metadata = {
+            const metadata = {
                 ...state.pagination,
-                ...action.payload.metadata    
+                ...action.payload.metadata
             };
             metadata.page = metadata.page + 1;
 
@@ -47,7 +53,30 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 entities: [...action.payload.records]
             };
         }
-
+        case fromPlanItems.LOAD_PLANITEMHIERARCHY: {
+            return {
+                ...state,
+                loadedHierarchy: false,
+                loadingHierarchy: true,
+                selectedPlanItemHierarchy: null
+            };
+        }
+        case fromPlanItems.LOAD_PLANITEMHIERARCHY_FAIL: {
+            return {
+                ...state,
+                loadedHierarchy: false,
+                loadingHierarchy: false,
+                selectedPlanItemHierarchy: null
+            };
+        }
+        case fromPlanItems.LOAD_PLANITEMHIERARCHY_SUCCESS: {
+            return {
+                ...state,
+                loadedHierarchy: true,
+                loadingHierarchy: false,
+                selectedPlanItemHierarchy: { ...action.payload }
+            };
+        }
         default:
             return state;
     }

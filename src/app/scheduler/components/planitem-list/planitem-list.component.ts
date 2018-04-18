@@ -29,7 +29,7 @@ export class PlanitemListComponent implements OnInit {
   ngOnInit() {
     this.loadPlanItemsOnPage();
     this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
-    this.planItemState$.subscribe(store =>console.log(store));
+    // this.planItemState$.subscribe(store => console.log(store));
   }
 
   changePageLength(length: number) {
@@ -38,7 +38,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   loadPlanItemsOnPage(page: number = 1) {
-    this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo 
+    this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo
   }
 
   log(test) {
@@ -46,14 +46,12 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(id) {
-    // this.planItemState$.subscribe(item => this.cuurentPlanItemState = item); 
-    
+    // this.planItemState$.subscribe(item => this.cuurentPlanItemState = item);
     this.currentPlanItemStateId = id;
     this.popupVisible = true;
-    this.planItemState$[id]
-
-
-    console.log("=====>" + this);
-}
+    // this.planItemState$[id];
+    console.log('=====>' + this);
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy(id));
+  }
 
 }
