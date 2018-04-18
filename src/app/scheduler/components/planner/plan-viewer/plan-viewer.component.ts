@@ -1,7 +1,4 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import '@progress/kendo-ui';
-import { PlannerService } from '../planner.service';
-
 import {
     DxSchedulerModule,
     DxSchedulerComponent,
@@ -11,7 +8,9 @@ import {
 import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
 import Query from 'devextreme/data/query';
 import * as events from 'devextreme/events';
-
+import { ContainerSelect } from '../../../models/container.model';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../../store';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -29,11 +28,43 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
-    constructor(private plannerService: PlannerService, private service: Service) {
+    constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
         this.workplaceData = service.getWorkPlaceData();
-        this.schedulerResources = service.getResources(this.workplaceData, this.moviesData);
+        this.store.select(fromStore.getSelectedContainers).subscribe(
+            (containers) => {               
+              this.schedulerResources = this.getResources(containers, this.moviesData);     
+            });
+        
+    }
+
+    getResources(containers: any, plans: MovieData[]) {
+        let workplaceGroups: any[] = [],
+            planGroup: any[] = []
+
+        //working places (group)
+        containers.forEach((container: ContainerSelect) => {
+            workplaceGroups.push({
+                text: container.code,
+                id: container.id,
+            });
+        });       
+        plans.forEach((plan: any) => {
+            planGroup.push({
+                text: plan.text,
+                id: plan.id,
+                color: plan.color
+            });
+        });
+        console.log(workplaceGroups, planGroup);
+        return [
+          
+            {
+                fieldExpr: "workplaceId",
+                dataSource: workplaceGroups
+            }
+        ];
     }
     setGroupValue() {
         if (this.data.length === 1) {
@@ -45,7 +76,6 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     optionChanged(e: any) {
         if (e.name === 'resources') {
-            debugger;
             this.setGroupValue();
             this.groupsHasValue = true;
         }
@@ -174,7 +204,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     getDataObj(objData) {
-        for (var i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.data.length; i++) {
             if (this.data[i].startDate.getTime() === objData.startDate.getTime() && this.data[i].workplaceId === objData.workplaceId) {
                 return this.data[i];
             }

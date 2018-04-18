@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { Actions, Effect } from "@ngrx/effects";
-import * as fromServices from "../../services";
-import * as fromActions from "../actions/planitems.action"
-import { map, switchMap, catchError } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import * as fromServices from '../../services';
+import * as fromActions from '../actions/planitems.action';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class PlanItemsEffects {
     constructor(
-        private actions$: Actions, 
+        private actions$: Actions,
         private planItemsService: fromServices.PlanItemsService) {}
 
     @Effect()
@@ -20,6 +20,19 @@ export class PlanItemsEffects {
                     .pipe(
                         map(planItems => new fromActions.LoadPlanItemsSuccess(planItems)),
                         catchError(error => of(new fromActions.LoadPlanItemsFail(error)))
+                    );
+            })
+        );
+
+    @Effect()
+    loadPlanItemHierarchy$ = this.actions$
+        .ofType(fromActions.LOAD_PLANITEMHIERARCHY)
+        .pipe(
+            switchMap((action: fromActions.LoadPlanItemHierarchy) => {
+                return this.planItemsService.getPlanItemHierarchy(action.payload.planItemId)
+                    .pipe(
+                        map(planItemHierarchy => new fromActions.LoadPlanItemHierarchySuccess(planItemHierarchy)),
+                        catchError(error => of(new fromActions.LoadPlanItemHierarchyFail()))
                     );
             })
         );
