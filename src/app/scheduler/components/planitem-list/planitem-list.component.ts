@@ -19,10 +19,7 @@ import {
 export class PlanitemListComponent implements OnInit {
   planItemState$: Observable<PlanItemState>;
   numberOfItemsOnPage = 0;
-
-    currentPlanItemStateId: number;
-    cuurentPlanItemState;
-    popupVisible = false;
+  popupVisible = false;
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
@@ -46,12 +43,11 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(id) {
-    // this.planItemState$.subscribe(item => this.cuurentPlanItemState = item);
-    this.currentPlanItemStateId = id;
+    
     this.popupVisible = true;
-    // this.planItemState$[id];
-    console.log('=====>' + this);
+    
     this.store.dispatch(new fromStore.LoadPlanItemHierarchy(id));
+    
   }
 
 }

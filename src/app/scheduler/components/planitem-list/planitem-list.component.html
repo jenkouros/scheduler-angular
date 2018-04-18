@@ -140,53 +140,19 @@
               <h5 class="card-title"></h5>
               <p>
                 Šifra naloga:
-                <span>{{ code }}</span>
+                <!-- <span>{{ (planItemState$ | async).selectedPlanItemHierarchy.idPlanItem  }}</span> -->
                 <span>Test</span>
             </p>
+            <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
             <p>
                 Vrsta proizvodnje:
-                <span>Test</span>
+                <span>Item</span>
             </p>
-            <p>
-                Artikel:
-                <span>[100]</span>
-                <span>name</span>
-            </p>
-            <p>
-                Hire Date:
-                <span>Test</span>
-            </p>
-            <p>
-                Position:
-                <span>Test</span>
-            </p>
+            
                 <button type="button" class="btn btn-primary">Potdri</button>
                 <button type="button" class="btn btn-secondary">Prekliči</button>
           </div>
-        </div>  
-        <!-- <p>
-              Full Name:
-              <span>Test</span>
-              <span>Test</span>
-          </p>
-          <p>
-              Birth Date:
-              <span>Test</span>
-          </p>
-          <p>
-              Address:
-              <span>Test</span>
-          </p>
-          <p>
-              Hire Date:
-              <span>Test</span>
-          </p>
-          <p>
-              Position:
-              <span>Test</span>
-          </p> -->
-
-          
+        </div>                 
       </div>
   </dx-popup>
 </div>
