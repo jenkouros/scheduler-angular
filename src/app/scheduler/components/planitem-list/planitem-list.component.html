@@ -2,10 +2,13 @@
   <div class="row">
     <div class="col">
       <dx-data-grid 
-      id="gridContainer" 
-      [dataSource]="planItemStore"
-      [showRowLines]="true"
-      [rowAlternationEnabled]="true">
+        [columnAutoWidth]="true"
+        [allowColumnResizing]="true"
+        columnResizingMode="nextColumn"
+        id="gridContainer" 
+        [dataSource]="planItemStore"
+        [showRowLines]="true"
+        [rowAlternationEnabled]="true">
           <!-- [dataSource]="(planItemState$ | async).entities" -->
 
         <dxo-remote-operations
@@ -23,16 +26,23 @@
 
         <dxi-column dataField="code" caption="Šifra naloga"></dxi-column>
         <dxi-column dataField="" caption="Vrsta proizvodnje"></dxi-column>
-        <dxi-column dataField="product.code" caption="Šifra artikla"></dxi-column>
-        <dxi-column dataField="product.name" caption="Naziv artikla"></dxi-column>
-        <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
-        <dxi-column dataField="quantity" caption="ERP količina"></dxi-column>
-        <dxi-column dataField="limitDateFrom" caption="Datum ERP od" cellTemplate="dateCellTemplate"></dxi-column>
-        <dxi-column dataField="limitDateTo" caption="Datum ERP do" cellTemplate="dateCellTemplate"></dxi-column>
+
+        <dxi-column caption="Artikel">
+          <dxi-column dataField="product.code" caption="Šifra"></dxi-column>
+          <dxi-column dataField="product.name" caption="Naziv"></dxi-column>
+        </dxi-column>
+
+        <dxi-column caption="ERP">
+          <dxi-column dataField="quantity" caption="Količina"></dxi-column>
+          <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+          <dxi-column dataField="limitDateFrom" caption="Datum ERP od" cellTemplate="dateCellTemplate"></dxi-column>
+          <dxi-column dataField="limitDateTo" caption="Datum ERP do" cellTemplate="dateCellTemplate"></dxi-column>
+        </dxi-column>
+        
         <dxi-column alignment="center" dataField="" cellTemplate="changeCellTemplate"></dxi-column>
 
         <div *dxTemplate="let cell of 'changeCellTemplate'">
-          <a (click)="showInfo(1)">Planiraj</a>
+          <span class="span-link" (click)="showInfo(1)">Planiraj</span>
         </div>
         <div *dxTemplate="let cell of 'dateCellTemplate'">
           {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
