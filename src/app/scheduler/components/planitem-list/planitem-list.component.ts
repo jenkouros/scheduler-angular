@@ -11,22 +11,33 @@ import {
   DxPopupComponent,
   DxDataGridComponent
 } from 'devextreme-angular';
+import { PlanItemHierarchyDto } from '../../models/planItem.dto';
+import { PlanItemsService } from '../../services';
+import CustomStore from 'devextreme/data/custom_store';
+
 @Component({
   selector: 'app-planitem-list',
   templateUrl: './planitem-list.component.html',
-  styleUrls: ['./planitem-list.component.css']
+  styleUrls: ['./planitem-list.component.css'],
+  providers: [PlanItemsService]
 })
 export class PlanitemListComponent implements OnInit {
   planItemState$: Observable<PlanItemState>;
+  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
+  planItemStore: CustomStore;
+
   numberOfItemsOnPage = 0;
   popupVisible = false;
 
-  constructor(private store: Store<fromStore.SchedulerState>) { }
+  constructor(private store: Store<fromStore.SchedulerState>, private planItemService: PlanItemsService) { }
 
   ngOnInit() {
     this.loadPlanItemsOnPage();
     this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
-    // this.planItemState$.subscribe(store => console.log(store));
+    this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+    this.selectedPlanItemHierarchy$.subscribe(store => console.log(store));
+    this.planItemStore = this.planItemService.getPlanItemsStore();
+
   }
 
   changePageLength(length: number) {

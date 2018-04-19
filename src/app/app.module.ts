@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeSl from '@angular/common/locales/sl';
+
 // import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -11,6 +14,9 @@ import { AppComponent } from './app.component';
 import { AppRouterModule } from './app-router.module';
 import { EffectsModule } from '@ngrx/effects';
 import { initialReducerMap, getInitialState } from './store/app.reducers';
+
+
+registerLocaleData(localeSl, 'sl');
 
 @NgModule({
   declarations: [
@@ -26,8 +32,9 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
     // StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [// { provide: LOCALE_ID, useValue: 'sl-SI' }
-],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'sl' }
+  ],
   bootstrap: [AppComponent]
-})
+  })
 export class AppModule { }

@@ -10,6 +10,10 @@ export const getPlanItemsState = createSelector(
 export const getSelectedPlanItemHierarchy = createSelector(
     getPlanItemsState,
     (state: fromFeature.PlanItemState) => {
+        if (state.selectedPlanItemHierarchy == null) {
+            return new PlanItemHierarchyDto(null, []);
+        }
+
         return new PlanItemHierarchyDto(
             state.selectedPlanItemHierarchy,
             state.selectedPlanItemHierarchy.alternatives.map(a => a.name)

@@ -4,6 +4,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { createStore } from 'devextreme-aspnet-data-nojquery';
+import CustomStore from 'devextreme/data/custom_store';
+
 import { PlanItem, PlanItemHierarchy } from '../models/planitem.model';
 import { ApiResponse, PaginationResponse, ApiResponseResult, PaginationQuery } from '../../shared/shared.model';
 import { environment } from '../../../environments/environment';
@@ -47,6 +50,21 @@ export class PlanItemsService {
         return new Observable<PlanItemHierarchy>(observer => {
             observer.next(dummyPlanItemHierarchy);
         });
+    }
+
+    getPlanItemsStore(): CustomStore {
+        const store = createStore({
+            loadUrl: environment.apiUrl + '/items',
+            loadParams: {
+                customFilter1: 1,
+                customFilter2: 2
+            },
+            key: 'id'
+        });
+
+        store.on('loaded', () => console.log('loaded'));
+
+        return store;
     }
 
 }

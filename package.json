@@ -35,6 +35,7 @@
     "core-js": "^2.4.1",
     "devextreme": "^17.2.7",
     "devextreme-angular": "^17.2.7",
+    "devextreme-aspnet-data-nojquery": "^1.4.2",
     "json-server": "^0.12.1",
     "npm": "^5.7.1",
     "rxjs": "^5.5.6",
