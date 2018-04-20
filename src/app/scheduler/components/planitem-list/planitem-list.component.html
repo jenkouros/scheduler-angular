@@ -74,12 +74,15 @@
                 <h5 class="card-title"></h5>
                 <p>
                   Šifra naloga:
-                  <!-- <span>{{ (planItemState$ | async).selectedPlanItemHierarchy.idPlanItem  }}</span> -->
+                  <span>{{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }}</span>
                   <span>Test</span>
                 </p>
                 <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
                 <p>
-                  Vrsta proizvodnje:
+                  Alternative:
+                  <select>
+                    <option *ngFor="let alternative of (selectedPlanItemHierarchy$ | async).alternativeOptions" [value]="alternative">{{ alternative }}</option>
+                  </select>
                   <span>Item</span>
                 </p>
 

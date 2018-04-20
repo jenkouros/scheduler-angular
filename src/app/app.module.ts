@@ -15,6 +15,16 @@ import { AppRouterModule } from './app-router.module';
 import { EffectsModule } from '@ngrx/effects';
 import { initialReducerMap, getInitialState } from './store/app.reducers';
 
+// import it to change locale and load localization messages
+//
+import { locale, loadMessages } from 'devextreme/localization'; 
+// import { DevExtremeModule } from 'devextreme-angular';
+import 'devextreme-intl';
+// Load localized messages (English included by default)
+let messagesSl = require("devextreme/localization/messages/sl.json");  
+loadMessages(messagesSl);  
+//Set locale according the browser language
+locale(navigator.language);
 
 registerLocaleData(localeSl, 'sl');
 
