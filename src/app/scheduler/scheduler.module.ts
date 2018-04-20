@@ -11,12 +11,14 @@ import { PlanitemListComponent } from './components';
 import { EffectsModule } from '@ngrx/effects';
 
 // Dx Component
-import { DxPopupModule,
-        DxButtonModule,
-        DxTemplateModule,
-        DxDataGridModule,
-        DxSchedulerModule,
-        DxLinearGaugeModule } from 'devextreme-angular';
+import {
+    DxPopupModule,
+    DxButtonModule,
+    DxTemplateModule,
+    DxDataGridModule,
+    DxSchedulerModule,
+    DxLinearGaugeModule
+} from 'devextreme-angular';
 
 @NgModule({
     imports: [

@@ -11,25 +11,33 @@ import {
   DxPopupComponent,
   DxDataGridComponent
 } from 'devextreme-angular';
+import { PlanItemHierarchyDto } from '../../models/planItem.dto';
+import { PlanItemsService } from '../../services';
+import CustomStore from 'devextreme/data/custom_store';
+
 @Component({
   selector: 'app-planitem-list',
   templateUrl: './planitem-list.component.html',
-  styleUrls: ['./planitem-list.component.css']
+  styleUrls: ['./planitem-list.component.css'],
+  providers: [PlanItemsService]
 })
 export class PlanitemListComponent implements OnInit {
   planItemState$: Observable<PlanItemState>;
+  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
+  planItemStore: CustomStore;
+
   numberOfItemsOnPage = 0;
+  popupVisible = false;
 
-    currentPlanItemStateId: number;
-    cuurentPlanItemState;
-    popupVisible = false;
-
-  constructor(private store: Store<fromStore.SchedulerState>) { }
+  constructor(private store: Store<fromStore.SchedulerState>, private planItemService: PlanItemsService) { }
 
   ngOnInit() {
     this.loadPlanItemsOnPage();
     this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
-    this.planItemState$.subscribe(store =>console.log(store));
+    this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+    this.selectedPlanItemHierarchy$.subscribe(store => console.log(store));
+    this.planItemStore = this.planItemService.getPlanItemsStore();
+
   }
 
   changePageLength(length: number) {
@@ -38,7 +46,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   loadPlanItemsOnPage(page: number = 1) {
-    this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo 
+    this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo
   }
 
   log(test) {
@@ -46,14 +54,11 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(id) {
-    // this.planItemState$.subscribe(item => this.cuurentPlanItemState = item); 
-    
-    this.currentPlanItemStateId = id;
+
     this.popupVisible = true;
-    this.planItemState$[id]
 
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy(id));
 
-    console.log("=====>" + this);
-}
+  }
 
 }

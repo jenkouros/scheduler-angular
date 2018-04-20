@@ -1,94 +1,59 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col">
-      <app-pagination 
-        *ngIf="(planItemState$ | async).pagination && 
-          (planItemState$ | async).pagination.pageSize > 14 && 
-          (planItemState$ | async).pagination.pageCount > 1"
-        class="float-right"
-        [showInfo]="false"
-        [pagination]="(planItemState$ | async).pagination"
-        (pageChange)="loadPlanItemsOnPage($event)">
-      </app-pagination>
-    </div>
-  </div>
+      <dx-data-grid 
+        [columnAutoWidth]="true"
+        [allowColumnResizing]="true"
+        columnResizingMode="nextColumn"
+        id="gridContainer" 
+        [dataSource]="planItemStore"
+        [showRowLines]="true"
+        [rowAlternationEnabled]="true">
+          <!-- [dataSource]="(planItemState$ | async).entities" -->
 
-  <div class="row">
-    <div class="col">
-        <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Šifra naloga</th>
-                <th scope="col">Vrsta proizvodnje</th>
-                <th scope="col">Šifra artikla</th>
-                <th scope="col">Naziv artikla</th>
-                <th scope="col">EM</th>
-                <th scope="col">ERP količina</th>
-                <th scope="col">Datum ERP od</th>
-                <th scope="col">Datum ERP do</th> 
-                <th scope="col"></th>   
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let planItem of (planItemState$ | async).entities">
-                <th scope="row">{{ planItem.code }}</th>
-                <td></td>
-                <td>{{ planItem.product.code }}</td>
-                <td>{{ planItem.product.name }}</td>
-                <td>{{ planItem.measurementUnit.code }}</td>
-                <td>{{ planItem.quantity }}</td>
-                <td>{{ planItem.limitDateFrom | date:'short' }}</td>
-                <td>{{ planItem.limitDateTo | date:'short' }}</td> 
-                <td><dx-button
-                  class="btn btn-primary btn-sm"
-                  text="Planiraj nalog"
-                  (onClick)="showInfo(planItem.id)"></dx-button></td>
-              </tr>
-            </tbody>
-          </table>
-    </div>
-  </div>
-  <div class="d-flex justify-content-between">
-      <app-page-length [default]="10" (change)="changePageLength($event)" style="min-width: 500px"></app-page-length>
-      <app-pagination
-      [pagination]="(planItemState$ | async).pagination"
-      (pageChange)="loadPlanItemsOnPage($event)"></app-pagination>
+        <dxo-remote-operations
+          [filtering]="true"
+          [sorting]="false"
+          [grouping]="false"
+          [paging]="true"
+          [summary]="false"> 
+        </dxo-remote-operations>
+<!-- 
+        <dxo-filter-row [visible]="true">
+        </dxo-filter-row> -->
+        <dxo-paging [pageSize]="12"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[8, 12, 20]" [showInfo]="true"></dxo-pager>
 
-  </div>
+        <dxi-column dataField="code" caption="Šifra naloga"></dxi-column>
+        <dxi-column dataField="" caption="Vrsta proizvodnje"></dxi-column>
 
-</div>
+        <dxi-column caption="Artikel">
+          <dxi-column dataField="product.code" caption="Šifra"></dxi-column>
+          <dxi-column dataField="product.name" caption="Naziv"></dxi-column>
+        </dxi-column>
+
+        <dxi-column caption="ERP">
+          <dxi-column dataField="quantity" caption="Količina"></dxi-column>
+          <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+          <dxi-column dataField="limitDateFrom" caption="Datum ERP od" cellTemplate="dateCellTemplate"></dxi-column>
+          <dxi-column dataField="limitDateTo" caption="Datum ERP do" cellTemplate="dateCellTemplate"></dxi-column>
+        </dxi-column>
+        
+        <dxi-column alignment="center" dataField="" cellTemplate="changeCellTemplate"></dxi-column>
+
+        <div *dxTemplate="let cell of 'changeCellTemplate'">
+          <span class="span-link" (click)="showInfo(1)">Planiraj</span>
+        </div>
+        <div *dxTemplate="let cell of 'dateCellTemplate'">
+          {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+        </div>
+      </dx-data-grid>
 
 
 
-
-
-
-
-<!-- <p>
-  planitem-list works!
-</p> -->
-<!-- {{ (planItemState$ | async).loading }} -->
-
-<!-- <div *ngFor="let planItem of (planItemState$ | async).entities">
-  {{ planItem.code }}
-</div> -->
-
-
-
-
-
-
-<dx-data-grid
-    id="gridContainer"
-    [dataSource]="(planItemState$ | async).entities">
-    <dxi-column dataField="measurementUnit.code"></dxi-column>
-</dx-data-grid>
-
-
-
-<div id="popup">
-  <!-- <h1>Employees</h1> -->
-  <!-- <ul>
+      <div id="popup">
+        <!-- <h1>Employees</h1> -->
+        <!-- <ul>
       <li *ngFor="let planItem of (planItemState$ | async).entities let id = index">
           <img [src]=""/><br/>
           <i>{{ planItem.code }} => {{ planItem.product.name }}</i><br/>
@@ -99,69 +64,87 @@
           </dx-button>
       </li>
   </ul> -->
-  <dx-popup
-      class='popup'
-      [width]="300"
-      [height]="250"
-      [showTitle]="true"
-      title="Information"
-      [dragEnabled]="false"
-      [closeOnOutsideClick]="true"
-      [(visible)]="popupVisible">
-      <div *dxTemplate="let data of 'content'">
-        
-        <div class="card-deck">
-          <!-- <div class="card-header"></div> -->
-          <div class="card-body">
-              <h5 class="card-title"></h5>
-              <p>
-                Full Name:
-                <span></span>
-                <span>Test</span>
-            </p>
-            <p>
-                Birth Date:
-                <span>Test</span>
-            </p>
-            <p>
-                Address:
-                <span>Test</span>
-            </p>
-            <p>
-                Hire Date:
-                <span>Test</span>
-            </p>
-            <p>
-                Position:
-                <span>Test</span>
-            </p>
+        <dx-popup class='popup' [width]="300" [height]="300" [showTitle]="true" title="Information" [dragEnabled]="false" [closeOnOutsideClick]="true"
+          [(visible)]="popupVisible">
+          <div *dxTemplate="let data of 'content'">
+
+            <div class="card-deck">
+              <!-- <div class="card-header"></div> -->
+              <div class="card-body">
+                <h5 class="card-title"></h5>
+                <p>
+                  Šifra naloga:
+                  <!-- <span>{{ (planItemState$ | async).selectedPlanItemHierarchy.idPlanItem  }}</span> -->
+                  <span>Test</span>
+                </p>
+                <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
+                <p>
+                  Vrsta proizvodnje:
+                  <span>Item</span>
+                </p>
+
                 <button type="button" class="btn btn-primary">Potdri</button>
                 <button type="button" class="btn btn-secondary">Prekliči</button>
+              </div>
+            </div>
           </div>
-        </div>  
-        <!-- <p>
-              Full Name:
-              <span>Test</span>
-              <span>Test</span>
-          </p>
-          <p>
-              Birth Date:
-              <span>Test</span>
-          </p>
-          <p>
-              Address:
-              <span>Test</span>
-          </p>
-          <p>
-              Hire Date:
-              <span>Test</span>
-          </p>
-          <p>
-              Position:
-              <span>Test</span>
-          </p> -->
-
-          
+        </dx-popup>
       </div>
-  </dx-popup>
+    </div>
+  </div>
 </div>
+
+
+<!-- <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <app-pagination *ngIf="(planItemState$ | async).pagination && 
+            (planItemState$ | async).pagination.pageSize > 14 && 
+            (planItemState$ | async).pagination.pageCount > 1" class="float-right" [showInfo]="false" [pagination]="(planItemState$ | async).pagination"
+          (pageChange)="loadPlanItemsOnPage($event)">
+        </app-pagination>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Šifra naloga</th>
+              <th scope="col">Vrsta proizvodnje</th>
+              <th scope="col">Šifra artikla</th>
+              <th scope="col">Naziv artikla</th>
+              <th scope="col">EM</th>
+              <th scope="col">ERP količina</th>
+              <th scope="col">Datum ERP od</th>
+              <th scope="col">Datum ERP do</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let planItem of (planItemState$ | async).entities">
+              <th scope="row">{{ planItem.code }}</th>
+              <td></td>
+              <td>{{ planItem.product.code }}</td>
+              <td>{{ planItem.product.name }}</td>
+              <td>{{ planItem.measurementUnit.code }}</td>
+              <td>{{ planItem.quantity }}</td>
+              <td>{{ planItem.limitDateFrom | date:'short' }}</td>
+              <td>{{ planItem.limitDateTo | date:'short' }}</td>
+              <td>
+                <dx-button class="btn btn-primary btn-sm" text="Planiraj nalog" (onClick)="showInfo(planItem.id)"></dx-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <app-page-length [default]="10" (change)="changePageLength($event)" style="min-width: 500px"></app-page-length>
+      <app-pagination [pagination]="(planItemState$ | async).pagination" (pageChange)="loadPlanItemsOnPage($event)"></app-pagination>
+  
+    </div>
+  
+  </div>
+   -->
