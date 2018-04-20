@@ -13,7 +13,6 @@ export const LOAD_PLANITEMHIERARCHY_SUCCESS = '[PlanItem] Load selected plan ite
 
 export class LoadPlanItems implements Action {
     readonly type = LOAD_PLANITEMS;
-    constructor(public payload: { page: number, pageSize: number }) {}
 }
 
 export class LoadPlanItemsFail implements Action {
@@ -23,7 +22,7 @@ export class LoadPlanItemsFail implements Action {
 
 export class LoadPlanItemsSuccess implements Action {
     readonly type = LOAD_PLANITEMS_SUCCESS;
-    constructor(public payload: PaginationResponse<PlanItem>) {}
+    constructor(public payload: PlanItem[]) {}
 }
 
 export class LoadPlanItemHierarchy implements Action {

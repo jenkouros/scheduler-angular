@@ -6,30 +6,30 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 @Injectable()
-export class PlanItemsEffects {
+export class PlanItemHierarchyEffects {
     constructor(
         private actions$: Actions,
-        private planItemsService: fromServices.PlanItemsService) {}
+        private planItemHierarchyService: fromServices.PlanItemHierarchyService) {}
 
-    @Effect()
-    loadPlanItems$ = this.actions$
-        .ofType(fromActions.LOAD_PLANITEMS)
-        .pipe(
-            switchMap((action: fromActions.LoadPlanItems) => {
-                return this.planItemsService.getPlanItems(action.payload.page, action.payload.pageSize)
-                    .pipe(
-                        map(planItems => new fromActions.LoadPlanItemsSuccess(planItems)),
-                        catchError(error => of(new fromActions.LoadPlanItemsFail(error)))
-                    );
-            })
-        );
+    // @Effect()
+    // loadPlanItems$ = this.actions$
+    //     .ofType(fromActions.LOAD_PLANITEMS)
+    //     .pipe(
+    //         switchMap((action: fromActions.LoadPlanItems) => {
+    //             return this.planItemsService.getPlanItems(action.payload.page, action.payload.pageSize)
+    //                 .pipe(
+    //                     map(planItems => new fromActions.LoadPlanItemsSuccess(planItems)),
+    //                     catchError(error => of(new fromActions.LoadPlanItemsFail(error)))
+    //                 );
+    //         })
+    //     );
 
     @Effect()
     loadPlanItemHierarchy$ = this.actions$
         .ofType(fromActions.LOAD_PLANITEMHIERARCHY)
         .pipe(
             switchMap((action: fromActions.LoadPlanItemHierarchy) => {
-                return this.planItemsService.getPlanItemHierarchy(action.payload.planItemId)
+                return this.planItemHierarchyService.getPlanItemHierarchy(action.payload.planItemId)
                     .pipe(
                         map(planItemHierarchy => new fromActions.LoadPlanItemHierarchySuccess(planItemHierarchy)),
                         catchError(error => of(new fromActions.LoadPlanItemHierarchyFail()))

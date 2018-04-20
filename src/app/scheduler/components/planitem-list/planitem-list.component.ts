@@ -32,7 +32,7 @@ export class PlanitemListComponent implements OnInit {
   constructor(private store: Store<fromStore.SchedulerState>, private planItemService: PlanItemsService) { }
 
   ngOnInit() {
-    this.loadPlanItemsOnPage();
+    // this.loadPlanItemsOnPage();
     this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
     this.selectedPlanItemHierarchy$.subscribe(store => console.log(store));
@@ -40,25 +40,22 @@ export class PlanitemListComponent implements OnInit {
 
   }
 
-  changePageLength(length: number) {
-    this.numberOfItemsOnPage = length;
-    this.loadPlanItemsOnPage();
-  }
+  // changePageLength(length: number) {
+  //   this.numberOfItemsOnPage = length;
+  //   this.loadPlanItemsOnPage();
+  // }
 
-  loadPlanItemsOnPage(page: number = 1) {
-    this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo
-  }
+  // loadPlanItemsOnPage(page: number = 1) {
+  //   this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo
+  // }
 
   log(test) {
     console.log(test);
   }
 
-  showInfo(id) {
-
+  showInfo(planItem: PlanItem) {
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.id}));
     this.popupVisible = true;
-
-    this.store.dispatch(new fromStore.LoadPlanItemHierarchy(id));
-
   }
 
 }
