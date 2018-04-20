@@ -33,23 +33,23 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.moviesData = service.getMoviesData();
         this.workplaceData = service.getWorkPlaceData();
         this.store.select(fromStore.getSelectedContainers).subscribe(
-            (containers) => {               
-              this.schedulerResources = this.getResources(containers, this.moviesData);     
+            (containers) => {
+                this.schedulerResources = this.getResources(containers, this.moviesData);
             });
-        
+
     }
 
     getResources(containers: any, plans: MovieData[]) {
-        let workplaceGroups: any[] = [],
-            planGroup: any[] = []
+        const workplaceGroups: any[] = [],
+            planGroup: any[] = [];
 
-        //working places (group)
+        // working places (group)
         containers.forEach((container: ContainerSelect) => {
             workplaceGroups.push({
                 text: container.code,
                 id: container.id,
             });
-        });       
+        });
         plans.forEach((plan: any) => {
             planGroup.push({
                 text: plan.text,
@@ -59,9 +59,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         });
         console.log(workplaceGroups, planGroup);
         return [
-          
+
             {
-                fieldExpr: "workplaceId",
+                fieldExpr: 'workplaceId',
                 dataSource: workplaceGroups
             }
         ];
@@ -81,38 +81,87 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         }
     }
 
+    onAppointmentUpdating(e) {
+        // logika za kontrolo ali lahko izvedemo update
 
-    ngAfterViewInit() {
-        const elements = document.getElementsByClassName('dx-scheduler-date-table-cell');
+    }
+
+    onAppointmentAdded(e) {
+        console.log(e);
+
+    }
+
+    onContentReady(event) {
+        const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
-            events.on(elements[i], 'dxdrop', (e) => {
+             events.off(elements[i], 'dxdrop', this.testFunction);
+             events.on(elements[i], 'dxdrop', {
+                workplaceId: 2,
+                movieId: 3,
+                price: 11,
+                startDate: new Date(2015, 4, 25, 8, 1),
+                endDate: new Date(2015, 4, 25, 11, 1)
+            }, this.testFunction);
+            /*events.on(elements[i], 'dxdrop', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const el = e.target;
-                if (el.classList.contains('dx-scheduler-date-table-cell')) {
+                if (e.type === 'dxdrop') {
 
-                    const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                    console.log(a);
 
-                    if (e.type === 'dxdrop') {
-                        console.log('dx-droped');
-                    }
+
+                    console.log(e, 'dx-droped');
+                    this.scheduler.instance.addAppointment({
+                        workplaceId: 2,
+                        movieId: 3,
+                        price: 11,
+                        startDate: new Date(2015, 4, 25, 8, 1),
+                        endDate: new Date(2015, 4, 25, 11, 1)
+                    });
                 }
+        });*/
+    }
+}
+
+    testFunction(e: Event, extraParameters) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log(e, 'dx-droped');
+
+    }
+    ngAfterViewInit() {
+        const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
+        for (let i = 0; i < elements.length; i++) {
+
+            events.on(elements[i], 'dxdrop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.type === 'dxdrop') {
+                    // this.editDetails(a);
+                    console.log('dx-droped');
+                }
+                // const el = e.target;
+                /* if (el.classList.contains('dx-scheduler-date-table-cell')) {
+
+                     const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                     console.log(a);
+
+
+                 }*/
             });
 
-            /*events.on(elements[i], 'drop', (e) => {
+            events.on(elements[i], 'drop', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
                 console.log('droped');
                 const el = e.target;
-                if (el.classList.contains("dx-scheduler-date-table-cell")) {
-                    var data = JSON.parse(e.dataTransfer.getData('text'));
+                if (el.classList.contains('dx-scheduler-date-table-cell')) {
+                    const data = JSON.parse(e.dataTransfer.getData('text'));
 
-                    var a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                    const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
                     this.scheduler.instance.addAppointment({
-                        text: "testing",
+                        text: 'testing',
                         workplaceId: 0,
                         movieId: 5,
                         price: 10,
@@ -122,7 +171,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     console.log(data);
                 }
 
-            });*/
+            });
 
         }
     }

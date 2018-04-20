@@ -3,24 +3,21 @@ import * as fromPlanItems from '../actions/planitems.action';
 import { Pagination } from '../../../shared/shared.model';
 
 export interface PlanItemState {
-    entities: PlanItem[];
-    pagination: Pagination;
-    loading: boolean;
-    loaded: boolean;
-    selectedPlanItemHierarchy: PlanItemHierarchy;
-    loadingHierarchy: boolean;
-    loadedHierarchy: boolean;
-    // paging entity
+    items: PlanItem[];
+    itemsLoading: boolean;
+    itemsLoaded: boolean;
+    selectedItemHierarchy: PlanItemHierarchy;
+    selectedItemHierarchyLoading: boolean;
+    selectedItemHierarchyLoaded: boolean;
 }
 
 export const initialState: PlanItemState = {
-    entities: [],
-    pagination: null,
-    loading: false,
-    loaded: false,
-    selectedPlanItemHierarchy: null,
-    loadedHierarchy: false,
-    loadingHierarchy: false
+    items: [],
+    itemsLoading: false,
+    itemsLoaded: false,
+    selectedItemHierarchy: null,
+    selectedItemHierarchyLoaded: false,
+    selectedItemHierarchyLoading: false
 };
 
 export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction): PlanItemState {
@@ -28,53 +25,46 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
         case fromPlanItems.LOAD_PLANITEMS: {
             return {
                 ...state,
-                loading: true
+                itemsLoading: true
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_FAIL: {
             return {
                 ...state,
-                loaded: false,
-                loading: false
+                itemsLoaded: false,
+                itemsLoading: false
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
-            const metadata = {
-                ...state.pagination,
-                ...action.payload.metadata
-            };
-            metadata.page = metadata.page + 1;
-
             return {
                 ...state,
-                loaded: true,
-                loading: false,
-                pagination: metadata,
-                entities: [...action.payload.records]
+                itemsLoaded: true,
+                itemsLoading: false,
+                items: [...action.payload]
             };
         }
         case fromPlanItems.LOAD_PLANITEMHIERARCHY: {
             return {
                 ...state,
-                loadedHierarchy: false,
-                loadingHierarchy: true,
-                selectedPlanItemHierarchy: null
+                selectedItemHierarchyLoaded: false,
+                selectedItemHierarchyLoading: true,
+                selectedItemHierarchy: null
             };
         }
         case fromPlanItems.LOAD_PLANITEMHIERARCHY_FAIL: {
             return {
                 ...state,
-                loadedHierarchy: false,
-                loadingHierarchy: false,
-                selectedPlanItemHierarchy: null
+                selectedItemHierarchyLoaded: false,
+                selectedItemHierarchyLoading: false,
+                selectedItemHierarchy: null
             };
         }
         case fromPlanItems.LOAD_PLANITEMHIERARCHY_SUCCESS: {
             return {
                 ...state,
-                loadedHierarchy: true,
-                loadingHierarchy: false,
-                selectedPlanItemHierarchy: { ...action.payload }
+                selectedItemHierarchyLoaded: true,
+                selectedItemHierarchyLoading: false,
+                selectedItemHierarchy: { ...action.payload }
             };
         }
         default:

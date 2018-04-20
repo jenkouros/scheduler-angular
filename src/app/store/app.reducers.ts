@@ -1,8 +1,8 @@
-import * as fromScheduler from '../scheduler/store'
+import * as fromScheduler from '../scheduler/store';
 import { ActionReducerMap } from '@ngrx/store';
 
 export interface AppState {
-    scheduler: fromScheduler.SchedulerState
+    scheduler: fromScheduler.SchedulerState;
 }
 
 export function defaultReducer<T>(state: T) { return state; }
@@ -13,5 +13,5 @@ export const initialReducerMap = {
 export function getInitialState() {
     return {
         scheduler: fromScheduler.getInitialState()
-    }
+    };
 }

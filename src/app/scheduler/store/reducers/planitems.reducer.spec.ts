@@ -16,12 +16,11 @@ describe('PlanItemsReducer', () => {
     describe('LOAD_PLANITEMS action', () => {
         it('should set loading to true', () => {
             const { initialState } = fromPlanItems;
-            const action = new fromActions.LoadPlanItems(null);
+            const action = new fromActions.LoadPlanItems();
             const state = fromPlanItems.planItemsReducer(initialState, action);
-            expect(state.loaded).toEqual(false);
-            expect(state.loading).toEqual(true);
-            expect(state.entities).toEqual([]);
-            expect(state.pagination).toEqual(null);            
+            expect(state.itemsLoaded).toEqual(false);
+            expect(state.itemsLoading).toEqual(true);
+            expect(state.items).toEqual([]);
         });
     });
 
@@ -31,23 +30,13 @@ describe('PlanItemsReducer', () => {
             const previousState = {...initialState, loading: true};
             const action = new fromActions.LoadPlanItemsFail(<any>{});
             const state = fromPlanItems.planItemsReducer(previousState, action);
-            expect(state).toEqual(initialState);            
+            expect(state).toEqual(initialState);
         });
     });
 
     describe('LOAD_PLANITEMS_SUCCESS action', () => {
         it('should set loaded to true', () => {
-            const response: PaginationResponse<PlanItem> = {
-                metadata: {
-                    page: 1,
-                    pageCount: 10,
-                    pageSize: 15,
-                    totalCount: 150
-                },
-                records: [
-                    PLAN_ITEM
-                ]
-            }
+            const response: PlanItem[] = [PLAN_ITEM];
 
             const { initialState } = fromPlanItems;
             const previousState = {...initialState, loading: true};
@@ -55,30 +44,28 @@ describe('PlanItemsReducer', () => {
 
             const action = new fromActions.LoadPlanItemsSuccess(response);
             const state = fromPlanItems.planItemsReducer(previousState, action);
-            expect(state.loaded).toEqual(true);      
-            expect(state.loading).toEqual(false);
-            expect(state.pagination).toEqual(response.metadata);
-            expect(state.entities).toEqual(response.records)       
+            expect(state.itemsLoaded).toEqual(true);
+            expect(state.itemsLoading).toEqual(false);
+            expect(state).toEqual(response);
         });
     });
 });
 
 const PLAN_ITEM: PlanItem = {
-    "id": 1,
-    "code": "100000",
-    "quantity": 1000,
-    "quantityBatch": 100,
-    "quantityPlanned": 0,
-    "measurementUnit": {
-        "name": "kilogram",
-        "code": "kg"
+    'id': 1,
+    'code': '100000',
+    'quantity': 1000,
+    'quantityBatch': 100,
+    'quantityPlanned': 0,
+    'measurementUnit': {
+        'name': 'kilogram',
+        'code': 'kg'
     },
-    "product": {
-        "id": 52000,
-        "code": "701233",
-        "name": "Bencin D40"
+    'product': {
+        'id': 52000,
+        'code': '701233',
+        'name': 'Bencin D40'
     },
-    "limitDateFrom": new Date(),
-    "limitDateTo": new Date(),
-    planSubItems: []
+    'limitDateFrom': new Date(),
+    'limitDateTo': new Date()
 };
