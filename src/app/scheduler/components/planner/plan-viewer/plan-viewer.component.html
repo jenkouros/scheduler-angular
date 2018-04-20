@@ -1,7 +1,10 @@
 <dx-scheduler id="scheduler" [dataSource]="data" [views]="['day', 'week', 'timelineDay']" [(currentView)]="currentView" [firstDayOfWeek]="0"
     [startDayHour]="8" [endDayHour]="23" [showAllDayPanel]="false" [groups]="['workplaceId']" [resources]="schedulerResources"
     [currentDate]="currentDate" [crossScrollingEnabled]="true" appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+    (onContentReady)="onContentReady($event)"
+    (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    (onAppointmentAdded)="onAppointmentAdded($event)">
 
     <dxo-editing [allowAdding]="false"></dxo-editing>
 
