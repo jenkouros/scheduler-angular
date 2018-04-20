@@ -86,9 +86,19 @@
                 </p>
                 <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
                 <p>
+                    <!-- <div class="dx-field">
+                        <div class="dx-field-label">With a custom placeholder</div>
+                        <div class="dx-field-value">
+                            <dx-select-box
+                                [items]="simpleProducts"
+                                placeholder="Choose Product"
+                                [showClearButton]="true"
+                            ></dx-select-box>
+                        </div>
+                    </div> -->
                   Alternative:
                   <select>
-                    <option *ngFor="let alternative of (selectedPlanItemHierarchy$ | async).alternativeOptions" [value]="alternative">{{ alternative }}</option>
+                    <option *ngFor="let alternative of (selectedPlanItemHierarchy$ | async).alternativeOptions" [value]="alternative.id">{{ alternative.name }}</option>
                   </select>
                   <span>Item</span>
                 </p>

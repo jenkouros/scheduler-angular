@@ -17,7 +17,9 @@ import {
     DxTemplateModule,
     DxDataGridModule,
     DxSchedulerModule,
-    DxLinearGaugeModule
+    DxLinearGaugeModule,
+    DxSelectBoxModule,
+    DxTextBoxModule
 } from 'devextreme-angular';
 
 @NgModule({
@@ -29,7 +31,7 @@ import {
         HttpClientModule,
         StoreModule.forFeature('scheduler', fromStore.reducers),
         EffectsModule.forFeature(fromStore.effects),
-        DxSchedulerModule, DxButtonModule, DxTemplateModule, DxLinearGaugeModule, DxPopupModule, DxDataGridModule
+        DxSchedulerModule, DxButtonModule, DxTemplateModule, DxLinearGaugeModule, DxPopupModule, DxDataGridModule, DxSelectBoxModule, DxTextBoxModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]
