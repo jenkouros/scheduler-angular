@@ -16,24 +16,21 @@ export class ContainerListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadContainers());
-    //this.containers$ = 
+    // this.containers$ = 
     this.store.select(fromStore.getContainers).subscribe(
       (containers) => {
-        this.containers=containers;
+        this.containers = containers;
         console.log(this.containers);
-      });    
+      });
   }
 
   toggleContainer(container) {
-    const selected =! this.containers.find(c=> c.id===container.id).selected;
-    if (selected)
-    {
-      this.onSelectContainer(container.id)
+    const selected = !this.containers.find(c => c.id === container.id).selected;
+    if (selected) {
+      this.onSelectContainer(container.id);
+    } else {
+      this.onDeselectContainer(container.id);
     }
-    else{
-      this.onDeselectContainer(container.id)
-    }
-      
   }
 
   onSelectContainer(containerId) {
@@ -45,8 +42,6 @@ export class ContainerListComponent implements OnInit {
   }
 
   ContainerSelected(id: number): boolean {
-    return !this.containers.find(c=> c.id===id).selected;
+    return !this.containers.find(c => c.id === id).selected;
   }
-
-
 }
