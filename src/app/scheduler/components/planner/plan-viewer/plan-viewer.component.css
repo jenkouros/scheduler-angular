@@ -1,3 +1,4 @@
+
 ::ng-deep .showtime-preview > div:not(:first-child) {
     font-size: 11px;
     white-space: normal;
@@ -40,3 +41,62 @@
     text-align: center;
     margin-bottom: 20px;
 }
+
+::ng-deep .dx-scheduler-appointment-content{    
+    padding: 0px;
+    margin: 0px;
+}
+
+.box1 {
+    background: rgb(219, 218, 218);
+    text-align: center;
+    
+  }
+  .boxwrapper {
+    background: grey;
+    height: 100%;
+    text-align: center;
+    width: 45%;
+  }
+.box2 {
+    background: transparent;
+    grid-row: span 2;
+    align-items: center;
+    text-align: center;
+    vertical-align: center;
+  }
+.box3 {
+    background: rgb(252, 181, 181);
+    display: grid;
+    grid-template-columns: 5fr 1fr;    
+  }
+.box4 {
+    background: rgb(71, 175, 140);
+    
+}
+
+.box5 {
+    background: green;
+    
+}
+
+.containerApp{
+    display: grid;
+    height: 100%;
+    width: 100%;  
+    grid-template-columns: 1fr 2.5fr;
+    grid-template-rows: 5fr 1fr;   
+    border: gray solid 1px;
+  }
+  .stackem div {
+    width: 100%;
+}
+
+.box1 > span {
+    display: block;
+    height: 100%;    
+    background-color: grey;      
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }

@@ -39,6 +39,13 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     }
 
+    getAppoinmentClass(){
+        if (this.scheduler.currentView === 'timelineDay')
+        {
+            return 'container1'
+        }
+        return '';
+    }
     getResources(containers: any, plans: MovieData[]) {
         const workplaceGroups: any[] = [],
             planGroup: any[] = [];
