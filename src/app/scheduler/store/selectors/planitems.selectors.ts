@@ -8,6 +8,11 @@ export const getPlanItemsState = createSelector(
     (state: fromFeature.SchedulerState) => state.planitems
 );
 
+export const getPlanItemsStore = createSelector(
+    getPlanItemsState,
+    state => state.itemsStore
+);
+
 export const getSelectedPlanItemHierarchy = createSelector(
     getPlanItemsState,
     (state: fromFeature.PlanItemState) => {

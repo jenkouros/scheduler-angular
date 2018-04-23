@@ -1,3 +1,8 @@
-<p>
-  alternative works!
-</p>
+<h4>{{ alternative.name }}</h4>
+<div class="row">
+    <app-plansubitem
+        class="col-4 mb-3"
+        [subItem]="subItem" 
+        *ngFor="let subItem of alternative.planSubItems">
+    </app-plansubitem>
+</div>

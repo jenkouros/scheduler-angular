@@ -1,53 +1,41 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { DxPopupComponent, DxDataGridComponent } from 'devextreme-angular';
 import * as fromStore from '../../store';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { PlanItemState } from '../../store/reducers/planitems.reducer';
-import { Pagination } from '../../../shared/shared.model';
+import { take } from 'rxjs/operators';
+import 'rxjs/add/operator/take';
 
-import { PlanItem } from '../../models/planitem.model';
-import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
-import {
-  DxPopupComponent,
-  DxDataGridComponent
-} from 'devextreme-angular';
+import { PlanItemState } from '../../store/reducers/planitems.reducer';
 import { PlanItemHierarchyDto } from '../../models/planItem.dto';
-import { PlanItemsService } from '../../services';
 import CustomStore from 'devextreme/data/custom_store';
+import { PlanItem } from '../../models/planitem.model';
+import { LoadPlanItems } from '../../store';
 
 @Component({
   selector: 'app-planitem-list',
   templateUrl: './planitem-list.component.html',
-  styleUrls: ['./planitem-list.component.css'],
-  providers: [PlanItemsService]
+  styleUrls: ['./planitem-list.component.css']
 })
 export class PlanitemListComponent implements OnInit {
-  planItemState$: Observable<PlanItemState>;
+  // planItemState$: Observable<PlanItemState>;
+  planItemsStore: CustomStore;
   selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
-  planItemStore: CustomStore;
 
   numberOfItemsOnPage = 0;
   popupVisible = false;
 
-  constructor(private store: Store<fromStore.SchedulerState>, private planItemService: PlanItemsService) { }
+  constructor(
+    private store: Store<fromStore.SchedulerState>
+  ) { }
 
   ngOnInit() {
-    // this.loadPlanItemsOnPage();
-    this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
+    this.store.dispatch(new LoadPlanItems());
+    // this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
+    this.store.select(fromStore.getPlanItemsStore)
+      .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
-    this.selectedPlanItemHierarchy$.subscribe(store => console.log(store));
-    this.planItemStore = this.planItemService.getPlanItemsStore();
-
   }
-
-  // changePageLength(length: number) {
-  //   this.numberOfItemsOnPage = length;
-  //   this.loadPlanItemsOnPage();
-  // }
-
-  // loadPlanItemsOnPage(page: number = 1) {
-  //   this.store.dispatch(new fromStore.LoadPlanItems({ page: page, pageSize: this.numberOfItemsOnPage })); // izvedi akcijo
-  // }
 
   log(test) {
     console.log(test);

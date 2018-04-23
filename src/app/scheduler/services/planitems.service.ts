@@ -5,13 +5,13 @@ import CustomStore from 'devextreme/data/custom_store';
 
 import { PlanItem } from '../models/planitem.model';
 import { environment } from '../../../environments/environment';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../store';
+// import { Store } from '@ngrx/store';
+// import * as fromStore from '../store';
 
 
 @Injectable()
 export class PlanItemsService {
-    constructor(private store: Store<fromStore.SchedulerState>) {}
+    constructor(/* private store: Store<fromStore.SchedulerState> */) {}
 
     getPlanItemsStore(): CustomStore {
         const store = createStore({
@@ -22,8 +22,8 @@ export class PlanItemsService {
             },
             key: 'idPlanItem'
         });
-        store.on('loaded', (data: PlanItem[]) => this.store.dispatch(new fromStore.LoadPlanItemsSuccess(data)));
-        store.on('loading', () => this.store.dispatch(new fromStore.LoadPlanItems()));
+        // store.on('loaded', (data: PlanItem[]) => this.store.dispatch(new fromStore.LoadPlanItemsSuccess(data)));
+        // store.on('loading', () => this.store.dispatch(new fromStore.LoadPlanItems()));
 
         return store;
     }

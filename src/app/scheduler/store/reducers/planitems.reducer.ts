@@ -1,11 +1,11 @@
 import { PlanItem, PlanItemHierarchy } from '../../models/planitem.model';
 import * as fromPlanItems from '../actions/planitems.action';
 import { Pagination } from '../../../shared/shared.model';
+import CustomStore from 'devextreme/data/custom_store';
 
 export interface PlanItemState {
     items: PlanItem[];
-    itemsLoading: boolean;
-    itemsLoaded: boolean;
+    itemsStore: CustomStore;
     selectedItemHierarchy: PlanItemHierarchy;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
@@ -13,8 +13,7 @@ export interface PlanItemState {
 
 export const initialState: PlanItemState = {
     items: [],
-    itemsLoading: false,
-    itemsLoaded: false,
+    itemsStore: null,
     selectedItemHierarchy: null,
     selectedItemHierarchyLoaded: false,
     selectedItemHierarchyLoading: false
@@ -22,24 +21,15 @@ export const initialState: PlanItemState = {
 
 export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction): PlanItemState {
     switch (action.type) {
-        case fromPlanItems.LOAD_PLANITEMS: {
+        case fromPlanItems.REGISTER_PLANITEMS_STORE: {
             return {
                 ...state,
-                itemsLoading: true
-            };
-        }
-        case fromPlanItems.LOAD_PLANITEMS_FAIL: {
-            return {
-                ...state,
-                itemsLoaded: false,
-                itemsLoading: false
+                itemsStore: action.payload
             };
         }
         case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
             return {
                 ...state,
-                itemsLoaded: true,
-                itemsLoading: false,
                 items: [...action.payload]
             };
         }

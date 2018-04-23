@@ -13,6 +13,7 @@ import { FilterCheckboxComponent } from './filters/filter-checkbox/filter-checkb
 import { FilterAutocompleteComponent } from './filters/filter-autocomplete/filter-autocomplete.component';
 import { ContainerListComponent } from './container-list/container-list.component';
 import { AlternativeComponent } from './planitem-list/planitem-item/alternative/alternative.component';
+import { PlansubitemComponent } from './planitem-list/planitem-item/plansubitem/plansubitem.component';
 
 export const components: any[] = [
     FiltersComponent,
@@ -29,7 +30,8 @@ export const components: any[] = [
     FilterCheckboxComponent,
     FilterAutocompleteComponent,
     ContainerListComponent,
-    AlternativeComponent
+    AlternativeComponent,
+    PlansubitemComponent
 ];
 
 export * from './filters/filters.component';
@@ -46,3 +48,4 @@ export * from './sidebar/sidebar.component';
 export * from './filters/filter-checkbox/filter-checkbox.component';
 export * from './filters/filter-autocomplete/filter-autocomplete.component';
 export * from './planitem-list/planitem-item/alternative/alternative.component';
+export * from './planitem-list/planitem-item/plansubitem/plansubitem.component';

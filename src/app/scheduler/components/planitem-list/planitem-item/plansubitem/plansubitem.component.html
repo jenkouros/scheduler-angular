@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ subItem.code }} - {{ subItem.name }}</h5>
+        <div class="card-text">
+            <table>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="pr-3">Priprava:</td>
+                        <th>{{ subItem.normativeTimePreparation }} min</th>
+                    </tr>
+                    <tr>
+                        <td class="pr-3">Stroj:</td>
+                        <th>{{ subItem.normativeTimeMachine }} min</th>
+                    </tr>
+                    <tr>
+                        <td class="pr-3">Operater:</td>
+                        <th>{{ subItem.normativeTimeWorker }} min</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

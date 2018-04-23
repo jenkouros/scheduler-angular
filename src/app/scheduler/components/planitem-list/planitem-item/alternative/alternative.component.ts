@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PlanItemHierarchyAlternative } from '../../../../models/planitem.model';
 
 @Component({
   selector: 'app-alternative',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./alternative.component.css']
 })
 export class AlternativeComponent implements OnInit {
+  @Input() alternative: PlanItemHierarchyAlternative;
 
   constructor() { }
 
