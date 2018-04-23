@@ -19,7 +19,8 @@ import {
     DxSchedulerModule,
     DxLinearGaugeModule,
     DxSelectBoxModule,
-    DxTextBoxModule
+    DxTextBoxModule,
+    DxScrollViewModule
 } from 'devextreme-angular';
 
 @NgModule({
@@ -38,7 +39,8 @@ import {
         DxPopupModule,
         DxDataGridModule,
         DxSelectBoxModule,
-        DxTextBoxModule
+        DxTextBoxModule,
+        DxScrollViewModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]

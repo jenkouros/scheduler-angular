@@ -1,34 +1,19 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col">
-      <dx-data-grid 
-        [columnAutoWidth]="true"
-        [allowColumnResizing]="true"
-        columnResizingMode="nextColumn"
-        id="gridContainer" 
-        [dataSource]="planItemsStore"
-        [showRowLines]="true"
-        [rowAlternationEnabled]="true">
-          <!-- [dataSource]="(planItemState$ | async).entities" -->
+      <dx-data-grid [columnAutoWidth]="true" [allowColumnResizing]="true" columnResizingMode="nextColumn" id="gridContainer" [dataSource]="planItemsStore"
+        [showRowLines]="true" [rowAlternationEnabled]="true">
+        <!-- [dataSource]="(planItemState$ | async).entities" -->
 
         <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-        <dxo-remote-operations
-          [filtering]="true"
-          [sorting]="false"
-          [grouping]="false"
-          [paging]="true"
-          [summary]="false"> 
+        <dxo-remote-operations [filtering]="true" [sorting]="false" [grouping]="false" [paging]="true" [summary]="false">
         </dxo-remote-operations>
-<!-- 
+        <!-- 
         <dxo-filter-row [visible]="true">
         </dxo-filter-row> -->
         <dxo-paging [pageSize]="12"></dxo-paging>
-        <dxo-pager 
-          [showPageSizeSelector]="true" 
-          [allowedPageSizes]="[8, 12, 20]" 
-          [showInfo]="true"
-          [showNavigationButtons]="true">
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[8, 12, 20]" [showInfo]="true" [showNavigationButtons]="true">
         </dxo-pager>
 
         <dxi-column dataField="code" caption="Šifra naloga"></dxi-column>
@@ -45,7 +30,7 @@
           <dxi-column dataField="limitDateFrom" dataType="date" caption="Datum od" cellTemplate="dateCellTemplate"></dxi-column>
           <dxi-column dataField="limitDateTo" dataType="date" caption="Datum do" cellTemplate="dateCellTemplate"></dxi-column>
         </dxi-column>
-        
+
         <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
 
         <div *dxTemplate="let cell of 'planCellTemplate'">
@@ -56,134 +41,75 @@
         </div>
       </dx-data-grid>
 
-
-
       <div id="popup">
-        <!-- <h1>Employees</h1> -->
-        <!-- <ul>
-      <li *ngFor="let planItem of (planItemState$ | async).entities let id = index">
-          <img [src]=""/><br/>
-          <i>{{ planItem.code }} => {{ planItem.product.name }}</i><br/>
-          <dx-button
-              class="button-info"
-              text="Details"
-              (onClick)="showInfo(planItem.id)">
-          </dx-button>
-      </li>
-  </ul> -->
-        
-        <dx-popup class='popup' 
-        [resizeEnabled]="true"
-        [showTitle]="true" 
-        title="Delovni nalog" 
-        [dragEnabled]="false" 
-        [closeOnOutsideClick]="true"
-        [(visible)]="popupVisible">
+        <dx-popup class='popup' [resizeEnabled]="true" [showTitle]="true" title="Delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true"
+          [(visible)]="popupVisible">
           <div *dxTemplate="let data of 'content'">
-            <div class="card-deck">
-              <!-- <div class="card-header"></div> -->
-              <div class="card-body">
-                <!-- <h5 class="card-title"></h5> -->
-                <h6>Šifra naloga: <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code  }}</span></h6>  
-                <h6>Artikel</h6>
-                <div>
-                  <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
-                </div>
-                <div>
-                  <label>Naziv: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
-                </div>         
-                <h6>ERP</h6>
+            <dx-scroll-view>
+              <div class="card-deck">
+                <!-- <div class="card-header"></div> -->
+                <div class="card-body">
+                  <!-- <h5 class="card-title"></h5> -->
+                  <h6>Šifra naloga:
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code }}</span>
+                  </h6>
+                  <h6>Artikel</h6>
                   <div>
-                    <label>Količina: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
+                    <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
                   </div>
                   <div>
-                    <label>EM: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
+                    <label>Naziv: </label>
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
+                  </div>
+                  <h6>ERP</h6>
+                  <div>
+                    <label>Količina: </label>
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
                   </div>
                   <div>
-                    <label>Datum od: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
+                    <label>EM: </label>
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
                   </div>
                   <div>
-                    <label>Datum do: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
+                    <label>Datum od: </label>
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
+                  </div>
+                  <div>
+                    <label>Datum do: </label>
+                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
                   </div>
                   <h6>Izbira alternative</h6>
                   <div class="dx-field">
                     <div class="dx-field-label">Alternativa: </div>
                     <div class="dx-field-value">
-                      <dx-select-box
-                        [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions"
-                        valueExpr="id"
-                        displayExpr="name"
+                      <dx-select-box 
+                        [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                        valueExpr="id" 
+                        displayExpr="name" 
                         placeholder="Izberi alternativo"
                         [showClearButton]="true"
-                      ></dx-select-box>
+                        (onValueChanged)="selectAlternative($event.value)">
+                      </dx-select-box>
                     </div>
                   </div>
-                  <app-alternative [alternative]="(selectedPlanItemHierarchy$ | async).planItemHierarchy.alternatives[0]" ></app-alternative>
- 
+                  <app-alternative 
+                    *ngIf="alternatives && selectAlternative" 
+                    [alternative]="alternatives[1]">
+                  </app-alternative>
+
                   <div>
                     <button type="button" class="btn btn-primary">Potdri</button>
                     <button type="button" class="btn btn-secondary">Prekliči</button>
-                  </div>                
+                  </div>
+                </div>
               </div>
-            </div>
+            </dx-scroll-view>
+
           </div>
+
+
         </dx-popup>
       </div>
     </div>
   </div>
 </div>
-
-
-<!-- <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <app-pagination *ngIf="(planItemState$ | async).pagination && 
-            (planItemState$ | async).pagination.pageSize > 14 && 
-            (planItemState$ | async).pagination.pageCount > 1" class="float-right" [showInfo]="false" [pagination]="(planItemState$ | async).pagination"
-          (pageChange)="loadPlanItemsOnPage($event)">
-        </app-pagination>
-      </div>
-    </div>
-  
-    <div class="row">
-      <div class="col">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Šifra naloga</th>
-              <th scope="col">Vrsta proizvodnje</th>
-              <th scope="col">Šifra artikla</th>
-              <th scope="col">Naziv artikla</th>
-              <th scope="col">EM</th>
-              <th scope="col">ERP količina</th>
-              <th scope="col">Datum ERP od</th>
-              <th scope="col">Datum ERP do</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let planItem of (planItemState$ | async).entities">
-              <th scope="row">{{ planItem.code }}</th>
-              <td></td>
-              <td>{{ planItem.product.code }}</td>
-              <td>{{ planItem.product.name }}</td>
-              <td>{{ planItem.measurementUnit.code }}</td>
-              <td>{{ planItem.quantity }}</td>
-              <td>{{ planItem.limitDateFrom | date:'short' }}</td>
-              <td>{{ planItem.limitDateTo | date:'short' }}</td>
-              <td>
-                <dx-button class="btn btn-primary btn-sm" text="Planiraj nalog" (onClick)="showInfo(planItem.id)"></dx-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="d-flex justify-content-between">
-      <app-page-length [default]="10" (change)="changePageLength($event)" style="min-width: 500px"></app-page-length>
-      <app-pagination [pagination]="(planItemState$ | async).pagination" (pageChange)="loadPlanItemsOnPage($event)"></app-pagination>
-  
-    </div>
-  
-  </div>
-   -->
