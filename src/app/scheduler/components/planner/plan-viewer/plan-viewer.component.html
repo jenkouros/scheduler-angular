@@ -7,16 +7,16 @@
     <dxo-editing [allowAdding]="false"></dxo-editing>
 
     <div *dxTemplate="let showtime of 'appointment-template'">
-            <div class="containerApp">                
-                <div class="box box1">
-                        <!--<div class="boxwrapper">45%</div>-->
-                        <span style="width: 45%">45%</span>
-                </div>
-                <div class="box box2">Ticket Price: {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}</div>
-                <div class="box box3">
-                    <div class="box box5">status</div>
-                    <div class="box box6">icon</div>
-                </div>
+            <div class="containerApp">
+                    <div class="box1">
+                            <div class="boxwrapper">45%</div>
+                            <!--<span style="width: 45%">45%</span>-->
+                    </div>                
+                <div class="box2 wordwrap">Ticket Price: dfsdf fsd fds fds fsdfds 12334 {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}</div>
+                <div class="box3">
+                        <fa-icon [icon]="faLock"></fa-icon>
+                    </div>
+                <div class="box5">S</div>
             </div>
     </div>
 

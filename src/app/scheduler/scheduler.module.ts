@@ -9,7 +9,7 @@ import * as fromServices from './services';
 import { HttpClientModule } from '@angular/common/http';
 import { PlanitemListComponent } from './components';
 import { EffectsModule } from '@ngrx/effects';
-
+import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Dx Component
 import {
     DxPopupModule,
@@ -38,6 +38,7 @@ import {
         DxLinearGaugeModule,
         DxPopupModule,
         DxDataGridModule,
+        FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
         DxScrollViewModule
