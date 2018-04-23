@@ -37,9 +37,9 @@ import {
         DxLinearGaugeModule,
         DxPopupModule,
         DxDataGridModule,
-        FontAwesomeModule
-        /*DxSelectBoxModule,
-        DxTextBoxModule*/
+        FontAwesomeModule,
+        DxSelectBoxModule,
+        DxTextBoxModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]
