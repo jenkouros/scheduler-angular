@@ -24,6 +24,7 @@ export class PlanitemListComponent implements OnInit {
 
   numberOfItemsOnPage = 0;
   popupVisible = false;
+  data: any;
 
   constructor(
     private store: Store<fromStore.SchedulerState>

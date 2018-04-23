@@ -75,21 +75,55 @@
         <dx-popup class='popup' 
         [resizeEnabled]="true"
         [showTitle]="true" 
-        title="Information" 
+        title="Delovni nalog" 
         [dragEnabled]="false" 
         [closeOnOutsideClick]="true"
         [(visible)]="popupVisible">
           <div *dxTemplate="let data of 'content'">
-            <app-alternative [alternative]="(selectedPlanItemHierarchy$ | async).planItemHierarchy.alternatives[0]" ></app-alternative>
-
             <div class="card-deck">
               <!-- <div class="card-header"></div> -->
               <div class="card-body">
-                <h5 class="card-title"></h5>
-                
-
-                <button type="button" class="btn btn-primary">Potrdi</button>
-                <button type="button" class="btn btn-secondary">Prekliči</button>
+                <!-- <h5 class="card-title"></h5> -->
+                <h6>Šifra naloga: <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code  }}</span></h6>  
+                <h6>Artikel</h6>
+                <div>
+                  <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
+                </div>
+                <div>
+                  <label>Naziv: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
+                </div>         
+                <h6>ERP</h6>
+                  <div>
+                    <label>Količina: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
+                  </div>
+                  <div>
+                    <label>EM: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
+                  </div>
+                  <div>
+                    <label>Datum od: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
+                  </div>
+                  <div>
+                    <label>Datum do: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
+                  </div>
+                  <h6>Izbira alternative</h6>
+                  <div class="dx-field">
+                    <div class="dx-field-label">Alternativa: </div>
+                    <div class="dx-field-value">
+                      <dx-select-box
+                        [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions"
+                        valueExpr="id"
+                        displayExpr="name"
+                        placeholder="Izberi alternativo"
+                        [showClearButton]="true"
+                      ></dx-select-box>
+                    </div>
+                  </div>
+                  <app-alternative [alternative]="(selectedPlanItemHierarchy$ | async).planItemHierarchy.alternatives[0]" ></app-alternative>
+ 
+                  <div>
+                    <button type="button" class="btn btn-primary">Potdri</button>
+                    <button type="button" class="btn btn-secondary">Prekliči</button>
+                  </div>                
               </div>
             </div>
           </div>
