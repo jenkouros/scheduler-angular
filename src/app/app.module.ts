@@ -17,16 +17,16 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
 
 // import it to change locale and load localization messages
 //
-// import { locale, loadMessages } from 'devextreme/localization';
+import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
-// import 'devextreme-intl';
+import 'devextreme-intl';
 // Load localized messages (English included by default)
+let messagesSl = require ("./shared/localization/sl.json");  
+// import messagesSl from './shared/localization/sl.json';
 
-// let messagesSl = require("devextreme/localization/messages/sl.json");
-// loadMessages(messagesSl);
-
-// Set locale according the browser language
-// locale(navigator.language);
+loadMessages(messagesSl);  
+//Set locale according the browser language
+locale(navigator.language);
 
 registerLocaleData(localeSl, 'sl');
 

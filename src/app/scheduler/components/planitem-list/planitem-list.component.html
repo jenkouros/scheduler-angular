@@ -80,9 +80,9 @@
               <div class="card-body">
                 <h5 class="card-title"></h5>
                 <p>
-                  Šifra naloga:
-                  <span>{{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }}</span>
-                  <span>Test</span>
+                  Nalog:
+                  <span># {{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }}</span>
+                  <span>vrsta proizvodnje{{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem }}</span>
                 </p>
                 <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
                 <p>
@@ -97,9 +97,9 @@
                         </div>
                     </div> -->
                   Alternative:
-                  <select>
+                  <!-- <select>
                     <option *ngFor="let alternative of (selectedPlanItemHierarchy$ | async).alternativeOptions" [value]="alternative.id">{{ alternative.name }}</option>
-                  </select>
+                  </select> -->
                   <span>Item</span>
                 </p>
 
