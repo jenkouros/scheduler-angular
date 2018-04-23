@@ -17,7 +17,7 @@ import { initialReducerMap, getInitialState } from './store/app.reducers';
 
 // import it to change locale and load localization messages
 //
-import { locale, loadMessages } from 'devextreme/localization'; 
+import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 // Load localized messages (English included by default)
@@ -38,7 +38,6 @@ registerLocaleData(localeSl, 'sl');
     BrowserModule,
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
-    SchedulerModule,
     StoreModule.forRoot(initialReducerMap, { initialState: getInitialState }),
     EffectsModule.forRoot([]),
     // StoreRouterConnectingModule,

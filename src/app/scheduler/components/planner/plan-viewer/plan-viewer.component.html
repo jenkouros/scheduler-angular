@@ -1,38 +1,25 @@
 <dx-scheduler id="scheduler" [dataSource]="data" [views]="['day', 'week', 'timelineDay']" [(currentView)]="currentView" [firstDayOfWeek]="0"
     [startDayHour]="8" [endDayHour]="23" [showAllDayPanel]="false" [groups]="['workplaceId']" [resources]="schedulerResources"
     [currentDate]="currentDate" [crossScrollingEnabled]="true" appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-    (onContentReady)="onContentReady($event)"
-    (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)" (onContentReady)="onContentReady($event)" (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentAdded)="onAppointmentAdded($event)">
 
     <dxo-editing [allowAdding]="false"></dxo-editing>
 
     <div *dxTemplate="let showtime of 'appointment-template'">
-        <div>Ticket Price:
-        </div>
-        <div class='dropdown-appointment-dates'>
-            {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}
-        </div>
-        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
-            <dxo-size [width]="90" [height]="20"></dxo-size>
-            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
-                <dxo-minor-tick [visible]="false"></dxo-minor-tick>
-                <dxo-label [visible]="false"></dxo-label>
-            </dxo-scale>
-        </dx-linear-gauge>
+            <div class="containerApp">                
+                <div class="box box1">
+                        <!--<div class="boxwrapper">45%</div>-->
+                        <span style="width: 45%">45%</span>
+                </div>
+                <div class="box box2">Ticket Price: {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}</div>
+                <div class="box box3">
+                    <div class="box box5">status</div>
+                    <div class="box box6">icon</div>
+                </div>
+            </div>
     </div>
 
-    <ng-template #defTemplate>
-        <dx-linear-gauge id="fuel-gauge" [value]="showtime.price+35">
-            <dxo-size [width]="90" [height]="20"></dxo-size>
-            <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="5" [minorTickInterval]="12.5">
-                <dxo-minor-tick [visible]="false"></dxo-minor-tick>
-                <dxo-label [visible]="false"></dxo-label>
-            </dxo-scale>
-        </dx-linear-gauge>
-    </ng-template>
-    
     <div *dxTemplate="let showtime of 'tooltip-template'">
         <div class='movie-tooltip'>
             <img [src]="getMovieById(showtime.movieId).image" />
