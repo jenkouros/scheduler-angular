@@ -6,7 +6,7 @@
         [allowColumnResizing]="true"
         columnResizingMode="nextColumn"
         id="gridContainer" 
-        [dataSource]="planItemStore"
+        [dataSource]="planItemsStore"
         [showRowLines]="true"
         [rowAlternationEnabled]="true">
           <!-- [dataSource]="(planItemState$ | async).entities" -->
@@ -71,40 +71,59 @@
           </dx-button>
       </li>
   </ul> -->
-        <dx-popup class='popup' [width]="300" [height]="300" [showTitle]="true" title="Information" [dragEnabled]="false" [closeOnOutsideClick]="true"
-          [(visible)]="popupVisible">
+        
+        <dx-popup class='popup' 
+        [resizeEnabled]="true"
+        [showTitle]="true" 
+        title="Delovni nalog" 
+        [dragEnabled]="false" 
+        [closeOnOutsideClick]="true"
+        [(visible)]="popupVisible">
           <div *dxTemplate="let data of 'content'">
-
             <div class="card-deck">
               <!-- <div class="card-header"></div> -->
               <div class="card-body">
-                <h5 class="card-title"></h5>
-                <p>
-                  Nalog:
-                  <span># {{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }}</span>
-                  <span>vrsta proizvodnje{{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem }}</span>
-                </p>
-                <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
-                <p>
-                    <!-- <div class="dx-field">
-                        <div class="dx-field-label">With a custom placeholder</div>
-                        <div class="dx-field-value">
-                            <dx-select-box
-                                [items]="simpleProducts"
-                                placeholder="Choose Product"
-                                [showClearButton]="true"
-                            ></dx-select-box>
-                        </div>
-                    </div> -->
-                  Alternative:
-                  <!-- <select>
-                    <option *ngFor="let alternative of (selectedPlanItemHierarchy$ | async).alternativeOptions" [value]="alternative.id">{{ alternative.name }}</option>
-                  </select> -->
-                  <span>Item</span>
-                </p>
-
-                <button type="button" class="btn btn-primary">Potdri</button>
-                <button type="button" class="btn btn-secondary">Prekliči</button>
+                <!-- <h5 class="card-title"></h5> -->
+                <h6>Šifra naloga: <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code  }}</span></h6>  
+                <h6>Artikel</h6>
+                <div>
+                  <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
+                </div>
+                <div>
+                  <label>Naziv: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
+                </div>         
+                <h6>ERP</h6>
+                  <div>
+                    <label>Količina: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
+                  </div>
+                  <div>
+                    <label>EM: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
+                  </div>
+                  <div>
+                    <label>Datum od: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
+                  </div>
+                  <div>
+                    <label>Datum do: </label><span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
+                  </div>
+                  <h6>Izbira alternative</h6>
+                  <div class="dx-field">
+                    <div class="dx-field-label">Alternativa: </div>
+                    <div class="dx-field-value">
+                      <dx-select-box
+                        [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions"
+                        valueExpr="id"
+                        displayExpr="name"
+                        placeholder="Izberi alternativo"
+                        [showClearButton]="true"
+                      ></dx-select-box>
+                    </div>
+                  </div>
+                  <app-alternative [alternative]="(selectedPlanItemHierarchy$ | async).planItemHierarchy.alternatives[0]" ></app-alternative>
+ 
+                  <div>
+                    <button type="button" class="btn btn-primary">Potdri</button>
+                    <button type="button" class="btn btn-secondary">Prekliči</button>
+                  </div>                
               </div>
             </div>
           </div>

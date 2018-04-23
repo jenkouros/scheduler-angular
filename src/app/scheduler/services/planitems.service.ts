@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class PlanItemsService {
-    constructor(/*private store: Store<fromStore.SchedulerState>*/) {}
+    constructor(/* private store: Store<fromStore.SchedulerState> */) {}
 
     getPlanItemsStore(): CustomStore {
         const store = createStore({
