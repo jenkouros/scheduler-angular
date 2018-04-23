@@ -22,6 +22,8 @@ import { locale, loadMessages } from 'devextreme/localization';
 import 'devextreme-intl';
 // Load localized messages (English included by default)
 let messagesSl = require("devextreme/localization/messages/sl.json");  
+// import messagesSl from './shared/localization/messages/sl.json!json';
+
 loadMessages(messagesSl);  
 //Set locale according the browser language
 locale(navigator.language);
