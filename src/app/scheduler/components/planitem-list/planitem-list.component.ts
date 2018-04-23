@@ -54,7 +54,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(planItem: PlanItem) {
-    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.id}));
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idPlanItem}));
     this.popupVisible = true;
   }
 

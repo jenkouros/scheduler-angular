@@ -14,7 +14,7 @@ export const getSelectedPlanItemHierarchy = createSelector(
         if (state.selectedItemHierarchy == null) {
             return new PlanItemHierarchyDto(null, null, []);
         }
-        const idx = state.items.findIndex(i => i.id === state.selectedItemHierarchy.idPlanItem);
+        const idx = state.items.findIndex(i => i.idPlanItem === state.selectedItemHierarchy.idPlanItem);
         if (idx < 0) {
             return new PlanItemHierarchyDto(null, null, []);
         }
