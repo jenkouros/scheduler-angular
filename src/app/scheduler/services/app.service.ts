@@ -50,7 +50,7 @@ let moviesData: MovieData[] = [{
     year: 1937,
     image: "images/movies/AStartIsBorn.jpg",
     duration: 111,
-    color: "#1e90ff"
+    color: '#1e90ff'
 }, {
     id: 4,
     text: "The Screaming Skull",
@@ -665,7 +665,7 @@ let data: Data[] = [{
     movieId: 1,
     price: 5,
     startDate: new Date(2015, 4, 25, 9, 30),
-    endDate: new Date(2015, 4, 25, 11, 2)
+    endDate: new Date(2015, 4, 25, 9, 40)
 }, {
     workplaceId: 1,
     movieId: 2,
@@ -1153,7 +1153,7 @@ export class Service {
         let workplaceGroups: any[] = [],
             planGroup: any[] = []
 
-        //working places (group)
+        // working places (group)
         workplaces.forEach((group: any) => {
             workplaceGroups.push({
                 text: group.text,

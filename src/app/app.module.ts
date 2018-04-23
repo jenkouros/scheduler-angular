@@ -14,18 +14,18 @@ import { AppComponent } from './app.component';
 import { AppRouterModule } from './app-router.module';
 import { EffectsModule } from '@ngrx/effects';
 import { initialReducerMap, getInitialState } from './store/app.reducers';
-
+import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import it to change locale and load localization messages
 //
 import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 // Load localized messages (English included by default)
-let messagesSl = require ("./shared/localization/sl.json");  
+const messagesSl = require ('./shared/localization/sl.json');
 // import messagesSl from './shared/localization/sl.json';
 
-loadMessages(messagesSl);  
-//Set locale according the browser language
+loadMessages(messagesSl);
+// Set locale according the browser language
 locale(navigator.language);
 
 registerLocaleData(localeSl, 'sl');
@@ -38,6 +38,7 @@ registerLocaleData(localeSl, 'sl');
     BrowserModule,
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
+    FontAwesomeModule,
     StoreModule.forRoot(initialReducerMap, { initialState: getInitialState }),
     EffectsModule.forRoot([]),
     // StoreRouterConnectingModule,

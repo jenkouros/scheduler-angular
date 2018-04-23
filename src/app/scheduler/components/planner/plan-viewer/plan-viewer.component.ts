@@ -11,6 +11,7 @@ import * as events from 'devextreme/events';
 import { ContainerSelect } from '../../../models/container.model';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -28,6 +29,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
+    faLock = faLock;
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
@@ -39,10 +41,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     }
 
-    getAppoinmentClass(){
-        if (this.scheduler.currentView === 'timelineDay')
-        {
-            return 'container1'
+    getAppoinmentClass() {
+        if (this.scheduler.currentView === 'timelineDay') {
+            return 'container1';
         }
         return '';
     }
@@ -191,9 +192,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     onAppointmentFormCreated(data) {
-        let that = this,
-            form = data.form,
-            movieInfo = that.getMovieById(data.appointmentData.movieId) || {},
+        const that = this,
+            form = data.form;
+        let    movieInfo = that.getMovieById(data.appointmentData.movieId) || {},
             startDate = data.appointmentData.startDate;
 
         form.option('items', [{
