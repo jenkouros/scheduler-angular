@@ -18,7 +18,7 @@ export class PlanItemHierarchyService {
 }
 
 const dummyPlanItemHierarchy: PlanItemHierarchy = {
-    idPlanItem: 1,
+    idPlanItem: 2,
     alternatives: [
         {
             code: '#01',

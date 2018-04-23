@@ -12,10 +12,16 @@ export const getSelectedPlanItemHierarchy = createSelector(
     getPlanItemsState,
     (state: fromFeature.PlanItemState) => {
         if (state.selectedItemHierarchy == null) {
-            return new PlanItemHierarchyDto(null, []);
+            return new PlanItemHierarchyDto(null, null, []);
+        }
+        const idx = state.items.findIndex(i => i.idPlanItem === state.selectedItemHierarchy.idPlanItem);
+        if (idx < 0) {
+            return new PlanItemHierarchyDto(null, null, []);
         }
 
+
         return new PlanItemHierarchyDto(
+            state.items[idx],
             state.selectedItemHierarchy,
             state.selectedItemHierarchy.alternatives.map(a =>
                 new FilterSelectValue(a.id, a.name, false))

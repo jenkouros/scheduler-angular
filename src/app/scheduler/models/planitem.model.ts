@@ -1,7 +1,7 @@
 import { Product, MeasurementUnit } from './shared.model';
 
 export interface PlanItem {
-    id: number;
+    idPlanItem: number;
     code: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
