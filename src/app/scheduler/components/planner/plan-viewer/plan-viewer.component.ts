@@ -100,23 +100,35 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     onContentReady(event) {
+
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
-             events.off(elements[i], 'dxdrop', this.testFunction);
+            /* events.off(elements[i], 'dxdrop', this.testFunction);
              events.on(elements[i], 'dxdrop', {
                 workplaceId: 2,
                 movieId: 3,
                 price: 11,
                 startDate: new Date(2015, 4, 25, 8, 1),
                 endDate: new Date(2015, 4, 25, 11, 1)
-            }, this.testFunction);
-            /*events.on(elements[i], 'dxdrop', (e) => {
+            }, this.testFunction);*/
+            events.off(elements[i], 'dxdrop');
+            events.on(elements[i], 'dxdrop', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
                 if (e.type === 'dxdrop') {
-
-
+                    const el  = e.target;
+                    if (el.classList.contains('dx-scheduler-date-table-cell')) {
+                         const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                        console.log(`dataCell${JSON.stringify(a)}`);
+                        this.editDetails({
+                            workplaceId: 2,
+                            movieId: 3,
+                            price: 11,
+                            startDate: new Date(2015, 4, 25, 8, 1),
+                            endDate: new Date(2015, 4, 25, 11, 1)
+                        });
+                        }
 
                     console.log(e, 'dx-droped');
                     this.scheduler.instance.addAppointment({
@@ -127,14 +139,23 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                         endDate: new Date(2015, 4, 25, 11, 1)
                     });
                 }
-        });*/
+        });
     }
 }
 
-    testFunction(e: Event, extraParameters) {
+    testFunction(e: any, extraParameters) {
         e.preventDefault();
         e.stopPropagation();
         console.log(e, 'dx-droped');
+
+        if (e.type === 'dxdrop') {
+            const el = e.target;
+        if (el.classList.contains('dx-scheduler-date-table-cell')) {
+            // const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+            console.log(this.scheduler);
+            }
+        }
+
 
     }
     ngAfterViewInit() {
@@ -168,14 +189,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     const data = JSON.parse(e.dataTransfer.getData('text'));
 
                     const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                    this.scheduler.instance.addAppointment({
-                        text: 'testing',
-                        workplaceId: 0,
-                        movieId: 5,
-                        price: 10,
-                        startDate: new Date(2015, 4, 25, 9, 10),
-                        endDate: new Date(2015, 4, 25, 11, 20)
-                    });
+
                     console.log(data);
                 }
 
