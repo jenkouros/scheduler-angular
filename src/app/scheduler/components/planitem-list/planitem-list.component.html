@@ -71,19 +71,41 @@
           </dx-button>
       </li>
   </ul> -->
-        <dx-popup class='popup' [width]="300" [height]="300" [showTitle]="true" title="Information" [dragEnabled]="false" [closeOnOutsideClick]="true"
+        <dx-popup class='popup' [width]="300" [height]="300" [showTitle]="true" title="Delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true"
           [(visible)]="popupVisible">
           <div *dxTemplate="let data of 'content'">
 
             <div class="card-deck">
               <!-- <div class="card-header"></div> -->
               <div class="card-body">
-                <h5 class="card-title"></h5>
-                <p>
-                  Nalog:
-                  <span># {{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }}</span>
-                  <span>vrsta proizvodnje{{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem }}</span>
-                </p>
+                <!-- <h5 class="card-title"></h5> -->
+                <h6><span># {{ (selectedPlanItemHierarchy$ | async).planItemHierarchy.idPlanItem  }} </span></h6>  
+                <h6>Artikel</h6>
+                <div>
+                  <label>Šifra: </label><span>000</span>
+                </div>
+                <div>
+                  <label>Naziv: </label><span>000</span>
+                </div>         
+                <h6>ERP</h6>
+                  <div>
+                    <label>Šifra: </label><span>000</span>
+                  </div> 
+                  <div>
+                    <label>Količina: </label>
+                  </div>
+                  <div>
+                    <label>EM: </label>
+                  </div>
+                  <div>
+                    <label>Datum od: </label>
+                  </div>
+                  <div>
+                    <label>Datum do: </label>
+                  </div>
+                  
+            
+                
                 <!-- <p *ngFor="let selectedPlanItem of (planItemState$ | async).selectedPlanItemHierarchy"> -->
                 <p>
                     <!-- <div class="dx-field">
