@@ -31,7 +31,14 @@ import {
         HttpClientModule,
         StoreModule.forFeature('scheduler', fromStore.reducers),
         EffectsModule.forFeature(fromStore.effects),
-        DxSchedulerModule, DxButtonModule, DxTemplateModule, DxLinearGaugeModule, DxPopupModule, DxDataGridModule, DxSelectBoxModule, DxTextBoxModule
+        DxSchedulerModule,
+        DxButtonModule,
+        DxTemplateModule,
+        DxLinearGaugeModule,
+        DxPopupModule,
+        DxDataGridModule,
+        /*DxSelectBoxModule,
+        DxTextBoxModule*/
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]
