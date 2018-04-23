@@ -28,6 +28,7 @@ export class PlanitemListComponent implements OnInit {
 
   numberOfItemsOnPage = 0;
   popupVisible = false;
+  data: any;
 
   constructor(private store: Store<fromStore.SchedulerState>, private planItemService: PlanItemsService) { }
 
@@ -54,7 +55,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showInfo(planItem: PlanItem) {
-    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idPlanItem}));
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.id}));
     this.popupVisible = true;
   }
 
