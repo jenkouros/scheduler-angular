@@ -34,82 +34,100 @@
         <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
 
         <div *dxTemplate="let cell of 'planCellTemplate'">
-          <span class="span-link" (click)="showInfo(cell.data)">Planiraj</span>
+          <span class="span-link" (click)="showPlanInfo(cell.data)">Planiraj</span>
         </div>
         <div *dxTemplate="let cell of 'dateCellTemplate'">
           {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
         </div>
       </dx-data-grid>
 
-      <div id="popup">
-        <dx-popup class='popup' [resizeEnabled]="true" [showTitle]="true" title="Delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true"
-          [(visible)]="popupVisible">
-          <div *dxTemplate="let data of 'content'">
-            <dx-scroll-view>
-              <div class="card-deck">
-                <!-- <div class="card-header"></div> -->
-                <div class="card-body">
-                  <!-- <h5 class="card-title"></h5> -->
-                  <h6>Šifra naloga:
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code }}</span>
-                  </h6>
-                  <h6>Artikel</h6>
-                  <div>
-                    <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
-                  </div>
-                  <div>
-                    <label>Naziv: </label>
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
-                  </div>
-                  <h6>ERP</h6>
-                  <div>
-                    <label>Količina: </label>
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
-                  </div>
-                  <div>
-                    <label>EM: </label>
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
-                  </div>
-                  <div>
-                    <label>Datum od: </label>
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
-                  </div>
-                  <div>
-                    <label>Datum do: </label>
-                    <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
-                  </div>
-                  <h6>Izbira alternative</h6>
-                  <div class="dx-field">
-                    <div class="dx-field-label">Alternativa: </div>
-                    <div class="dx-field-value">
-                      <dx-select-box 
-                        [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
-                        valueExpr="id" 
-                        displayExpr="name" 
-                        placeholder="Izberi alternativo"
-                        [showClearButton]="true"
-                        (onValueChanged)="selectAlternative($event.value)">
-                      </dx-select-box>
-                    </div>
-                  </div>
-                  <app-alternative 
-                    *ngIf="alternatives && selectedAlternative !== null" 
-                    [alternative]="alternatives[selectedAlternative]">
-                  </app-alternative>
 
-                  <div>
-                    <button type="button" class="btn btn-primary">Potdri</button>
-                    <button type="button" class="btn btn-secondary">Prekliči</button>
+      <dx-popup 
+        title="Workplace"
+        [closeOnOutsideClick]="true"
+        [(visible)]="popupVisible">
+
+
+        <!-- <dxi-toolbar-item 
+          toolbar="bottom" 
+          location="after" 
+          widget="dxButton" 
+          [options]="{ text: 'Cancel', onClick: hidePlanInfo }">
+        </dxi-toolbar-item>
+        <dxi-toolbar-item 
+          toolbar="bottom" 
+          location="after" 
+          widget="dxButton" 
+          [options]="{ text: 'Potrdi', type: 'success', onClick: logClick }">
+        </dxi-toolbar-item> -->
+        <div *dxTemplate="let data of 'content'">
+          <dx-scroll-view [height]="'94%'">
+            <div class="card-deck">
+              <!-- <div class="card-header"></div> -->
+              <div class="card-body">
+                <!-- <h5 class="card-title"></h5> -->
+                <h6>Šifra naloga:
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.code }}</span>
+                </h6>
+                <h6>Artikel</h6>
+                <div>
+                  <label>Šifra: </label> {{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}
+                </div>
+                <div>
+                  <label>Naziv: </label>
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</span>
+                </div>
+                <h6>ERP</h6>
+                <div>
+                  <label>Količina: </label>
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</span>
+                </div>
+                <div>
+                  <label>EM: </label>
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</span>
+                </div>
+                <div>
+                  <label>Datum od: </label>
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate'}}</span>
+                </div>
+                <div>
+                  <label>Datum do: </label>
+                  <span> {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate'}}</span>
+                </div>
+                <h6>Izbira alternative</h6>
+                <div class="dx-field">
+                  <div class="dx-field-label">Alternativa: </div>
+                  <div class="dx-field-value">
+                    <dx-select-box 
+                      [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                      valueExpr="id" 
+                      displayExpr="name" 
+                      placeholder="Izberi alternativo"
+                      [showClearButton]="true"
+                      (onValueChanged)="selectAlternative($event.value)">
+                    </dx-select-box>
                   </div>
                 </div>
+                <app-alternative 
+                  *ngIf="alternatives && selectedAlternative > -1" 
+                  [alternative]="alternatives[selectedAlternative]">
+                </app-alternative>
               </div>
-            </dx-scroll-view>
-
+            </div>
+          </dx-scroll-view>
+          <div class="float-right">
+            <dx-button
+              text="Prekliči"
+              (onClick)="hidePlanInfo()">
+            </dx-button>
+            <dx-button
+              type="success"
+              text="Potrdi"
+              (onClick)="logClick()">
+            </dx-button>
           </div>
-
-
-        </dx-popup>
-      </div>
+        </div>
+      </dx-popup>
     </div>
   </div>
 </div>

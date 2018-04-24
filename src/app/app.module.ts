@@ -15,19 +15,14 @@ import { AppRouterModule } from './app-router.module';
 import { EffectsModule } from '@ngrx/effects';
 import { initialReducerMap, getInitialState } from './store/app.reducers';
 import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-// import it to change locale and load localization messages
-//
+
 import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
-// Load localized messages (English included by default)
-// const messagesSl = require ('./shared/localization/sl.json');
 import * as messagesSl from './shared/localization/sl.json';
 
 loadMessages(messagesSl);
-// Set locale according the browser language
 locale(navigator.language);
-
 registerLocaleData(localeSl, 'sl');
 
 @NgModule({

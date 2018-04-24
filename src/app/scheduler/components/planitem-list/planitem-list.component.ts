@@ -22,7 +22,7 @@ export class PlanitemListComponent implements OnInit {
   planItemsStore: CustomStore;
   selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
 
-  selectedAlternative: number = null;
+  selectedAlternative = -1;
   numberOfItemsOnPage = 0;
   popupVisible = false;
   data: any;
@@ -48,7 +48,16 @@ export class PlanitemListComponent implements OnInit {
     console.log(test);
   }
 
-  showInfo(planItem: PlanItem) {
+  logClick() {
+    console.log('Clicked button');
+    this.hidePlanInfo();
+  }
+
+  hidePlanInfo() {
+    this.popupVisible = false;
+  }
+
+  showPlanInfo(planItem: PlanItem) {
     this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idPlanItem}));
     this.popupVisible = true;
   }
