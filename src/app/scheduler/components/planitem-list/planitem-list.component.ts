@@ -9,7 +9,7 @@ import 'rxjs/add/operator/take';
 import { PlanItemState } from '../../store/reducers/planitems.reducer';
 import { PlanItemHierarchyDto } from '../../models/planItem.dto';
 import CustomStore from 'devextreme/data/custom_store';
-import { PlanItem } from '../../models/planitem.model';
+import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.model';
 import { LoadPlanItems } from '../../store';
 
 @Component({
@@ -18,10 +18,11 @@ import { LoadPlanItems } from '../../store';
   styleUrls: ['./planitem-list.component.css']
 })
 export class PlanitemListComponent implements OnInit {
-  // planItemState$: Observable<PlanItemState>;
+  alternatives: PlanItemHierarchyAlternative[];
   planItemsStore: CustomStore;
   selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
 
+  selectedAlternative: number = null;
   numberOfItemsOnPage = 0;
   popupVisible = false;
   data: any;
@@ -32,10 +33,15 @@ export class PlanitemListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new LoadPlanItems());
-    // this.planItemState$ = this.store.select(fromStore.getPlanItemsState);
     this.store.select(fromStore.getPlanItemsStore)
       .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+    this.selectedPlanItemHierarchy$.subscribe(hierarchy => {
+      if (!hierarchy.planItemHierarchy) {
+        return;
+      }
+      this.alternatives = hierarchy.planItemHierarchy.alternatives;
+    });
   }
 
   log(test) {
@@ -45,6 +51,10 @@ export class PlanitemListComponent implements OnInit {
   showInfo(planItem: PlanItem) {
     this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idPlanItem}));
     this.popupVisible = true;
+  }
+
+  selectAlternative(alternativeId: number) {
+    this.selectedAlternative = this.alternatives.findIndex(i => i.id === alternativeId);
   }
 
 }

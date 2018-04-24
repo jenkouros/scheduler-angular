@@ -56,47 +56,54 @@
     background: grey;
     height: 100%;
     text-align: center;
-    width: 45%;
+    height: 45%;
   }
-.box2 {
+  ::ng-deep .box2 {
     background: transparent;
     grid-row: span 2;
     align-items: center;
     text-align: center;
     vertical-align: center;
   }
-.box3 {
-    background: rgb(252, 181, 181);
-    display: grid;
-    grid-template-columns: 5fr 1fr;    
-  }
-.box4 {
+  ::ng-deep .box3 {
+    text-align: center;
+}
+  ::ng-deep .box4 {
     background: rgb(71, 175, 140);
-    
 }
 
-.box5 {
-    background: green;
-    
-}
-
-.containerApp{
-    display: grid;
+::ng-deep .box5 {
+    background: green; 
     height: 100%;
-    width: 100%;  
-    grid-template-columns: 1fr 2.5fr;
-    grid-template-rows: 5fr 1fr;   
-    border: gray solid 1px;
-  }
-  .stackem div {
+   
+}
+
+::ng-deep .box6 {
+    text-align: center;
     width: 100%;
 }
 
+::ng-deep .containerApp{
+    display: grid;
+    height: 100%;
+    width: 100%;  
+    grid-template-columns: 1fr 4fr minmax(0px, 25px) minmax(0px, 10px);
+    grid-template-rows: 1fr;
+    border: gray solid 1px;
+  }
+ 
 .box1 > span {
-    display: block;
+display: block;
     height: 100%;    
     background-color: grey;      
     position: relative;
     overflow: hidden;
     text-align: center;
   }
+
+  .wordwrap { 
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
+ }
