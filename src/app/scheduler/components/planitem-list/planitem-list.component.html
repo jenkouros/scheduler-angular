@@ -93,8 +93,8 @@
                     </div>
                   </div>
                   <app-alternative 
-                    *ngIf="alternatives && selectAlternative" 
-                    [alternative]="alternatives[1]">
+                    *ngIf="alternatives && selectedAlternative !== null" 
+                    [alternative]="alternatives[selectedAlternative]">
                   </app-alternative>
 
                   <div>

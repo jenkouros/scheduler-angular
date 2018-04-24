@@ -54,7 +54,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   selectAlternative(alternativeId: number) {
-    this.selectedAlternative = alternativeId;
+    this.selectedAlternative = this.alternatives.findIndex(i => i.id === alternativeId);
   }
 
 }
