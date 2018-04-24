@@ -1,23 +1,18 @@
 <dx-scheduler id="scheduler" [dataSource]="data" [views]="['day', 'week', 'timelineDay']" [(currentView)]="currentView" [firstDayOfWeek]="0"
     [startDayHour]="8" [endDayHour]="23" [showAllDayPanel]="false" [groups]="['workplaceId']" [resources]="schedulerResources"
-    [currentDate]="currentDate" [crossScrollingEnabled]="true" appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)" (onContentReady)="onContentReady($event)" (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    [currentDate]="currentDate"        
+    [crossScrollingEnabled]="true" 
+    appointmentTemplate="appointment-template" 
+    appointmentTooltipTemplate="tooltip-template"
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)" (onContentReady)="onContentReady($event)" 
+    (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    (onAppointmentAdding)="onAppointmentAdding($event)"
     (onAppointmentAdded)="onAppointmentAdded($event)">
 
     <dxo-editing [allowAdding]="false"></dxo-editing>
 
     <div *dxTemplate="let showtime of 'appointment-template'">
-            <div class="containerApp">
-                    <div class="box1">
-                            <div class="boxwrapper">45%</div>
-                            <!--<span style="width: 45%">45%</span>-->
-                    </div>                
-                <div class="box2 wordwrap">Ticket Price: dfsdf fsd fds fds fsdfds 12334 {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}</div>
-                <div class="box3">
-                        <fa-icon [icon]="faLock"></fa-icon>
-                    </div>
-                <div class="box5">S</div>
-            </div>
+            <app-plan-viewer-item [plannerItemData]="showtime"></app-plan-viewer-item>           
     </div>
 
     <div *dxTemplate="let showtime of 'tooltip-template'">

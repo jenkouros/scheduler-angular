@@ -13,10 +13,10 @@ export class MovieData {
 
 
 
-//grupe za prikaz operacij po delovnih mestih
+// grupe za prikaz operacij po delovnih mestih
 export interface WorkPlaceData {
-    id: number;         //id stroja
-    text: string;       //naziv stroja
+    id: number;         // id stroja
+    text: string;       // naziv stroja
 }
 
 export class Data {
@@ -27,7 +27,7 @@ export class Data {
     endDate: Date
 }
 
-let moviesData: MovieData[] = [{
+const moviesData: MovieData[] = [{
     id: 1,
     text: "His Girl Friday",
     director: "Howard Hawks",
@@ -54,11 +54,11 @@ let moviesData: MovieData[] = [{
 }, {
     id: 4,
     text: "The Screaming Skull",
-    director: "Alex Nicol",
+    director: 'Alex Nicol',
     year: 1958,
     image: "images/movies/ScreamingSkull.jpg",
     duration: 68,
-    color: "#ff9747"
+    color: '#ff9747'
 }, {
     id: 5,
     text: "It's a Wonderful Life",
@@ -1150,7 +1150,7 @@ export class Service {
     }
 
     getResources(workplaces: any, plans: MovieData[]) {
-        let workplaceGroups: any[] = [],
+        const workplaceGroups: any[] = [],
             planGroup: any[] = []
 
         // working places (group)
@@ -1159,7 +1159,7 @@ export class Service {
                 text: group.text,
                 id: group.id,
             });
-        });       
+        });
         plans.forEach((plan: any) => {
             planGroup.push({
                 text: plan.text,
@@ -1170,12 +1170,12 @@ export class Service {
         console.log(workplaceGroups, planGroup);
         return [
             {
-                fieldExpr: "movieId",                 
+                fieldExpr: 'movieId',
                 useColorAsDefault: true,
                 dataSource: planGroup
             },
             {
-                fieldExpr: "workplaceId",
+                fieldExpr: 'workplaceId',
                 dataSource: workplaceGroups
             }
         ];
