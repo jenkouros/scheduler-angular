@@ -14,11 +14,8 @@ import { FilterAutocompleteComponent } from './filters/filter-autocomplete/filte
 import { ContainerListComponent } from './container-list/container-list.component';
 import { AlternativeComponent } from './planitem-list/planitem-item/alternative/alternative.component';
 import { PlansubitemComponent } from './planitem-list/planitem-item/plansubitem/plansubitem.component';
-<<<<<<< HEAD
 import { PrePlanitemListComponent } from './pre-planitem-list/pre-planitem-list.component';
-=======
 import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
->>>>>>> a8f99aaf91b993dbe295235f8d440926942479c1
 
 export const components: any[] = [
     FiltersComponent,
@@ -37,11 +34,8 @@ export const components: any[] = [
     ContainerListComponent,
     AlternativeComponent,
     PlansubitemComponent,
-<<<<<<< HEAD
-    PrePlanitemListComponent
-=======
+    PrePlanitemListComponent,
     PlanViewerItemComponent
->>>>>>> a8f99aaf91b993dbe295235f8d440926942479c1
 ];
 
 export * from './filters/filters.component';
@@ -59,8 +53,5 @@ export * from './filters/filter-checkbox/filter-checkbox.component';
 export * from './filters/filter-autocomplete/filter-autocomplete.component';
 export * from './planitem-list/planitem-item/alternative/alternative.component';
 export * from './planitem-list/planitem-item/plansubitem/plansubitem.component';
-<<<<<<< HEAD
 export * from './pre-planitem-list/pre-planitem-list.component';
-=======
 export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
->>>>>>> a8f99aaf91b993dbe295235f8d440926942479c1
