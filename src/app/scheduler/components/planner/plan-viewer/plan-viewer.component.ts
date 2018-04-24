@@ -121,7 +121,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
                          const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
                         console.log(`dataCell${JSON.stringify(a)}`);
-
+                    }
 
                     console.log(e, 'dx-droped');
                     this.scheduler.instance.addAppointment({
@@ -132,9 +132,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                         endDate: new Date(2015, 4, 25, 11, 1)
                     });
                 }
-        });
+            });
+        }
     }
-}
 
     testFunction(e: any, extraParameters) {
         e.preventDefault();

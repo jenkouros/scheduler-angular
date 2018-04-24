@@ -21,8 +21,8 @@ import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 // Load localized messages (English included by default)
-const messagesSl = require ('./shared/localization/sl.json');
-// import messagesSl from './shared/localization/sl.json';
+// const messagesSl = require ('./shared/localization/sl.json');
+import * as messagesSl from './shared/localization/sl.json';
 
 loadMessages(messagesSl);
 // Set locale according the browser language
