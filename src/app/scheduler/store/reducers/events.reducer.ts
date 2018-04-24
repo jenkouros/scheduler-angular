@@ -14,7 +14,7 @@ export const initialState: EventsState = {
 };
 
 export function eventsReducer(
-    state: EventsState,
+    state = initialState,
     action: fromAction.EventsAction
 ): EventsState {
     switch (action.type) {

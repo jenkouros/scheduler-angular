@@ -16,7 +16,7 @@ export class ContainerListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadContainers());
-    // this.containers$ = 
+    // this.containers$ =
     this.store.select(fromStore.getContainers).subscribe(
       (containers) => {
         this.containers = containers;
@@ -34,6 +34,7 @@ export class ContainerListComponent implements OnInit {
   }
 
   onSelectContainer(containerId) {
+    console.log(containerId);
     this.store.dispatch(new fromStore.SelectContainers([containerId]));
   }
 
