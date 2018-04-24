@@ -34,99 +34,82 @@
         <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
 
         <div *dxTemplate="let cell of 'planCellTemplate'">
-          <span class="span-link" (click)="showInfo(cell.data)">Planiraj</span>
+          <span class="span-link" (click)="showPlanInfo(cell.data)">Planiraj</span>
         </div>
         <div *dxTemplate="let cell of 'dateCellTemplate'">
           {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
         </div>
       </dx-data-grid>
-
-
-
-      <div id="popup"> 
-        <dx-popup class='popup' 
-          [resizeEnabled]="true"
-          [showTitle]="true" 
-          title="Delovni nalog" 
-          [dragEnabled]="false" 
-          [closeOnOutsideClick]="true"
-          [(visible)]="popupVisible">
-          <div *dxTemplate="let data of 'content'">
-
-              <div class="dx-fieldset">
-                <div class="dx-fieldset-header">Delovni nalog</div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Šifra</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.code }}</div>
-                </div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Vrsta proizvodnje</div>
-                  <div class="dx-field-value-static">vrsta proizvodnje</div>
-                </div>
-            </div>
-            <div class="dx-fieldset">
-                <div class="dx-fieldset-header">Artikel</div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Šifra</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.product.code }}</div>
-                </div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Nazvi</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</div>
-                </div>
-            </div>
-            <div class="dx-fieldset">
-                <div class="dx-fieldset-header">ERP</div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Količina</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.quantity }}</div>
-                </div>
-                <div class="dx-field">
-                  <div class="dx-field-label">EM</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</div>
-                </div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Datum od</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'shortDate' }}</div>
-                </div>
-                <div class="dx-field">
-                  <div class="dx-field-label">Datum do</div>
-                  <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'shortDate' }}</div>
-                </div>
-            </div>          
-            <div class="dx-fieldset">
-              <div class="dx-fieldset-header">Izbira alternative</div>
-              <div class="dx-field">
-                <div class="dx-field-label">Alternativa</div>
-                <div class="dx-field-value-static">
-                  <dx-select-box
-                    [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions"
-                    valueExpr="id"
-                    displayExpr="name"
-                    placeholder="Izberi alternativo"
-                    [showClearButton]="true"
-                ></dx-select-box>
-                </div>
-              </div>
-            </div>    
-                
-            <app-alternative [alternative]="(selectedPlanItemHierarchy$ | async).planItemHierarchy.alternatives[0]" ></app-alternative>
- 
-            <div class="dx-fieldset">
-              <!-- <div class="dx-fieldset-header">#</div> -->
-              <div class="dx-field">
-                <!-- <div class="dx-field-label">#</div> -->
-                <div class="dx-field-value-static">
-                  <button type="button" class="btn btn-primary">Potdri</button>
-                  <button type="button" class="btn btn-secondary">Prekliči</button>
-                </div>
-              </div>              
-            </div>                          
-          </div>
-
-
-        </dx-popup>
-      </div>
     </div>
   </div>
 </div>
+
+<dx-popup title="Planiraj delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view [height]="'94%'">
+
+      <div class="row">
+
+        <div class="dx-fieldset col">
+          <div class="dx-fieldset-header">Delovni nalog</div>
+          <div class="dx-field">
+            <div class="dx-field-label">Šifra</div>
+            <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.code }}</div>
+          </div>
+          <!-- <div class="dx-field">
+            <div class="dx-field-label">Vrsta proizvodnje</div>
+            <div class="dx-field-value-static">vrsta proizvodnje</div>
+          </div> -->
+
+          <div class="dx-field">
+              <div class="dx-field-label">Artikel</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.product.code }} - {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</div>
+          </div>
+
+        </div>
+
+        <div class="dx-fieldset col">
+          
+            <div class="dx-fieldset-header">ERP</div>
+            <div class="dx-field">
+              <div class="dx-field-label">Količina</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.quantity }} {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</div>
+            </div>
+
+            <div class="dx-field">
+              <div class="dx-field-label">Datum</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'mediumDate' }} - {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'mediumDate' }}</div>
+            </div>
+  
+          </div>
+
+      </div>
+
+      
+      <div class="dx-fieldset">
+        <div class="dx-fieldset-header">Izbira alternative</div>
+        <div class="dx-field">
+          <div class="dx-field-label">Alternativa</div>
+          <div class="dx-field-value-static">
+            <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" valueExpr="id" displayExpr="name" placeholder="Izberi alternativo"
+              [showClearButton]="true" (onValueChanged)="selectAlternative($event.value)"></dx-select-box>
+          </div>
+          <app-alternative *ngIf="alternatives && selectedAlternative > -1" [alternative]="alternatives[selectedAlternative]">
+          </app-alternative>
+        </div>
+      </div>
+      <div class="dx-fieldset">
+        <!-- <div class="dx-fieldset-header">#</div> -->
+        <div class="dx-field">
+          <!-- <div class="dx-field-label">#</div> -->
+          <div class="dx-field-value-static">
+            <dx-button text="Prekliči" (onClick)="hidePlanInfo()">
+            </dx-button>
+            <dx-button type="success" text="Potrdi" (onClick)="logClick()">
+            </dx-button>
+          </div>
+        </div>
+      </div>
+    </dx-scroll-view>
+  </div>
+</dx-popup>
