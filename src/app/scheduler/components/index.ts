@@ -14,6 +14,7 @@ import { FilterAutocompleteComponent } from './filters/filter-autocomplete/filte
 import { ContainerListComponent } from './container-list/container-list.component';
 import { AlternativeComponent } from './planitem-list/planitem-item/alternative/alternative.component';
 import { PlansubitemComponent } from './planitem-list/planitem-item/plansubitem/plansubitem.component';
+import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
 
 export const components: any[] = [
     FiltersComponent,
@@ -31,7 +32,8 @@ export const components: any[] = [
     FilterAutocompleteComponent,
     ContainerListComponent,
     AlternativeComponent,
-    PlansubitemComponent
+    PlansubitemComponent,
+    PlanViewerItemComponent
 ];
 
 export * from './filters/filters.component';
@@ -49,3 +51,4 @@ export * from './filters/filter-checkbox/filter-checkbox.component';
 export * from './filters/filter-autocomplete/filter-autocomplete.component';
 export * from './planitem-list/planitem-item/alternative/alternative.component';
 export * from './planitem-list/planitem-item/plansubitem/plansubitem.component';
+export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';

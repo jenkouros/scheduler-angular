@@ -11,7 +11,7 @@ import * as events from 'devextreme/events';
 import { ContainerSelect } from '../../../models/container.model';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
-import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import {PlanViewerItemComponent} from '../../../components/index';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -29,7 +29,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
-    faLock = faLock;
+
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
@@ -94,9 +94,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     }
 
+    onAppointmentAdding(e) {
+        console.log('onAppointmentAdding', e);
+    }
     onAppointmentAdded(e) {
         console.log(e);
-
     }
 
     onContentReady(event) {
