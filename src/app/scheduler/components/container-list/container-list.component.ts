@@ -17,11 +17,7 @@ export class ContainerListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadContainers());
     // this.containers$ =
-<<<<<<< HEAD
     this.store.select(fromStore.getContainerSelectList).subscribe(
-=======
-    this.store.select(fromStore.getContainers).subscribe(
->>>>>>> 8692126da6b4f577c2a6f3b9ac656a9e30a807d5
       (containers) => {
         this.containers = containers;
         console.log(this.containers);
