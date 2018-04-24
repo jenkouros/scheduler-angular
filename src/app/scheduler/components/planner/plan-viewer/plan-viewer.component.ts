@@ -37,7 +37,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
                 this.schedulerResources = this.getResources(containers, this.moviesData);
+                this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items =>
+                    console.log('getEventsForContainers', items)
+                );
             });
+
 
     }
 
