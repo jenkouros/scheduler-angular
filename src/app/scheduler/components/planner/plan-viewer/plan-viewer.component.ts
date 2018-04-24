@@ -8,7 +8,7 @@ import {
 import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
 import Query from 'devextreme/data/query';
 import * as events from 'devextreme/events';
-import { ContainerSelect } from '../../../models/container.model';
+import { Container } from '../../../models/container.dto';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import {PlanViewerItemComponent} from '../../../components/index';
@@ -34,7 +34,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.data = service.getData();
         this.moviesData = service.getMoviesData();
         this.workplaceData = service.getWorkPlaceData();
-        this.store.select(fromStore.getSelectedContainers).subscribe(
+        this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
                 this.schedulerResources = this.getResources(containers, this.moviesData);
             });
@@ -52,7 +52,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
             planGroup: any[] = [];
 
         // working places (group)
-        containers.forEach((container: ContainerSelect) => {
+        containers.forEach((container: Container) => {
             workplaceGroups.push({
                 text: container.code,
                 id: container.id,

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ContainerSelect } from '../../models/container.model';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
+import { ContainerSelect } from '../../models/container.viewModel';
 
 @Component({
   selector: 'app-container-list',
@@ -10,14 +10,14 @@ import * as fromStore from '../../store';
   styleUrls: ['./container-list.component.css']
 })
 export class ContainerListComponent implements OnInit {
-  containers$: Observable<ContainerSelect[]>;
+  // containers$: Observable<ContainerSelect[]>;
   containers: ContainerSelect[];
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadContainers());
-    // this.containers$ = 
-    this.store.select(fromStore.getContainers).subscribe(
+    // this.containers$ =
+    this.store.select(fromStore.getContainerSelectList).subscribe(
       (containers) => {
         this.containers = containers;
         console.log(this.containers);

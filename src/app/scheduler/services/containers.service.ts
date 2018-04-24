@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Container } from '../models/container.model';
+import { ContainerServer } from '../models/server/container.servermodel';
 import { HttpClient } from '@angular/common/http';
+import { Container } from '../models/container.dto';
 
-const dummyContainers: Container[] = [
+const dummyContainers: ContainerServer[] = [
     {
         code: 'D1',
         id: 1,
@@ -40,7 +41,7 @@ export class ContainersService {
     getContainers(): Observable<Container[]> {
         // TODO - go to server
         return new Observable<Container[]>(observer => {
-            observer.next(dummyContainers);
+            observer.next(dummyContainers.map(serverContainer => Container.fromServer(serverContainer)));
         });
     }
 }

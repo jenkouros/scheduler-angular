@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { PlanItemHierarchy } from '../models/planitem.model';
+import { PlanItemHierarchyServer } from '../models/server/planitem.servermodel';
 
 @Injectable()
 export class PlanItemHierarchyService {
@@ -11,13 +11,13 @@ export class PlanItemHierarchyService {
     getPlanItemHierarchy(planItemId) {
         // TODO return from database
         // PlanItemHierarchy
-        return new Observable<PlanItemHierarchy>(observer => {
+        return new Observable<PlanItemHierarchyServer>(observer => {
             observer.next(dummyPlanItemHierarchy);
         });
     }
 }
 
-const dummyPlanItemHierarchy: PlanItemHierarchy = {
+const dummyPlanItemHierarchy: PlanItemHierarchyServer = {
     idPlanItem: 2,
     alternatives: [
         {

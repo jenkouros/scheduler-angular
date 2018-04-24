@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PlanItemHierarchyAlternative } from '../../../../models/planitem.model';
+import { PlanItemHierarchyAlternative } from '../../../../models/planitem.dto';
 
 @Component({
   selector: 'app-alternative',

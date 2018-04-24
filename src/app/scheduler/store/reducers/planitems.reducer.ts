@@ -1,7 +1,7 @@
-import { PlanItem, PlanItemHierarchy } from '../../models/planitem.model';
 import * as fromPlanItems from '../actions/planitems.action';
 import { Pagination } from '../../../shared/shared.model';
 import CustomStore from 'devextreme/data/custom_store';
+import { PlanItem, PlanItemHierarchy } from '../../models/planitem.dto';
 
 export interface PlanItemState {
     items: PlanItem[];

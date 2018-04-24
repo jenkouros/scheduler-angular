@@ -1,6 +1,8 @@
-import * as fromFeature from "../reducers";
-import { createSelector } from "@ngrx/store";
-import { Filter, FilterSelect } from "../../models/filter.model";
+import * as fromFeature from '../reducers';
+import { createSelector } from '@ngrx/store';
+import { Filter } from '../../models/filter.dto';
+import { FilterServer } from '../../models/server/filter.servermodel';
+import { FilterSelect } from '../../models/filter.viewmodel';
 
 export const getFiltersState = createSelector(
     fromFeature.getSchedulerState,
@@ -10,65 +12,36 @@ export const getFiltersState = createSelector(
 export const getSelectedFilters = createSelector(
     getFiltersState,
     (state: fromFeature.FilterState) => {
-        if(!state) {
+        if (!state) {
             return undefined;
         }
-        return state.selectedEntities
-    } 
+        return state.selectedEntities;
+    }
 );
 
-export const getFiltersCodeList = createSelector(
+export const getFilterCodeList = createSelector(
     getFiltersState,
     (state: fromFeature.FilterState) => {
-        if(!state) {
+        if (!state) {
             return undefined;
         }
         return state.entities;
     }
 );
 
-export const getFilters = createSelector(
-    getFiltersCodeList,
+export const getFilterSelectList = createSelector(
+    getFilterCodeList,
     getSelectedFilters,
-    (filters: Filter[], selectedFilters: { [id:number]: number[] } = {}) => {
-        if(!filters) {
+    (filters: Filter[], selectedFilters: { [id: number]: number[] } = {}) => {
+        if (!filters) {
             return undefined;
         }
         return filters.map(f => {
-            var filterSelect = new FilterSelect(f);
-            if(selectedFilters[filterSelect.id]) {
-                filterSelect.selectValues(selectedFilters[filterSelect.id])
+            const filterSelect = new FilterSelect(f);
+            if (selectedFilters[filterSelect.id]) {
+                filterSelect.selectValues(selectedFilters[filterSelect.id]);
             }
             return filterSelect;
-/*
-            if(selectedFilters[f.id]) {
-                f.values.map(v => {
-                    if(selectedFilters[f.id].indexOf(v.id) > -1) {
-                        return {
-                            ...v,
-                            selected: true
-                        }
-                    }
-                    return v;
-                });
-            }
-            return f;*/
         });
-
-        /*
-        for(let selected in selectedFilters) {
-            let elem = filters.find(x => x.id === +selected);
-            if(elem) {
-                elem.values.forEach(val => {
-                    if(selectedFilters[selected].indexOf(val.id) > -1) {
-                        val.selected = true;
-                    } else {
-                        val.selected = false;
-                    }
-                })
-            }
-        }
-        return state.entities;
-        */
     }
-)
+);

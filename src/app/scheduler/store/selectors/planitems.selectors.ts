@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import * as fromFeature from '../reducers';
-import { PlanItemHierarchyDto } from '../../models/planItem.dto';
-import { FilterSelectValue } from '../../models/filter.model';
+import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
+import { FilterValue } from '../../models/filter.dto';
 
 export const getPlanItemsState = createSelector(
     fromFeature.getSchedulerState,
@@ -17,19 +17,19 @@ export const getSelectedPlanItemHierarchy = createSelector(
     getPlanItemsState,
     (state: fromFeature.PlanItemState) => {
         if (state.selectedItemHierarchy == null) {
-            return new PlanItemHierarchyDto(null, null, []);
+            return new PlanItemHierarchyViewModel(null, null, []);
         }
         const idx = state.items.findIndex(i => i.idPlanItem === state.selectedItemHierarchy.idPlanItem);
         if (idx < 0) {
-            return new PlanItemHierarchyDto(null, null, []);
+            return new PlanItemHierarchyViewModel(null, null, []);
         }
 
 
-        return new PlanItemHierarchyDto(
+        return new PlanItemHierarchyViewModel(
             state.items[idx],
             state.selectedItemHierarchy,
             state.selectedItemHierarchy.alternatives.map(a =>
-                new FilterSelectValue(a.id, a.name, false))
+                new FilterValue(a.id, a.name))
         );
     }
 );

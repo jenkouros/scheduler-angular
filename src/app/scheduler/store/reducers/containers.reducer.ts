@@ -1,5 +1,5 @@
 import * as fromAction from '../actions/containers.action';
-import { Container } from '../../models/container.model';
+import { Container } from '../../models/container.dto';
 
 export interface ContainerState {
     containers: Container[];

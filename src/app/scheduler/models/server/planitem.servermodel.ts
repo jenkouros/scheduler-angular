@@ -1,31 +1,30 @@
-import { Product, MeasurementUnit } from './shared.model';
+import { ProductServer, MeasurementUnitServer } from './shared.servermodel';
 
-export interface PlanItem {
+export interface PlanItemServer {
     idPlanItem: number;
     code: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
     quantityPlanned: number; // ze planirana kolicina
-    measurementUnit: MeasurementUnit;
-    product: Product;
+    measurementUnit: MeasurementUnitServer;
+    product: ProductServer;
     limitDateFrom: Date;
     limitDateTo: Date;
-    // planSubItems: { [alternativeId: number]: PlanSubItem[] }[];
 }
 
-export interface PlanItemHierarchy {
+export interface PlanItemHierarchyServer {
     idPlanItem: number;
-    alternatives: PlanItemHierarchyAlternative[];
+    alternatives: PlanItemHierarchyAlternativeServer[];
 }
 
-export interface PlanItemHierarchyAlternative {
+export interface PlanItemHierarchyAlternativeServer {
     id: number;
     name: string;
     code: string;
-    planSubItems: PlanSubItem[];
+    planSubItems: PlanSubItemServer[];
 }
 
-export interface PlanSubItem {
+export interface PlanSubItemServer {
     name: string;
     code: string;
     normativeTimeMachine: number;
@@ -36,7 +35,7 @@ export interface PlanSubItem {
     quantity: number;
 }
 
-export interface PlanItemFilter {
+export interface PlanItemFilterServer {
     id: number;
     values: string[];
 }

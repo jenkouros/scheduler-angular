@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Container } from '../../models/container.model';
+import { Container } from '../../models/container.dto';
 
 export const LOAD_CONTAINERS = '[Containers] Load containers';
 export const LOAD_CONTAINERS_FAIL = '[Containers] Load containers Fail';

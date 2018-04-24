@@ -1,6 +1,4 @@
-import { Filter } from "./filter.model";
-
-export interface GroupFilter {
+export interface GroupFilterServer {
     id: number;
     name: string;
     type: string;

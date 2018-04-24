@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FilterSelectValue } from '../../../models/filter.model';
+import { FilterValueSelect } from '../../../models/filter.viewModel';
 
 
 @Component({
@@ -8,11 +8,11 @@ import { FilterSelectValue } from '../../../models/filter.model';
   styleUrls: ['./filter-autocomplete.component.css']
 })
 export class FilterAutocompleteComponent implements OnInit {
-  @Input() filterValues: FilterSelectValue[];
+  @Input() filterValues: FilterValueSelect[];
   @Input() placeholder: string;
   @Output() add = new EventEmitter<number>();
   @Output() remove = new EventEmitter<number>();
-  
+
   selectedValues: number[] = [];
 
   constructor() { }
@@ -22,12 +22,11 @@ export class FilterAutocompleteComponent implements OnInit {
       .filter(x => x.selected)
       .map(x => x.id);
   }
-  
+
   onChange(value: number, remove: boolean) {
-    if(!remove) {
+    if (!remove) {
       this.add.emit(value);
-    } 
-    else {
+    } else {
       this.remove.emit(value);
     }
   }

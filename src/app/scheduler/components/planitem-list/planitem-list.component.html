@@ -45,8 +45,24 @@
 </div>
 
 <dx-popup title="Planiraj delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
+    <!-- <dxi-toolbar-item 
+    text="Planiraj delovni nalog">
+  </dxi-toolbar-item> -->
+    <dxi-toolbar-item 
+      toolbar="bottom" 
+      location="after" 
+      widget="dxButton" 
+      [options]="{ text: 'Prekliči', onClick: hidePlanInfo }">
+    </dxi-toolbar-item>
+    <dxi-toolbar-item 
+      toolbar="bottom" 
+      location="after" 
+      widget="dxButton" 
+      [options]="{ text: 'Potrdi', type: 'success', onClick: logClick }">
+    </dxi-toolbar-item>
+  
   <div *dxTemplate="let data of 'content'">
-    <dx-scroll-view [height]="'94%'">
+    <dx-scroll-view>
 
       <div class="row">
 
@@ -91,17 +107,21 @@
         <div class="dx-field">
           <div class="dx-field-label">Alternativa</div>
           <div class="dx-field-value-static">
-            <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" valueExpr="id" displayExpr="name" placeholder="Izberi alternativo"
-              [showClearButton]="true" (onValueChanged)="selectAlternative($event.value)"></dx-select-box>
+            <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+              valueExpr="id" 
+              displayExpr="name" 
+              placeholder="Izberi alternativo"
+              [showClearButton]="true" 
+              [value]="selectedAlternativeId"
+              (onValueChanged)="selectAlternative($event.value)">
+            </dx-select-box>
           </div>
-          <app-alternative *ngIf="alternatives && selectedAlternative > -1" [alternative]="alternatives[selectedAlternative]">
+          <app-alternative *ngIf="alternatives && selectedAlternativeId" [alternative]="getSelectedAlternative()">
           </app-alternative>
         </div>
       </div>
-      <div class="dx-fieldset">
-        <!-- <div class="dx-fieldset-header">#</div> -->
+      <!-- <div class="dx-fieldset">
         <div class="dx-field">
-          <!-- <div class="dx-field-label">#</div> -->
           <div class="dx-field-value-static">
             <dx-button text="Prekliči" (onClick)="hidePlanInfo()">
             </dx-button>
@@ -109,7 +129,7 @@
             </dx-button>
           </div>
         </div>
-      </div>
+      </div> -->
     </dx-scroll-view>
   </div>
 </dx-popup>
