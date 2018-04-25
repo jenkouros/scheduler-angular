@@ -44,7 +44,10 @@
   </div>
 </div>
 
-<dx-popup title="Planiraj delovni nalog" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
+<dx-popup title="Planiraj delovni nalog" 
+[dragEnabled]="false" 
+[closeOnOutsideClick]="true" 
+[(visible)]="popupVisible">
     <!-- <dxi-toolbar-item 
     text="Planiraj delovni nalog">
   </dxi-toolbar-item> -->
@@ -62,7 +65,7 @@
     </dxi-toolbar-item>
   
   <div *dxTemplate="let data of 'content'">
-    <dx-scroll-view>
+    <dx-scroll-view *ngIf="(selectedPlanItemHierarchy$ | async) && (selectedPlanItemHierarchy$ | async).planItem">
 
       <div class="row">
 
@@ -79,7 +82,7 @@
 
           <div class="dx-field">
               <div class="dx-field-label">Artikel</div>
-              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.product.code }} - {{ (selectedPlanItemHierarchy$ | async).planItem.product.name }}</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.article.code }} - {{ (selectedPlanItemHierarchy$ | async).planItem.article.name }}</div>
           </div>
 
         </div>

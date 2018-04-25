@@ -12,12 +12,12 @@ export class PlanItemsService {
 
     getPlanItemsStore(): CustomStore {
         const store = createStore({
-            loadUrl: environment.apiUrl + '/items',
+            loadUrl: environment.apiUrl + '/items/grid',
             loadParams: {
                 customFilter1: 1,
                 customFilter2: 2
             },
-            key: 'idPlanItem'
+            key: 'idItem'
         });
         return store;
     }

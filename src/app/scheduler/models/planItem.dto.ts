@@ -7,25 +7,25 @@ import { MeasurementUnit, Product } from './shared.dto';
 
 
 export class PlanItem implements PlanItemServer {
-    idPlanItem: number;
+    idItem: number;
     code: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
     quantityPlanned: number; // ze planirana kolicina
     measurementUnit: MeasurementUnit;
-    product: Product;
+    article: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
 
     static fromServer(planItemServer: PlanItemServer) {
         const result = new PlanItem();
         result.code = planItemServer.code;
-        result.idPlanItem = planItemServer.idPlanItem;
+        result.idItem = planItemServer.idItem;
         result.quantity = planItemServer.quantity;
         result.quantityBatch = planItemServer.quantityBatch;
         result.quantityPlanned = planItemServer.quantityPlanned;
         result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
-        result.product = Product.fromServer(planItemServer.product);
+        result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
         return result;
@@ -38,7 +38,7 @@ export class PlanItemHierarchy {
 
     static fromServer(serverData: PlanItemHierarchyServer) {
         const result = new PlanItemHierarchy();
-        result.idPlanItem = serverData.idPlanItem;
+        result.idPlanItem = serverData.id;
         result.alternatives = serverData.alternatives.map(a => PlanItemHierarchyAlternative.fromServer(a));
         return result;
     }
@@ -55,7 +55,7 @@ export class PlanItemHierarchyAlternative {
         result.id = serverData.id;
         result.name = serverData.name;
         result.code = serverData.code;
-        result.planSubItems = serverData.planSubItems.map(i => PlanSubItem.fromServer(i));
+        result.planSubItems = serverData.subItems.map(i => PlanSubItem.fromServer(i));
         return result;
     }
 }
@@ -74,12 +74,12 @@ export class PlanSubItem {
         const result = new PlanSubItem();
         result.name = planSubItemServer.name;
         result.code = planSubItemServer.code;
-        result.normativeTimeMachine = planSubItemServer.normativeTimeMachine;
-        result.normativeTimePreparation = planSubItemServer.normativeTimePreparation;
-        result.normativeTimeWorker = planSubItemServer.normativeTimeWorker;
-        result.sequence = planSubItemServer.sequence;
-        result.planable = planSubItemServer.planable;
-        result.quantity = planSubItemServer.quantity;
+        result.normativeTimeMachine = planSubItemServer.defaultExecutionNormative;
+        result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormative;
+        // result.normativeTimeWorker = planSubItemServer.normativeTimeWorker;
+        result.sequence = planSubItemServer.sequenceNumber;
+        result.planable = planSubItemServer.isPlanable;
+        result.quantity = planSubItemServer.defaultQuantity;
         return result;
     }
 }
