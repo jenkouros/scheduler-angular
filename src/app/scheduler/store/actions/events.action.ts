@@ -11,7 +11,8 @@ export class LoadEvents implements Action {
 }
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
-    constructor(public payload: { [id: number]: PlannedEvent[] }) {}
+    // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
+    constructor(public payload:  PlannedEvent[] ) {}
 }
 export class LoadEventsFail implements Action {
     readonly type = LOAD_EVENTS_FAIL;

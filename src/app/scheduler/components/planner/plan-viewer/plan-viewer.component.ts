@@ -12,6 +12,7 @@ import { Container } from '../../../models/container.dto';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import {PlanViewerItemComponent} from '../../../components/index';
+import { PlannedEvent } from '../../../models/event.model';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -21,8 +22,8 @@ import {PlanViewerItemComponent} from '../../../components/index';
 export class PlanViewerComponent implements OnInit, AfterViewInit {
     @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
 
-    currentDate: Date = new Date(2015, 4, 25);
-    data: Data[];
+    currentDate: Date = new Date(2018, 4, 25);
+    data: PlannedEvent[];
     moviesData: MovieData[];
     workplaceData: WorkPlaceData[];
     schedulerResources: any = [];
@@ -31,14 +32,16 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     currentView = 'timelineDay';
 
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
-        this.data = service.getData();
-        this.moviesData = service.getMoviesData();
-        this.workplaceData = service.getWorkPlaceData();
+        // this.data = service.getData();
+        // this.moviesData = service.getMoviesData();
+        // this.workplaceData = service.getWorkPlaceData();
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
-                this.schedulerResources = this.getResources(containers, this.moviesData);
-                this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items =>
-                    console.log('getEventsForContainers', items)
+                this.schedulerResources = this.getResources(containers);
+                this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
+                    this.data = items;
+                    console.log('getEventsForContainers', items);
+                    }
                 );
             });
 
@@ -51,9 +54,8 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         }
         return '';
     }
-    getResources(containers: any, plans: MovieData[]) {
-        const workplaceGroups: any[] = [],
-            planGroup: any[] = [];
+    getResources(containers: any) {
+        const workplaceGroups: any[] = [];
 
         // working places (group)
         containers.forEach((container: Container) => {
@@ -62,18 +64,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 id: container.id,
             });
         });
-        plans.forEach((plan: any) => {
-            planGroup.push({
-                text: plan.text,
-                id: plan.id,
-                color: plan.color
-            });
-        });
-        console.log(workplaceGroups, planGroup);
+        console.log('workplaceGroups', workplaceGroups);
         return [
 
             {
-                fieldExpr: 'workplaceId',
+                fieldExpr: 'containerId',
                 dataSource: workplaceGroups
             }
         ];
@@ -82,7 +77,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (this.data.length === 1) {
             this.groups = [];
         } else {
-            this.groups = ['workplaceId'];
+            this.groups = ['containerId'];
         }
     }
 
@@ -126,10 +121,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     const el  = e.target;
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
                          const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                        console.log(`dataCell${JSON.stringify(a)}`);
+                        // console.log(`dataCell${JSON.stringify(a)}`);
                     }
 
-                    console.log(e, 'dx-droped');
+                    // console.log(e, 'dx-droped');
                     this.scheduler.instance.addAppointment({
                         workplaceId: 2,
                         movieId: 3,
@@ -201,7 +196,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (!this.groupsHasValue) {
             this.setGroupValue();
         }
-        this.currentDate = new Date(2015, 4, 25);
+        this.currentDate = new Date(2018, 3, 25);
     }
 
     onAppointmentFormCreated(data) {

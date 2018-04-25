@@ -17,7 +17,6 @@ export class ContainersService {
                     if (response.code !== ApiResponseResult.success) {
                         throw response.messages;
                      }
-                     console.log(response);
                      return response.result.map(Container.fromServer);
                     }),
                     catchError((error: any) => Observable.throw(error.json))
