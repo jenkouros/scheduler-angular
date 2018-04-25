@@ -97,15 +97,7 @@ export class PlanViewerComponent implements OnInit {
     onContentReady(event) {
 
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
-        for (let i = 0; i < elements.length; i++) { } {
-            /* events.off(elements[i], 'dxdrop', this.testFunction);
-             events.on(elements[i], 'dxdrop', {
-                workplaceId: 2,
-                movieId: 3,
-                price: 11,
-                startDate: new Date(2015, 4, 25, 8, 1),
-                endDate: new Date(2015, 4, 25, 11, 1)
-            }, this.testFunction);*/
+        for (let i = 0; i < elements.length; i++) {
             events.off(elements[i], 'dxdrop');
             events.on(elements[i], 'dxdrop', (e) => {
                 e.preventDefault();
@@ -115,7 +107,7 @@ export class PlanViewerComponent implements OnInit {
                     const el  = e.target;
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
                          const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                        // console.log(`dataCell${JSON.stringify(a)}`);
+                        console.log(`dataCell${JSON.stringify(a)}`);
                     }
                     /*
                     this.scheduler.instance.addAppointment({
