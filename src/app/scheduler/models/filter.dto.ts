@@ -7,7 +7,7 @@ export class Filter implements FilterServer {
     type: string;
     values: FilterValue[];
 
-    static FromServer(filterServer: FilterServer) {
+    static fromServer(filterServer: FilterServer) {
         const result = new Filter();
         result.id = filterServer.id;
         result.name = filterServer.name;

@@ -10,7 +10,7 @@ import { PlanItemState } from '../../store/reducers/planitems.reducer';
 import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
 import CustomStore from 'devextreme/data/custom_store';
 import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.dto';
-import { LoadPlanItems } from '../../store';
+import { LoadPlanItems, LoadPreplanItems } from '../../store';
 
 @Component({
   selector: 'app-planitem-list',
@@ -30,6 +30,7 @@ export class PlanitemListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch(new LoadPreplanItems());
     this.store.dispatch(new LoadPlanItems());
     this.store.select(fromStore.getPlanItemsStore)
       .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
