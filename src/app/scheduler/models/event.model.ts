@@ -5,8 +5,8 @@ export class PlannedEvent {
     containerId: number;
     title: string;
     description: string;
-    start: Date;
-    end: Date;
+    startDate: Date;
+    endDate: Date;
 
     static fromServer(event: PlannedEventServer): PlannedEvent {
         const result = new PlannedEvent();
@@ -14,8 +14,8 @@ export class PlannedEvent {
         result.containerId = event.idContainer;
         result.title = event.title;
         result.description = event.comment;
-        result.start  = event.timeStartPreparation;
-        result.end = event.timeEnd;
+        result.startDate  = event.timeStartPreparation;
+        result.endDate = event.timeEnd;
 
         return result;
     }

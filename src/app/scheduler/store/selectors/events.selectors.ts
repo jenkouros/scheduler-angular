@@ -28,19 +28,17 @@ export const getEvents = createSelector(
 );
 
 export function getEventsForContainers(containerIds: number[]) {
-    console.log('selected', containerIds);
+
     return createSelector(
         _getStoreEvents,
         storeEvents => {
             let events: PlannedEvent[] = [];
             for (const key of containerIds) {
-                console.log('i', key, storeEvents.hasOwnProperty(key));
-                console.log(storeEvents);
                 if (storeEvents.hasOwnProperty(key)) {
                     events = events.concat(storeEvents[key]);
                 }
             }
-            console.log('storeEvents', events);
+
             return events;
         }
     );

@@ -24,12 +24,12 @@ export class PlannerComponent implements OnInit {
       dateTo: new Date(2018, 4, 17, 22, 0)
     }));
     this.store.select(fromStore.getEvents).subscribe(x => {
-      console.log('All events: ');
-      console.log(x);
+      // console.log('All events: ');
+      // console.log(x);
     });
     this.store.select(fromStore.getEventsForContainers([1])).subscribe(x => {
-      console.log('Preselected events: ');
-      console.log(x);
+      // console.log('Preselected events: ');
+      // console.log(x);
     });
   }
 
