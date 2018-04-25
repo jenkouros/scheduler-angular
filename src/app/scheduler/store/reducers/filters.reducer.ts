@@ -1,4 +1,4 @@
-import { Filter } from '../../models/filter.model';
+import { Filter } from '../../models/filter.dto';
 import * as fromFilters from '../actions/filters.action';
 
 export interface FilterState {

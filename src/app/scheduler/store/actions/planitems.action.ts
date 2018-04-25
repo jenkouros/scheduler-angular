@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
-import { PlanItem, PlanItemHierarchy } from '../../models/planitem.model';
 import { PaginationResponse } from '../../../shared/shared.model';
 import CustomStore from 'devextreme/data/custom_store';
+import { PlanItem, PlanItemHierarchy } from '../../models/planitem.dto';
 
 export const LOAD_PLANITEMS = '[PlanItem] Load workorders';
 export const LOAD_PLANITEMS_FAIL = '[PlanItem] Load workorders Fail';

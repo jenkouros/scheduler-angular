@@ -7,9 +7,9 @@ import { take } from 'rxjs/operators';
 import 'rxjs/add/operator/take';
 
 import { PlanItemState } from '../../store/reducers/planitems.reducer';
-import { PlanItemHierarchyDto } from '../../models/planItem.dto';
+import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
 import CustomStore from 'devextreme/data/custom_store';
-import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.model';
+import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.dto';
 import { LoadPlanItems } from '../../store';
 
 @Component({
@@ -20,16 +20,14 @@ import { LoadPlanItems } from '../../store';
 export class PlanitemListComponent implements OnInit {
   alternatives: PlanItemHierarchyAlternative[];
   planItemsStore: CustomStore;
-  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyDto>;
-
-  selectedAlternative = -1;
-  numberOfItemsOnPage = 0;
+  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel>;
+  selectedAlternativeId = null;
   popupVisible = false;
-  data: any;
 
-  constructor(
-    private store: Store<fromStore.SchedulerState>
-  ) { }
+  constructor(private store: Store<fromStore.SchedulerState>) {
+    this.logClick = this.logClick.bind(this);
+    this.hidePlanInfo = this.hidePlanInfo.bind(this);
+  }
 
   ngOnInit() {
     this.store.dispatch(new LoadPlanItems());
@@ -37,10 +35,10 @@ export class PlanitemListComponent implements OnInit {
       .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
     this.selectedPlanItemHierarchy$.subscribe(hierarchy => {
-      if (!hierarchy.planItemHierarchy) {
-        return;
-      }
-      this.alternatives = hierarchy.planItemHierarchy.alternatives;
+      this.alternatives = hierarchy.planItemHierarchy
+        ? hierarchy.planItemHierarchy.alternatives
+        : null;
+      this.selectedAlternativeId = this.alternatives && this.alternatives.length > 0 ? this.alternatives[0].id : null;
     });
   }
 
@@ -58,12 +56,16 @@ export class PlanitemListComponent implements OnInit {
   }
 
   showPlanInfo(planItem: PlanItem) {
-    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idPlanItem}));
+    this.store.dispatch(new fromStore.LoadPlanItemHierarchy({planItemId: planItem.idItem}));
     this.popupVisible = true;
   }
 
   selectAlternative(alternativeId: number) {
-    this.selectedAlternative = this.alternatives.findIndex(i => i.id === alternativeId);
+    this.selectedAlternativeId = alternativeId;
+  }
+
+  getSelectedAlternative() {
+    return this.alternatives.find(i => i.id === this.selectedAlternativeId);
   }
 
 }

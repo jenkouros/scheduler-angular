@@ -1,15 +1,11 @@
-export class Container {
-    id: number;
-    code: string;
-    name: string;
-}
+import { Container } from './container.dto';
 
 export class ContainerSelect extends Container {
     selected: boolean;
     constructor(container: Container) {
         super();
-        this.name = container.name;
         this.id = container.id;
+        this.name = container.name;
         this.code = container.code;
         this.selected = false;
     }

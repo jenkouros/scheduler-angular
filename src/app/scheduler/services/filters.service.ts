@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ApiResponse, ApiResponseResult } from "../../shared/shared.model";
-import { Filter } from "../models/filter.model";
-import { switchMap, map, catchError } from "rxjs/operators";
-import { Observable } from "rxjs/Observable";
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
+import { FilterServer } from '../models/server/filter.servermodel';
+import { switchMap, map, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
+import { Filter } from '../models/filter.dto';
 
 @Injectable()
 export class FiltersService {
@@ -13,13 +14,13 @@ export class FiltersService {
 
     getFilters(): Observable<Filter[]> {
         return this.http
-            .get<ApiResponse<Filter[]>>(environment.apiUrl + "/filters")
+            .get<ApiResponse<FilterServer[]>>(environment.apiUrl + '/filters')
             .pipe(
                 map((response) => {
-                    if(response.code !== ApiResponseResult.success) {
+                    if (response.code !== ApiResponseResult.success) {
                         throw response.messages;
                     }
-                    return response.result;
+                    return response.result.map(f => Filter.FromServer(f));
                 }),
                 catchError((error: any) => Observable.throw(error.json()))
             );

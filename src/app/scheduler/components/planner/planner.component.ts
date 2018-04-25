@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
-import { Container, ContainerSelect } from '../../models/container.model';
+import { Container } from '../../models/container.dto';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -10,13 +10,13 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./planner.component.css']
 })
 export class PlannerComponent implements OnInit {
-  containers$: Observable<ContainerSelect[]>;
+  // containers$: Observable<Container[]>;
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadContainers());
-    this.containers$ = this.store.select(fromStore.getContainers);
+    // this.containers$ = this.store.select(fromStore.getContainers);
     // TEST
     this.store.dispatch(new fromStore.LoadEvents({
       containerIds: [1, 2],

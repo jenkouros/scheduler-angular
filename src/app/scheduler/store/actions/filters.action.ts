@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Filter } from '../../models/filter.model';
+import { Filter } from '../../models/filter.dto';
 
 export const LOAD_FILTERS = '[Filters] Load filters';
 export const LOAD_FILTERS_FAIL = '[Filters] Load filters fail';

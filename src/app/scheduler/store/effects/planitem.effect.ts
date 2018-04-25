@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import * as fromActions from '../actions';
 import { map, tap } from 'rxjs/operators';
 import { PlanItemsService } from '../../services';
-import { PlanItem } from '../../models/planitem.model';
+import { PlanItemServer } from '../../models/server/planitem.servermodel';
 import { Store } from '@ngrx/store';
 import { PlanItemState } from '../reducers';
+import { PlanItem } from '../../models/planitem.dto';
 
 @Injectable()
 export class PlanItemEffects {
@@ -20,7 +21,9 @@ export class PlanItemEffects {
     .pipe(
        map(action => {
             const store = this.planItemService.getPlanItemsStore();
-            store.on('loaded', (data: PlanItem[]) => this.store.dispatch(new fromActions.LoadPlanItemsSuccess(data)));
+            store.on('loaded', (data: PlanItemServer[]) =>
+                this.store.dispatch(new fromActions.LoadPlanItemsSuccess( data.map(i => PlanItem.fromServer(i)) ))
+            );
             return new fromActions.RegisterPlanItemStore(store);
        })
     );

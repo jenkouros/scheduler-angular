@@ -1,10 +1,10 @@
-export interface Product {
+export interface ProductServer {
     id: number;
     code: string;
     name: string;
 }
 
-export interface MeasurementUnit {
+export interface MeasurementUnitServer {
     name: string;
     code: string;
 }

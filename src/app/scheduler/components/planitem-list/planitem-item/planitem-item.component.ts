@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { PlanItem } from '../../../models/planitem.model';
+import { PlanItem } from '../../../models/planitem.dto';
 
 @Component({
   selector: 'app-planitem-item',
