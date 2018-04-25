@@ -1,5 +1,5 @@
 export interface ContainerServer {
-    id: number;
+    idContainer: number;
     code: string;
     name: string;
 }
