@@ -87,7 +87,111 @@
 
       
       <div class="dx-fieldset">
-        <div class="dx-fieldset-header">Izbira alternative</div>
+        <div class="dx-fieldset-header">Planiranje delovnega naloga</div>
+        
+        <!-- <form action="your-action" (submit)="onFormSubmit($event)">
+            <dx-form id="form"
+                [formData]="planItem"
+                [readOnly]="false"
+                [showColonAfterLabel]="true"
+                [showValidationSummary]="true"
+                validationGroup="planItemData">
+                
+                <dxi-item itemType="group" caption="Personal Data">
+                    
+                  <dxi-item 
+                    dataField="Količina"
+                    editorType="dxNumberBox">
+                        <dxi-validation-rule 
+                            type="required"
+                            message="Količina je zahtevano polje">
+                        </dxi-validation-rule>                        
+                    </dxi-item>
+                    <dxi-item 
+                    dataField="Število šarž"
+                    editorType="dxNumberBox">
+                        <dxi-validation-rule 
+                            type="required"
+                            message="Količina je zahtevano polje">
+                        </dxi-validation-rule>                        
+                    </dxi-item>
+                    
+                   
+                </dxi-item>
+              
+              </dx-form>
+              <br />
+              <dx-button
+                  text="Register"
+                  type="success"
+                  validationGroup="PlanItemData"
+                  [useSubmitBehavior]="true">
+              </dx-button>
+          </form> -->
+
+      
+          <!-- <div class="container">
+              <div [hidden]="submitted">
+                <h1>Hero Form</h1> -->
+                
+                
+<!--                 
+                <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+                  <div class="form-group">
+
+                    <label for="quantity">Količina</label>
+                    <input type="text" class="form-control" id="quantity"
+                           required
+                           [(ngModel)]="quantity" name="quantity"
+                           #quantity="ngModel">
+                    <div [hidden]="quantity.valid || quantity.pristine"
+                         class="alert alert-danger">
+                      Količina je zahtevano polje
+                    </div>
+                  </div>
+             
+                  <div class="form-group">
+                    <label for="quantityOfLot">Število šarž</label>
+                    <input type="text" class="form-control" id="quantityOfLot"
+                      [(ngModel)]="quantityOfLot" name="quantityOfLot"
+                      #quantityOfLot="ngModel">
+                      <div [hidden]="quantityOfLot.valid || quantityOfLot.pristine"
+                          class="alert alert-danger">
+                        Število šarž je zahtevano polje
+                      </div>
+                  </div>
+             
+                 
+                  <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
+                  <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+                </form> -->
+
+
+                
+              <!-- </div>
+             
+              <div [hidden]="!submitted">
+                <h2>You submitted the following:</h2>
+                <div class="row">
+                  <div class="col-xs-3">Name</div>
+                  <div class="col-xs-9  pull-left">{{ model.name }}</div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-3">Alter Ego</div>
+                  <div class="col-xs-9 pull-left">{{ model.alterEgo }}</div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-3">Power</div>
+                  <div class="col-xs-9 pull-left">{{ model.power }}</div>
+                </div>
+                <br>
+                <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+              </div>
+            </div> -->
+
+
+
+
         <div class="dx-field">
           <div class="dx-field-label">Alternativa</div>
           <div class="dx-field-value-static">

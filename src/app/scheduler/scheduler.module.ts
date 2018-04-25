@@ -20,7 +20,8 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxScrollViewModule
+    DxScrollViewModule,
+    DxFormModule
 } from 'devextreme-angular';
 
 @NgModule({
@@ -41,7 +42,8 @@ import {
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxScrollViewModule
+        DxScrollViewModule,
+        DxFormModule
     ],
     declarations: [...fromComponents.components],
     providers: [...fromServices.services]
