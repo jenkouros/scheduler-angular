@@ -16,6 +16,7 @@ import { AlternativeComponent } from './planitem-list/planitem-item/alternative/
 import { PlansubitemComponent } from './planitem-list/planitem-item/plansubitem/plansubitem.component';
 import { PrePlanitemListComponent } from './pre-planitem-list/pre-planitem-list.component';
 import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
+import { PrePlanitemItemComponent } from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
 
 export const components: any[] = [
     FiltersComponent,
@@ -35,7 +36,8 @@ export const components: any[] = [
     AlternativeComponent,
     PlansubitemComponent,
     PrePlanitemListComponent,
-    PlanViewerItemComponent
+    PlanViewerItemComponent,
+    PrePlanitemItemComponent
 ];
 
 export * from './filters/filters.component';
@@ -55,3 +57,4 @@ export * from './planitem-list/planitem-item/alternative/alternative.component';
 export * from './planitem-list/planitem-item/plansubitem/plansubitem.component';
 export * from './pre-planitem-list/pre-planitem-list.component';
 export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
+export * from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
