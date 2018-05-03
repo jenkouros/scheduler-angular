@@ -1,23 +1,19 @@
 import {PlannedEventServer} from '../models/server/plannedevent.servermodel';
 
 export class PlannedEvent {
-    id: number;
-    containerId: number;
-    title: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
+
+    constructor (public id: number, public containerId: number, public title: string,
+        public description: string, public startDate: Date, public endDate: Date) {
+    }
 
     static fromServer(event: PlannedEventServer): PlannedEvent {
-        const result = new PlannedEvent();
-        result.id = event.idPlanItem;
-        result.containerId = event.idContainer;
-        result.title = event.title;
-        result.description = event.comment;
-        result.startDate  = event.timeStartPreparation;
-        result.endDate = event.timeEnd;
-
-        return result;
+        return new PlannedEvent(
+            event.idPlanItem,
+            event.idContainer,
+            event.title,
+            event.comment,
+            event.timeStartPreparation,
+            event.timeEnd);
     }
 }
 

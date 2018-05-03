@@ -1,5 +1,6 @@
 <div *ngIf="(preplanitems$ | async)">
-  <app-pre-planitem-item [preplanitem]="preplanItem"
+  <app-pre-planitem-item [preplanitem]="preplanItem" dx-draggable [dragData]="preplanItem"
+   
     *ngFor="let preplanItem of (preplanitems$ | async)">
   </app-pre-planitem-item>
 </div>

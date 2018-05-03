@@ -29,3 +29,8 @@ a.nav-link.active {
     color: white;
     background-color: #084578 !important;
 }
+
+.draggable {
+    cursor: move;
+    user-select: none;
+}
