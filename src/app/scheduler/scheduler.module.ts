@@ -20,7 +20,8 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxScrollViewModule
+    DxScrollViewModule,
+    DxFormModule
 } from 'devextreme-angular';
 import { DxDraggableDirective } from './components/pre-planitem-list/dxdraggable.directive';
 
@@ -42,7 +43,8 @@ import { DxDraggableDirective } from './components/pre-planitem-list/dxdraggable
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxScrollViewModule
+        DxScrollViewModule,
+        DxFormModule
     ],
     declarations: [...fromComponents.components, DxDraggableDirective],
     providers: [...fromServices.services]

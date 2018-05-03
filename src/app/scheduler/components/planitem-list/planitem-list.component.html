@@ -20,8 +20,8 @@
         <dxi-column dataField="" caption="Vrsta proizvodnje"></dxi-column>
 
         <dxi-column caption="Artikel">
-          <dxi-column dataField="product.code" caption="Šifra"></dxi-column>
-          <dxi-column dataField="product.name" caption="Naziv"></dxi-column>
+          <dxi-column dataField="article.code" caption="Šifra"></dxi-column>
+          <dxi-column dataField="article.name" caption="Naziv"></dxi-column>
         </dxi-column>
 
         <dxi-column caption="ERP">
@@ -61,68 +61,194 @@
       toolbar="bottom" 
       location="after" 
       widget="dxButton" 
-      [options]="{ text: 'Potrdi', type: 'success', onClick: logClick }">
+      [options]="{ text: 'Potrdi', type: 'success', onClick: onSubmit }">
     </dxi-toolbar-item>
   
   <div *dxTemplate="let data of 'content'">
     <dx-scroll-view *ngIf="(selectedPlanItemHierarchy$ | async) && (selectedPlanItemHierarchy$ | async).planItem">
-
       <div class="row">
-
         <div class="dx-fieldset col">
           <div class="dx-fieldset-header">Delovni nalog</div>
           <div class="dx-field">
             <div class="dx-field-label">Šifra</div>
             <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.code }}</div>
-          </div>
-          <!-- <div class="dx-field">
-            <div class="dx-field-label">Vrsta proizvodnje</div>
-            <div class="dx-field-value-static">vrsta proizvodnje</div>
-          </div> -->
-
+          </div>          
           <div class="dx-field">
               <div class="dx-field-label">Artikel</div>
               <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.article.code }} - {{ (selectedPlanItemHierarchy$ | async).planItem.article.name }}</div>
           </div>
-
         </div>
-
-        <div class="dx-fieldset col">
-          
+        <div class="dx-fieldset col">          
             <div class="dx-fieldset-header">ERP</div>
             <div class="dx-field">
               <div class="dx-field-label">Količina</div>
               <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.quantity }} {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</div>
             </div>
-
             <div class="dx-field">
               <div class="dx-field-label">Datum</div>
               <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'mediumDate' }} - {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'mediumDate' }}</div>
+            </div>  
+          </div>
+      </div>
+
+
+      <!-- START Form Using DevExtremeShape -->
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div
+        id="batch-data"
+        ngModelGroup="batchData"
+        #batchData="ngModelGroup">
+      <div class="row">
+          <div class="dx-fieldset col">
+            <div class="dx-fieldset-header">Planiranje delovnega naloga</div>
+            <div class="dx-field">
+              <div class="dx-field-label">Količina</div>
+              <div class="dx-field-value-static">  
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="quantity"
+                  required
+                  ngModel
+                  name="quantity"
+                  #quantityRef="ngModel">
+                <span class="help-block" *ngIf="!quantityRef.valid && quantityRef.touched"><i>Prosimo vnesite količino</i></span>
+              </div>
+            </div>          
+            <div class="dx-field">
+                <div class="dx-field-label">Število šarž</div>
+                <div class="dx-field-value-static">  
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="numberOfBatches"
+                    required
+                    ngModel="numberOfBatches"
+                    name="numberOfBatches"
+                    #numberOfBatchsRef="ngModel">
+                  <span class="help-block" *ngIf="!numberOfBatchsRef.valid && numberOfBatchsRef.touched"><i>Prosimo vnesite število šarž</i></span>  
+                </div>
             </div>
-  
           </div>
-
-      </div>
-
-      
-      <div class="dx-fieldset">
-        <div class="dx-fieldset-header">Izbira alternative</div>
-        <div class="dx-field">
-          <div class="dx-field-label">Alternativa</div>
-          <div class="dx-field-value-static">
-            <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
-              valueExpr="id" 
-              displayExpr="name" 
-              placeholder="Izberi alternativo"
-              [showClearButton]="true" 
-              [value]="selectedAlternativeId"
-              (onValueChanged)="selectAlternative($event.value)">
-            </dx-select-box>
-          </div>
-          <app-alternative *ngIf="alternatives && selectedAlternativeId" [alternative]="getSelectedAlternative()">
-          </app-alternative>
+          <div class="dx-fieldset col">          
+              <div class="dx-fieldset-header"> </div>
+              <div class="dx-field">
+                <div class="dx-field-label">Alternativa</div>
+                <div class="dx-field-value-static">  
+                    <!-- <div class="dx-field"> -->
+                        <div class="dx-field-label">  </div>
+                        <div class="dx-field-value-static">
+                          <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                            formControlName="alternative"
+                            valueExpr="id" 
+                            displayExpr="name" 
+                            placeholder="Izberi alternativo"
+                            [showClearButton]="true" 
+                            [value]="selectedAlternativeId"
+                            (onValueChanged)="selectAlternative($event.value)"
+                            [isValid]="!alternativeRef.valid && alternativeRef.touched"
+                            #alternativeRef>
+                          </dx-select-box>
+                          <!-- <span class="help-block" *ngIf="!alternativeRef.valid && alternativeRef.touched"><i>Prosimo izberite ačternativo</i></span>                          -->
+                        </div>
+                        <app-alternative *ngIf="alternatives && selectedAlternativeId" [alternative]="getSelectedAlternative()">
+                        </app-alternative> 
+                      <!-- </div> -->
+                </div>
+              </div>
+            </div>
         </div>
+        <div class="row">
+          <div class="dx-fieldset col">
+            <div class="dx-fieldset-header"> </div>
+            <div class="dx-field">
+              <div class="dx-field-label"> </div>
+              <div class="dx-field-value-static"> 
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  [disabled]="!f.valid">Shrani
+                </button>
+                <button
+                  class="btn btn-danger"
+                  type="reset">Prekliči
+                </button>
+              </div>
+            </div>          
+          </div>
+        </div>
+
       </div>
+      <p *ngIf="!batchData.valid && batchData.touched"><i>Podatki niso pravilni</i></p>
+      </form>
+      <!-- END Form Using DevExtreme Shape -->
+      
+      
+
+      <!-- START FORM -->
+      <!-- <div class="dx-fieldset col">
+        <div class="dx-fieldset-header">Planiranje delovnega naloga</div>
+        <form (ngSubmit)="onSubmit()" #f="ngForm">
+          <div
+            id="batch-data"
+            ngModelGroup="batchData"
+            #batchData="ngModelGroup">
+            <div class="form-group">
+              <label for="quantity">Količina</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="quantity"
+                required
+                ngModel
+                name="quantity"
+                #quantityRef="ngModel">
+              <span class="help-block" *ngIf="!quantityRef.valid && quantityRef.touched">Prosimo vnesite količino</span>
+            </div>
+
+            <div class="form-group">
+              <label for="numberOfBatches">Število šarž</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="numberOfBatches"
+                required
+                ngModel="numberOfBatches"
+                name="numberOfBatches"
+                #numberOfBatchsRef="ngModel">
+              <span class="help-block" *ngIf="!numberOfBatchsRef.valid && numberOfBatchsRef.touched">Prosimo vnesite število šarž</span>  
+            </div>
+
+            <!-- START Alternative --
+            <div class="dx-field">
+                <div class="dx-field-label">Alternativa</div>
+                <div class="dx-field-value-static">
+                  <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                    valueExpr="id" 
+                    displayExpr="name" 
+                    placeholder="Izberi alternativo"
+                    [showClearButton]="true" 
+                    [value]="selectedAlternativeId"
+                    (onValueChanged)="selectAlternative($event.value)">
+                  </dx-select-box>
+                  <!-- <span class="help-block" *ngIf="!alternativeRef.valid && alternativeRef.touched">Prosimo izberite alternativo</span> --
+                </div>
+                <app-alternative *ngIf="alternatives && selectedAlternativeId" [alternative]="getSelectedAlternative()">
+                </app-alternative>
+              </div>
+            <!-- END Alternative --
+
+            <button
+              class="btn btn-primary"
+              type="submit"
+              [disabled]="!f.valid">Shrani
+            </button>
+          </div>  
+          <p *ngIf="!batchData.valid && batchData.touched">Podatki niso pravilni</p>
+        </form>
+      </div> -->
+      <!-- END FORM -->
+
       <!-- <div class="dx-fieldset">
         <div class="dx-field">
           <div class="dx-field-value-static">
