@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DxPopupComponent, DxDataGridComponent } from 'devextreme-angular';
 import * as fromStore from '../../store';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import 'rxjs/add/operator/take';
+import { NgForm } from '@angular/forms';
 
 import { PlanItemState } from '../../store/reducers/planitems.reducer';
 import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
@@ -23,6 +24,14 @@ export class PlanitemListComponent implements OnInit {
   selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel>;
   selectedAlternativeId = null;
   popupVisible = false;
+
+  @ViewChild('f') signupForm: NgForm;
+  batch = {
+    quantity: '',
+    numberOfBatches: '',
+    alternative: ''
+  };
+  submitted = false;
 
   constructor(private store: Store<fromStore.SchedulerState>) {
     this.logClick = this.logClick.bind(this);
@@ -66,6 +75,18 @@ export class PlanitemListComponent implements OnInit {
 
   getSelectedAlternative() {
     return this.alternatives.find(i => i.id === this.selectedAlternativeId);
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    this.batch.quantity = this.signupForm.value.batchData.quantity;
+    this.batch.numberOfBatches = this.signupForm.value.batchData.numberOfBatches;
+    this.batch.alternative = this.selectedAlternativeId;
+    this.signupForm.reset();
+
+    console.log('{Količina}=>' + this.batch.quantity);
+    console.log('{Število šarž}=>' + this.batch.quantity);
+    console.log('{Alternativa}=>' + this.batch.alternative);
   }
 
 }
