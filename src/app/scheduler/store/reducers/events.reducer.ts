@@ -2,7 +2,7 @@ import * as fromAction from '../actions/events.action';
 import { PlannedEvent } from '../../models/event.model';
 
 export interface EventsState {
-    entities: {[containerId: number]: PlannedEvent[]};
+    entities: {[id: number]: PlannedEvent};
     loading: boolean;
     loaded: boolean;
 }
@@ -25,6 +25,26 @@ export function eventsReducer(
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
+
+            const events = action.payload;
+            const entities = events.reduce(
+            (entities: { [id: number]: PlannedEvent}, event: PlannedEvent) => {
+                return {
+                    ...entities,
+                    [event.containerId]: event,
+                };
+            },
+            {
+                ...state.entities
+            }
+            );
+            return {
+                ...state,
+                loading: false,
+                loaded: true,
+                entities,
+            };
+            /*
             const events = { ...state.entities };
             // tslint:disable-next-line:forin
             for (const key in action.payload) {
@@ -36,6 +56,7 @@ export function eventsReducer(
                 loaded: true,
                 entities: events
             };
+            */
         }
         case fromAction.LOAD_EVENTS_FAIL: {
             return {

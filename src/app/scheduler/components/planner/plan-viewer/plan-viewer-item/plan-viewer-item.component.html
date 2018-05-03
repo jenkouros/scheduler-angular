@@ -2,9 +2,9 @@
   <div class="progressWrapper">
           <div class="progressInfo">45%</div>          
   </div>                
-<div class="plannerItem wordwrap">{{(plannerItemData.startDate | date:'shortTime') + ' - ' + (plannerItemData.endDate | date:'shortTime')}}</div>
+<div class="plannerItem wordwrap">{{plannerItemData.description}} {{(plannerItemData.startDate | date:'shortTime') + ' - ' + (plannerItemData.endDate | date:'shortTime')}}</div>
 <div class="info">
       <fa-icon [icon]="faLock"></fa-icon>
   </div>
-<div class="status">S</div>
+<div class="status">&nbsp;</div>
 </div>

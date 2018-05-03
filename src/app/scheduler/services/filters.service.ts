@@ -20,7 +20,7 @@ export class FiltersService {
                     if (response.code !== ApiResponseResult.success) {
                         throw response.messages;
                     }
-                    return response.result.map(f => Filter.FromServer(f));
+                    return response.result.map(f => Filter.fromServer(f));
                 }),
                 catchError((error: any) => Observable.throw(error.json()))
             );

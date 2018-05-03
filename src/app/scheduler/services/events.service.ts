@@ -1,19 +1,43 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { PlannedEvent } from '../models/event.model';
+import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
 
 
 @Injectable()
 export class EventsService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
+    getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
+        const serachParams = {
+            params: new HttpParams()
+                .set('IdPlan', '1')
+                .set('timeStart', '2018-04-25')
+                .set('timeEnd', '2018-04-26')
+                .set('containers', '1095')
+        };
 
-    getEvents(containerIds: number[], fromDate: Date, toDate: Date) {
-        // TODO - go to server
-        return new Observable<{[containerId: number]: PlannedEvent[]}>(observer => {
-            observer.next(this.createDummyEvents(containerIds, fromDate, toDate));
-        });
+        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', serachParams).pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return response.result.map(PlannedEvent.fromServer);
+            }),
+            catchError((error: any) => Observable.throw(error.json))
+        );
     }
+
+    /*
+        getEvents(containerIds: number[], fromDate: Date, toDate: Date) {
+            // TODO - go to server
+            return new Observable<{[containerId: number]: PlannedEvent[]}>(observer => {
+                observer.next(this.createDummyEvents(containerIds, fromDate, toDate));
+            });
+        }
 
     private createDummyEvents(containerIds: number[], fromDate: Date, toDate: Date) {
         const dummyEvents: { [containerId: number]: PlannedEvent[] } = {};
@@ -27,4 +51,5 @@ export class EventsService {
         }
         return dummyEvents;
     }
+    */
 }

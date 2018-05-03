@@ -1,3 +1,5 @@
-<p>
-  pre-planitem-list works!
-</p>
+<div *ngIf="(preplanitems$ | async)">
+  <app-pre-planitem-item [preplanitem]="preplanItem"
+    *ngFor="let preplanItem of (preplanitems$ | async)">
+  </app-pre-planitem-item>
+</div>

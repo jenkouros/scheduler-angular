@@ -20,7 +20,6 @@ export class ContainerListComponent implements OnInit {
     this.store.select(fromStore.getContainerSelectList).subscribe(
       (containers) => {
         this.containers = containers;
-        console.log(this.containers);
       });
   }
 
@@ -34,7 +33,7 @@ export class ContainerListComponent implements OnInit {
   }
 
   onSelectContainer(containerId) {
-    console.log(containerId);
+    // console.log(containerId);
     this.store.dispatch(new fromStore.SelectContainers([containerId]));
   }
 
