@@ -130,8 +130,39 @@
                 </div>
             </div>
           </div>
-          <div class="dx-fieldset col">          
+          <!-- <div class="dx-fieldset col">          
               <div class="dx-fieldset-header"> </div>
+              <div class="dx-field">
+                <div class="dx-field-label">Alternativa</div>
+                <div class="dx-field-value-static">  
+                    <!-- <div class="dx-field"> --
+                        <div class="dx-field-label">  </div>
+                        <div class="dx-field-value-static">
+                          <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                            formControlName="alternative"
+                            valueExpr="id" 
+                            displayExpr="name" 
+                            placeholder="Izberi alternativo"
+                            [showClearButton]="true" 
+                            [value]="selectedAlternativeId"
+                            (onValueChanged)="selectAlternative($event.value)"
+                            [isValid]="!alternativeRef.valid && alternativeRef.touched"
+                            #alternativeRef>
+                          </dx-select-box>
+                          <!-- <span class="help-block" *ngIf="!alternativeRef.valid && alternativeRef.touched"><i>Prosimo izberite ačternativo</i></span>--
+                        </div>
+                        <app-alternative *ngIf="alternatives && selectedAlternativeId" [alternative]="getSelectedAlternative()">
+                        </app-alternative> 
+                      <!-- </div> --
+                </div>
+              </div>
+            </div> -->
+        </div>
+
+        <div class="row">
+          
+          <div class="dx-fieldset col">          
+              <div class="dx-fieldset-header">Izbira alternative</div>
               <div class="dx-field">
                 <div class="dx-field-label">Alternativa</div>
                 <div class="dx-field-value-static">  
@@ -158,6 +189,7 @@
               </div>
             </div>
         </div>
+
         <div class="row">
           <div class="dx-fieldset col">
             <div class="dx-fieldset-header"> </div>
