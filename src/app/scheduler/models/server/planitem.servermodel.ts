@@ -14,6 +14,7 @@ export interface PlanItemServer {
 
 export interface PlanItemHierarchyServer {
     id: number;
+    code: string;
     alternatives: PlanItemHierarchyAlternativeServer[];
 }
 
