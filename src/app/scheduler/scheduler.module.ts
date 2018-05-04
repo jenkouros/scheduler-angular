@@ -20,8 +20,10 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxScrollViewModule
+    DxScrollViewModule,
+    DxFormModule
 } from 'devextreme-angular';
+import { DxDraggableDirective } from './components/pre-planitem-list/dxdraggable.directive';
 
 @NgModule({
     imports: [
@@ -41,9 +43,10 @@ import {
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxScrollViewModule
+        DxScrollViewModule,
+        DxFormModule
     ],
-    declarations: [...fromComponents.components],
+    declarations: [...fromComponents.components, DxDraggableDirective],
     providers: [...fromServices.services]
 })
 export class SchedulerModule {

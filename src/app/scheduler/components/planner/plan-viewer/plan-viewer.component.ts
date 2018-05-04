@@ -88,7 +88,7 @@ export class PlanViewerComponent implements OnInit {
     }
 
     onAppointmentAdding(e) {
-        // console.log('onAppointmentAdding', e);
+         console.log('onAppointmentAdding', e);
     }
     onAppointmentAdded(e) {
         // console.log(e);
@@ -98,7 +98,10 @@ export class PlanViewerComponent implements OnInit {
 
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
+            events.off(elements[i], 'drop');
+            /*
             events.off(elements[i], 'dxdrop');
+
             events.on(elements[i], 'dxdrop', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -106,18 +109,56 @@ export class PlanViewerComponent implements OnInit {
                 if (e.type === 'dxdrop') {
                     const el  = e.target;
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
-                         const a = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                        console.log(`dataCell${JSON.stringify(a)}`);
+                        const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                        console.log(`dataCell${JSON.stringify(cellData)}`);
+                        console.log(cellData.groups.containerId);
+                        if (e.draggingElement.dataset['id'] !== undefined) {
+                            const draggedData = JSON.parse(e.draggingElement.dataset['id']);
+                            console.log(draggedData);
+
+                            this.scheduler.instance.addAppointment(
+                                new PlannedEvent(
+                                    draggedData.id, cellData.groups.containerId, 'sdfsd', 'PlannedItemId=' + draggedData.id,
+                                    cellData.startDate, cellData.endDate)
+                            );
+                            console.log(this.data);
+                        }
+
                     }
-                    /*
-                    this.scheduler.instance.addAppointment({
-                        workplaceId: 2,
-                        movieId: 3,
-                        price: 11,
-                        startDate: new Date(2015, 4, 25, 8, 1),
-                        endDate: new Date(2015, 4, 25, 11, 1)
-                    });
-                    */
+                }
+            });
+            */
+            events.on(elements[i], 'dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+            });
+            events.on(elements[i], 'drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                if (e.type === 'drop') {
+                    const el  = e.target;
+                    if (el.classList.contains('dx-scheduler-date-table-cell')) {
+                        const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
+                        console.log(`dataCell${JSON.stringify(cellData)}`);
+                        console.log(cellData.groups.containerId);
+
+                        console.log(e);
+                        console.log(JSON.parse(e.dataTransfer.getData('Text')));
+                        const draggedData = JSON.parse(e.dataTransfer.getData('Text'));
+                        if (draggedData !== undefined) {
+                            console.log(draggedData);
+                            this.scheduler.instance.addAppointment(
+                                new PlannedEvent(
+                                    draggedData.item.id, cellData.groups.containerId, 'sdfsd', 'PlannedItemId=' + draggedData.item.id,
+                                    cellData.startDate, cellData.endDate)
+                            );
+                            console.log(this.data);
+                        }
+
+                    }
                 }
             });
         }

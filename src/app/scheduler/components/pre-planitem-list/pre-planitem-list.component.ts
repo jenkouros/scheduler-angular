@@ -18,5 +18,4 @@ export class PrePlanitemListComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadPreplanItems());
     this.preplanitems$ = this.store.select(fromStore.getPreplanitems);
   }
-
 }

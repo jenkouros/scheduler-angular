@@ -44,4 +44,7 @@ registerLocaleData(localeSl, 'sl');
   ],
   bootstrap: [AppComponent]
   })
-export class AppModule { }
+export class AppModule {
+  x: number | null = null;
+
+}
