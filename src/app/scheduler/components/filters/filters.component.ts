@@ -12,7 +12,7 @@ import { FilterSelect } from '../../models/filter.viewmodel';
 })
 export class FiltersComponent implements OnInit {
   FilterTypeEnum: typeof FilterTypeEnum = FilterTypeEnum;
-  filtersState$: Observable<FilterSelect[]>;
+  filtersState$: Observable<FilterSelect[] | undefined>;
 
   constructor(private store: Store<fromStore.SchedulerState>) { }
 

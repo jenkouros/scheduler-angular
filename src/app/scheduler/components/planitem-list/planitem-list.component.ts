@@ -18,9 +18,9 @@ import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.dt
 })
 export class PlanitemListComponent implements OnInit {
   alternatives: PlanItemHierarchyAlternative[];
-  planItemsStore: CustomStore;
-  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel>;
-  selectedAlternativeId = null;
+  planItemsStore: CustomStore | null;
+  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel | null>;
+  selectedAlternativeId: number | null = null;
   popupVisible = false;
 
   constructor(private store: Store<fromStore.SchedulerState>) {
@@ -31,13 +31,16 @@ export class PlanitemListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadPlanItems());
     this.store.select(fromStore.getPlanItemsStore)
-      .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
+      .take(1)
+      .subscribe(itemsStore => this.planItemsStore = itemsStore);
+
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+
     this.selectedPlanItemHierarchy$.subscribe(hierarchy => {
-      this.alternatives = hierarchy.planItemHierarchy
+      this.alternatives = hierarchy
         ? hierarchy.planItemHierarchy.alternatives
-        : null;
-      this.selectedAlternativeId = this.alternatives && this.alternatives.length > 0 ? this.alternatives[0].id : null;
+        : [];
+      this.selectedAlternativeId = this.alternatives.length > 0 ? this.alternatives[0].id : null;
     });
   }
 

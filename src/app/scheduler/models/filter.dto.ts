@@ -13,8 +13,10 @@ export class Filter implements FilterServer {
         result.name = filterServer.name;
         result.sequence = filterServer.sequence;
         result.type = filterServer.type;
-        result.values = filterServer.values.map(v =>
-            new FilterValue(v.id, v.name));
+        if (filterServer.values) {
+            result.values = filterServer.values.map(v =>
+                new FilterValue(v.id, v.name));
+        }
         return result;
     }
 

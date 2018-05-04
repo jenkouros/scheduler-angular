@@ -5,8 +5,8 @@ import { PlanItem, PlanItemHierarchy } from '../../models/planitem.dto';
 
 export interface PlanItemState {
     items: PlanItem[];
-    itemsStore: CustomStore;
-    selectedItemHierarchy: PlanItemHierarchy;
+    itemsStore: CustomStore | null;
+    selectedItemHierarchy: PlanItemHierarchy | null;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
 }
