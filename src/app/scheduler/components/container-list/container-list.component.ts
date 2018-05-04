@@ -18,18 +18,19 @@ export class ContainerListComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadContainers());
     // this.containers$ =
     this.store.select(fromStore.getContainerSelectList).subscribe(
-      (containers) => {
-        this.containers = containers;
-      });
+      containers => this.containers = containers
+    );
   }
 
   toggleContainer(container) {
-    const selected = !this.containers.find(c => c.id === container.id).selected;
-    if (selected) {
-      this.onSelectContainer(container.id);
-    } else {
-      this.onDeselectContainer(container.id);
+    const selectedContainer = this.containers.find(c => c.id === container.id);
+    if (!selectedContainer) {
+      return;
     }
+
+    selectedContainer.selected
+      ? this.onDeselectContainer(container.id)
+      : this.onSelectContainer(container.id);
   }
 
   onSelectContainer(containerId) {
@@ -41,7 +42,7 @@ export class ContainerListComponent implements OnInit {
     this.store.dispatch(new fromStore.DeselectContainers([containerId]));
   }
 
-  ContainerSelected(id: number): boolean {
-    return !this.containers.find(c => c.id === id).selected;
-  }
+  // ContainerSelected(id: number): boolean {
+  //   return !this.containers.find(c => c.id === id).selected;
+  // }
 }

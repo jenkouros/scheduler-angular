@@ -34,11 +34,13 @@ export class PlanItem implements PlanItemServer {
 
 export class PlanItemHierarchy {
     idPlanItem: number;
+    codePlanItem: string;
     alternatives: PlanItemHierarchyAlternative[];
 
     static fromServer(serverData: PlanItemHierarchyServer) {
         const result = new PlanItemHierarchy();
         result.idPlanItem = serverData.id;
+        result.codePlanItem = serverData.code;
         result.alternatives = serverData.alternatives.map(a => PlanItemHierarchyAlternative.fromServer(a));
         return result;
     }
@@ -61,6 +63,7 @@ export class PlanItemHierarchyAlternative {
 }
 
 export class PlanSubItem {
+    id: number;
     name: string;
     code: string;
     normativeTimeMachine: number;
@@ -72,6 +75,7 @@ export class PlanSubItem {
 
     static fromServer(planSubItemServer: PlanSubItemServer) {
         const result = new PlanSubItem();
+        result.id = planSubItemServer.id;
         result.name = planSubItemServer.name;
         result.code = planSubItemServer.code;
         result.normativeTimeMachine = planSubItemServer.defaultExecutionNormative;

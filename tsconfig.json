@@ -14,6 +14,13 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "plugins": [
+      {"name": "@angular/language-service"}
+    ],
+    "strictNullChecks": true
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
   }
 }

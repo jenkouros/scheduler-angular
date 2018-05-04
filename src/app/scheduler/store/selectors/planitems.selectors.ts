@@ -16,12 +16,15 @@ export const getPlanItemsStore = createSelector(
 export const getSelectedPlanItemHierarchy = createSelector(
     getPlanItemsState,
     (state: fromFeature.PlanItemState) => {
-        if (state.selectedItemHierarchy == null) {
-            return new PlanItemHierarchyViewModel(null, null, []);
+        if (state.selectedItemHierarchy === null) {
+            return null; // new PlanItemHierarchyViewModel(null, null, []);
         }
-        const idx = state.items.findIndex(i => i.idItem === state.selectedItemHierarchy.idPlanItem);
+
+        const idPlanItem = state.selectedItemHierarchy.idPlanItem;
+
+        const idx = state.items.findIndex(i => i.idItem === idPlanItem);
         if (idx < 0) {
-            return new PlanItemHierarchyViewModel(null, null, []);
+            return null; // new PlanItemHierarchyViewModel(null, null, []);
         }
 
 

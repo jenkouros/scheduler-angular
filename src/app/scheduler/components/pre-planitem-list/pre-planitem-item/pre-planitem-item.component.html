@@ -1,7 +1,10 @@
-<div class="card mb-1" dx-draggable [dragData]="preplanItem">
+<div class="card mb-1" dx-draggable [dragData]="preplanitem">
   <div class="card-body">
-    <h5 class="card-title">{{ preplanitem.item.id }} - {{ preplanitem.item.code }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">7000136 - Bencin D40</h6>
+    <h5 class="card-title">{{ preplanitem.subItem.code }} - {{ preplanitem.subItem.name }}</h5>
+    <h6 class="card-title text-muted">{{ preplanitem.item.code }}</h6>
+    
+    <h6 class="card-subtitle text-muted">{{ preplanitem.item.product.code }} - {{ preplanitem.item.product.name }}</h6>
+    
     <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
   </div>
 </div>

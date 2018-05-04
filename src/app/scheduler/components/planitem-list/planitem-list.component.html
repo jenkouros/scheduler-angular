@@ -65,28 +65,32 @@
     </dxi-toolbar-item>
   
   <div *dxTemplate="let data of 'content'">
-    <dx-scroll-view *ngIf="(selectedPlanItemHierarchy$ | async) && (selectedPlanItemHierarchy$ | async).planItem">
+    <dx-scroll-view *ngIf="(selectedPlanItemHierarchy$ | async) && (selectedPlanItemHierarchy$ | async)!.planItem">
+
       <div class="row">
         <div class="dx-fieldset col">
           <div class="dx-fieldset-header">Delovni nalog</div>
           <div class="dx-field">
             <div class="dx-field-label">Šifra</div>
-            <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.code }}</div>
-          </div>          
+            <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async)!.planItem.code }}</div>
+          </div>
           <div class="dx-field">
               <div class="dx-field-label">Artikel</div>
-              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.article.code }} - {{ (selectedPlanItemHierarchy$ | async).planItem.article.name }}</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async)!.planItem.article.code }} - 
+                {{ (selectedPlanItemHierarchy$ | async)!.planItem.article.name }}</div>
           </div>
         </div>
         <div class="dx-fieldset col">          
             <div class="dx-fieldset-header">ERP</div>
             <div class="dx-field">
               <div class="dx-field-label">Količina</div>
-              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.quantity }} {{ (selectedPlanItemHierarchy$ | async).planItem.measurementUnit.code }}</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async)!.planItem.quantity }} 
+                {{ (selectedPlanItemHierarchy$ | async)!.planItem.measurementUnit.code }}</div>
             </div>
             <div class="dx-field">
               <div class="dx-field-label">Datum</div>
-              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async).planItem.limitDateFrom | date:'mediumDate' }} - {{ (selectedPlanItemHierarchy$ | async).planItem.limitDateTo | date:'mediumDate' }}</div>
+              <div class="dx-field-value-static">{{ (selectedPlanItemHierarchy$ | async)!.planItem.limitDateFrom | date:'mediumDate' }} - 
+                {{ (selectedPlanItemHierarchy$ | async)!.planItem.limitDateTo | date:'mediumDate' }}</div>
             </div>  
           </div>
       </div>
@@ -134,7 +138,7 @@
             <div class="dx-field">
                 <div class="dx-field-label">Alternativa</div>
                 <div class="dx-field-value-static">
-                  <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async).alternativeOptions" 
+                  <dx-select-box [dataSource]="(selectedPlanItemHierarchy$ | async)!.alternativeOptions" 
                     formControlName="alternative"
                     valueExpr="id" 
                     displayExpr="name" 

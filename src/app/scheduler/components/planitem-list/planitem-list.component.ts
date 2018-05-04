@@ -19,16 +19,16 @@ import { PlanItem, PlanItemHierarchyAlternative } from '../../models/planitem.dt
 })
 export class PlanitemListComponent implements OnInit {
   alternatives: PlanItemHierarchyAlternative[];
-  planItemsStore: CustomStore;
-  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel>;
-  selectedAlternativeId = null;
+  planItemsStore: CustomStore | null;
+  selectedPlanItemHierarchy$: Observable<PlanItemHierarchyViewModel | null>;
+  selectedAlternativeId: number | null = null;
   popupVisible = false;
 
   @ViewChild('f') signupForm: NgForm;
   batch = {
     quantity: '',
     numberOfBatches: '',
-    alternative: ''
+    alternative: <any>0
   };
   submitted = false;
 
@@ -40,13 +40,16 @@ export class PlanitemListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadPlanItems());
     this.store.select(fromStore.getPlanItemsStore)
-      .take(1).subscribe(itemsStore => this.planItemsStore = itemsStore);
+      .take(1)
+      .subscribe(itemsStore => this.planItemsStore = itemsStore);
+
     this.selectedPlanItemHierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+
     this.selectedPlanItemHierarchy$.subscribe(hierarchy => {
-      this.alternatives = hierarchy.planItemHierarchy
+      this.alternatives = hierarchy
         ? hierarchy.planItemHierarchy.alternatives
-        : null;
-      this.selectedAlternativeId = this.alternatives && this.alternatives.length > 0 ? this.alternatives[0].id : null;
+        : [];
+      this.selectedAlternativeId = this.alternatives.length > 0 ? this.alternatives[0].id : null;
     });
   }
 
@@ -83,7 +86,7 @@ export class PlanitemListComponent implements OnInit {
     this.batch.alternative = this.selectedAlternativeId;
     this.signupForm.reset();
 
-    console.log('{Količina}=>' + this.batch.quantity);
+    console.log(`{Količina}=> ${this.batch.quantity}`);
     console.log('{Število šarž}=>' + this.batch.quantity);
     console.log('{Alternativa}=>' + this.batch.alternative);
   }

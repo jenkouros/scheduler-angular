@@ -1,10 +1,14 @@
 import { ContainerServer } from './container.servermodel';
+import { MeasurementUnitServer, ProductServer } from './shared.servermodel';
+import { PlanSubItemServer } from './planitem.servermodel';
 
 export interface PreplanitemServer {
     idPrePlanItem: number;
     quantity: number;
+    unit: MeasurementUnitServer;
     containers: SubItemContainerServer[];
     item: PreplanitemBasicServer;
+    subItem: PlanSubItemServer;
 }
 
 export interface PreplanitemBasicServer {
@@ -13,6 +17,7 @@ export interface PreplanitemBasicServer {
     name: string;
     limitDateFrom: Date;
     limitDateTo: Date;
+    product: ProductServer;
 }
 
 export interface SubItemContainerServer {
@@ -20,6 +25,9 @@ export interface SubItemContainerServer {
     container: ContainerServer;
     isDefault: boolean;
     quantity: number;
+    unitQuantity: string;
     executionNormative: number;
+    unitExecutionNormative: string;
     preparationNormative: number;
+    unitPreparationNormative: string;
 }
