@@ -1,3 +1,5 @@
+import { SubItemContainerServer } from './preplanitem.servermodel';
+
 export interface PlannedEventServer {
     idPlanItem: number;
     idContainer: number;
@@ -5,4 +7,5 @@ export interface PlannedEventServer {
     comment: string;
     timeStartPreparation: Date;
     timeEnd: Date;
+    containers: SubItemContainerServer[];
 }

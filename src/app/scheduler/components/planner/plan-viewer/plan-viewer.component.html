@@ -13,26 +13,24 @@
     [views]="['day', 'week', 'timelineDay']" 
     [(currentView)]="currentView" 
     [firstDayOfWeek]="0"
-    [startDayHour]="8" 
-    [endDayHour]="23" 
+    [startDayHour]="6" 
+    [endDayHour]="24"
     [showAllDayPanel]="false" 
-    [groups]="groups" 
+    [groups]="['containerId']" 
     [resources]="schedulerResources"
     [currentDate]="currentDate"        
     [crossScrollingEnabled]="true" 
     [(cellDuration)]="cellDuration"
     appointmentTemplate="appointment-template" 
-    appointmentTooltipTemplate="tooltip-template"
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
     (onAppointmentAdded)="onAppointmentAdded($event)"
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
-    <dxo-editing [allowAdding]="false"></dxo-editing>
-
-    <div *dxTemplate="let showtime of 'appointment-template'">
-            <app-plan-viewer-item [plannerItemData]="showtime"></app-plan-viewer-item>           
+   
+    <div *dxTemplate="let plannedEvent of 'appointment-template'">
+            <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           
     </div>
 <!--
     <div *dxTemplate="let showtime of 'tooltip-template'">
