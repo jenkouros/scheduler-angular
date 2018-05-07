@@ -1,3 +1,13 @@
+<div class="cellDurationContainer">
+    <div></div>
+    <div class="dx-field">
+        <div class="dx-field-label">Cell duration</div>
+        <div class="dx-field-value">
+            <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations">
+        </dx-select-box>
+        </div>
+    </div>     
+</div>
 <dx-scheduler id="scheduler" 
     [dataSource]="data"
     [views]="['day', 'week', 'timelineDay']" 
@@ -10,14 +20,15 @@
     [resources]="schedulerResources"
     [currentDate]="currentDate"        
     [crossScrollingEnabled]="true" 
+    [(cellDuration)]="cellDuration"
     appointmentTemplate="appointment-template" 
     appointmentTooltipTemplate="tooltip-template"
-   
+    (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
-    (onAppointmentAdded)="onAppointmentAdded($event)">
-    <!--(onAppointmentFormCreated)="onAppointmentFormCreated($event)"-->
+    (onAppointmentAdded)="onAppointmentAdded($event)"
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
     <dxo-editing [allowAdding]="false"></dxo-editing>
 
     <div *dxTemplate="let showtime of 'appointment-template'">

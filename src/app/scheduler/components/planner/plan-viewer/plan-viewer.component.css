@@ -46,3 +46,8 @@
     padding: 0px;
     margin: 0px;
 }
+
+.cellDurationContainer{
+    float: right;
+    width: 250px;    
+  }
