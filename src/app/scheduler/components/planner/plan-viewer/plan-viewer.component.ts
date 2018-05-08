@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import {PlanViewerItemComponent} from '../../../components/index';
 import { PlannedEvent } from '../../../models/event.model';
+import notify from 'devextreme/ui/notify';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -28,6 +30,8 @@ export class PlanViewerComponent implements OnInit {
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
+    cellDurations: any []  = [5, 10 , 20, 30, 60];
+    cellDuration = 60;
 
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
@@ -38,16 +42,8 @@ export class PlanViewerComponent implements OnInit {
                     }
                 );
             });
-
-
     }
 
-    getAppoinmentClass() {
-        if (this.scheduler.currentView === 'timelineDay') {
-            return 'container1';
-        }
-        return '';
-    }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
 
@@ -73,17 +69,42 @@ export class PlanViewerComponent implements OnInit {
             this.groups = ['containerId'];
         }
     }
-/*
+
     optionChanged(e: any) {
-        console.log('optionChanged');
-        if (e.name === 'resources') {
+        // TODO: hack to refresh content and fire onContentReady event
+        if (e.name === 'cellDuration') {
+            this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
+                (containers) => {
+                     this.schedulerResources = this.getResources(containers);
+                });
+        }
+
+        /*if (e.name === 'resources') {
             this.setGroupValue();
             this.groupsHasValue = true;
-        }
+        }*/
     }
-*/
+
     onAppointmentUpdating(e) {
         // logika za kontrolo ali lahko izvedemo update
+        const event: PlannedEvent = e.newData;
+
+        console.log(event);
+        if (!event.isPlanned) {
+            // insert to db  => get inserted event  => update scheduler
+            this.scheduler.instance.addAppointment(
+                new PlannedEvent(
+                    event.id, event.containerId, event.title, event.description,
+                    event.startDate, event.endDate, event.containers, true)
+            );
+            this.showToast('Added', event.description, 'success');
+        } else {
+        // update
+           /* this.scheduler.instance.updateAppointment(
+                e.oldData, e.newData
+            );*/
+        }
+        console.log(e);
 
     }
 
@@ -91,14 +112,15 @@ export class PlanViewerComponent implements OnInit {
          console.log('onAppointmentAdding', e);
     }
     onAppointmentAdded(e) {
-        // console.log(e);
+        console.log('onAppointmentAdded', e);
     }
 
     onContentReady(event) {
-
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
             events.off(elements[i], 'drop');
+            events.off(elements[i], 'dragover');
+            console.log('onContentReady');
             /*
             events.off(elements[i], 'dxdrop');
 
@@ -142,22 +164,26 @@ export class PlanViewerComponent implements OnInit {
                     const el  = e.target;
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
                         const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-                        console.log(`dataCell${JSON.stringify(cellData)}`);
-                        console.log(cellData.groups.containerId);
-
-                        console.log(e);
-                        console.log(JSON.parse(e.dataTransfer.getData('Text')));
-                        const draggedData = JSON.parse(e.dataTransfer.getData('Text'));
-                        if (draggedData !== undefined) {
-                            console.log(draggedData);
-                            this.scheduler.instance.addAppointment(
-                                new PlannedEvent(
-                                    draggedData.item.id, cellData.groups.containerId, 'sdfsd', 'PlannedItemId=' + draggedData.item.id,
-                                    cellData.startDate, cellData.endDate)
-                            );
-                            console.log(this.data);
+                        if (cellData.groups === undefined) {
+                            return false;
                         }
+                        const draggedData = JSON.parse(e.dataTransfer.getData('prePlanItem'));
 
+                        if (draggedData !== undefined) {
+                            const selectedContainer  = draggedData.containers.find (item =>
+                                cellData.groups.containerId === item.container.id);
+                                console.log(selectedContainer);
+                            if (selectedContainer === undefined) {
+                                this.showToast('Info', 'Na delovno mesto ni možno planirati operacije!', 'info');
+                                return false;
+                            }
+                            const duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
+                            const plannedEvent = new PlannedEvent(
+                                draggedData.item.id, cellData.groups.containerId, draggedData.code,
+                                draggedData.subItem.name,
+                                cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(), draggedData.containers);
+                            this.scheduler.instance.showAppointmentPopup(plannedEvent, false);
+                        }
                     }
                 }
             });
@@ -171,72 +197,79 @@ export class PlanViewerComponent implements OnInit {
         this.currentDate = new Date(2018, 3, 25);
 
     }
-/*
+
     onAppointmentFormCreated(data) {
-        const that = this,
-            form = data.form;
-        let    movieInfo = that.getMovieById(data.appointmentData.movieId) || {},
-            startDate = data.appointmentData.startDate;
+        console.log(data);
+        const   that = this,
+                form = data.form;
+
+        const containers  = data.appointmentData.containers;
+        let selectedContainer  = containers.find (item => data.appointmentData.containerId === item.container.id);
+
+        let startDate = data.appointmentData.startDate,
+            description  = data.appointmentData.description,
+            duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
 
         form.option('items', [{
             label: {
-                text: 'Movie'
+                text: 'Description'
             },
-            editorType: 'dxSelectBox',
-            dataField: 'movieId',
-            editorOptions: {
-                items: that.moviesData,
-                displayExpr: 'text',
-                valueExpr: 'id',
-                onValueChanged: function (args) {
-                    movieInfo = that.getMovieById(args.value);
-                    form.getEditor('director')
-                        .option('value', movieInfo.director);
-                    form.getEditor('endDate')
-                        .option('value', new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
-                }.bind(this)
-            }
-        }, {
-            label: {
-                text: 'Director'
-            },
-            name: 'director',
+            dataField: 'description',
             editorType: 'dxTextBox',
             editorOptions: {
-                value: movieInfo.director,
-                readOnly: true
+                readOnly: true,
+                onValueChanged: function (args) {
+                    description = args.value;
+                    form.getEditor('description')
+                    .option('value', description);
+                }
             }
         }, {
             dataField: 'startDate',
             editorType: 'dxDateBox',
             editorOptions: {
+                validationRules:
+                    [{
+                        type: 'required',
+                        message: 'Start Date is required'
+                    }],
                 type: 'datetime',
                 onValueChanged: function (args) {
-                    startDate = args.value;
+                    startDate = new Date(args.value);
                     form.getEditor('endDate')
-                        .option('value', new Date(startDate.getTime() + 60 * 1000 * movieInfo.duration));
+                        .option('value', moment(startDate.getTime()).add(duration, 'm'));
                 }
             }
         }, {
-            name: 'endDate',
             dataField: 'endDate',
             editorType: 'dxDateBox',
             editorOptions: {
-                type: 'datetime',
-                readOnly: true
+                type: 'datetime'
             }
         }, {
-            dataField: 'price',
-            editorType: 'dxRadioGroup',
+            label: {
+                text: 'Container'
+            },
+            editorType: 'dxSelectBox',
+            dataField: 'containerId',
             editorOptions: {
-                dataSource: [5, 10, 15, 20],
-                itemTemplate: function (itemData) {
-                    return '$' + itemData;
-                }
+                items: containers,
+                displayExpr: 'container.code',
+                valueExpr: 'container.id',
+                onValueChanged: function(args) {
+                    selectedContainer  = containers.find (item => args.value === item.container.id);
+                    duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
+                    form.getEditor('endDate')
+                        .option('value', moment(startDate.getTime()).add(duration, 'm'));
+                }.bind(this)
             }
         }]);
     }
 
+    showToast(event, value, type) {
+        notify(event + ' \'' + value + '\'', type, 1500);
+    }
+/*
     editDetails(showtime) {
         this.scheduler.instance.showAppointmentPopup(this.getDataObj(showtime), false);
     }
@@ -254,5 +287,109 @@ export class PlanViewerComponent implements OnInit {
         return Query(this.moviesData).filter(['id', '=', id]).toArray()[0];
     }
     */
-}
 
+
+}
+/*
+export class Priority {
+    text: string;
+    id: number;
+    color: string;
+}
+export class Appointment {
+    text: string;
+    priorityId: number;
+    startDate: Date;
+    endDate: Date;
+}
+const prioritiesDataService: Priority[] = [
+    {
+        text: 'Low Priority',
+        id: 1,
+        color: '#1e90ff'
+    }, {
+        text: 'High Priority',
+        id: 2,
+        color: '#ff9747'
+    }
+];
+
+const appointments: Appointment[] = [
+    {
+        text: 'Website Re-Design Plan',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 25, 9, 0),
+        endDate: new Date(2015, 4, 25, 11, 30)
+    }, {
+        text: 'Book Flights to San Fran for Sales Trip',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 25, 12, 0),
+        endDate: new Date(2015, 4, 25, 13, 0)
+    }, {
+        text: 'Install New Router in Dev Room',
+        priorityId: 1,
+        startDate: new Date(2015, 4, 25, 14, 30),
+        endDate: new Date(2015, 4, 25, 15, 30)
+    }, {
+        text: 'Approve Personal Computer Upgrade Plan',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 26, 10, 0),
+        endDate: new Date(2015, 4, 26, 11, 0)
+    }, {
+        text: 'Final Budget Review',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 26, 12, 0),
+        endDate: new Date(2015, 4, 26, 13, 35)
+    }, {
+        text: 'New Brochures',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 26, 14, 30),
+        endDate: new Date(2015, 4, 26, 15, 45)
+    }, {
+        text: 'Install New Database',
+        priorityId: 1,
+        startDate: new Date(2015, 4, 27, 9, 45),
+        endDate: new Date(2015, 4, 27, 11, 15)
+    }, {
+        text: 'Approve New Online Marketing Strategy',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 27, 12, 0),
+        endDate: new Date(2015, 4, 27, 14, 0)
+    }, {
+        text: 'Upgrade Personal Computers',
+        priorityId: 1,
+        startDate: new Date(2015, 4, 27, 15, 15),
+        endDate: new Date(2015, 4, 27, 16, 30)
+    }, {
+        text: 'Prepare 2015 Marketing Plan',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 28, 11, 0),
+        endDate: new Date(2015, 4, 28, 13, 30)
+    }, {
+        text: 'Brochure Design Review',
+        priorityId: 1,
+        startDate: new Date(2015, 4, 28, 14, 0),
+        endDate: new Date(2015, 4, 28, 15, 30)
+    }, {
+        text: 'Create Icons for Website',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 29, 10, 0),
+        endDate: new Date(2015, 4, 29, 11, 30)
+    }, {
+        text: 'Upgrade Server Hardware',
+        priorityId: 1,
+        startDate: new Date(2015, 4, 29, 14, 30),
+        endDate: new Date(2015, 4, 29, 16, 0)
+    }, {
+        text: 'Submit New Website Design',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 29, 16, 30),
+        endDate: new Date(2015, 4, 29, 18, 0)
+    }, {
+        text: 'Launch New Website',
+        priorityId: 2,
+        startDate: new Date(2015, 4, 29, 12, 20),
+        endDate: new Date(2015, 4, 29, 14, 0)
+    }
+];
+*/

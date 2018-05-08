@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { PlannedEvent } from '../../../../models/event.model';
 
 @Component({
   selector: 'app-plan-viewer-item',
@@ -8,7 +9,7 @@ import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 })
 export class PlanViewerItemComponent implements OnInit {
 
-  @Input() plannerItemData: any;
+  @Input() plannerItemData: PlannedEvent;
   faLock = faLock;
 
   constructor() { }
