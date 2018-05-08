@@ -36,3 +36,8 @@ export const getSelectedPlanItemHierarchy = createSelector(
         );
     }
 );
+
+export const getPlanItemUiState = createSelector(
+    getPlanItemsState,
+    state => state.uiState
+);

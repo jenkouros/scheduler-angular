@@ -27,4 +27,20 @@ export class PreplanitemEffects {
                     );
             })
         );
+
+    @Effect()
+    createPreplanitems$ = this.actions$
+        .ofType(fromActions.CREATE_PREPLANITEMS)
+        .pipe(
+            switchMap((action: fromActions.CreatePreplanItems) => {
+                return this.preplanitemService.createPreplanitems(action.payload)
+                .pipe(
+                    map(filters => new fromActions.LoadPreplanItems()), // MAYBE JUST ADD? TODO
+                    catchError((error) => {
+                        console.log(error);
+                        return of(new fromActions.LoadPreplanItemsFail()); // CREATE NEW FAIL ACTION TODO
+                    })
+                );
+            })
+        );
 }

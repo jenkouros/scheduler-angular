@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <dx-data-grid [columnAutoWidth]="true" [allowColumnResizing]="true" columnResizingMode="nextColumn" id="gridContainer" [dataSource]="planItemsStore"
+        [showRowLines]="true" [rowAlternationEnabled]="true">
+        <!-- [dataSource]="(planItemState$ | async).entities" -->
+
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+        <dxo-remote-operations [filtering]="true" [sorting]="false" [grouping]="false" [paging]="true" [summary]="false">
+        </dxo-remote-operations>
+        <!-- 
+        <dxo-filter-row [visible]="true">
+        </dxo-filter-row> -->
+        <dxo-paging [pageSize]="12"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[8, 12, 20]" [showInfo]="true" [showNavigationButtons]="true">
+        </dxo-pager>
+
+        <dxi-column dataField="code" caption="Šifra naloga"></dxi-column>
+        <dxi-column dataField="" caption="Vrsta proizvodnje"></dxi-column>
+
+        <dxi-column caption="Artikel">
+          <dxi-column dataField="article.code" caption="Šifra"></dxi-column>
+          <dxi-column dataField="article.name" caption="Naziv"></dxi-column>
+        </dxi-column>
+
+        <dxi-column caption="ERP">
+          <dxi-column dataField="quantity" caption="Količina"></dxi-column>
+          <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+          <dxi-column dataField="limitDateFrom" dataType="date" caption="Datum od" cellTemplate="dateCellTemplate"></dxi-column>
+          <dxi-column dataField="limitDateTo" dataType="date" caption="Datum do" cellTemplate="dateCellTemplate"></dxi-column>
+        </dxi-column>
+
+        <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
+
+        <div *dxTemplate="let cell of 'planCellTemplate'">
+          <span class="span-link" (click)="showPlanInfo(cell.data)">Planiraj</span>
+        </div>
+        <div *dxTemplate="let cell of 'dateCellTemplate'">
+          {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
