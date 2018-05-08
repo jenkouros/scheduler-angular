@@ -9,11 +9,7 @@ import { PlannedEvent } from '../../../../models/event.model';
 })
 export class PlanViewerItemComponent implements OnInit {
 
-  @Input() plannerItemData: PlannedEvent | null;
-  faLock = faLock;
-
   constructor() { }
-
   ngOnInit() {
   }
 

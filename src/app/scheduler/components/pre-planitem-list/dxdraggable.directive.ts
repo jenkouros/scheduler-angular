@@ -20,7 +20,7 @@ export class DxDraggableDirective {
 
   @HostListener('dragstart', ['$event'])
   onDragStart(event) {
-    event.dataTransfer.setData('Text', JSON.stringify(this.dragData));
+    event.dataTransfer.setData('prePlanItem', JSON.stringify(this.dragData));
   }
 
   constructor(private el: ElementRef, private renderer: Renderer2) {
