@@ -14,7 +14,6 @@ export const DELETE_EVENT_FAIL = '[Event] Delete an event - fail';
 export class LoadEvents implements Action {
     readonly type = LOAD_EVENTS;
     constructor(public payload: { containerIds: number[], dateFrom: Date, dateTo: Date }) {
-        console.log(payload);
     }
 }
 export class LoadEventsSuccess implements Action {

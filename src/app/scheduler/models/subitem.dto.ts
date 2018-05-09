@@ -13,7 +13,7 @@ export class SubItemContainer {
     unitPreparationNormative: string;
 
     static fromServer(serverData: SubItemContainerServer) {
-        const result = new this();
+        const result = new SubItemContainer();
         result.idSubItemContainer = serverData.idSubItemContainer;
         result.container = Container.fromServer(serverData.container);
         result.isDefault = serverData.isDefault;
@@ -23,6 +23,7 @@ export class SubItemContainer {
         result.unitExecutionNormative = serverData.unitExecutionNormative;
         result.preparationNormative = serverData.preparationNormative;
         result.unitPreparationNormative = serverData.unitPreparationNormative;
+
         return result;
     }
 }

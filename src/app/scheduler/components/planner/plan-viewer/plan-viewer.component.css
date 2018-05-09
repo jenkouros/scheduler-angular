@@ -3,6 +3,12 @@
     padding: 0px;
     margin: 0px;
 }
+/*
+https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
+*/
+::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
+    height: 100px;
+}
 
 .cellDurationContainer{
     float: right;

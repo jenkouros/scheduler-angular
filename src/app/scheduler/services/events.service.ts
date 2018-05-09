@@ -14,12 +14,18 @@ export class EventsService {
     constructor(private http: HttpClient) { }
 
     getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
+        let httpParams = new HttpParams()
+        .set('IdPlan', '1')
+        .set('timeStart', moment(fromDate).format('YYYY-MM-DD'))
+        .set('timeEnd', moment(toDate).format('YYYY-MM-DD HH:mm'));
+
+        containerIds.forEach(id => {
+            httpParams = httpParams.append('containers', id.toString());
+        });
+
         const serachParams = {
-            params: new HttpParams()
-                .set('IdPlan', '1')
-                .set('timeStart', moment(fromDate).format('YYYY-MM-DD'))
-                .set('timeEnd', moment(toDate).format('YYYY-MM-DD HH:mm'))
-                .set('containers', containerIds.join(','))
+            params: httpParams
+
         };
 
         return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', serachParams).pipe(
@@ -35,7 +41,7 @@ export class EventsService {
 
     createEvent(event: PlannedEvent): Observable<PlannedEvent> {
         const planningItem = {
-            idPrePlanItem: event.id,
+            idPlanItem: event.idPrePlanItem,
             idContainer: event.containerId,
             timeStart: moment(event.startDate).toISOString(),
             timeEnd: moment(event.endDate).toISOString()
