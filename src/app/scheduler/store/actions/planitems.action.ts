@@ -12,6 +12,9 @@ export const LOAD_PLANITEMHIERARCHY = '[PlanItem] Load selected plan item hierar
 export const LOAD_PLANITEMHIERARCHY_FAIL = '[PlanItem] Load selected plan item hierarcy fail';
 export const LOAD_PLANITEMHIERARCHY_SUCCESS = '[PlanItem] Load selected plan item hierarcy success';
 
+export const SHOW_PLANITEM_POPUP = '[PlanItem] Show plan item popup';
+export const HIDE_PLANITEM_POPUP = '[PlanItem] Hide plan item popup';
+
 
 export class LoadPlanItems implements Action {
     readonly type = LOAD_PLANITEMS;
@@ -46,6 +49,14 @@ export class LoadPlanItemHierarchySuccess implements Action {
     constructor(public payload: PlanItemHierarchy) {}
 }
 
+export class ShowPlanItemPopup implements Action {
+    readonly type = SHOW_PLANITEM_POPUP;
+}
+
+export class HidePlanItemPopup implements Action {
+    readonly type = HIDE_PLANITEM_POPUP;
+}
+
 export type PlanItemAction =
     | LoadPlanItems
     | RegisterPlanItemStore
@@ -54,4 +65,6 @@ export type PlanItemAction =
     | LoadPlanItemHierarchy
     | LoadPlanItemHierarchyFail
     | LoadPlanItemHierarchySuccess
+    | ShowPlanItemPopup
+    | HidePlanItemPopup
 ;

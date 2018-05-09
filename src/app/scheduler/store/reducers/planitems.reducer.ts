@@ -9,6 +9,9 @@ export interface PlanItemState {
     selectedItemHierarchy: PlanItemHierarchy | null;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
+    uiState: {
+        popupOpened: boolean
+    };
 }
 
 export const initialState: PlanItemState = {
@@ -16,7 +19,10 @@ export const initialState: PlanItemState = {
     itemsStore: null,
     selectedItemHierarchy: null,
     selectedItemHierarchyLoaded: false,
-    selectedItemHierarchyLoading: false
+    selectedItemHierarchyLoading: false,
+    uiState: {
+        popupOpened: false
+    }
 };
 
 export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction): PlanItemState {
@@ -55,6 +61,24 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 selectedItemHierarchyLoaded: true,
                 selectedItemHierarchyLoading: false,
                 selectedItemHierarchy: { ...action.payload }
+            };
+        }
+        case fromPlanItems.SHOW_PLANITEM_POPUP: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    popupOpened: true
+                }
+            };
+        }
+        case fromPlanItems.HIDE_PLANITEM_POPUP: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    popupOpened: false
+                }
             };
         }
         default:
