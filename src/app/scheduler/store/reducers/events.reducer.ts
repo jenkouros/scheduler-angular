@@ -2,7 +2,7 @@ import * as fromAction from '../actions/events.action';
 import { PlannedEvent } from '../../models/event.model';
 
 export interface EventsState {
-    entities: {[id: number]: PlannedEvent};
+    entities: {[id: number]: PlannedEvent[]};
     loading: boolean;
     loaded: boolean;
 }
@@ -25,24 +25,30 @@ export function eventsReducer(
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
-
-            const events = action.payload;
-            const entities = events.reduce(
-            (entities: { [id: number]: PlannedEvent}, event: PlannedEvent) => {
-                return {
-                    ...entities,
-                    [event.containerId]: event,
-                };
-            },
-            {
-                ...state.entities
+            const events: {[id: number]: PlannedEvent[]} = {};
+            for (const event of action.payload) {
+                if (action.payload.hasOwnProperty(event.containerId)) {
+                    events[event.containerId] = [...events[event.containerId] || [], event];
+                }
             }
-            );
+
+            // const events = action.payload;
+            // const entities = events.reduce(
+            // (entities: { [id: number]: PlannedEvent}, event: PlannedEvent) => {
+            //     return {
+            //         ...entities,
+            //         [event.containerId]: event,
+            //     };
+            // },
+            // {
+            //     ...state.entities
+            // }
+            // );
             return {
                 ...state,
                 loading: false,
                 loaded: true,
-                entities,
+                entities: events
             };
             /*
             const events = { ...state.entities };

@@ -4,7 +4,7 @@ import {
     PlanSubItemServer,
     PlanItemHierarchyAlternativeServer } from './server/planitem.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
-import { SubItemContainer } from './preplanitem.dto';
+import { SubItemContainer } from './subitem.dto';
 
 
 export class PlanItem {
@@ -17,7 +17,6 @@ export class PlanItem {
     article: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
-    allowedContainers: SubItemContainer[];
 
     static fromServer(planItemServer: PlanItemServer) {
         const result = new PlanItem();
@@ -30,7 +29,6 @@ export class PlanItem {
         result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
-        result.allowedContainers = planItemServer.allowedContainers.map(c => SubItemContainer.fromServer(c));
         return result;
     }
 }

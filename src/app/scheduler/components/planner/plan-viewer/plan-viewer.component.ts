@@ -45,7 +45,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     this.schedulerResources = this.getResources(containers);
                     this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
                         this.data = items;
-                        console.log(this.data);
+                        // console.log(this.data);
                     }
                 );
                 } else {
@@ -127,17 +127,16 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         console.log('onAppointmentUpdating', event);
         if (!event.isPlanned) {
             // insert to db  => get inserted event  => update scheduler
-            const newEvent = new PlannedEvent(
-                event.preplanedItem.id, event.containerId, event.title, event.description,
-                event.startDate, event.endDate, event.containers, null, true);
-
+            const newEvent = PlannedEvent.createFromPreplanitem(
+                event.idPrePlanItem, event.containerId, event.title, event.description,
+                event.startDate, event.endDate, event.containers);
             this.store.dispatch(new fromStore.CreateEvent(newEvent));
             /*this.scheduler.instance.addAppointment(
                 newEvent
             );*/
             // this.showToast('Added', event.description, 'success');
         }
-        console.log(e);
+
 
     }
 
@@ -149,22 +148,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     onContentReady(event) {
-        /*
-        if (this.selectedStartDate  !== this.scheduler.instance.getStartViewDate() ||
-        this.selectedEndDate  !== this.scheduler.instance.getEndViewDate()) {
-            this.selectedStartDate  = this.scheduler.instance.getStartViewDate();
-            this.selectedEndDate  = this.scheduler.instance.getEndViewDate();
-            this.store.dispatch(
-                new fromStore.LoadEvents({
-                    containerIds: this.selectedContainers.map(c => c.id),
-                    dateFrom: this.scheduler.instance.getStartViewDate(),
-                    dateTo: this.scheduler.instance.getEndViewDate()
-                })
-            );
-        }
-        */
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
+
             events.off(elements[i], 'drop');
             events.off(elements[i], 'dragover');
            // console.log('onContentReady');
@@ -219,17 +205,17 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                         if (draggedData !== undefined) {
                             const selectedContainer  = draggedData.containers.find (item =>
                                 cellData.groups.containerId === item.container.id);
-                                console.log(selectedContainer);
+
                             if (selectedContainer === undefined) {
                                 this.showToast('Info', 'Na delovno mesto ni možno planirati operacije!', 'info');
                                 return false;
                             }
                             const duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
-                            const plannedEvent = new PlannedEvent(
-                                draggedData.item.id, cellData.groups.containerId, draggedData.code,
+                            const plannedEvent = PlannedEvent.createFromPreplanitem(
+                                draggedData.id, cellData.groups.containerId, draggedData.code,
                                 draggedData.subItem.name,
                                 cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(),
-                                draggedData.containers, draggedData, false);
+                                draggedData.containers, false);
                             this.scheduler.instance.showAppointmentPopup(plannedEvent, false);
                         }
                     }
@@ -242,16 +228,12 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (!this.groupsHasValue) {
             this.setGroupValue();
         }
-
-
-
     }
 
     onAppointmentFormCreated(data) {
-        console.log(data);
         const   that = this,
                 form = data.form;
-
+        // console.log(data);
         const containers  = data.appointmentData.containers;
         let selectedContainer  = containers.find (item => data.appointmentData.containerId === item.container.id);
 
@@ -261,15 +243,15 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
         form.option('items', [{
             label: {
-                text: 'Description'
+                text: 'Operation'
             },
-            dataField: 'description',
+            dataField: 'subItemName',
             editorType: 'dxTextBox',
             editorOptions: {
                 readOnly: true,
                 onValueChanged: function (args) {
                     description = args.value;
-                    form.getEditor('description')
+                    form.getEditor('subItemName')
                     .option('value', description);
                 }
             }

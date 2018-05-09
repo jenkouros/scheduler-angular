@@ -11,7 +11,6 @@ export interface PlanItemServer {
     article: ProductServer;
     limitDateFrom: Date;
     limitDateTo: Date;
-    allowedContainers: SubItemContainerServer[];
 }
 
 export interface PlanItemHierarchyServer {
