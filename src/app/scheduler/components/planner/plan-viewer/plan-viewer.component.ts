@@ -128,9 +128,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         console.log('onAppointmentUpdating', event);
         if (!event.isPlanned) {
             // insert to db  => get inserted event  => update scheduler
-            const newEvent = new PlannedEvent(
+            const newEvent = PlannedEvent.createFromPreplanitem(
                 event.id, event.containerId, event.title, event.description,
-                event.startDate, event.endDate, event.containers, null, true);
+                event.startDate, event.endDate, event.containers);
 
             this.store.dispatch(new fromStore.CreateEvent(newEvent));
             this.scheduler.instance.addAppointment(
@@ -226,7 +226,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                                 return false;
                             }
                             const duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
-                            const plannedEvent = new PlannedEvent(
+                            const plannedEvent = PlannedEvent.createFromPreplanitem(
                                 draggedData.item.id, cellData.groups.containerId, draggedData.code,
                                 draggedData.subItem.name,
                                 cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(),
