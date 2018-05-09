@@ -39,7 +39,22 @@ export class EventsEffects {
                 action.payload
             )
             .pipe(
-                map(event => new fromAction.CreateEventSucess(event)),
+                map(event => new fromAction.CreateEventSuccess(event)),
+                catchError(error => of(new fromAction.CreateEventFail()))
+            );
+        })
+    );
+
+    @Effect()
+    deleteEvent$  = this.actions$
+    .ofType(fromAction.DELETE_EVENT)
+    .pipe(
+        switchMap((action: fromAction.DeleteEvent) => {
+            return this.eventsService.deleteEvent(
+                action.payload
+            )
+            .pipe(
+                map(result => new fromAction.DeleteEventSuccess(action.payload)),
                 catchError(error => of(new fromAction.CreateEventFail()))
             );
         })

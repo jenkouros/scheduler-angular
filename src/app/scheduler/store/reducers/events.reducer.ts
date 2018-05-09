@@ -73,17 +73,32 @@ export function eventsReducer(
             };
         }
         case fromAction.CREATE_EVENT_SUCCESS: {
-            // const event = {[action.payload.containerId]: action.payload};
+            const events =  { ...state.entities };
+
+            events[action.payload.id] =  action.payload;
             return {
                 ...state,
-                loaded: true,
-                loading: false
+                entities: events
             };
         }
         case fromAction.CREATE_EVENT_FAIL: {
             // const event = {[action.payload.containerId]: action.payload};
             return {
                 ...state,
+                loaded: false,
+                loading: false
+            };
+        }
+        case fromAction.DELETE_EVENT_SUCCESS: {
+            const event = action.payload;
+            console.log(event);
+            const { [event.id]: removed, ...entities } = state.entities;
+
+            console.log(state.entities);
+
+            return {
+                ...state,
+                entities,
                 loaded: false,
                 loading: false
             };

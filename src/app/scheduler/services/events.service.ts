@@ -6,6 +6,7 @@ import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -16,8 +17,8 @@ export class EventsService {
         const serachParams = {
             params: new HttpParams()
                 .set('IdPlan', '1')
-                .set('timeStart', fromDate.toDateString())
-                .set('timeEnd', toDate.toDateString())
+                .set('timeStart', moment(fromDate).format('YYYY-MM-DD'))
+                .set('timeEnd', moment(toDate).format('YYYY-MM-DD HH:mm'))
                 .set('containers', containerIds.join(','))
         };
 
@@ -36,8 +37,8 @@ export class EventsService {
         const planningItem = {
             idPrePlanItem: event.id,
             idContainer: event.containerId,
-            timeStart: event.startDate,
-            timeEnd: event.endDate
+            timeStart: moment(event.startDate).toISOString(),
+            timeEnd: moment(event.endDate).toISOString()
         };
         return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -48,6 +49,20 @@ export class EventsService {
                     throw response.messages;
                 }
                 return PlannedEvent.fromServer(response.result);
+            } )
+        );
+    }
+
+    deleteEvent(event: PlannedEvent): Observable<boolean> {
+        return this.http.delete<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems?idPlanItem=' + event.id ,
+            {
+                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+            }).pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return true;
             } )
         );
     }

@@ -6,7 +6,7 @@ export class PlannedEvent {
 
     constructor (public id: number, public containerId: number, public title: string,
         public description: string, public startDate: Date, public endDate: Date,
-        public containers: SubItemContainerServer[],
+        public containers: SubItemContainerServer[] = [],
         public preplanedItem: any = null,
         public isPlanned  = true,
         ) {
@@ -17,10 +17,10 @@ export class PlannedEvent {
             event.idPlanItem,
             event.idContainer,
             event.title,
-            event.comment,
+            event.subItemName,
             event.timeStartPreparation,
             event.timeEnd,
-            [...event.containers]);
+             [...event.allowedContainers]);
     }
 }
 

@@ -4,8 +4,10 @@ export interface PlannedEventServer {
     idPlanItem: number;
     idContainer: number;
     title: string;
+    subItemCode: string;
+    subItemName: string;
     comment: string;
     timeStartPreparation: Date;
     timeEnd: Date;
-    containers: SubItemContainerServer[];
+    allowedContainers: SubItemContainerServer[];
 }

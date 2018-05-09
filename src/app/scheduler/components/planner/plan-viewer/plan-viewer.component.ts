@@ -41,12 +41,17 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
                 this.selectedContainers = containers;
-                this.schedulerResources = this.getResources(containers);
-                this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
+                 if (containers.length > 0) {
+                    this.schedulerResources = this.getResources(containers);
+                    this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
                         this.data = items;
-                        console.log('data:', this.data);
+                        console.log(this.data);
                     }
                 );
+                } else {
+                    this.schedulerResources = [];
+                }
+
             });
     }
 
@@ -93,14 +98,13 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 });
         }
 
-        if ((e.fullName === 'currentView' || e.fullName === 'currentDate')) {
+        if ((e.fullName === 'currentView' || e.fullName === 'currentDate' || e.fullName === 'resources' )) {
 
             if (this.selectedStartDate  !== e.component.getStartViewDate() ||
                 this.selectedEndDate  !== e.component.getEndViewDate()) {
                     setTimeout(() =>  {
                         this.selectedStartDate  = e.component.getStartViewDate();
                         this.selectedEndDate  = e.component.getEndViewDate();
-
                         this.store.dispatch(
                             new fromStore.LoadEvents({
                                 containerIds: this.selectedContainers.map(c => c.id),
@@ -111,16 +115,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     }, 100);
             }
         }
-
-        /*if (e.name === 'resources') {
-            this.setGroupValue();
-            this.groupsHasValue = true;
-        }*/
-    }
-    test() {
-
     }
 
+    onAppointmentDeleting(e) {
+        this.store.dispatch(new fromStore.DeleteEvent(e.appointmentData));
+    }
     onAppointmentUpdating(e) {
         // logika za kontrolo ali lahko izvedemo update
         const event: PlannedEvent = e.newData;
@@ -129,14 +128,14 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (!event.isPlanned) {
             // insert to db  => get inserted event  => update scheduler
             const newEvent = new PlannedEvent(
-                event.id, event.containerId, event.title, event.description,
+                event.preplanedItem.id, event.containerId, event.title, event.description,
                 event.startDate, event.endDate, event.containers, null, true);
 
             this.store.dispatch(new fromStore.CreateEvent(newEvent));
-            this.scheduler.instance.addAppointment(
+            /*this.scheduler.instance.addAppointment(
                 newEvent
-            );
-            this.showToast('Added', event.description, 'success');
+            );*/
+            // this.showToast('Added', event.description, 'success');
         }
         console.log(e);
 
@@ -319,127 +318,5 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     showToast(event, value, type) {
         notify(event + ' \'' + value + '\'', type, 1500);
     }
-/*
-    editDetails(showtime) {
-        this.scheduler.instance.showAppointmentPopup(this.getDataObj(showtime), false);
-    }
-
-    getDataObj(objData) {
-        for (let i = 0; i < this.data.length; i++) {
-            if (this.data[i].startDate.getTime() === objData.startDate.getTime() && this.data[i].containerId === objData.workplaceId) {
-                return this.data[i];
-            }
-        }
-        return null;
-    }
-
-    getMovieById(id) {
-        return Query(this.moviesData).filter(['id', '=', id]).toArray()[0];
-    }
-    */
-
-
 }
-/*
-export class Priority {
-    text: string;
-    id: number;
-    color: string;
-}
-export class Appointment {
-    text: string;
-    priorityId: number;
-    startDate: Date;
-    endDate: Date;
-}
-const prioritiesDataService: Priority[] = [
-    {
-        text: 'Low Priority',
-        id: 1,
-        color: '#1e90ff'
-    }, {
-        text: 'High Priority',
-        id: 2,
-        color: '#ff9747'
-    }
-];
 
-const appointments: Appointment[] = [
-    {
-        text: 'Website Re-Design Plan',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 25, 9, 0),
-        endDate: new Date(2015, 4, 25, 11, 30)
-    }, {
-        text: 'Book Flights to San Fran for Sales Trip',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 25, 12, 0),
-        endDate: new Date(2015, 4, 25, 13, 0)
-    }, {
-        text: 'Install New Router in Dev Room',
-        priorityId: 1,
-        startDate: new Date(2015, 4, 25, 14, 30),
-        endDate: new Date(2015, 4, 25, 15, 30)
-    }, {
-        text: 'Approve Personal Computer Upgrade Plan',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 26, 10, 0),
-        endDate: new Date(2015, 4, 26, 11, 0)
-    }, {
-        text: 'Final Budget Review',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 26, 12, 0),
-        endDate: new Date(2015, 4, 26, 13, 35)
-    }, {
-        text: 'New Brochures',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 26, 14, 30),
-        endDate: new Date(2015, 4, 26, 15, 45)
-    }, {
-        text: 'Install New Database',
-        priorityId: 1,
-        startDate: new Date(2015, 4, 27, 9, 45),
-        endDate: new Date(2015, 4, 27, 11, 15)
-    }, {
-        text: 'Approve New Online Marketing Strategy',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 27, 12, 0),
-        endDate: new Date(2015, 4, 27, 14, 0)
-    }, {
-        text: 'Upgrade Personal Computers',
-        priorityId: 1,
-        startDate: new Date(2015, 4, 27, 15, 15),
-        endDate: new Date(2015, 4, 27, 16, 30)
-    }, {
-        text: 'Prepare 2015 Marketing Plan',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 28, 11, 0),
-        endDate: new Date(2015, 4, 28, 13, 30)
-    }, {
-        text: 'Brochure Design Review',
-        priorityId: 1,
-        startDate: new Date(2015, 4, 28, 14, 0),
-        endDate: new Date(2015, 4, 28, 15, 30)
-    }, {
-        text: 'Create Icons for Website',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 29, 10, 0),
-        endDate: new Date(2015, 4, 29, 11, 30)
-    }, {
-        text: 'Upgrade Server Hardware',
-        priorityId: 1,
-        startDate: new Date(2015, 4, 29, 14, 30),
-        endDate: new Date(2015, 4, 29, 16, 0)
-    }, {
-        text: 'Submit New Website Design',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 29, 16, 30),
-        endDate: new Date(2015, 4, 29, 18, 0)
-    }, {
-        text: 'Launch New Website',
-        priorityId: 2,
-        startDate: new Date(2015, 4, 29, 12, 20),
-        endDate: new Date(2015, 4, 29, 14, 0)
-    }
-];
-*/
