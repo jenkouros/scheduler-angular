@@ -15,35 +15,45 @@ import {PlanViewerItemComponent} from '../../../components/index';
 import { PlannedEvent } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
+import { ContainerSelect } from '../../../models/container.viewModel';
 
 @Component({
     selector: 'app-plan-viewer',
     templateUrl: './plan-viewer.component.html',
     styleUrls: ['./plan-viewer.component.css']
 })
-export class PlanViewerComponent implements OnInit {
+export class PlanViewerComponent implements OnInit, AfterViewInit {
     @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
 
-    currentDate: Date = new Date(2018, 4, 25);
-    data: PlannedEvent[];
+    currentDate: Date = new Date();
+    data: PlannedEvent[] = [];
     schedulerResources: any = [];
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
     cellDurations: any []  = [5, 10 , 20, 30, 60];
     cellDuration = 60;
+    selectedContainers: ContainerSelect[];
+    selectedStartDate: Date;
+    selectedEndDate: Date;
 
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
+                this.selectedContainers = containers;
                 this.schedulerResources = this.getResources(containers);
                 this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
-                    this.data = items;
+                        this.data = items;
+                        console.log('data:', this.data);
                     }
                 );
             });
     }
 
+    ngAfterViewInit() {
+        this.selectedStartDate  = this.scheduler.instance.getStartViewDate();
+        this.selectedEndDate  = this.scheduler.instance.getEndViewDate();
+  }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
 
@@ -70,7 +80,11 @@ export class PlanViewerComponent implements OnInit {
         }
     }
 
+
+
+
     optionChanged(e: any) {
+
         // TODO: hack to refresh content and fire onContentReady event
         if (e.name === 'cellDuration') {
             this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
@@ -79,30 +93,50 @@ export class PlanViewerComponent implements OnInit {
                 });
         }
 
+        if ((e.fullName === 'currentView' || e.fullName === 'currentDate')) {
+
+            if (this.selectedStartDate  !== e.component.getStartViewDate() ||
+                this.selectedEndDate  !== e.component.getEndViewDate()) {
+                    setTimeout(() =>  {
+                        this.selectedStartDate  = e.component.getStartViewDate();
+                        this.selectedEndDate  = e.component.getEndViewDate();
+
+                        this.store.dispatch(
+                            new fromStore.LoadEvents({
+                                containerIds: this.selectedContainers.map(c => c.id),
+                                dateFrom: this.selectedStartDate,
+                                dateTo: this.selectedEndDate
+                            })
+                        );
+                    }, 100);
+            }
+        }
+
         /*if (e.name === 'resources') {
             this.setGroupValue();
             this.groupsHasValue = true;
         }*/
+    }
+    test() {
+
     }
 
     onAppointmentUpdating(e) {
         // logika za kontrolo ali lahko izvedemo update
         const event: PlannedEvent = e.newData;
 
-        console.log(event);
+        console.log('onAppointmentUpdating', event);
         if (!event.isPlanned) {
             // insert to db  => get inserted event  => update scheduler
+            const newEvent = new PlannedEvent(
+                event.id, event.containerId, event.title, event.description,
+                event.startDate, event.endDate, event.containers, null, true);
+
+            this.store.dispatch(new fromStore.CreateEvent(newEvent));
             this.scheduler.instance.addAppointment(
-                new PlannedEvent(
-                    event.id, event.containerId, event.title, event.description,
-                    event.startDate, event.endDate, event.containers, true)
+                newEvent
             );
             this.showToast('Added', event.description, 'success');
-        } else {
-        // update
-           /* this.scheduler.instance.updateAppointment(
-                e.oldData, e.newData
-            );*/
         }
         console.log(e);
 
@@ -116,11 +150,25 @@ export class PlanViewerComponent implements OnInit {
     }
 
     onContentReady(event) {
+        /*
+        if (this.selectedStartDate  !== this.scheduler.instance.getStartViewDate() ||
+        this.selectedEndDate  !== this.scheduler.instance.getEndViewDate()) {
+            this.selectedStartDate  = this.scheduler.instance.getStartViewDate();
+            this.selectedEndDate  = this.scheduler.instance.getEndViewDate();
+            this.store.dispatch(
+                new fromStore.LoadEvents({
+                    containerIds: this.selectedContainers.map(c => c.id),
+                    dateFrom: this.scheduler.instance.getStartViewDate(),
+                    dateTo: this.scheduler.instance.getEndViewDate()
+                })
+            );
+        }
+        */
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
             events.off(elements[i], 'drop');
             events.off(elements[i], 'dragover');
-            console.log('onContentReady');
+           // console.log('onContentReady');
             /*
             events.off(elements[i], 'dxdrop');
 
@@ -181,7 +229,8 @@ export class PlanViewerComponent implements OnInit {
                             const plannedEvent = new PlannedEvent(
                                 draggedData.item.id, cellData.groups.containerId, draggedData.code,
                                 draggedData.subItem.name,
-                                cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(), draggedData.containers);
+                                cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(),
+                                draggedData.containers, draggedData, false);
                             this.scheduler.instance.showAppointmentPopup(plannedEvent, false);
                         }
                     }
@@ -194,7 +243,8 @@ export class PlanViewerComponent implements OnInit {
         if (!this.groupsHasValue) {
             this.setGroupValue();
         }
-        this.currentDate = new Date(2018, 3, 25);
+
+
 
     }
 
