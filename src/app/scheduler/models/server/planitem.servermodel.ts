@@ -1,4 +1,5 @@
 import { ProductServer, MeasurementUnitServer } from './shared.servermodel';
+import { SubItemContainerServer } from './preplanitem.servermodel';
 
 export interface PlanItemServer {
     idItem: number;
@@ -10,6 +11,7 @@ export interface PlanItemServer {
     article: ProductServer;
     limitDateFrom: Date;
     limitDateTo: Date;
+    allowedContainers: SubItemContainerServer[];
 }
 
 export interface PlanItemHierarchyServer {

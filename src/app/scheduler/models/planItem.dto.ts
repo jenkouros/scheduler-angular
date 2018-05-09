@@ -4,9 +4,10 @@ import {
     PlanSubItemServer,
     PlanItemHierarchyAlternativeServer } from './server/planitem.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
+import { SubItemContainer } from './preplanitem.dto';
 
 
-export class PlanItem implements PlanItemServer {
+export class PlanItem {
     idItem: number;
     code: string;
     quantity: number; // celotna kolicina
@@ -16,6 +17,7 @@ export class PlanItem implements PlanItemServer {
     article: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
+    allowedContainers: SubItemContainer[];
 
     static fromServer(planItemServer: PlanItemServer) {
         const result = new PlanItem();
@@ -28,6 +30,7 @@ export class PlanItem implements PlanItemServer {
         result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
+        result.allowedContainers = planItemServer.allowedContainers.map(c => SubItemContainer.fromServer(c));
         return result;
     }
 }
