@@ -34,3 +34,13 @@ a.nav-link.active {
     cursor: move;
     user-select: none;
 }
+
+dx-select-box.ng-invalid.ng-dirty input {
+    border: 1px solid red;
+}
+
+/* popup margins */
+.dx-popup-content .dx-fieldset {
+    margin-top: 10px;
+}
+/* end popup margins */

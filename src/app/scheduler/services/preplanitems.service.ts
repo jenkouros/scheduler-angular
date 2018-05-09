@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { PreplanitemServer } from '../models/server/preplanitem.servermodel';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { PreplanItem } from '../models/preplanitem.dto';
+import { PreplanItem, PreplanItemRequest } from '../models/preplanitem.dto';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -23,5 +23,11 @@ export class PreplanitemsService {
                 }),
                 catchError((error: any) => Observable.throw(error.json()))
             );
+    }
+
+    createPreplanitems(requestModel: PreplanItemRequest) {
+        return this.http.post(environment.apiUrl + '/preplanitems', requestModel, {
+            headers: new HttpHeaders( { 'Access-Control-Allow-Origin': '*' })
+        });
     }
 }
