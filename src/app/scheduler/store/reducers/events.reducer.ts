@@ -65,6 +65,29 @@ export function eventsReducer(
                 loading: false
             };
         }
+        case fromAction.CREATE_EVENT: {
+            return {
+                ...state,
+                loaded: false,
+                loading: true
+            };
+        }
+        case fromAction.CREATE_EVENT_SUCCESS: {
+            // const event = {[action.payload.containerId]: action.payload};
+            return {
+                ...state,
+                loaded: true,
+                loading: false
+            };
+        }
+        case fromAction.CREATE_EVENT_FAIL: {
+            // const event = {[action.payload.containerId]: action.payload};
+            return {
+                ...state,
+                loaded: false,
+                loading: false
+            };
+        }
         default:
             return state;
     }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { PlannedEvent } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
@@ -11,13 +11,14 @@ import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
 @Injectable()
 export class EventsService {
     constructor(private http: HttpClient) { }
+
     getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
         const serachParams = {
             params: new HttpParams()
                 .set('IdPlan', '1')
-                .set('timeStart', '2018-04-25')
-                .set('timeEnd', '2018-04-26')
-                .set('containers', '1095')
+                .set('timeStart', fromDate.toDateString())
+                .set('timeEnd', toDate.toDateString())
+                .set('containers', containerIds.join(','))
         };
 
         return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', serachParams).pipe(
@@ -28,6 +29,26 @@ export class EventsService {
                 return response.result.map(PlannedEvent.fromServer);
             }),
             catchError((error: any) => Observable.throw(error.json))
+        );
+    }
+
+    createEvent(event: PlannedEvent): Observable<PlannedEvent> {
+        const planningItem = {
+            idPrePlanItem: event.id,
+            idContainer: event.containerId,
+            timeStart: event.startDate,
+            timeEnd: event.endDate
+        };
+        return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
+            {
+                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+            }).pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return PlannedEvent.fromServer(response.result);
+            } )
         );
     }
 

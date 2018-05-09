@@ -4,6 +4,7 @@ import { EventsService } from '../../services/events.service';
 import * as fromAction from '../actions/events.action';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { PlannedEvent } from '../../models/event.model';
 
 @Injectable()
 export class EventsEffects {
@@ -28,4 +29,19 @@ export class EventsEffects {
                 );
             })
         );
+
+    @Effect()
+    createEvent$  = this.actions$
+    .ofType(fromAction.CREATE_EVENT)
+    .pipe(
+        switchMap((action: fromAction.CreateEvent) => {
+            return this.eventsService.createEvent(
+                action.payload
+            )
+            .pipe(
+                map(event => new fromAction.CreateEventSucess(event)),
+                catchError(error => of(new fromAction.CreateEventFail()))
+            );
+        })
+    );
 }
