@@ -35,7 +35,7 @@ export class PlannedEvent {
 
     static createFromPreplanitem(idPrePlanItem: number,
         idContainer: number,
-        title: string, description: string,
+        title: string, description: string, subItemName: string,
         startDate: Date,
         endDate: Date,
         subItemContainers: SubItemContainer[],
@@ -46,6 +46,7 @@ export class PlannedEvent {
         result.idPrePlanItem = idPrePlanItem;
         result.containerId = idContainer;
         result.title = title;
+        result.subItemName = subItemName;
         result.description = description;
         result.startDate = startDate;
         result.endDate = endDate;

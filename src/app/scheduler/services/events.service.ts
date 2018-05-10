@@ -43,8 +43,8 @@ export class EventsService {
         const planningItem = {
             idPrePlanItem: event.idPrePlanItem,
             idContainer: event.containerId,
-            timeStart: moment(event.startDate).toISOString(),
-            timeEnd: moment(event.endDate).toISOString()
+            timeStart: moment.utc(event.startDate).toISOString(),
+            timeEnd: moment.utc(event.endDate).toISOString()
         };
         return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
             {
