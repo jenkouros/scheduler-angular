@@ -244,7 +244,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
         form.option('items', [{
             label: {
-                text: 'Operation'
+                text: 'Operacija'
             },
             dataField: 'subItemName',
             editorType: 'dxTextBox',
@@ -257,7 +257,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 }
             }
         }, {
-            dataField: 'startDate',
+            dataField: 'Začetni datum',
             editorType: 'dxDateBox',
             editorOptions: {
                 validationRules:
@@ -273,14 +273,14 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 }
             }
         }, {
-            dataField: 'endDate',
+            dataField: 'Končni datum',
             editorType: 'dxDateBox',
             editorOptions: {
                 type: 'datetime'
             }
         }, {
             label: {
-                text: 'Container'
+                text: 'Delovno mesto'
             },
             editorType: 'dxSelectBox',
             dataField: 'containerId',
