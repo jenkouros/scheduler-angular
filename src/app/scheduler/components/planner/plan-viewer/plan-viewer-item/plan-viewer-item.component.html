@@ -3,8 +3,11 @@
           <div class="progressInfo">45%</div>          
   </div>                
   <div class="plannerItem">
-    {{ plannerItemData.description}} 
-    {{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
+    <p>
+      {{ plannerItemData.subItemName}} <br />
+      {{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}
+    </p>
+    </div>
   <div class="info">
       <fa-icon [icon]="faLock"></fa-icon>
   </div>

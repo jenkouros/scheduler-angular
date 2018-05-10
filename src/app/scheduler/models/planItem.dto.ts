@@ -4,9 +4,10 @@ import {
     PlanSubItemServer,
     PlanItemHierarchyAlternativeServer } from './server/planitem.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
+import { SubItemContainer } from './subitem.dto';
 
 
-export class PlanItem implements PlanItemServer {
+export class PlanItem {
     idItem: number;
     code: string;
     quantity: number; // celotna kolicina

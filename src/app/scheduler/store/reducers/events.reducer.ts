@@ -1,8 +1,9 @@
 import * as fromAction from '../actions/events.action';
 import { PlannedEvent } from '../../models/event.model';
+import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
 
 export interface EventsState {
-    entities: {[id: number]: PlannedEvent};
+    entities: {[id: number]: PlannedEvent[]};
     loading: boolean;
     loaded: boolean;
 }
@@ -25,38 +26,19 @@ export function eventsReducer(
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
+            const events: {[id: number]: PlannedEvent[]} = {};
+            for (const event of action.payload) {
+                if (event.hasOwnProperty('containerId')) {
+                    events[event.containerId] = [...events[event.containerId] || [], event];
+                }
+            }
 
-            const events = action.payload;
-            const entities = events.reduce(
-            (entities: { [id: number]: PlannedEvent}, event: PlannedEvent) => {
-                return {
-                    ...entities,
-                    [event.containerId]: event,
-                };
-            },
-            {
-                ...state.entities
-            }
-            );
-            return {
-                ...state,
-                loading: false,
-                loaded: true,
-                entities,
-            };
-            /*
-            const events = { ...state.entities };
-            // tslint:disable-next-line:forin
-            for (const key in action.payload) {
-                events[key] = action.payload[key];
-            }
             return {
                 ...state,
                 loading: false,
                 loaded: true,
                 entities: events
             };
-            */
         }
         case fromAction.LOAD_EVENTS_FAIL: {
             return {
@@ -73,17 +55,28 @@ export function eventsReducer(
             };
         }
         case fromAction.CREATE_EVENT_SUCCESS: {
-            // const event = {[action.payload.containerId]: action.payload};
+            const events =  { ...state.entities };
+            events[action.payload.containerId] = [...events[action.payload.containerId] || [], action.payload];
+
             return {
                 ...state,
-                loaded: true,
-                loading: false
+                entities: events
             };
         }
         case fromAction.CREATE_EVENT_FAIL: {
-            // const event = {[action.payload.containerId]: action.payload};
             return {
                 ...state,
+                loaded: false,
+                loading: false
+            };
+        }
+        case fromAction.DELETE_EVENT_SUCCESS: {
+            const events =  { ...state.entities };
+            events[action.payload.containerId] = events[action.payload.containerId].filter((item) => item.id !== action.payload.id);
+
+            return {
+                ...state,
+                entities: events,
                 loaded: false,
                 loading: false
             };

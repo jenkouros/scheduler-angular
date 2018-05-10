@@ -13,7 +13,7 @@
     [views]="['day', 'week', 'timelineDay']" 
     [(currentView)]="currentView" 
     [firstDayOfWeek]="0"
-    [startDayHour]="6" 
+    [startDayHour]="5" 
     [endDayHour]="24"
     [showAllDayPanel]="false" 
     [groups]="['containerId']" 
@@ -25,6 +25,7 @@
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    (onAppointmentDeleting)="onAppointmentDeleting($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
     (onAppointmentAdded)="onAppointmentAdded($event)"
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)">

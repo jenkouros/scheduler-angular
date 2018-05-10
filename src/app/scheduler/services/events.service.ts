@@ -6,6 +6,7 @@ import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -13,12 +14,18 @@ export class EventsService {
     constructor(private http: HttpClient) { }
 
     getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
+        let httpParams = new HttpParams()
+        .set('IdPlan', '1')
+        .set('timeStart', moment(fromDate).format('YYYY-MM-DD'))
+        .set('timeEnd', moment(toDate).format('YYYY-MM-DD HH:mm'));
+
+        containerIds.forEach(id => {
+            httpParams = httpParams.append('containers', id.toString());
+        });
+
         const serachParams = {
-            params: new HttpParams()
-                .set('IdPlan', '1')
-                .set('timeStart', fromDate.toDateString())
-                .set('timeEnd', toDate.toDateString())
-                .set('containers', containerIds.join(','))
+            params: httpParams
+
         };
 
         return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', serachParams).pipe(
@@ -34,10 +41,10 @@ export class EventsService {
 
     createEvent(event: PlannedEvent): Observable<PlannedEvent> {
         const planningItem = {
-            idPrePlanItem: event.id,
+            idPlanItem: event.idPrePlanItem,
             idContainer: event.containerId,
-            timeStart: event.startDate,
-            timeEnd: event.endDate
+            timeStart: moment(event.startDate).toISOString(),
+            timeEnd: moment(event.endDate).toISOString()
         };
         return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -48,6 +55,20 @@ export class EventsService {
                     throw response.messages;
                 }
                 return PlannedEvent.fromServer(response.result);
+            } )
+        );
+    }
+
+    deleteEvent(event: PlannedEvent): Observable<boolean> {
+        return this.http.delete<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems?idPlanItem=' + event.id ,
+            {
+                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+            }).pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return true;
             } )
         );
     }
