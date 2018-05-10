@@ -5,6 +5,13 @@
     border-color: #F0F2EF;  
 }
 
+.btn:hover {
+    margin: 2px;
+    color: #084578;
+    background-color: #e3e7e1;
+    border-color: #e3e7e1;
+}
+
 .btn-primary {
     margin: 2px;
     color: #fff;
