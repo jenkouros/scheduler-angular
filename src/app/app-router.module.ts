@@ -5,7 +5,7 @@ import { SchedulerComponent } from './scheduler/components';
 
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: '/scheduler', pathMatch: 'full' },
+    { path: '', redirectTo: '/scheduler/planitems', pathMatch: 'full' },
     { path: 'scheduler', loadChildren: './scheduler/scheduler.module#SchedulerModule' }
 ];
 

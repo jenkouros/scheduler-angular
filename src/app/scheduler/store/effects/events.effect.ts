@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { EventsService } from '../../services/events.service';
-import * as fromAction from '../actions/events.action';
+import * as fromAction from '../actions';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { PlannedEvent } from '../../models/event.model';
@@ -59,4 +59,20 @@ export class EventsEffects {
             );
         })
     );
+
+    @Effect()
+    createEventSuccess$ = this.actions$
+        .ofType(fromAction.CREATE_EVENT_SUCCESS)
+        .pipe(
+            map((action: fromAction.CreateEventSuccess) =>
+                new fromAction.RemovePreplanItem(action.payload.idPrePlanItem)
+            ));
+
+    @Effect()
+    deleteEventSuccess$ = this.actions$
+        .ofType(fromAction.DELETE_EVENT_SUCCESS)
+        .pipe(
+            map((action: fromAction.CreateEventSuccess) =>
+                new fromAction.LoadPreplanItems()
+            ));
 }
