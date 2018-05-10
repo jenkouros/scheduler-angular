@@ -143,10 +143,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     onAppointmentAdding(e) {
          console.log('onAppointmentAdding', e);
     }
-    onAppointmentAdded(e) {
-        this.store.dispatch(new fromStore.LoadPreplanItems());
-        console.log('onAppointmentAdded', e);
-    }
+    // onAppointmentAdded(e) {
+    //     this.store.dispatch(new fromStore.LoadPreplanItems());
+    //     console.log('onAppointmentAdded', e);
+    // }
 
     onContentReady(event) {
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');

@@ -17,6 +17,12 @@ export function prePlanItems(state = initState, action: fromAction.PreplanitemAc
                 preplanItems: action.payload
             };
         }
+        case(fromAction.REMOVE_PREPLANITEM): {
+            return {
+                ...state,
+                preplanItems: state.preplanItems.filter(x => x.id !== action.payload)
+            };
+        }
         default:
             return state;
     }

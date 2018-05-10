@@ -13,8 +13,8 @@
   ::ng-deep .plannerItem {
     background: transparent;
     grid-row: span 2;    
-    text-align: center;
-    vertical-align: center;
+    /* text-align: center; */
+    /* vertical-align: center; */
   }
   ::ng-deep .info {
     text-align: center;
