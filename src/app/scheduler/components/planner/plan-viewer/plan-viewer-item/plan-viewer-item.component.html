@@ -1,15 +1,15 @@
 <div class="plannerItemContainer">
-  <div class="progressWrapper">
+  <!-- <div class="progressWrapper">
           <div class="progressInfo">45%</div>          
-  </div>                
+  </div>                 -->
   <div class="plannerItem">
-    <p>
-      {{ plannerItemData.subItemName}} <br />
-      {{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}
-    </p>
+    <div class="m-2">
+      <h6 class="white-text">{{ plannerItemData.subItemName}}</h6>
+      <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
     </div>
-  <div class="info">
+  </div>
+  <!-- <div class="info">
       <fa-icon [icon]="faLock"></fa-icon>
   </div>
-  <div class="status">&nbsp;</div>
+  <div class="status">&nbsp;</div> -->
 </div>

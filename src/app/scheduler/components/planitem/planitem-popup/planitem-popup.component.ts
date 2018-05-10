@@ -34,8 +34,8 @@ export class PlanitemPopupComponent implements OnInit {
 
     this.store.select(fromStore.getSelectedPlanItemHierarchy).subscribe(hierarchy => {
       this.selectedPlanItemHierarchy = hierarchy;
-      this.formModel.batchQuantity = hierarchy ? hierarchy.planItem.quantityBatch : 0;
-      this.formModel.batchCount = hierarchy ? Math.floor(hierarchy.planItem.quantity / hierarchy.planItem.quantityBatch) : 1;
+      this.formModel.batchQuantity = hierarchy ? hierarchy.planItem.quantity : 0;  // hierarchy.planItem.quantityBatch : 0;
+      this.formModel.batchCount = hierarchy ? 1 : 0; // Math.floor(hierarchy.planItem.quantity / hierarchy.planItem.quantityBatch) : 1;
       this.alternatives = hierarchy
         ? hierarchy.planItemHierarchy.alternatives
         : [];
