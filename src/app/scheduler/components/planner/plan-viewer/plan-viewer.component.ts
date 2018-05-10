@@ -128,12 +128,12 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (!event.isPlanned) {
             // insert to db  => get inserted event  => update scheduler
             const newEvent = PlannedEvent.createFromPreplanitem(
-                event.idPrePlanItem, event.containerId, event.title, event.description,
+                event.idPrePlanItem, event.containerId, event.title, event.description, event.itemName,
                 event.startDate, event.endDate, event.containers);
             this.store.dispatch(new fromStore.CreateEvent(newEvent));
-            /*this.scheduler.instance.addAppointment(
+            this.scheduler.instance.addAppointment(
                 newEvent
-            );*/
+            );
             // this.showToast('Added', event.description, 'success');
         }
 
@@ -144,6 +144,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
          console.log('onAppointmentAdding', e);
     }
     onAppointmentAdded(e) {
+        this.store.dispatch(new fromStore.LoadPreplanItems());
         console.log('onAppointmentAdded', e);
     }
 
@@ -213,7 +214,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                             const duration = 60 * (selectedContainer.preparationNormative + selectedContainer.executionNormative);
                             const plannedEvent = PlannedEvent.createFromPreplanitem(
                                 draggedData.id, cellData.groups.containerId, draggedData.code,
-                                draggedData.subItem.name,
+                                draggedData.description, draggedData.subItem.name,
                                 cellData.startDate, moment(cellData.startDate).add('minutes', duration).toDate(),
                                 draggedData.containers, false);
                             this.scheduler.instance.showAppointmentPopup(plannedEvent, false);
@@ -233,7 +234,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     onAppointmentFormCreated(data) {
         const   that = this,
                 form = data.form;
-        // console.log(data);
+        console.log(data);
         const containers  = data.appointmentData.containers;
         let selectedContainer  = containers.find (item => data.appointmentData.containerId === item.container.id);
 
