@@ -257,7 +257,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 }
             }
         }, {
-            dataField: 'Začetni datum',
+            label: {
+                text: 'Začetni datum'
+            },
+            dataField: 'startDate',
             editorType: 'dxDateBox',
             editorOptions: {
                 validationRules:
@@ -273,7 +276,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 }
             }
         }, {
-            dataField: 'Končni datum',
+            label: {
+                text: 'Končni datum'
+            },
+            dataField: 'endDate',
             editorType: 'dxDateBox',
             editorOptions: {
                 type: 'datetime'
