@@ -1,4 +1,4 @@
-<div class="cellDurationContainer">
+<div class="cellDurationContainer" [hidden]="!visible">
     <div></div>
     <div class="dx-field">
         <div class="dx-field-label">Dolžina celice</div>
@@ -21,13 +21,15 @@
     [currentDate]="currentDate"        
     [crossScrollingEnabled]="true" 
     [(cellDuration)]="cellDuration"
+    [visible] = "visible"
     appointmentTemplate="appointment-template" 
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentDeleting)="onAppointmentDeleting($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+    (onCellClick)="onCellClick($event)">
    
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           

@@ -2,6 +2,9 @@ import {  Directive, ElementRef, OnDestroy, Input, Output, OnInit, AfterViewInit
           HostListener, HostBinding, EventEmitter} from '@angular/core';
 import * as events from 'devextreme/events';
 import { Attribute } from '@angular/compiler';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../store';
+
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -10,6 +13,7 @@ import { Attribute } from '@angular/compiler';
 export class DxDraggableDirective {
   @Input() dragData;
   element: HTMLElement;
+
 
   // private dragging = false;
   @HostBinding('class.draggable') draggable  = true;
@@ -20,10 +24,18 @@ export class DxDraggableDirective {
 
   @HostListener('dragstart', ['$event'])
   onDragStart(event) {
+    this.store.dispatch(new fromStore.DragStartPreplanItem(this.dragData));
     event.dataTransfer.setData('prePlanItem', JSON.stringify(this.dragData));
   }
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
+  @HostListener('dragend', ['$event'])
+  onDragEnd(event) {
+    console.log('onDragEnd');
+    this.store.dispatch(new fromStore.DragEndPreplanItem(this.dragData));
+  }
+
+  constructor(private el: ElementRef, private renderer: Renderer2,
+    private store: Store<fromStore.SchedulerState>) {
     this.element = el.nativeElement;
 
   }

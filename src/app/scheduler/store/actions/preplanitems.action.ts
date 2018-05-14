@@ -6,6 +6,8 @@ export const LOAD_PREPLANITEMS = '[PrePlanItem] GET PreplanItems';
 export const LOAD_PREPLANITEMS_SUCCESS = '[PrePlanItem] GET PreplanItems success';
 export const LOAD_PREPLANITEMS_FAIL = '[PrePlanItem] GET PreplanItems fail';
 export const REMOVE_PREPLANITEM = '[PrePlanItem] REMOVE PreplanItem';
+export const DRAGSTART_PREPLANITEM = '[PrePlanItem] DRAGSTART PreplanItem';
+export const DRAGEND_PREPLANITEM = '[PrePlanItem] DRAGEND PreplanItem';
 
 export class CreatePreplanItems implements Action {
     readonly type = CREATE_PREPLANITEMS;
@@ -29,10 +31,22 @@ export class RemovePreplanItem implements Action {
     constructor(public payload: number) {}
 }
 
+export class DragStartPreplanItem implements Action {
+    readonly type = DRAGSTART_PREPLANITEM;
+    constructor(public payload: PreplanItem) {}
+}
+
+export class DragEndPreplanItem implements Action {
+    readonly type = DRAGEND_PREPLANITEM;
+    constructor(public payload: PreplanItem) {}
+}
+
 export type PreplanitemAction =
     | CreatePreplanItems
     | LoadPreplanItems
     | LoadPreplanItemsFail
     | LoadPreplanItemsSuccess
     | RemovePreplanItem
+    | DragStartPreplanItem
+    | DragEndPreplanItem
 ;

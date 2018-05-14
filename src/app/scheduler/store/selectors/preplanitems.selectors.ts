@@ -10,3 +10,8 @@ export const getPreplanitems = createSelector(
     getPreplanitemsState,
     state => state.preplanItems
 );
+
+export const getSelectedPrePlanItem = createSelector(
+    getPreplanitemsState,
+    state => state.selectedPreplanItems
+);
