@@ -39,27 +39,36 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
+
+
     constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
+
+    }
+
+    ngAfterViewInit() {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
                 this.selectedContainers = containers;
-                this.visible = this.selectedContainers.length > 0 ? true : false;
                 if (containers.length > 0) {
+                    this.visible = true;
+                    this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
                     this.schedulerResources = this.getResources(containers);
                     this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
+                        this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
+
                         this.data = items;
                     }
                     );
                 } else {
                     this.schedulerResources = [];
+                    this.visible = false;
                 }
 
             });
-    }
 
-    ngAfterViewInit() {
         this.selectedStartDate = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate = this.scheduler.instance.getEndViewDate();
+
     }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
@@ -89,7 +98,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
 
     optionChanged(e: any) {
-
+/*
         // TODO: hack to refresh content and fire onContentReady event
         if (e.name === 'cellDuration') {
             this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
@@ -97,14 +106,22 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     this.schedulerResources = this.getResources(containers);
                 });
         }
+*/
+        if (e.fullName === 'visible') {
+            setTimeout(() => {
+                e.component.scrollToTime(this.currentDate.getHours(), 0);
+                e.component.repaint();
+            });
+        }
 
-        if ((e.fullName === 'currentView' || e.fullName === 'currentDate' || e.fullName === 'resources')) {
+        if (e.fullName === 'currentView' || e.fullName === 'currentDate' || e.fullName === 'resources' || e.name === 'cellDuration') {
 
             if (this.selectedStartDate !== e.component.getStartViewDate() ||
                 this.selectedEndDate !== e.component.getEndViewDate()) {
                 setTimeout(() => {
                     this.selectedStartDate = e.component.getStartViewDate();
                     this.selectedEndDate = e.component.getEndViewDate();
+
                     this.store.dispatch(
                         new fromStore.LoadEvents({
                             containerIds: this.selectedContainers.map(c => c.id),
@@ -112,9 +129,12 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                             dateTo: this.selectedEndDate
                         })
                     );
+
                 }, 100);
             }
         }
+
+
     }
 
     onAppointmentDeleting(e) {
@@ -232,30 +252,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         if (!this.groupsHasValue) {
             this.setGroupValue();
         }
-        this.store.select(fromStore.getSelectedPrePlanItem).subscribe((item) => {
-            this.draggablePreplanItem = item;
-            this.ShowContainers(item);
-        }
-        );
     }
-
-    ShowContainers(item: PreplanItem | null) {
-        const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-group-header-content');
-
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].classList.add('allowed');
-        }
-    }
-
-    onCellClick(e) {
-        e.cancel = true;
-    }
-
 
     onAppointmentFormCreated(data) {
-
-        // console.log(typeof(PlannedEvent) === data.appointmentData);
-        // console.log(data.appointmentData instanceof PlannedEvent);
         const that = this,
             form = data.form;
         console.log(data);
