@@ -1,4 +1,4 @@
-<div class="cellDurationContainer">
+<div class="cellDurationContainer" *ngIf="schedulerResources.length != 0;">
     <div></div>
     <div class="dx-field">
         <div class="dx-field-label">Dolžina celice</div>
@@ -7,6 +7,9 @@
         </dx-select-box>
         </div>
     </div>     
+</div>
+<div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
+    Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
 <dx-scheduler id="scheduler" 
     [dataSource]="data"
@@ -27,8 +30,10 @@
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentDeleting)="onAppointmentDeleting($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
-   
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+    *ngIf="schedulerResources.length != 0;"
+    style="margin: 2px;">
+    
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           
     </div>

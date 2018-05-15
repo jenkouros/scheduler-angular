@@ -10,6 +10,7 @@ import { SubItemContainer } from './subitem.dto';
 export class PlanItem {
     idItem: number;
     code: string;
+    name: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
     quantityPlanned: number; // ze planirana kolicina
@@ -21,6 +22,7 @@ export class PlanItem {
     static fromServer(planItemServer: PlanItemServer) {
         const result = new PlanItem();
         result.code = planItemServer.code;
+        result.name = planItemServer.name;
         result.idItem = planItemServer.idItem;
         result.quantity = planItemServer.quantity;
         result.quantityBatch = planItemServer.quantityBatch;
