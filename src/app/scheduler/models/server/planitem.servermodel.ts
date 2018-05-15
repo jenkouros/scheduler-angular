@@ -4,6 +4,7 @@ import { SubItemContainerServer } from './preplanitem.servermodel';
 export interface PlanItemServer {
     idItem: number;
     code: string;
+    name: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
     quantityPlanned: number; // ze planirana kolicina

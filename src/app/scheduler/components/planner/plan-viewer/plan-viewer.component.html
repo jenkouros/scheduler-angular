@@ -8,6 +8,9 @@
         </div>
     </div>     
 </div>
+<div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
+    Za prikaz koledarja izberite eno ali več delovnih mest
+</div>
 <dx-scheduler id="scheduler" 
     [dataSource]="data"
     [views]="['day', 'week', 'timelineDay']" 

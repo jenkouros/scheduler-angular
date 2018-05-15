@@ -55,6 +55,14 @@ export function containerReducer (
                 selectedContainers: newSelection
             };
         }
+        case fromAction.RESELECT_CONTAINERS: {
+            const selection = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
+            return {
+                ...state,
+                selectedContainers: selection
+            };
+        }
+
         default:
             return state;
     }
