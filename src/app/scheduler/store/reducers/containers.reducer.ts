@@ -56,10 +56,9 @@ export function containerReducer (
             };
         }
         case fromAction.RESELECT_CONTAINERS: {
-            const selection = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
             return {
                 ...state,
-                selectedContainers: selection
+                selectedContainers: action.payload
             };
         }
 

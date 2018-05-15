@@ -1,9 +1,9 @@
 import * as fromAction from '../actions/events.action';
-import { PlannedEvent } from '../../models/event.model';
+import { ContainerEvents } from '../../models/event.model';
 import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
 
 export interface EventsState {
-    entities: {[id: number]: PlannedEvent[]};
+    entities: {[idContainer: number]: ContainerEvents };
     loading: boolean;
     loaded: boolean;
 }
@@ -26,10 +26,16 @@ export function eventsReducer(
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
-            const events: {[id: number]: PlannedEvent[]} = {};
-            for (const event of action.payload) {
+            const events: { [id: number]: ContainerEvents } = {};
+            for (const event of action.payload.events) {
                 if (event.hasOwnProperty('containerId')) {
-                    events[event.containerId] = [...events[event.containerId] || [], event];
+                    const existingEvents = events[event.containerId] ? events[event.containerId].events : [];
+
+                    events[event.containerId] = {
+                        events: [...existingEvents, event],
+                        dateFrom: action.payload.dateFrom,
+                        dateTo: action.payload.dateTo
+                    };
                 }
             }
 
@@ -56,7 +62,15 @@ export function eventsReducer(
         }
         case fromAction.CREATE_EVENT_SUCCESS: {
             const events =  { ...state.entities };
-            events[action.payload.containerId] = [...events[action.payload.containerId] || [], action.payload];
+
+            // if (!events[action.payload.containerId]) {
+            //     events[action.payload.containerId] = <any>{};
+            // }
+
+            events[action.payload.containerId] = {
+                ...events[action.payload.containerId],
+                events: [...events[action.payload.containerId].events || [], action.payload]
+            };
 
             return {
                 ...state,
@@ -72,7 +86,8 @@ export function eventsReducer(
         }
         case fromAction.DELETE_EVENT_SUCCESS: {
             const events =  { ...state.entities };
-            events[action.payload.containerId] = events[action.payload.containerId].filter((item) => item.id !== action.payload.id);
+            events[action.payload.containerId].events = events[action.payload.containerId].events.filter((item) =>
+                item.id !== action.payload.id);
 
             return {
                 ...state,

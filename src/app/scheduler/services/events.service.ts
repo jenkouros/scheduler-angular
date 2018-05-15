@@ -15,9 +15,9 @@ export class EventsService {
 
     getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
         let httpParams = new HttpParams()
-        .set('IdPlan', '1')
-        .set('timeStart', moment(fromDate).format('YYYY-MM-DD'))
-        .set('timeEnd', moment(toDate).format('YYYY-MM-DD HH:mm'));
+            .set('IdPlan', '1')
+            .set('timeStart', moment(fromDate).toISOString())
+            .set('timeEnd', moment(toDate).toISOString()); // .format());
 
         containerIds.forEach(id => {
             httpParams = httpParams.append('containers', id.toString());
@@ -28,7 +28,7 @@ export class EventsService {
 
         };
 
-        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', serachParams).pipe(
+        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
             map((response) => {
                 if (response.code !== ApiResponseResult.success) {
                     throw response.messages;

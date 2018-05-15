@@ -15,6 +15,8 @@ export const ADD_PLANNINGITEMS = '[Containers] Add planning items';
 export const REMOVE_PLANNINGITEM = '[Containers] Remove planning item';
 export const PLAN_PLANNINGITEM = '[Containers] Plan planning item';
 
+export const REMOVE_CONTAINERS_BLANKSPACE = '[Containers] Remove containers blank space';
+
 /* CONTAINERS */
 export class LoadContainers implements Action {
     readonly type = LOAD_CONTAINERS;
@@ -38,6 +40,11 @@ export class DeselectContainers implements Action {
 export class ReselectContainers implements Action {
     readonly type = RESELECT_CONTAINERS;
     constructor(public payload: number[]) {}
+}
+
+export class RemoveContainersBlankSpace implements Action {
+    readonly type = REMOVE_CONTAINERS_BLANKSPACE;
+    constructor(public payload: { containerIds: number[] }) {}
 }
 
 

@@ -58,7 +58,14 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         this.selectedStartDate  = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate  = this.scheduler.instance.getEndViewDate();
-  }
+    }
+
+    removeBlankSpace() {
+        this.store.dispatch(new fromStore.RemoveContainersBlankSpace(
+            { containerIds: this.selectedContainers.map(c => c.id) }
+        ));
+    }
+
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
 
