@@ -327,6 +327,9 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         }]);
     }
 
+    onCellClick(e) {
+        e.cancel = true;
+    }
     showToast(event, value, type) {
         notify(event + ' \'' + value + '\'', type, 1500);
     }
