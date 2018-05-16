@@ -20,7 +20,7 @@ export const getEvents = createSelector(
         let events: PlannedEvent[] = [];
         for (const key in storeEvents) {
             if (storeEvents.hasOwnProperty(key)) {
-                events = events.concat(storeEvents[key]);
+                events = events.concat(storeEvents[key].events);
             }
         }
         return events;
@@ -35,10 +35,9 @@ export function getEventsForContainers(containerIds: number[]) {
             let events: PlannedEvent[] = [];
             for (const key of containerIds) {
                 if (storeEvents.hasOwnProperty(key)) {
-                    events = events.concat(storeEvents[key]);
+                    events = events.concat(storeEvents[key].events);
                 }
             }
-
             return events;
         }
     );

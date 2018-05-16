@@ -23,7 +23,7 @@ export class LoadEvents implements Action {
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
     // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
-    constructor(public payload:  PlannedEvent[] ) {}
+    constructor(public payload: { events: PlannedEvent[], dateFrom: Date, dateTo: Date } ) {}
 }
 export class LoadEventsFail implements Action {
     readonly type = LOAD_EVENTS_FAIL;

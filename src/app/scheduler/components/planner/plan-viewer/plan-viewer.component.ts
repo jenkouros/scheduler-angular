@@ -331,5 +331,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     showToast(event, value, type) {
         notify(event + ' \'' + value + '\'', type, 1500);
     }
+
+    removeBlankSpace() {
+        this.store.dispatch(new fromStore.RemoveContainersBlankSpace(
+            { containerIds: this.selectedContainers.map(c => c.id) }
+        ));
+    }
 }
 

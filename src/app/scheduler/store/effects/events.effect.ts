@@ -24,7 +24,11 @@ export class EventsEffects {
                     action.payload.dateTo
                 )
                 .pipe(
-                    map(events => new fromAction.LoadEventsSuccess(events)),
+                    map(events => new fromAction.LoadEventsSuccess({
+                        events,
+                        dateFrom: action.payload.dateFrom,
+                        dateTo: action.payload.dateTo
+                    })),
                     catchError(error => of(new fromAction.LoadEventsFail()))
                 );
             })
@@ -90,4 +94,5 @@ export class EventsEffects {
             map((action: fromAction.CreateEventSuccess) =>
                 new fromAction.LoadPreplanItems()
             ));
+
 }

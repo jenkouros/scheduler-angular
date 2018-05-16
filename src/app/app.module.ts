@@ -20,6 +20,7 @@ import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 import * as messagesSl from './shared/localization/sl.json';
+import { MassLockPopupComponent } from './scheduler/components/planner/mass-lock-popup/mass-lock-popup.component';
 
 loadMessages(messagesSl);
 locale(navigator.language);
@@ -27,7 +28,8 @@ registerLocaleData(localeSl, 'sl');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MassLockPopupComponent
   ],
   imports: [
     BrowserModule,

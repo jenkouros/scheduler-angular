@@ -1,13 +1,18 @@
+<!-- <button (click)="removeBlankSpace()" class="btn btn-success" type="button">Zgosti</button> -->
 <div class="cellDurationContainer" [hidden]="!visible">
     <div></div>
     <div class="dx-field">
         <div class="dx-field-label">Dolžina celice</div>
         <div class="dx-field-value">
             <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
-        </dx-select-box>
+            </dx-select-box>
         </div>
-    </div>     
+    </div>   
 </div>
+
+<button type="button" class="btn btn-primary" (click)="thickening()">Zgoščevanje</button>     
+<button type="button" class="btn btn-primary" (click)="massLock()">Masovno zaklepanje</button>     
+
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
