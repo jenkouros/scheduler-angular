@@ -14,3 +14,32 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     float: right;
     width: 250px;    
   }
+
+  .btn {
+    margin: 2px;
+    color: #087873;
+    background-color: #F0F2EF;
+    border-color: #F0F2EF;  
+}
+
+.btn:hover {
+    margin: 2px;
+    color: #087873;
+    background-color: #e3e7e1;
+    border-color: #e3e7e1;
+}
+
+.btn-primary {
+    margin: 2px;
+    color: #fff;
+    background-color: #087873;
+    border-color: #087873;    
+
+}
+
+.btn-primary:hover {
+    margin: 2px;
+    color: #fff;
+    background-color: #06605c ;
+    border-color: #06605c ;
+}
