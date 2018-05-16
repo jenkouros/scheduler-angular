@@ -3,6 +3,12 @@ import { PreplanItem } from './preplanitem.dto';
 import { SubItemContainerServer } from './server/preplanitem.servermodel';
 import { SubItemContainer } from './subitem.dto';
 
+export interface ContainerEvents {
+    events: PlannedEvent[];
+    dateFrom: Date;
+    dateTo: Date;
+}
+
 export class PlannedEvent {
     id: number;
     idPrePlanItem: number;

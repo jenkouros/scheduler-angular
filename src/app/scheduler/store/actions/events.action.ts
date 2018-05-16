@@ -10,6 +10,10 @@ export const CREATE_EVENT_FAIL = '[Event] Create an evenet - fail';
 export const DELETE_EVENT = '[Event] Delete an event';
 export const DELETE_EVENT_SUCCESS = '[Event] Delete an event - success';
 export const DELETE_EVENT_FAIL = '[Event] Delete an event - fail';
+export const UPDATE_EVENT = '[Event] Update an event';
+export const UPDATE_EVENT_SUCCESS = '[Event] Update an event - success';
+export const UPDATE_EVENT_FAIL = '[Event] Update an event - fail';
+
 
 export class LoadEvents implements Action {
     readonly type = LOAD_EVENTS;
@@ -19,7 +23,7 @@ export class LoadEvents implements Action {
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
     // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
-    constructor(public payload:  PlannedEvent[] ) {}
+    constructor(public payload: { events: PlannedEvent[], dateFrom: Date, dateTo: Date } ) {}
 }
 export class LoadEventsFail implements Action {
     readonly type = LOAD_EVENTS_FAIL;
@@ -50,6 +54,21 @@ export class DeleteEventFail implements Action {
     constructor() {}
 }
 
+export class UpdateEvent implements Action {
+    readonly type = UPDATE_EVENT;
+    constructor(public payload: PlannedEvent) {}
+}
+
+export class UpdateEventSuccess implements Action {
+    readonly type = UPDATE_EVENT_SUCCESS;
+    constructor(public payload: PlannedEvent) {}
+}
+
+export class UpdateEventFail implements Action {
+    readonly type = UPDATE_EVENT_FAIL;
+    constructor() {}
+}
+
 export type EventsAction =
     | LoadEvents
     | LoadEventsSuccess
@@ -59,4 +78,7 @@ export type EventsAction =
     | CreateEventFail
     | DeleteEvent
     | DeleteEventSuccess
-    | DeleteEventFail;
+    | DeleteEventFail
+    | UpdateEvent
+    | UpdateEventSuccess
+    | UpdateEventFail;

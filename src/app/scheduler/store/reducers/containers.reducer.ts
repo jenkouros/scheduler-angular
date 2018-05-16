@@ -55,6 +55,13 @@ export function containerReducer (
                 selectedContainers: newSelection
             };
         }
+        case fromAction.RESELECT_CONTAINERS: {
+            return {
+                ...state,
+                selectedContainers: action.payload
+            };
+        }
+
         default:
             return state;
     }

@@ -24,7 +24,11 @@ export class EventsEffects {
                     action.payload.dateTo
                 )
                 .pipe(
-                    map(events => new fromAction.LoadEventsSuccess(events)),
+                    map(events => new fromAction.LoadEventsSuccess({
+                        events,
+                        dateFrom: action.payload.dateFrom,
+                        dateTo: action.payload.dateTo
+                    })),
                     catchError(error => of(new fromAction.LoadEventsFail()))
                 );
             })
@@ -41,6 +45,21 @@ export class EventsEffects {
             .pipe(
                 map(event => new fromAction.CreateEventSuccess(event)),
                 catchError(error => of(new fromAction.CreateEventFail()))
+            );
+        })
+    );
+
+    @Effect()
+    updateEvent$  = this.actions$
+    .ofType(fromAction.UPDATE_EVENT)
+    .pipe(
+        switchMap((action: fromAction.UpdateEvent) => {
+            return this.eventsService.updateEvent(
+                action.payload
+            )
+            .pipe(
+                map(event => new fromAction.UpdateEventSuccess(event)),
+                catchError(error => of(new fromAction.UpdateEventFail()))
             );
         })
     );
@@ -75,4 +94,5 @@ export class EventsEffects {
             map((action: fromAction.CreateEventSuccess) =>
                 new fromAction.LoadPreplanItems()
             ));
+
 }

@@ -15,6 +15,7 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     width: 250px;    
   }
 
+<<<<<<< HEAD
   .btn {
     margin: 2px;
     color: #087873;
@@ -42,4 +43,10 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     color: #fff;
     background-color: #06605c ;
     border-color: #06605c ;
+=======
+::ng-deep .allowed {
+    font-size: 1.1rem;    
+    border-left:5px solid #63a0d4 !important;
+    transition: all 0.1s
+>>>>>>> bda2372b8374e08d2991144d550dc66f1ff15cba
 }

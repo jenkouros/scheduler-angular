@@ -1,4 +1,5 @@
-<div class="cellDurationContainer" *ngIf="schedulerResources.length != 0;">
+<button (click)="removeBlankSpace()" class="btn btn-success" type="button">Zgosti</button>
+<div class="cellDurationContainer" [hidden]="!visible">
     <div></div>
     <div class="dx-field">
         <div class="dx-field-label">Dolžina celice</div>
@@ -18,16 +19,14 @@
 <dx-scheduler id="scheduler" 
     [dataSource]="data"
     [views]="['day', 'week', 'timelineDay']" 
-    [(currentView)]="currentView" 
-    [firstDayOfWeek]="0"
-    [startDayHour]="5" 
-    [endDayHour]="24"
-    [showAllDayPanel]="false" 
+    [(currentView)]="currentView"     
+    [showAllDayPanel]="true" 
     [groups]="['containerId']" 
     [resources]="schedulerResources"
     [currentDate]="currentDate"        
     [crossScrollingEnabled]="true" 
     [(cellDuration)]="cellDuration"
+    [visible] = "visible"
     appointmentTemplate="appointment-template" 
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
@@ -35,9 +34,8 @@
     (onAppointmentDeleting)="onAppointmentDeleting($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-    *ngIf="schedulerResources.length != 0;"
-    style="margin: 2px;">
-    
+    (onCellClick)="onCellClick($event)">
+   
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           
     </div>

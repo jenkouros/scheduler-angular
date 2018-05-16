@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .bg-kolektor {
    background-color: #084578;
 }
