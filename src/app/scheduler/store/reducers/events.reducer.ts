@@ -60,6 +60,7 @@ export function eventsReducer(
                 loading: true
             };
         }
+        case fromAction.UPDATE_EVENT_SUCCESS:
         case fromAction.CREATE_EVENT_SUCCESS: {
             const events =  { ...state.entities };
 

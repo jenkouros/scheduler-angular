@@ -59,6 +59,26 @@ export class EventsService {
         );
     }
 
+    updateEvent(event: PlannedEvent): Observable<PlannedEvent> {
+        const planningItem = {
+            idPlanItem: event.id,
+            idContainer: event.containerId,
+            timeStart: moment(event.startDate).format(),
+            timeEnd: moment(event.endDate).format()
+        };
+        return this.http.put<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
+            {
+                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+            }).pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return PlannedEvent.fromServer(response.result);
+            } )
+        );
+    }
+
     deleteEvent(event: PlannedEvent): Observable<boolean> {
         return this.http.delete<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems?idPlanItem=' + event.id ,
             {

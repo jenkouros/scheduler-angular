@@ -14,3 +14,9 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     float: right;
     width: 250px;    
   }
+
+::ng-deep .allowed {
+    font-size: 1.1rem;    
+    border-left:5px solid #63a0d4 !important;
+    transition: all 0.1s
+}
