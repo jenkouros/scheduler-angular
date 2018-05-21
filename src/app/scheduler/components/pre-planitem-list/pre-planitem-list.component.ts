@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { PreplanitemState } from '../../store';
 import * as fromStore from '../../store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PreplanItem } from '../../models/preplanitem.dto';
 
 @Component({
@@ -12,7 +11,7 @@ import { PreplanItem } from '../../models/preplanitem.dto';
 })
 export class PrePlanitemListComponent implements OnInit {
   preplanitems$: Observable<PreplanItem[]>;
-  constructor(private store: Store<PreplanitemState>) { }
+  constructor(private store: Store<fromStore.SchedulerState>) { }
 
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadPreplanItems());

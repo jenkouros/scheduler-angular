@@ -18,5 +18,6 @@ export interface PlannedEventServer {
     timeStart: Date;
     timeEnd: Date;
     title: string;
+    isLocked: boolean;
     allowedContainers: SubItemContainerServer[];
 }

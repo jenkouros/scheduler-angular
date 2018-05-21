@@ -8,6 +8,10 @@ export const LOAD_PREPLANITEMS_FAIL = '[PrePlanItem] GET PreplanItems fail';
 export const REMOVE_PREPLANITEM = '[PrePlanItem] REMOVE PreplanItem';
 export const DRAGSTART_PREPLANITEM = '[PrePlanItem] DRAGSTART PreplanItem';
 export const DRAGEND_PREPLANITEM = '[PrePlanItem] DRAGEND PreplanItem';
+export const DELETE_ITEMBATCH = '[PrePlanItem] DELETE ItemBatch';
+export const DELETE_ITEMBATCH_FAIL = '[PrePlanItem] DELETE ItemBatch FAIL';
+export const DELETE_ITEMBATCH_SUCCESS = '[PrePlanItem] DELETE ItemBatch SUCCESS';
+
 
 export class CreatePreplanItems implements Action {
     readonly type = CREATE_PREPLANITEMS;
@@ -41,6 +45,19 @@ export class DragEndPreplanItem implements Action {
     constructor(public payload: PreplanItem) {}
 }
 
+export class DeleteItemBatch implements Action {
+    readonly type = DELETE_ITEMBATCH;
+    constructor(public payload: number) {}
+}
+
+export class DeleteItemBatchSuccess implements Action {
+    readonly type = DELETE_ITEMBATCH_SUCCESS;
+}
+
+export class DeleteItemBatchFail implements Action {
+    readonly type = DELETE_ITEMBATCH_FAIL;
+}
+
 export type PreplanitemAction =
     | CreatePreplanItems
     | LoadPreplanItems
@@ -49,4 +66,7 @@ export type PreplanitemAction =
     | RemovePreplanItem
     | DragStartPreplanItem
     | DragEndPreplanItem
+    | DeleteItemBatch
+    | DeleteItemBatchFail
+    | DeleteItemBatchSuccess
 ;

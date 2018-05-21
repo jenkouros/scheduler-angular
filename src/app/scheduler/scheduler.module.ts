@@ -2,17 +2,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
-import * as fromStore from './store';
+import { reducers } from './store';
 import * as fromComponents from './components';
 import { SchedulerRouterModule } from './scheduler-router.module';
-import * as fromServices from './services';
+// import * as fromServices from './services';
 import { HttpClientModule } from '@angular/common/http';
 import { PlanitemListComponent } from './components';
 import { EffectsModule } from '@ngrx/effects';
 import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Dx Component
 import {
-    DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
     DxDataGridModule,
@@ -20,35 +19,61 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxScrollViewModule,
     DxFormModule
 } from 'devextreme-angular';
 import { DxDraggableDirective } from './components/pre-planitem-list/dxdraggable.directive';
 
+import { CommonModule } from '@angular/common';
+import { PlanItemsService } from './services/planitems.service';
+import { PlanItemHierarchyService } from './services/planitemhierarchy.service';
+import { FiltersService } from './services/filters.service';
+import { ContainersService } from './services/containers.service';
+import { EventsService } from './services/events.service';
+import { PreplanitemsService } from './services/preplanitems.service';
+import { PlanItemEffects } from './store/effects/planitem.effect';
+import { FiltersEffects } from './store/effects/filters.effect';
+import { ContainersEffects } from './store/effects/containers.effect';
+import { EventsEffects } from './store/effects/events.effect';
+import { PlanItemHierarchyEffects } from './store/effects/planitemhierarchy.effect';
+import { PreplanitemEffects } from './store/effects/preplanitem.effect';
+
+
 @NgModule({
     imports: [
-        SharedModule,
+        CommonModule,
         FormsModule,
-        ReactiveFormsModule,
-        SchedulerRouterModule,
         HttpClientModule,
-        StoreModule.forFeature('scheduler', fromStore.reducers),
-        EffectsModule.forFeature(fromStore.effects),
+        SchedulerRouterModule,
+        StoreModule.forFeature('scheduler', reducers),
+        EffectsModule.forFeature([
+            PlanItemEffects,
+            FiltersEffects,
+            ContainersEffects,
+            EventsEffects,
+            PreplanitemEffects,
+            PlanItemHierarchyEffects
+        ]),
+        SharedModule,
         DxSchedulerModule,
         DxButtonModule,
         DxTemplateModule,
         DxLinearGaugeModule,
-        DxPopupModule,
         DxDataGridModule,
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxScrollViewModule,
         DxFormModule
     ],
     declarations: [...fromComponents.components, DxDraggableDirective],
-    providers: [...fromServices.services]
+    providers: [
+        // ...fromServices.services
+        PlanItemsService,
+        PlanItemHierarchyService,
+        FiltersService,
+        ContainersService,
+        EventsService,
+        PreplanitemsService
+    ]
 })
 export class SchedulerModule {
-
 }

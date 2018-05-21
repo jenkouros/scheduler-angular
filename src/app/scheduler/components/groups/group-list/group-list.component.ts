@@ -1,4 +1,4 @@
-import { Component, OnInit, group } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { select } from '@ngrx/store';
 
 @Component({
@@ -8,54 +8,54 @@ import { select } from '@ngrx/store';
 })
 export class GroupListComponent implements OnInit {
   groups = [
-    { 
-        "id": 1,
-        "name": "Ljubljana-Črnuče",
-        "type": "system",
-        "selected": "false",
-        "filters": [
-            { "id": 1, "values": [80] }
+    {
+        'id': 1,
+        'name': 'Ljubljana-Črnuče',
+        'type': 'system',
+        'selected': 'false',
+        'filters': [
+            { 'id': 1, 'values': [80] }
         ]
     },
-    { 
-        "id": 2,
-        "name": "Ljubljana-Zalog",
-        "type": "system",
-        "selected": "true",
-        "filters": [
-            { "id": 1, "values": [81] }
+    {
+        'id': 2,
+        'name': 'Ljubljana-Zalog',
+        'type': 'system',
+        'selected': 'true',
+        'filters': [
+            { 'id': 1, 'values': [81] }
         ]
     },
-    { 
-        "id": 3,
-        "name": "Maribor",
-        'type': "system",
-        "selected": "false",
-        "filters": [
+    {
+        'id': 3,
+        'name': 'Maribor',
+        'type': 'system',
+        'selected': 'false',
+        'filters': [
             { 'id': 1, 'values': [82] }
         ]
     },
     {
-        "id": 4,
-        "name": "Tomx",
-        "type": "user",
-        "selected": "false",
-        "filters": [
-            { "id": 2, "values": [1] }
+        'id': 4,
+        'name': 'Tomx',
+        'type': 'user',
+        'selected': 'false',
+        'filters': [
+            { 'id': 2, 'values': [1] }
         ],
-        "containers": [
+        'containers': [
             1095, 1096, 1097, 1098, 1099
         ]
     },
     {
-        "id": 5,
-        "name": "Romx",
-        "type": "user",
-        "selected": "false",
-        "filters": [
-            { "id": 2, "values": [1] }
+        'id': 5,
+        'name': 'Romx',
+        'type': 'user',
+        'selected': 'false',
+        'filters': [
+            { 'id': 2, 'values': [1] }
         ],
-        "containers": [
+        'containers': [
             1095, 1096, 1097, 1098, 1099
         ]
     }
@@ -68,13 +68,13 @@ export class GroupListComponent implements OnInit {
 
 
     onClick(id: number, selected: string) {
-        const index = this.groups.findIndex((x => x.id == id));
+        const index = this.groups.findIndex((x => x.id === id));
         // let group = this.groups.find((x => x.id == id));
 
-        if (this.groups[index].selected == 'true') {
+        if (this.groups[index].selected === 'true') {
             this.groups[index].selected = 'false';
             // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);
-        } else if (this.groups[index].selected == 'false') {
+        } else if (this.groups[index].selected === 'false') {
             this.groups[index].selected = 'true';
             // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);
             for (let i = 0; i < this.groups.length; i++) {

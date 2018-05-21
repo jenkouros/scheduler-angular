@@ -5,7 +5,7 @@ import {
     DxButtonModule,
     DxTemplateModule, DxLinearGaugeModule
 } from 'devextreme-angular';
-import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
+// import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
 import Query from 'devextreme/data/query';
 import * as events from 'devextreme/events';
 import { Container } from '../../../models/container.dto';
@@ -41,7 +41,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     visible = false;
 
 
-    constructor(private service: Service, private store: Store<fromStore.SchedulerState>) {
+    constructor(private store: Store<fromStore.SchedulerState>) {
 
     }
 
@@ -135,9 +135,20 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
 
     }
 
+    deleteAppointment(appointment: PlannedEvent) {
+        this.scheduler.instance.hideAppointmentTooltip();
+        this.scheduler.instance.deleteAppointment(appointment);
+    }
+
     onAppointmentDeleting(e) {
         this.store.dispatch(new fromStore.DeleteEvent(e.appointmentData));
     }
+
+    updateAppointment(appointment: PlannedEvent) {
+        this.scheduler.instance.hideAppointmentTooltip();
+        this.scheduler.instance.showAppointmentPopup(appointment, false);
+    }
+
     onAppointmentUpdating(e) {
         // logika za kontrolo ali lahko izvedemo update
         const event: PlannedEvent = e.newData;
@@ -336,6 +347,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new fromStore.RemoveContainersBlankSpace(
             { containerIds: this.selectedContainers.map(c => c.id) }
         ));
+    }
+
+    toggleLock(plannedEvent: PlannedEvent) {
+        this.scheduler.instance.hideAppointmentTooltip();
+        this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
     }
 }
 

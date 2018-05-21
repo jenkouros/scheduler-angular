@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { PlanItemHierarchyViewModel } from '../../../models/planitem.viewmodel';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { PlanItemHierarchyAlternative } from '../../../models/planitem.dto';
 import * as fromStore from '../../../store';

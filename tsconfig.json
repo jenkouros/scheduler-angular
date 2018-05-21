@@ -18,7 +18,12 @@
     "plugins": [
       {"name": "@angular/language-service"}
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "jszip": [
+        "../node_modules/jszip/dist/jszip.min.js"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true

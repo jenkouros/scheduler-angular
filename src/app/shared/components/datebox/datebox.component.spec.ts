@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageLengthComponent } from './page-length.component';
+import { DateboxComponent } from './datebox.component';
 
-describe('PageLengthComponent', () => {
-  let component: PageLengthComponent;
-  let fixture: ComponentFixture<PageLengthComponent>;
+describe('DateboxComponent', () => {
+  let component: DateboxComponent;
+  let fixture: ComponentFixture<DateboxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageLengthComponent ]
+      declarations: [ DateboxComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageLengthComponent);
+    fixture = TestBed.createComponent(DateboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,3 +1,13 @@
-<p>
-  mass-lock-popup works!
-</p>
+<app-popup [visible]="true"
+  title='Masovno zaklepanje operacij'
+>
+  <app-fieldset>
+    <app-field label='Datum od'>
+      <app-datebox></app-datebox>
+    </app-field>
+    <app-field label='Datum do'>
+      <app-datebox></app-datebox>
+    </app-field>
+  </app-fieldset>
+
+</app-popup>

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { FiltersService } from '../../services';
+// import { FiltersService } from '../../services';
 import { Actions, Effect } from '@ngrx/effects';
 import * as fromActions from '../actions/filters.action';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
+import { FiltersService } from '../../services/filters.service';
 
 @Injectable()
 export class FiltersEffects {
     constructor(
-        private filterService: FiltersService,
-        private actions$: Actions
+        private actions$: Actions,
+        private filterService: FiltersService
     ) {}
 
     @Effect()

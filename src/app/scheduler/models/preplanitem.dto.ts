@@ -3,6 +3,7 @@ import { PreplanitemServer, PreplanitemBasicServer, SubItemContainerServer } fro
 import { MeasurementUnit, Product } from './shared.dto';
 import { PlanSubItem } from './planitem.dto';
 import { SubItemContainer } from './subitem.dto';
+import { ItemBatch } from './itembatch.dto';
 
 export class PreplanItemRequest {
     idAlternative: number;
@@ -17,6 +18,7 @@ export class PreplanItem {
     containers: SubItemContainer[];
     item: PreplanItemBasicData;
     subItem: PlanSubItem;
+    itemBatch: ItemBatch;
 
     static fromServer(serverData: PreplanitemServer) {
         const result = new PreplanItem();
@@ -26,6 +28,7 @@ export class PreplanItem {
         result.item = PreplanItemBasicData.fromServer(serverData.item);
         result.containers = serverData.containers.map(c => SubItemContainer.fromServer(c));
         result.subItem = PlanSubItem.fromServer(serverData.subItem);
+        result.itemBatch = ItemBatch.fromServer(serverData.itemBatch);
         return result;
     }
 }

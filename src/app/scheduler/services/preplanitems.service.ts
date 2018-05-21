@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
@@ -5,7 +7,6 @@ import { PreplanitemServer } from '../models/server/preplanitem.servermodel';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { PreplanItem, PreplanItemRequest } from '../models/preplanitem.dto';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class PreplanitemsService {
@@ -21,8 +22,14 @@ export class PreplanitemsService {
                     }
                     return response.result.map(f => PreplanItem.fromServer(f));
                 }),
-                catchError((error: any) => Observable.throw(error.json()))
+                catchError((error: any) => observableThrowError(error.json()))
             );
+    }
+
+    deleteItemBatch(itemBatchId: number) {
+        // TODO create methods on serverside
+        return this.http.get<ApiResponse<PreplanitemServer[]>>
+            (environment.apiUrl + '/preplanitems');
     }
 
     createPreplanitems(requestModel: PreplanItemRequest) {

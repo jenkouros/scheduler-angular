@@ -1,7 +1,6 @@
 import * as fromFeature from '../reducers';
 import { createSelector } from '@ngrx/store';
 import { Filter } from '../../models/filter.dto';
-import { FilterServer } from '../../models/server/filter.servermodel';
 import { FilterSelect } from '../../models/filter.viewmodel';
 
 export const getFiltersState = createSelector(

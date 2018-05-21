@@ -18,6 +18,8 @@ import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-v
 import { PrePlanitemItemComponent } from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
 import { PlanitemPopupComponent } from './planitem/planitem-popup/planitem-popup.component';
 import { PlanItemIndexComponent } from './planitem/index.component';
+import { MassLockPopupComponent } from './planner/mass-lock-popup/mass-lock-popup.component';
+
 
 export const components: any[] = [
     FiltersComponent,
@@ -39,7 +41,8 @@ export const components: any[] = [
     PlanViewerItemComponent,
     PrePlanitemItemComponent,
     PlanitemPopupComponent,
-    PlanItemIndexComponent
+    PlanItemIndexComponent,
+    MassLockPopupComponent
 ];
 
 export * from './filters/filters.component';
@@ -61,3 +64,4 @@ export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component
 export * from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
 export * from './planitem/planitem-popup/planitem-popup.component';
 export * from './planitem/index.component';
+export * from './planner/mass-lock-popup/mass-lock-popup.component';

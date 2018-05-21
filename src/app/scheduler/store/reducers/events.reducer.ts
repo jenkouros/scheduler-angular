@@ -1,6 +1,5 @@
 import * as fromAction from '../actions/events.action';
 import { ContainerEvents } from '../../models/event.model';
-import { ItemsList } from '@ng-select/ng-select/ng-select/items-list';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
@@ -20,19 +19,34 @@ export function eventsReducer(
 ): EventsState {
     switch (action.type) {
         case fromAction.LOAD_EVENTS: {
+            const events = { ...state.entities };
+            for (const i of action.payload.containerIds) {
+                const containerEvents: ContainerEvents = {
+                    ...events[i],
+                    dateFrom: action.payload.dateFrom,
+                    dateTo: action.payload.dateTo,
+                    events: events[i] ? [...events[i].events] : []
+                };
+                events[i] = containerEvents;
+            }
             return {
                 ...state,
-                loading: true
+                loading: true,
+                entities: events
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
-            const events: { [id: number]: ContainerEvents } = {};
+            const events: { [id: number]: ContainerEvents } = { ...state.entities };
+            const initDictionary: number[] = [];
             for (const event of action.payload.events) {
                 if (event.hasOwnProperty('containerId')) {
-                    const existingEvents = events[event.containerId] ? events[event.containerId].events : [];
+                    if (initDictionary.indexOf(event.containerId) < 0) {
+                        events[event.containerId].events = [];
+                        initDictionary.push(event.containerId);
+                    }
 
                     events[event.containerId] = {
-                        events: [...existingEvents, event],
+                        events: [...events[event.containerId].events, event],
                         dateFrom: action.payload.dateFrom,
                         dateTo: action.payload.dateTo
                     };

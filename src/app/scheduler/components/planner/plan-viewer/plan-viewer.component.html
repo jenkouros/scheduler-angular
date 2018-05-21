@@ -10,8 +10,8 @@
     </div>   
 </div>
 
-<button type="button" class="btn btn-primary" (click)="thickening()">Zgoščevanje</button>     
-<button type="button" class="btn btn-primary" (click)="massLock()">Masovno zaklepanje</button>     
+<button type="button" (click)="removeBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
+<button type="button" class="btn btn-primary">Masovno zaklepanje</button>     
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
@@ -33,30 +33,19 @@
     (onAppointmentDeleting)="onAppointmentDeleting($event)"
     (onAppointmentAdding)="onAppointmentAdding($event)"
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-    (onCellClick)="onCellClick($event)">
+    (onCellClick)="onCellClick($event)"
+    appointmentTooltipTemplate="tooltip-template">
    
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           
     </div>
-<!--
-    <div *dxTemplate="let showtime of 'tooltip-template'">
-        <div class='movie-tooltip'>
-            <img [src]="getMovieById(showtime.movieId).image" />
-            <div class='movie-info'>
-                <div class='movie-title'>
-                    {{getMovieById(showtime.movieId).text + ' (' + getMovieById(showtime.movieId).year + ')'}}
-                </div>
-                <div>
-                    {{'Director: ' + getMovieById(showtime.movieId).director}}
-                </div>
-                <div>
-                    {{'Duration: ' + getMovieById(showtime.movieId).duration + ' minutes'}}
-                </div>
-            </div>
-            <br />
-            <dx-button text='Edit details' (onClick)='editDetails(showtime)'>
-            </dx-button>
+
+    <div *dxTemplate="let plannedEvent of 'tooltip-template'">
+        <div class='event-tooltip'>
+            <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='toggleLock(plannedEvent)'></dx-button>
+            <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='updateAppointment(plannedEvent)'></dx-button>
+            <dx-button icon="trash" type="danger" text="Izbriši" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
         </div>
     </div>
--->
+
 </dx-scheduler>

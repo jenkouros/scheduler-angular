@@ -20,7 +20,6 @@ import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 import * as messagesSl from './shared/localization/sl.json';
-import { MassLockPopupComponent } from './scheduler/components/planner/mass-lock-popup/mass-lock-popup.component';
 
 loadMessages(messagesSl);
 locale(navigator.language);
@@ -28,18 +27,17 @@ registerLocaleData(localeSl, 'sl');
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MassLockPopupComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRouterModule,
-    FontAwesomeModule,
     StoreModule.forRoot(initialReducerMap, { initialState: getInitialState }),
     EffectsModule.forRoot([]),
     // StoreRouterConnectingModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    FontAwesomeModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'sl' }

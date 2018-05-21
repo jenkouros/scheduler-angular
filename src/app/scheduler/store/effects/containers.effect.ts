@@ -1,15 +1,16 @@
-import { ContainersService } from '../../services';
+import { Injectable } from '@angular/core';
+// import { ContainersService } from '../../services';
 import { Actions, Effect } from '@ngrx/effects';
 import * as fromActions from '../actions';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import 'rxjs/add/operator/withLatestFrom';
-import { of } from 'rxjs/observable/of';
-import { Injectable } from '@angular/core';
-import { EventsState } from '../reducers/events.reducer';
+import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
+
+import { of } from 'rxjs';
+
+// import { EventsState } from '../reducers/events.reducer';
 import { Store } from '@ngrx/store';
 import { ContainerEvents } from '../../models/event.model';
-import { SchedulerState } from '../index';
-import { ContainerState } from '../reducers/containers.reducer';
+import { ContainersService } from '../../services/containers.service';
+// import { ContainerState } from '../reducers/containers.reducer';
 import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
@@ -36,8 +37,8 @@ export class ContainersEffects {
     @Effect()
     removeContainersBlankSpace = this.actions$
         .ofType(fromActions.REMOVE_CONTAINERS_BLANKSPACE)
-        .withLatestFrom(this.store.select(state => state.scheduler.events))
         .pipe(
+            withLatestFrom(this.store.select(state => state.scheduler.events)),
             switchMap(([action, state]) => {
                 const containerIds = (<fromActions.RemoveContainersBlankSpace>action).payload.containerIds;
                 return this.containersService.removeContainersBlankSpace(containerIds)
@@ -62,4 +63,6 @@ export class ContainersEffects {
                     );
             })
         );
+
+
 }

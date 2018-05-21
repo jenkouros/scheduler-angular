@@ -28,6 +28,7 @@ export class PlannedEvent {
     endDate: Date;
     title: string;
     containers: SubItemContainer[];
+    isLocked: boolean;
     isPlanned: boolean;
     preplanItem: PreplanItem | null;
 
@@ -59,6 +60,7 @@ export class PlannedEvent {
         result.containers = subItemContainers;
         // result.preplanItem = preplanItem;
         result.isPlanned = isPlanned;
+        result.isLocked = false;
         return result;
     }
 
@@ -83,7 +85,7 @@ export class PlannedEvent {
         result.title = event.title;
         result.containers = event.allowedContainers.map(SubItemContainer.fromServer);
         result.isPlanned = true;
-
+        result.isLocked = event.isLocked;
         return result;
 
 

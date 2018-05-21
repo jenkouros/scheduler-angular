@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import * as fromStore from '../../../store';
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/take';
+
 import CustomStore from 'devextreme/data/custom_store';
 import { PlanItem } from '../../../models/planitem.dto';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-planitem-list',
@@ -18,8 +19,9 @@ export class PlanitemListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new fromStore.LoadPlanItems());
     this.store.select(fromStore.getPlanItemsStore)
-      .take(1)
-      .subscribe(itemsStore => this.planItemsStore = itemsStore);
+    .pipe(
+      take(1)
+    ).subscribe(itemsStore => this.planItemsStore = itemsStore);
   }
 
   showPlanInfo(planItem: PlanItem) {

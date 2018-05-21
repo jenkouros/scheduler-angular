@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import * as fromActions from '../actions';
 import { PreplanitemsService } from '../../services/preplanitems.service';
-import { map, catchError, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { map, catchError, switchMap ,  mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable()
 export class PreplanitemEffects {
     constructor(
-        private preplanitemService: PreplanitemsService,
-        private actions$: Actions
+        private actions$: Actions,
+        private preplanitemService: PreplanitemsService
     ) {}
 
     @Effect()
@@ -39,6 +39,25 @@ export class PreplanitemEffects {
                     catchError((error) => {
                         console.log(error);
                         return of(new fromActions.LoadPreplanItemsFail()); // CREATE NEW FAIL ACTION TODO
+                    })
+                );
+            })
+        );
+
+    @Effect()
+    deleteItemBatch$ = this.actions$
+        .ofType(fromActions.DELETE_ITEMBATCH)
+        .pipe(
+            switchMap((action: fromActions.DeleteItemBatch) => {
+                return this.preplanitemService.deleteItemBatch(action.payload)
+                .pipe(
+                    mergeMap(result => [
+                        new fromActions.LoadPreplanItems()
+                        // also refresh calendars
+                    ]),
+                    catchError((error) => {
+                        console.log(error);
+                        return of(new fromActions.DeleteItemBatchFail()); // CREATE NEW FAIL ACTION TODO
                     })
                 );
             })

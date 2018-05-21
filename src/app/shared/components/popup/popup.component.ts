@@ -10,7 +10,6 @@ import { visitSiblingRenderNodes } from '@angular/core/src/view/util';
 export class PopupComponent implements OnInit {
   private visibleValue = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-
   @Input() title: string;
 
   get visible() {
@@ -22,15 +21,13 @@ export class PopupComponent implements OnInit {
     this.visibleChange.emit(this.visibleValue);
   }
 
-
-
   @Input() hasConfirmBtn = true;
   @Input() hasCancelBtn = true;
   // @Input() hasScrollView = true;
   @Input() confirmCallback: () => void;
   @Input() cancelCallback: () => void;
-
-
+  @Input() height: any = () => window.innerHeight * 0.8;
+  @Input() width: any = () => window.innerWidth * 0.8;
 
   constructor() { }
 

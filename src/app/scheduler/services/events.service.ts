@@ -1,6 +1,7 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { PlannedEvent } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
@@ -35,7 +36,7 @@ export class EventsService {
                 }
                 return response.result.map(PlannedEvent.fromServer);
             }),
-            catchError((error: any) => Observable.throw(error.json))
+            catchError((error: any) => observableThrowError(error.json))
         );
     }
 
@@ -91,6 +92,18 @@ export class EventsService {
                 return true;
             } )
         );
+    }
+
+    toggleLock(event: PlannedEvent): Observable<boolean> {
+        const url = event.isLocked ? 'unlockItem' : 'lockItem';
+        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, event.id).pipe(
+                map(response => {
+                    if (response.code !== ApiResponseResult.success) {
+                        throw response.messages;
+                    }
+                    return true;
+                })
+            );
     }
 
     /*

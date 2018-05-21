@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { FilterServer } from '../models/server/filter.servermodel';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { Filter } from '../models/filter.dto';
 
@@ -22,7 +23,7 @@ export class FiltersService {
                     }
                     return response.result.map(f => Filter.fromServer(f));
                 }),
-                catchError((error: any) => Observable.throw(error.json()))
+                catchError((error: any) => observableThrowError(error.json()))
             );
     }
 }

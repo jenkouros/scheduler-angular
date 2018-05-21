@@ -1,6 +1,7 @@
 import { ContainerServer } from './container.servermodel';
 import { MeasurementUnitServer, ProductServer } from './shared.servermodel';
 import { PlanSubItemServer } from './planitem.servermodel';
+import { ItemBatchServer } from './itembatch.servermodel';
 
 export interface PreplanitemServer {
     idPrePlanItem: number;
@@ -9,6 +10,7 @@ export interface PreplanitemServer {
     containers: SubItemContainerServer[];
     item: PreplanitemBasicServer;
     subItem: PlanSubItemServer;
+    itemBatch: ItemBatchServer;
 }
 
 export interface PreplanitemBasicServer {

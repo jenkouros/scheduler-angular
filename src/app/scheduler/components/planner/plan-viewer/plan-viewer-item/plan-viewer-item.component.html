@@ -4,12 +4,15 @@
   </div>                 -->
   <div class="plannerItem">
     <div class="m-2">
-      <h6 class="white-text">{{ plannerItemData.subItemName}}</h6>
+      <h6 class="white-text">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</h6>
+      <div>{{ plannerItemData.itemName }}</div>
       <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
     </div>
   </div>
-  <!-- <div class="info">
-      <fa-icon [icon]="faLock"></fa-icon>
+  <div class="info pull-right mt-2" *ngIf="plannerItemData.isLocked">
+    <fa-icon [icon]="faLock"></fa-icon>
   </div>
+
+  <!-- 
   <div class="status">&nbsp;</div> -->
 </div>

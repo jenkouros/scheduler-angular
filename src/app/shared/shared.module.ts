@@ -1,44 +1,46 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { NgSelectModule } from '@ng-select/ng-select';
+// import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PaginationComponent } from './components/pagination/pagination.component';
-import { PageLengthComponent } from './components/page-length/page-length.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { FormsModule } from '@angular/forms';
 import { FieldsetComponent } from './components/fieldset/fieldset.component';
 import { FieldComponent } from './components/fieldset/field/field.component';
 import { PopupComponent } from './components/popup/popup.component';
-import { DxPopupModule, DxScrollViewModule } from 'devextreme-angular';
+import { DxPopupModule, DxScrollViewModule, DxDateBoxModule } from 'devextreme-angular';
+import { DateboxComponent } from './components/datebox/datebox.component';
 
 @NgModule({
     exports: [
         CommonModule,
-        NgSelectModule,
+        // NgSelectModule,
         NgbModule,
-        PaginationComponent,
-        PageLengthComponent,
+        // PaginationComponent,
+        // PageLengthComponent,
         LoaderComponent,
         FieldsetComponent,
         FieldComponent,
-        PopupComponent
+        PopupComponent,
+        DateboxComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
-        NgSelectModule,
+        // NgSelectModule,
         NgbModule.forRoot(),
         DxPopupModule,
-        DxScrollViewModule
+        DxScrollViewModule,
+        DxDateBoxModule
     ],
     declarations: [
-        PaginationComponent,
-        PageLengthComponent,
+        // PaginationComponent,
+        // PageLengthComponent,
         LoaderComponent,
         FieldsetComponent,
         FieldComponent,
-        PopupComponent
+        PopupComponent,
+        DateboxComponent
     ]
 })
 export class SharedModule {

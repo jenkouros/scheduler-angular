@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { EventsService } from '../../services/events.service';
 import * as fromAction from '../actions';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { switchMap, map, catchError, mergeMap ,  filter, withLatestFrom } from 'rxjs/operators';
+
+import { of } from 'rxjs';
 import { PlannedEvent } from '../../models/event.model';
+import { EventsService } from '../../services/events.service';
+import { ContainersService } from '../../services/containers.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/app.reducers';
+// import { ContainersService, EventsService } from '../../services';
 
 @Injectable()
 export class EventsEffects {
     constructor(
         private actions$: Actions,
-        private eventsService: EventsService
+        private eventsService: EventsService,
+        private containersService: ContainersService,
+        private store: Store<AppState>
     ) {}
 
     @Effect()
@@ -35,16 +42,56 @@ export class EventsEffects {
         );
 
     @Effect()
+    reloadEvents$ = this.actions$
+        .ofType(fromAction.RELOAD_EVENTS)
+        .pipe(
+            map((action: fromAction.ReloadEvents) => action.payload.containerIds),
+            withLatestFrom(this.store.select(state => state.scheduler.events)),
+            mergeMap(([containerIds, state]) => {
+                return containerIds.map(c => new fromAction.LoadEvents({
+                    containerIds: [c],
+                    dateTo: state.entities[c].dateTo,
+                    dateFrom: state.entities[c].dateFrom
+                }));
+            })
+        );
+
+    @Effect()
+    toggleLock$ = this.actions$
+        .ofType(fromAction.TOGGLE_LOCK)
+        .pipe(
+            switchMap((action: fromAction.ToggleEventLock) => {
+                return this.eventsService.toggleLock(action.payload)
+                .pipe(
+                    map(events => new fromAction.ReloadEvents({ containerIds: [action.payload.containerId] })),
+                    catchError(error => of(new fromAction.LoadEventsFail()))
+                );
+            })
+        );
+
+    @Effect()
     createEvent$  = this.actions$
     .ofType(fromAction.CREATE_EVENT)
     .pipe(
-        switchMap((action: fromAction.CreateEvent) => {
-            return this.eventsService.createEvent(
-                action.payload
-            )
-            .pipe(
-                map(event => new fromAction.CreateEventSuccess(event)),
-                catchError(error => of(new fromAction.CreateEventFail()))
+        map((action: fromAction.CreateEvent) => action.payload),
+        withLatestFrom(this.store.select(state => state.scheduler.events)),
+        switchMap(([plannedEvent, state]) => {
+            return this.eventsService.createEvent(plannedEvent)
+                .pipe(
+                    mergeMap(event => {
+                        return [
+                            new fromAction.LoadEvents(
+                            {
+                                containerIds: [event.containerId],
+                                dateTo: state.entities[event.containerId].dateTo,
+                                dateFrom: state.entities[event.containerId].dateFrom
+                            }),
+                            new fromAction.CreateEventSuccess(plannedEvent)
+                        ];
+                    }),
+                    catchError(error => {
+                        return of(new fromAction.CreateEventFail());
+                    })
             );
         })
     );

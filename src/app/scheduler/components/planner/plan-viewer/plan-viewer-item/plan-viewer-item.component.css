@@ -16,9 +16,9 @@
     /* text-align: center; */
     /* vertical-align: center; */
   }
-  ::ng-deep .info {
+  /* ::ng-deep .info {
     text-align: center;
-}
+} */
 
 ::ng-deep .status {
     background: green; 
@@ -30,7 +30,8 @@
     display: grid;
     height: 100%;
     width: 100%;  
-    grid-template-columns: 1fr 4fr minmax(0px, 25px) minmax(0px, 10px);
+    /* grid-template-columns: 1fr 4fr minmax(0px, 25px) minmax(0px, 10px); */
+    grid-template-columns: 1fr minmax(0px, 25px);
     grid-template-rows: 1fr;
     border: gray solid 1px;
   }

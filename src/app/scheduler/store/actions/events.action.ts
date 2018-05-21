@@ -13,6 +13,8 @@ export const DELETE_EVENT_FAIL = '[Event] Delete an event - fail';
 export const UPDATE_EVENT = '[Event] Update an event';
 export const UPDATE_EVENT_SUCCESS = '[Event] Update an event - success';
 export const UPDATE_EVENT_FAIL = '[Event] Update an event - fail';
+export const RELOAD_EVENTS = '[Event] Reload events';
+export const TOGGLE_LOCK = '[Event] Toggle lock';
 
 
 export class LoadEvents implements Action {
@@ -20,6 +22,17 @@ export class LoadEvents implements Action {
     constructor(public payload: { containerIds: number[], dateFrom: Date, dateTo: Date }) {
     }
 }
+
+export class ToggleEventLock implements Action {
+    readonly type = TOGGLE_LOCK;
+    constructor(public payload: PlannedEvent) {}
+}
+
+export class ReloadEvents implements Action {
+    readonly type = RELOAD_EVENTS;
+    constructor(public payload: { containerIds: number[] }) {}
+}
+
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
     // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
@@ -81,4 +94,6 @@ export type EventsAction =
     | DeleteEventFail
     | UpdateEvent
     | UpdateEventSuccess
-    | UpdateEventFail;
+    | UpdateEventFail
+    | ToggleEventLock
+    | ReloadEvents;

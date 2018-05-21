@@ -4,9 +4,6 @@ import { createStore } from 'devextreme-aspnet-data-nojquery';
 import CustomStore from 'devextreme/data/custom_store';
 import { environment } from '../../../environments/environment';
 
-
-
-@Injectable()
 export class PlanItemsService {
     constructor() {}
 

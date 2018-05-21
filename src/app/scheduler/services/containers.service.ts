@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ContainerServer } from '../models/server/container.servermodel';
 import { HttpClient } from '@angular/common/http';
 import { Container } from '../models/container.dto';
@@ -20,7 +21,7 @@ export class ContainersService {
                 }
                 return response.result.map(Container.fromServer);
             }),
-            catchError((error: any) => Observable.throw(error.json))
+            catchError((error: any) => observableThrowError(error.json))
             );
     }
 
@@ -33,7 +34,7 @@ export class ContainersService {
                     }
                     throw response.messages;
                 }),
-                catchError(error => Observable.throw(error.json))
+                catchError(error => observableThrowError(error.json))
             );
     }
 
