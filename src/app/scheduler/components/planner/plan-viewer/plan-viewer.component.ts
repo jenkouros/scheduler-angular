@@ -9,7 +9,7 @@ import {
 import Query from 'devextreme/data/query';
 import * as events from 'devextreme/events';
 import { Container } from '../../../models/container.dto';
-import { Store } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import { PlanViewerItemComponent } from '../../../components/index';
 import { PlannedEvent, PlanItemsLoadRequest } from '../../../models/event.model';
@@ -28,6 +28,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() selectedPreplanItem: PreplanItem | null = null;
     @Input() selectedContainers: ContainerSelect[] = [];
     @Input() planItems: PlannedEvent[] = [];
+    @Input() preplanItemDragEnd: boolean;
 
     @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
     @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
@@ -50,54 +51,61 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
+    currentHour: number;
 
-    constructor() {}
+    constructor(private store: Store<fromStore.SchedulerState>) {
+        this.currentHour = this.currentDate.getHours();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.ShowAvailableContainers(this.selectedPreplanItem, 'allowed');
+        this.removeMovebleCss(this.preplanItemDragEnd);
         this.selectedContainerIds = this.selectedContainers.map(i => i.id);
-        if (this.selectedContainers.length > 0) {
-            if (!this.visible) {
-                this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
-                this.visible = true;
-            }
-            this.schedulerResources = this.getResources(this.selectedContainers);
-        } else {
-            this.schedulerResources = [];
-            this.visible = false;
-        }
+        this.schedulerResources = this.getResources(this.selectedContainers);
+        this.visible = this.selectedContainers.length > 0;
+        // this.onContentReady(null);
     }
 
     ngOnInit() {
-        if (!this.groupsHasValue) {
-            this.setGroupValue();
-        }
-    }
-
-    ngAfterViewInit() {
         // this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
         //     (containers) => {
         //         this.selectedContainers = containers;
-        //         this.selectedContainerIds = containers.map(c => c.id);
+        //         this.schedulerResources = this.getResources(containers);
+        //         this.visible = this.selectedContainers.length > 0;
+        //         console.log(this.schedulerResources );
         //         if (containers.length > 0) {
         //             this.visible = true;
-        //             this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
-        //             this.schedulerResources = this.getResources(containers);
-        //             this.store.select(fromStore.getEventsForContainers(this.selectedContainerIds)).subscribe(items => {
-        //                 this.planItems = items;
-        //                 this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
+        //             // this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
+        //             // this.schedulerResources = this.getResources(containers);
+        //             this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(data => {
+        //                 this.data = data;
+        //                // this.scheduler.instance.repaint();
+        //                 // this.scheduler.instance.scrollToTime(this.currentHour, 0);
         //             }
         //             );
-        //         } else {
-        //             this.schedulerResources = [];
-        //             this.visible = false;
         //         }
 
         //     });
+            // this.store.select(fromStore.getSelectedPrePlanItem).subscribe((item) => {
+            //     this.draggablePreplanItem = item;
+            //     this.ShowAvailableContainers(this.draggablePreplanItem, 'allowed');
+            // });
 
+            // this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd).subscribe((item) => {
+            //     this.removeMovebleCss(item);
+            // });
+    }
+
+    removeMovebleCss(s: boolean) {
+        const plannedItemsEl = (<any>this.scheduler)
+                                    .element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
+        for (let i = 0; i < plannedItemsEl.length; i++) {
+            plannedItemsEl[i].classList.remove('dx-scheduler-appointment-move');
+        }
+    }
+    ngAfterViewInit() {
         this.selectedStartDate = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate = this.scheduler.instance.getEndViewDate();
-
     }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
@@ -127,6 +135,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
 
     optionChanged(e: any) {
+        console.log(e.fullName);
 /*
         // TODO: hack to refresh content and fire onContentReady event
         if (e.name === 'cellDuration') {
@@ -136,31 +145,27 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
                 });
         }
 */
-        // if (e.fullName === 'visible') {
-        //     setTimeout(() => {
-        //         e.component.scrollToTime(this.currentDate.getHours(), 0);
-        //         e.component.repaint();
-        //     });
-        // }
-
-        if (e.fullName === 'currentView' || e.fullName === 'currentDate' || e.fullName === 'resources' || e.name === 'cellDuration') {
-
-            if (this.selectedStartDate !== e.component.getStartViewDate() ||
-                this.selectedEndDate !== e.component.getEndViewDate()) {
-                setTimeout(() => {
-                    this.selectedStartDate = e.component.getStartViewDate();
-                    this.selectedEndDate = e.component.getEndViewDate();
-
-                    this.planItemLoad.emit({
-                        containerIds: this.selectedContainerIds,
-                        fromDate: this.selectedStartDate,
-                        toDate: this.selectedEndDate
-                    });
-                }, 100);
-            }
+        if (e.fullName === 'dataSource' || e.fullName === 'visible' ) {
+            e.component.repaint();
+            e.component.scrollToTime(this.currentHour, 0);
         }
 
+        if (e.fullName === 'currentView' || e.fullName === 'currentDate'  || e.fullName === 'resources' || e.name === 'cellDuration') {
 
+                setTimeout(() => {
+                    if (this.selectedStartDate !== e.component.getStartViewDate() ||
+                        this.selectedEndDate !== e.component.getEndViewDate()) {
+
+                            this.selectedStartDate = e.component.getStartViewDate();
+                            this.selectedEndDate = e.component.getEndViewDate();
+                            this.planItemLoad.emit({
+                                containerIds: this.selectedContainerIds,
+                                fromDate: this.selectedStartDate,
+                                toDate: this.selectedEndDate
+                            });
+                    }
+                }, 100);
+        }
     }
 
     deleteAppointment(appointment: PlannedEvent) {
@@ -170,6 +175,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
     onAppointmentDeleting(e) {
         this.planItemDelete.emit(e.appointmentData);
+        this.currentHour = moment(e.appointmentData.startDate).toDate().getHours();
     }
 
     updateAppointment(appointment: PlannedEvent) {
@@ -188,15 +194,15 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
                 event.idPrePlanItem, event.containerId, event.title, event.description, event.itemName,
                 event.startDate, event.endDate, event.containers);
             this.planItemCreate.emit(newEvent);
-            this.scheduler.instance.addAppointment(
+            /* this.scheduler.instance.addAppointment(
                 newEvent
-            );
+            );*/
             // this.showToast('Added', event.description, 'success');
         } else {
             console.log('onAppointmentUpdating - moved', event);
             this.planItemUpdate.emit(event);
         }
-
+        this.currentHour = moment(event.startDate).toDate().getHours();
 
     }
 
@@ -204,7 +210,38 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
         console.log('onAppointmentAdding', e);
     }
 
+    collectionHas(a, b) { // helper function (see below)
+        for (let i = 0, len = a.length; i < len; i ++) {
+            if (a[i] === b) { return true; }
+        }
+        return false;
+    }
+    findParentBySelector(elm, selector) {
+        const all = document.querySelectorAll(selector);
+        let cur = elm.parentNode;
+        while (cur && !this.collectionHas(all, cur)) { // keep going up until you find a match
+            cur = cur.parentNode; // go up
+        }
+        return cur; // will return null if not found
+    }
+
     onContentReady(event) {
+        const plannedItemsEl = (<any>this.scheduler)
+            .element.nativeElement.querySelectorAll('.dx-scheduler-scrollable-appointments');
+        for (let i = 0; i < plannedItemsEl.length; i++) {
+
+            events.off(plannedItemsEl[i], 'dragover');
+            events.off(plannedItemsEl[i], 'dragend');
+            events.on(plannedItemsEl[i], 'dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const f = this.findParentBySelector(e.target, '.dx-scheduler-appointment');
+
+                if (f) {
+                    f.classList.add('dx-scheduler-appointment-move');
+                }
+            });
+        }
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
         for (let i = 0; i < elements.length; i++) {
 
@@ -215,7 +252,6 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
             events.on(elements[i], 'dragover', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log(e);
                 e.target.classList.add('dx-scheduler-date-table-droppable-cell');
 
             });
@@ -234,6 +270,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
                 if (e.type === 'drop') {
                     const el = e.target;
                     if (el.classList.contains('dx-scheduler-date-table-cell')) {
+
+                        if (el.classList.contains('dx-scheduler-date-table-droppable-cell')) {
+                             el.classList.remove('dx-scheduler-date-table-droppable-cell');
+                        }
+
                         const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
                         if (cellData.groups === undefined) {
                             return false;

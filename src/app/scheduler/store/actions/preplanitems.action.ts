@@ -42,7 +42,6 @@ export class DragStartPreplanItem implements Action {
 
 export class DragEndPreplanItem implements Action {
     readonly type = DRAGEND_PREPLANITEM;
-    constructor(public payload: PreplanItem) {}
 }
 
 export class DeleteItemBatch implements Action {

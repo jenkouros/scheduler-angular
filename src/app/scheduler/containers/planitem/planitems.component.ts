@@ -13,6 +13,7 @@ import { ContainerSelect } from '../../models/container.viewModel';
             [selectedPreplanItem]="selectedPrePlanItem$ | async"
             [selectedContainers]="selectedContainers$ | async"
             [planItems]="planItems$ | async"
+            [preplanItemDragEnd]="prePlanItemDragEnd$ | async"
             (removeBlankSpace)="onRemoveBlankSpace($event)"
             (toggleLock)="onToggleLock($event)"
             (showMassLockPopup)="onShowMassLockPopup($event)"
@@ -27,6 +28,7 @@ export class PlanitemsComponent implements OnInit {
     selectedPrePlanItem$: Observable<PreplanItem | null>;
     selectedContainers$: Observable<ContainerSelect[]>;
     planItems$: Observable<PlannedEvent[]>;
+    prePlanItemDragEnd$: Observable<boolean>;
 
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
@@ -35,9 +37,10 @@ export class PlanitemsComponent implements OnInit {
         this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
         this.selectedContainers$.subscribe(containers => {
             if (containers) {
-                this.store.pipe(select(fromStore.getEventsForContainers(containers.map(i => i.id))));
+                this.planItems$ = this.store.pipe(select(fromStore.getEventsForContainers(containers.map(i => i.id))));
             }
         });
+        this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
     }
 
     onPlanItemLoad(loadRequest: PlanItemsLoadRequest) {

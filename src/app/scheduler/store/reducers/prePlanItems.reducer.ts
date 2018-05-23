@@ -4,11 +4,13 @@ import { PreplanItem } from '../../models/preplanitem.dto';
 export interface PreplanitemState {
     preplanItems: PreplanItem[];
     selectedPreplanItems: PreplanItem | null;
+    draggedEnded: boolean;
 }
 
 export const initState: PreplanitemState = {
     preplanItems: [],
-    selectedPreplanItems: null
+    selectedPreplanItems: null,
+    draggedEnded: true
 };
 
 export function prePlanItems(state = initState, action: fromAction.PreplanitemAction): PreplanitemState {
@@ -28,13 +30,15 @@ export function prePlanItems(state = initState, action: fromAction.PreplanitemAc
         case(fromAction.DRAGSTART_PREPLANITEM): {
             return {
                 ...state,
-                selectedPreplanItems: {...action.payload }
+                selectedPreplanItems: {...action.payload },
+                draggedEnded : false
             };
         }
         case(fromAction.DRAGEND_PREPLANITEM): {
             return {
                 ...state,
-                selectedPreplanItems: null
+                selectedPreplanItems: null,
+                draggedEnded : true
             };
         }
         default:
