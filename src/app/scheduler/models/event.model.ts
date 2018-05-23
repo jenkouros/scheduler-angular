@@ -100,4 +100,10 @@ export class PlannedEvent {
     }
 }
 
+export interface MassLockRequest {
+    fromDate: Date;
+    toDate: Date;
+    containerIds: number[];
+}
+
 

@@ -1,0 +1,73 @@
+<app-popup
+  title="Planiraj delovni nalog"
+  [visible]="visible"
+  (visibilityChanged)="popupVisibilityChanged($event)"
+  [cancelCallback]="hidePlanInfo"
+  [confirmCallback]="onSubmit">
+  
+  <div *ngIf="itemHierarchy && itemHierarchy?.planItem">
+    <div class="row">
+      <app-fieldset header="Delovni nalog" class="col">
+        <app-field label="Šifra" [isStatic]="true">
+            {{ itemHierarchy!.planItem.code }}
+        </app-field>
+        <app-field label="Artikel" [isStatic]="true">
+            {{ itemHierarchy!.planItem.article.code }} - 
+            {{ itemHierarchy!.planItem.article.name }}
+        </app-field>
+      </app-fieldset>
+
+      <app-fieldset header="ERP" class="col">
+        <app-field label="Količina" [isStatic]="true">
+            {{ itemHierarchy!.planItem.quantity }} {{ itemHierarchy!.planItem.measurementUnit.code }}
+        </app-field>
+        <app-field label="Datum" [isStatic]="true">
+            {{ itemHierarchy!.planItem.limitDateFrom | date:'mediumDate' }} -  
+            {{ itemHierarchy!.planItem.limitDateTo | date:'mediumDate' }}      
+        </app-field>
+      </app-fieldset>
+    </div>
+
+    <form [formGroup]="createPreplanItemsForm">
+      <div class="row">
+        <app-fieldset header="Planiranje delovnega naloga" class="col-6">
+          <app-field label="Količina">
+            <input 
+              type="number" 
+              class="form-control"
+              formControlName="batchQuantity">
+          </app-field>
+
+          <app-field label="Število šarž">
+            <input 
+              type="number" 
+              class="form-control"
+              formControlName="batchCount">
+          </app-field>
+
+          <app-field label="Alternativa">
+            <dx-select-box 
+              [dataSource]="itemHierarchy!.alternativeOptions" 
+              name="alternative" 
+              valueExpr="id"
+              displayExpr="name" 
+              placeholder="Izberi alternativo" 
+              [showClearButton]="true" 
+              formControlName="idAlternative">
+            </dx-select-box>
+          </app-field>
+        </app-fieldset>
+      </div>
+
+      <div class="row">
+        <app-fieldset class="col">
+          <app-alternative 
+            *ngIf="alternatives && alternativeIdControl.value" 
+            [alternative]="getSelectedAlternative()">
+          </app-alternative>
+        </app-fieldset>
+      </div>
+
+    </form>
+  </div>
+</app-popup>

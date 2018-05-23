@@ -2,15 +2,17 @@ import * as fromPlanItems from '../actions/planitems.action';
 import CustomStore from 'devextreme/data/custom_store';
 import { PlanItem, PlanItemHierarchy } from '../../models/planitem.dto';
 
+export interface PlanItemUIState {
+    popupOpened: boolean;
+}
+
 export interface PlanItemState {
     items: PlanItem[];
     itemsStore: CustomStore | null;
     selectedItemHierarchy: PlanItemHierarchy | null;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
-    uiState: {
-        popupOpened: boolean
-    };
+    uiState: PlanItemUIState;
 }
 
 export const initialState: PlanItemState = {

@@ -2,7 +2,7 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent } from '../models/event.model';
+import { PlannedEvent, MassLockRequest } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -97,6 +97,24 @@ export class EventsService {
     toggleLock(event: PlannedEvent): Observable<boolean> {
         const url = event.isLocked ? 'unlockItem' : 'lockItem';
         return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, event.id).pipe(
+                map(response => {
+                    if (response.code !== ApiResponseResult.success) {
+                        throw response.messages;
+                    }
+                    return true;
+                })
+            );
+    }
+
+    toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {
+        const url = lock ? 'massLockItems' : 'massUnLockItems';
+        const request = {
+            containerIds: containerIds,
+            fromDate: moment(fromDate).format(),
+            toDate: moment(toDate).format()
+        };
+
+        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, request).pipe(
                 map(response => {
                     if (response.code !== ApiResponseResult.success) {
                         throw response.messages;

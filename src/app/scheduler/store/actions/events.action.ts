@@ -15,6 +15,8 @@ export const UPDATE_EVENT_SUCCESS = '[Event] Update an event - success';
 export const UPDATE_EVENT_FAIL = '[Event] Update an event - fail';
 export const RELOAD_EVENTS = '[Event] Reload events';
 export const TOGGLE_LOCK = '[Event] Toggle lock';
+export const MASS_TOGGLE_EVENTS_LOCK = '[Event] Mass Toggle Events Lock';
+export const TOGGLE_MASSLOCK_POPUP_VISIBILITY = '[Event] Toggle mass lock popup visibility';
 
 
 export class LoadEvents implements Action {
@@ -26,6 +28,16 @@ export class LoadEvents implements Action {
 export class ToggleEventLock implements Action {
     readonly type = TOGGLE_LOCK;
     constructor(public payload: PlannedEvent) {}
+}
+
+export class ToggleMassLockPopup implements Action {
+    readonly type = TOGGLE_MASSLOCK_POPUP_VISIBILITY;
+    constructor(public payload: { containerIds: number[], visibility: boolean }) {}
+}
+
+export class MassToggleEventsLock implements Action {
+    readonly type = MASS_TOGGLE_EVENTS_LOCK;
+    constructor(public payload: { containerIds: number[], fromDate: Date, toDate: Date }) {}
 }
 
 export class ReloadEvents implements Action {
@@ -96,4 +108,6 @@ export type EventsAction =
     | UpdateEventSuccess
     | UpdateEventFail
     | ToggleEventLock
-    | ReloadEvents;
+    | MassToggleEventsLock
+    | ReloadEvents
+    | ToggleMassLockPopup;

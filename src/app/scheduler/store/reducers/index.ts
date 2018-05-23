@@ -33,7 +33,7 @@ export const reducers: ActionReducerMap<SchedulerState> = {
 };
 
 export const getSchedulerState = createFeatureSelector<SchedulerState>('scheduler');
-export { PlanItemState } from './planitems.reducer';
+export { PlanItemState, PlanItemUIState } from './planitems.reducer';
 export { FilterState } from './filters.reducer';
 export { ContainerState } from './containers.reducer';
 export { EventsState } from './events.reducer';

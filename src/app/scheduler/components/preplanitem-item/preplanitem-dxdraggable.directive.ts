@@ -7,11 +7,11 @@ import * as fromStore from '../../store';
 
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
-  selector: '[dx-draggable]'
+  selector: '[appPreplanitemDraggable]'
 })
-export class DxDraggableDirective {
-  @Input() dragData;
+export class PreplanitemDraggableDirective {
+  // tslint:disable-next-line:no-input-rename
+  @Input('appPreplanitemDraggable') dragData;
   element: HTMLElement;
 
 

@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './store';
 import * as fromComponents from './components';
+import * as fromContainers from './containers';
 import { SchedulerRouterModule } from './scheduler-router.module';
 // import * as fromServices from './services';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +22,6 @@ import {
     DxTextBoxModule,
     DxFormModule
 } from 'devextreme-angular';
-import { DxDraggableDirective } from './components/pre-planitem-list/dxdraggable.directive';
 
 import { CommonModule } from '@angular/common';
 import { PlanItemsService } from './services/planitems.service';
@@ -36,12 +36,14 @@ import { ContainersEffects } from './store/effects/containers.effect';
 import { EventsEffects } from './store/effects/events.effect';
 import { PlanItemHierarchyEffects } from './store/effects/planitemhierarchy.effect';
 import { PreplanitemEffects } from './store/effects/preplanitem.effect';
+import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         SchedulerRouterModule,
         StoreModule.forFeature('scheduler', reducers),
@@ -64,7 +66,10 @@ import { PreplanitemEffects } from './store/effects/preplanitem.effect';
         DxTextBoxModule,
         DxFormModule
     ],
-    declarations: [...fromComponents.components, DxDraggableDirective],
+    declarations: [
+        ...fromContainers.containers,
+        ...fromComponents.components,
+        PreplanitemDraggableDirective],
     providers: [
         // ...fromServices.services
         PlanItemsService,

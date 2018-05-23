@@ -17,6 +17,7 @@ import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
 import { ContainerSelect } from '../../../models/container.viewModel';
 import { PreplanItem } from '../../../models/preplanitem.dto';
+import { ToggleMassLockPopup } from '../../../store';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -36,10 +37,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     cellDurations: any[] = [5, 10, 20, 30, 60];
     cellDuration = 60;
     selectedContainers: ContainerSelect[];
+    selectedContainerIds: number[];
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
-
 
     constructor(private store: Store<fromStore.SchedulerState>) {
 
@@ -49,11 +50,12 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
             (containers) => {
                 this.selectedContainers = containers;
+                this.selectedContainerIds = containers.map(c => c.id);
                 if (containers.length > 0) {
                     this.visible = true;
                     this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
                     this.schedulerResources = this.getResources(containers);
-                    this.store.select(fromStore.getEventsForContainers(containers.map(c => c.id))).subscribe(items => {
+                    this.store.select(fromStore.getEventsForContainers(this.selectedContainerIds)).subscribe(items => {
                         this.data = items;
                         this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
                     }
@@ -352,6 +354,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     toggleLock(plannedEvent: PlannedEvent) {
         this.scheduler.instance.hideAppointmentTooltip();
         this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
+    }
+
+    showMassLockPopup() {
+        this.store.dispatch(new ToggleMassLockPopup({ containerIds: this.selectedContainerIds, visibility: true }));
     }
 }
 

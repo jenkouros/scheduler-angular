@@ -6,18 +6,16 @@ import { GroupListComponent } from './groups/group-list/group-list.component';
 import { PlannerComponent } from './planner/planner.component';
 import { PlanViewerComponent } from './planner/plan-viewer/plan-viewer.component';
 import { SchedulerComponent } from './scheduler.component';
-import { PlanitemListComponent } from './planitem/planitem-list/planitem-list.component';
+import { ItemListComponent } from './item/item-list/planitem-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FilterCheckboxComponent } from './filters/filter-checkbox/filter-checkbox.component';
 import { FilterAutocompleteComponent } from './filters/filter-autocomplete/filter-autocomplete.component';
-import { ContainerListComponent } from './container-list/container-list.component';
+import { ContainerItemComponent } from './container-item/container-item.component';
 import { AlternativeComponent } from './planitem/alternative/alternative.component';
 import { PlansubitemComponent } from './planitem/plansubitem/plansubitem.component';
-import { PrePlanitemListComponent } from './pre-planitem-list/pre-planitem-list.component';
 import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
-import { PrePlanitemItemComponent } from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
+import { PrePlanitemItemComponent } from './preplanitem-item/preplanitem-item.component';
 import { PlanitemPopupComponent } from './planitem/planitem-popup/planitem-popup.component';
-import { PlanItemIndexComponent } from './planitem/index.component';
 import { MassLockPopupComponent } from './planner/mass-lock-popup/mass-lock-popup.component';
 
 
@@ -34,14 +32,12 @@ export const components: any[] = [
     SidebarComponent,
     FilterCheckboxComponent,
     FilterAutocompleteComponent,
-    ContainerListComponent,
+    ContainerItemComponent,
     AlternativeComponent,
     PlansubitemComponent,
-    PrePlanitemListComponent,
     PlanViewerItemComponent,
     PrePlanitemItemComponent,
     PlanitemPopupComponent,
-    PlanItemIndexComponent,
     MassLockPopupComponent
 ];
 
@@ -59,9 +55,8 @@ export * from './filters/filter-checkbox/filter-checkbox.component';
 export * from './filters/filter-autocomplete/filter-autocomplete.component';
 export * from './planitem/alternative/alternative.component';
 export * from './planitem/plansubitem/plansubitem.component';
-export * from './pre-planitem-list/pre-planitem-list.component';
 export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
-export * from './pre-planitem-list/pre-planitem-item/pre-planitem-item.component';
+export * from './preplanitem-item/preplanitem-item.component';
 export * from './planitem/planitem-popup/planitem-popup.component';
-export * from './planitem/index.component';
 export * from './planner/mass-lock-popup/mass-lock-popup.component';
+export * from './container-item/container-item.component';

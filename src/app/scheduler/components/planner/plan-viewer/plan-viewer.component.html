@@ -11,7 +11,8 @@
 </div>
 
 <button type="button" (click)="removeBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
-<button type="button" class="btn btn-primary">Masovno zaklepanje</button>     
+<button type="button" (click)="showMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>     
+<app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest

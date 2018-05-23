@@ -1,12 +1,17 @@
-<app-popup [visible]="true"
+<app-popup 
+  (visibilityChanged)="visibilityChanged($event)"
+  [visible]="visible"
+  [confirmCallback]="confirmMassLock"
+  width="400px"
+  height="auto"
   title='Masovno zaklepanje operacij'
 >
   <app-fieldset>
     <app-field label='Datum od'>
-      <app-datebox></app-datebox>
+      <app-datebox type="datetime" (change)="dateTo = $event"></app-datebox>
     </app-field>
     <app-field label='Datum do'>
-      <app-datebox></app-datebox>
+      <app-datebox type="datetime" (change)="dateTo = $event"></app-datebox>
     </app-field>
   </app-fieldset>
 

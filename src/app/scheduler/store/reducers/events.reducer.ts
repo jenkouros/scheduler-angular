@@ -5,12 +5,24 @@ export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
     loading: boolean;
     loaded: boolean;
+    uiState: {
+        massLockPopup: {
+            visibility: boolean,
+            massLockPopupContainers: number[]
+        }
+    };
 }
 
 export const initialState: EventsState = {
     entities: {},
     loaded: false,
-    loading: false
+    loading: false,
+    uiState: {
+        massLockPopup: {
+            visibility: false,
+            massLockPopupContainers: []
+        }
+    }
 };
 
 export function eventsReducer(
@@ -111,6 +123,19 @@ export function eventsReducer(
                 loading: false
             };
         }
+        case fromAction.TOGGLE_MASSLOCK_POPUP_VISIBILITY: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    massLockPopup: {
+                        visibility: action.payload.visibility,
+                        massLockPopupContainers: action.payload.containerIds
+                    }
+                }
+            };
+        }
+
         default:
             return state;
     }
