@@ -30,7 +30,7 @@ export class DxDraggableDirective {
 
   @HostListener('dragend', ['$event'])
   onDragEnd(event) {
-    this.store.dispatch(new fromStore.DragEndPreplanItem(this.dragData));
+    this.store.dispatch(new fromStore.DragEndPreplanItem());
   }
 
   constructor(private el: ElementRef, private renderer: Renderer2,

@@ -15,3 +15,8 @@ export const getSelectedPrePlanItem = createSelector(
     getPreplanitemsState,
     state => state.selectedPreplanItems
 );
+
+export const getSelectedPrePlanItemDraggedEnd = createSelector(
+    getPreplanitemsState,
+    state => state.draggedEnded
+);
