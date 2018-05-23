@@ -1,13 +1,13 @@
 import {
-    PlanItemHierarchyServer,
-    PlanItemServer,
-    PlanSubItemServer,
-    PlanItemHierarchyAlternativeServer } from './server/planitem.servermodel';
+    ItemHierarchyServer,
+    ItemServer,
+    SubItemServer,
+    ItemHierarchyAlternativeServer } from './server/item.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
 import { SubItemContainer } from './subitem.dto';
 
 
-export class PlanItem {
+export class Item {
     idItem: number;
     code: string;
     name: string;
@@ -19,8 +19,8 @@ export class PlanItem {
     limitDateFrom: Date;
     limitDateTo: Date;
 
-    static fromServer(planItemServer: PlanItemServer) {
-        const result = new PlanItem();
+    static fromServer(planItemServer: ItemServer) {
+        const result = new Item();
         result.code = planItemServer.code;
         result.name = planItemServer.name;
         result.idItem = planItemServer.idItem;
@@ -35,37 +35,37 @@ export class PlanItem {
     }
 }
 
-export class PlanItemHierarchy {
+export class ItemHierarchy {
     idPlanItem: number;
     codePlanItem: string;
-    alternatives: PlanItemHierarchyAlternative[];
+    alternatives: ItemHierarchyAlternative[];
 
-    static fromServer(serverData: PlanItemHierarchyServer) {
-        const result = new PlanItemHierarchy();
+    static fromServer(serverData: ItemHierarchyServer) {
+        const result = new ItemHierarchy();
         result.idPlanItem = serverData.id;
         result.codePlanItem = serverData.code;
-        result.alternatives = serverData.alternatives.map(a => PlanItemHierarchyAlternative.fromServer(a));
+        result.alternatives = serverData.alternatives.map(a => ItemHierarchyAlternative.fromServer(a));
         return result;
     }
 }
 
-export class PlanItemHierarchyAlternative {
+export class ItemHierarchyAlternative {
     id: number;
     name: string;
     code: string;
-    planSubItems: PlanSubItem[];
+    planSubItems: SubItem[];
 
-    static fromServer(serverData: PlanItemHierarchyAlternativeServer) {
-        const result = new PlanItemHierarchyAlternative();
+    static fromServer(serverData: ItemHierarchyAlternativeServer) {
+        const result = new ItemHierarchyAlternative();
         result.id = serverData.id;
         result.name = serverData.name;
         result.code = serverData.code;
-        result.planSubItems = serverData.subItems.map(i => PlanSubItem.fromServer(i));
+        result.planSubItems = serverData.subItems.map(i => SubItem.fromServer(i));
         return result;
     }
 }
 
-export class PlanSubItem {
+export class SubItem {
     id: number;
     name: string;
     code: string;
@@ -76,8 +76,8 @@ export class PlanSubItem {
     planable: boolean;
     quantity: number;
 
-    static fromServer(planSubItemServer: PlanSubItemServer) {
-        const result = new PlanSubItem();
+    static fromServer(planSubItemServer: SubItemServer) {
+        const result = new SubItem();
         result.id = planSubItemServer.id;
         result.name = planSubItemServer.name;
         result.code = planSubItemServer.code;

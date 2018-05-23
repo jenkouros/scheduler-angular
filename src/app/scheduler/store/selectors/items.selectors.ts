@@ -1,21 +1,21 @@
 import { createSelector } from '@ngrx/store';
 import * as fromFeature from '../reducers';
-import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
+import { ItemHierarchyViewModel } from '../../models/item.viewmodel';
 import { FilterValue } from '../../models/filter.dto';
 
-export const getPlanItemsState = createSelector(
+export const getItemsState = createSelector(
     fromFeature.getSchedulerState,
-    (state: fromFeature.SchedulerState) => state.planitems
+    (state: fromFeature.SchedulerState) => state.items
 );
 
-export const getPlanItemsStore = createSelector(
-    getPlanItemsState,
+export const getItemsStore = createSelector(
+    getItemsState,
     state => state.itemsStore
 );
 
-export const getSelectedPlanItemHierarchy = createSelector(
-    getPlanItemsState,
-    (state: fromFeature.PlanItemState) => {
+export const getSelectedItemHierarchy = createSelector(
+    getItemsState,
+    (state: fromFeature.ItemState) => {
         if (state.selectedItemHierarchy === null) {
             return null; // new PlanItemHierarchyViewModel(null, null, []);
         }
@@ -28,7 +28,7 @@ export const getSelectedPlanItemHierarchy = createSelector(
         }
 
 
-        return new PlanItemHierarchyViewModel(
+        return new ItemHierarchyViewModel(
             state.items[idx],
             state.selectedItemHierarchy,
             state.selectedItemHierarchy.alternatives.map(a =>
@@ -37,7 +37,7 @@ export const getSelectedPlanItemHierarchy = createSelector(
     }
 );
 
-export const getPlanItemUiState = createSelector(
-    getPlanItemsState,
+export const getItemUiState = createSelector(
+    getItemsState,
     state => state.uiState
 );

@@ -1,26 +1,26 @@
 import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { PlanItemHierarchyViewModel } from '../../../models/planitem.viewmodel';
+import { ItemHierarchyViewModel } from '../../../models/item.viewmodel';
 import { NgForm, FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
-import { PlanItemHierarchyAlternative } from '../../../models/planitem.dto';
+import { ItemHierarchyAlternative } from '../../../models/item.dto';
 import { PreplanItemRequest } from '../../../models/preplanitem.dto';
 
 @Component({
-  selector: 'app-planitem-popup',
-  templateUrl: './planitem-popup.component.html',
-  styleUrls: ['./planitem-popup.component.css']
+  selector: 'app-item-popup',
+  templateUrl: './item-popup.component.html',
+  styleUrls: ['./item-popup.component.css']
 })
-export class PlanitemPopupComponent implements OnChanges {
+export class ItemPopupComponent implements OnChanges {
   @Input() visible = false;
-  @Input() itemHierarchy: PlanItemHierarchyViewModel | null;
+  @Input() itemHierarchy: ItemHierarchyViewModel | null;
   @Output() close = new EventEmitter();
   @Output() createPreplanItems = new EventEmitter<PreplanItemRequest>();
 
   createPreplanItemsForm: FormGroup;
-  alternatives: PlanItemHierarchyAlternative[] = [];
+  alternatives: ItemHierarchyAlternative[] = [];
 
   constructor(private fb: FormBuilder) {
     this.onSubmit = this.onSubmit.bind(this);
-    this.hidePlanInfo = this.hidePlanInfo.bind(this);
+    this.hideItemInfo = this.hideItemInfo.bind(this);
     this.initForm();
   }
 
@@ -34,13 +34,13 @@ export class PlanitemPopupComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.itemHierarchy) {
-      this.alternatives = this.itemHierarchy.planItemHierarchy.alternatives;
+      this.alternatives = this.itemHierarchy.itemHierarchy.alternatives;
 
       this.createPreplanItemsForm.patchValue({
-        batchQuantity: this.itemHierarchy.planItem.quantity,
+        batchQuantity: this.itemHierarchy.item.quantity,
         batchCount: 1,
-        idAlternative: this.itemHierarchy.planItemHierarchy.alternatives.length > 0
-          ? this.itemHierarchy.planItemHierarchy.alternatives[0].id
+        idAlternative: this.itemHierarchy.itemHierarchy.alternatives.length > 0
+          ? this.itemHierarchy.itemHierarchy.alternatives[0].id
           : ''
       });
     }
@@ -62,11 +62,11 @@ export class PlanitemPopupComponent implements OnChanges {
 
   popupVisibilityChanged(show: boolean) {
     if (!show) {
-      this.hidePlanInfo();
+      this.hideItemInfo();
     }
   }
 
-  hidePlanInfo() {
+  hideItemInfo() {
     this.close.emit();
   }
 
@@ -74,7 +74,7 @@ export class PlanitemPopupComponent implements OnChanges {
     const { value, valid } = this.createPreplanItemsForm;
     if (valid) {
       this.createPreplanItems.emit(value);
-      this.hidePlanInfo();
+      this.hideItemInfo();
     }
   }
 

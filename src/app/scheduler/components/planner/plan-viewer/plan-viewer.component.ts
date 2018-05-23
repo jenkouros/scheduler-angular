@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, Input } from '@angular/core';
 import {
     DxSchedulerModule,
     DxSchedulerComponent,
@@ -12,7 +12,7 @@ import { Container } from '../../../models/container.dto';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import { PlanViewerItemComponent } from '../../../components/index';
-import { PlannedEvent } from '../../../models/event.model';
+import { PlannedEvent, PlanItemsLoadRequest } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
 import { ContainerSelect } from '../../../models/container.viewModel';
@@ -24,48 +24,76 @@ import { ToggleMassLockPopup } from '../../../store';
     templateUrl: './plan-viewer.component.html',
     styleUrls: ['./plan-viewer.component.css']
 })
-export class PlanViewerComponent implements OnInit, AfterViewInit {
-    draggablePreplanItem: PreplanItem | null;
+export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
+    @Input() selectedPreplanItem: PreplanItem | null = null;
+    @Input() selectedContainers: ContainerSelect[] = [];
+    @Input() planItems: PlannedEvent[] = [];
+
     @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
+    @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
+    @Output() planItemCreate = new EventEmitter<PlannedEvent>();
+    @Output() planItemUpdate = new EventEmitter<PlannedEvent>();
+    @Output() planItemDelete = new EventEmitter<PlannedEvent>();
+    @Output() removeBlankSpace = new EventEmitter<number[]>();
+    @Output() toggleLock = new EventEmitter<PlannedEvent>();
+    @Output() showMassLockPopup = new EventEmitter<number[]>();
 
     currentDate: Date = new Date();
-    data: PlannedEvent[] = [];
     schedulerResources: any = [];
     groups: any[];
     groupsHasValue = false;
     currentView = 'timelineDay';
     cellDurations: any[] = [5, 10, 20, 30, 60];
     cellDuration = 60;
-    selectedContainers: ContainerSelect[];
+
     selectedContainerIds: number[];
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
 
-    constructor(private store: Store<fromStore.SchedulerState>) {
+    constructor() {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        this.ShowAvailableContainers(this.selectedPreplanItem, 'allowed');
+        this.selectedContainerIds = this.selectedContainers.map(i => i.id);
+        if (this.selectedContainers.length > 0) {
+            if (!this.visible) {
+                this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
+                this.visible = true;
+            }
+            this.schedulerResources = this.getResources(this.selectedContainers);
+        } else {
+            this.schedulerResources = [];
+            this.visible = false;
+        }
+    }
+
+    ngOnInit() {
+        if (!this.groupsHasValue) {
+            this.setGroupValue();
+        }
     }
 
     ngAfterViewInit() {
-        this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
-            (containers) => {
-                this.selectedContainers = containers;
-                this.selectedContainerIds = containers.map(c => c.id);
-                if (containers.length > 0) {
-                    this.visible = true;
-                    this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
-                    this.schedulerResources = this.getResources(containers);
-                    this.store.select(fromStore.getEventsForContainers(this.selectedContainerIds)).subscribe(items => {
-                        this.data = items;
-                        this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
-                    }
-                    );
-                } else {
-                    this.schedulerResources = [];
-                    this.visible = false;
-                }
+        // this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
+        //     (containers) => {
+        //         this.selectedContainers = containers;
+        //         this.selectedContainerIds = containers.map(c => c.id);
+        //         if (containers.length > 0) {
+        //             this.visible = true;
+        //             this.scheduler.instance.scrollToTime(this.selectedStartDate.getHours(), 0, this.selectedStartDate);
+        //             this.schedulerResources = this.getResources(containers);
+        //             this.store.select(fromStore.getEventsForContainers(this.selectedContainerIds)).subscribe(items => {
+        //                 this.planItems = items;
+        //                 this.scheduler.instance.scrollToTime(this.currentDate.getHours(), 0);
+        //             }
+        //             );
+        //         } else {
+        //             this.schedulerResources = [];
+        //             this.visible = false;
+        //         }
 
-            });
+        //     });
 
         this.selectedStartDate = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate = this.scheduler.instance.getEndViewDate();
@@ -90,7 +118,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     setGroupValue() {
-        if (this.data.length === 1) {
+        if (this.planItems && this.planItems.length === 1) {
             this.groups = [];
         } else {
             this.groups = ['containerId'];
@@ -108,12 +136,12 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 });
         }
 */
-        if (e.fullName === 'visible') {
-            setTimeout(() => {
-                e.component.scrollToTime(this.currentDate.getHours(), 0);
-                e.component.repaint();
-            });
-        }
+        // if (e.fullName === 'visible') {
+        //     setTimeout(() => {
+        //         e.component.scrollToTime(this.currentDate.getHours(), 0);
+        //         e.component.repaint();
+        //     });
+        // }
 
         if (e.fullName === 'currentView' || e.fullName === 'currentDate' || e.fullName === 'resources' || e.name === 'cellDuration') {
 
@@ -123,13 +151,11 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                     this.selectedStartDate = e.component.getStartViewDate();
                     this.selectedEndDate = e.component.getEndViewDate();
 
-                    this.store.dispatch(
-                        new fromStore.LoadEvents({
-                            containerIds: this.selectedContainers.map(c => c.id),
-                            dateFrom: this.selectedStartDate,
-                            dateTo: this.selectedEndDate
-                        })
-                    );
+                    this.planItemLoad.emit({
+                        containerIds: this.selectedContainerIds,
+                        fromDate: this.selectedStartDate,
+                        toDate: this.selectedEndDate
+                    });
                 }, 100);
             }
         }
@@ -143,7 +169,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     }
 
     onAppointmentDeleting(e) {
-        this.store.dispatch(new fromStore.DeleteEvent(e.appointmentData));
+        this.planItemDelete.emit(e.appointmentData);
     }
 
     updateAppointment(appointment: PlannedEvent) {
@@ -161,14 +187,14 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
             const newEvent = PlannedEvent.createFromPreplanitem(
                 event.idPrePlanItem, event.containerId, event.title, event.description, event.itemName,
                 event.startDate, event.endDate, event.containers);
-            this.store.dispatch(new fromStore.CreateEvent(newEvent));
+            this.planItemCreate.emit(newEvent);
             this.scheduler.instance.addAppointment(
                 newEvent
             );
             // this.showToast('Added', event.description, 'success');
         } else {
             console.log('onAppointmentUpdating - moved', event);
-            this.store.dispatch(new fromStore.UpdateEvent(event));
+            this.planItemUpdate.emit(event);
         }
 
 
@@ -177,10 +203,6 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
     onAppointmentAdding(e) {
         console.log('onAppointmentAdding', e);
     }
-    // onAppointmentAdded(e) {
-    //     this.store.dispatch(new fromStore.LoadPreplanItems());
-    //     console.log('onAppointmentAdded', e);
-    // }
 
     onContentReady(event) {
         const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
@@ -238,17 +260,6 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
                 }
             });
         }
-    }
-
-    ngOnInit() {
-        if (!this.groupsHasValue) {
-            this.setGroupValue();
-        }
-        this.store.select(fromStore.getSelectedPrePlanItem).subscribe((item) => {
-            this.draggablePreplanItem = item;
-            this.ShowAvailableContainers(this.draggablePreplanItem, 'allowed');
-        }
-        );
     }
 
     ShowAvailableContainers(item: PreplanItem | null, className: string) {
@@ -345,19 +356,17 @@ export class PlanViewerComponent implements OnInit, AfterViewInit {
         notify(event + ' \'' + value + '\'', type, 1500);
     }
 
-    removeBlankSpace() {
-        this.store.dispatch(new fromStore.RemoveContainersBlankSpace(
-            { containerIds: this.selectedContainers.map(c => c.id) }
-        ));
+    onRemoveBlankSpace() {
+        this.removeBlankSpace.emit(this.selectedContainerIds);
     }
 
-    toggleLock(plannedEvent: PlannedEvent) {
+    onToggleLock(plannedEvent: PlannedEvent) {
         this.scheduler.instance.hideAppointmentTooltip();
-        this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
+        this.toggleLock.emit(plannedEvent);
     }
 
-    showMassLockPopup() {
-        this.store.dispatch(new ToggleMassLockPopup({ containerIds: this.selectedContainerIds, visibility: true }));
+    onShowMassLockPopup() {
+        this.showMassLockPopup.emit(this.selectedContainerIds);
     }
 }
 

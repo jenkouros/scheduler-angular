@@ -2,7 +2,7 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent, MassLockRequest } from '../models/event.model';
+import { PlannedEvent } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';

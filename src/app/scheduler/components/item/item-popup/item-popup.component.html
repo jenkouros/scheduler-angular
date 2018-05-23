@@ -2,28 +2,28 @@
   title="Planiraj delovni nalog"
   [visible]="visible"
   (visibilityChanged)="popupVisibilityChanged($event)"
-  [cancelCallback]="hidePlanInfo"
+  [cancelCallback]="hideItemInfo"
   [confirmCallback]="onSubmit">
   
-  <div *ngIf="itemHierarchy && itemHierarchy?.planItem">
+  <div *ngIf="itemHierarchy && itemHierarchy?.item">
     <div class="row">
       <app-fieldset header="Delovni nalog" class="col">
         <app-field label="Šifra" [isStatic]="true">
-            {{ itemHierarchy!.planItem.code }}
+            {{ itemHierarchy!.item.code }}
         </app-field>
         <app-field label="Artikel" [isStatic]="true">
-            {{ itemHierarchy!.planItem.article.code }} - 
-            {{ itemHierarchy!.planItem.article.name }}
+            {{ itemHierarchy!.item.article.code }} - 
+            {{ itemHierarchy!.item.article.name }}
         </app-field>
       </app-fieldset>
 
       <app-fieldset header="ERP" class="col">
         <app-field label="Količina" [isStatic]="true">
-            {{ itemHierarchy!.planItem.quantity }} {{ itemHierarchy!.planItem.measurementUnit.code }}
+            {{ itemHierarchy!.item.quantity }} {{ itemHierarchy!.item.measurementUnit.code }}
         </app-field>
         <app-field label="Datum" [isStatic]="true">
-            {{ itemHierarchy!.planItem.limitDateFrom | date:'mediumDate' }} -  
-            {{ itemHierarchy!.planItem.limitDateTo | date:'mediumDate' }}      
+            {{ itemHierarchy!.item.limitDateFrom | date:'mediumDate' }} -  
+            {{ itemHierarchy!.item.limitDateTo | date:'mediumDate' }}      
         </app-field>
       </app-fieldset>
     </div>

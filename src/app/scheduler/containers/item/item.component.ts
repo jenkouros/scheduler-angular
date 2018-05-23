@@ -2,34 +2,34 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Observable } from 'rxjs';
-import { PlanItemHierarchyViewModel } from '../../models/planitem.viewmodel';
+import { ItemHierarchyViewModel } from '../../models/item.viewmodel';
 import { PreplanItemRequest } from '../../models/preplanitem.dto';
 
 @Component({
     selector: 'app-item',
     template: `
-        <app-planitem-popup
+        <app-item-popup
             [visible]="visible"
             [itemHierarchy]="hierarchy$ | async"
             (close)="onClose()"
             (createPreplanItems)="onCreatePreplanItems($event)">
-        </app-planitem-popup>
+        </app-item-popup>
     `
 })
 export class ItemComponent implements OnInit {
     // uiState$: Observable<fromStore.PlanItemUIState>;
     visible = false;
-    hierarchy$: Observable<PlanItemHierarchyViewModel | null>;
+    hierarchy$: Observable<ItemHierarchyViewModel | null>;
 
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
     ngOnInit(): void {
-        this.store.select(fromStore.getPlanItemUiState).subscribe(state => {
+        this.store.select(fromStore.getItemUiState).subscribe(state => {
             if (state) {
                 this.visible = state.popupOpened;
             }
         });
-        this.hierarchy$ = this.store.select(fromStore.getSelectedPlanItemHierarchy);
+        this.hierarchy$ = this.store.select(fromStore.getSelectedItemHierarchy);
     }
 
     onCreatePreplanItems(createPreplanItemRequest: PreplanItemRequest) {
@@ -37,6 +37,6 @@ export class ItemComponent implements OnInit {
     }
 
     onClose() {
-        this.store.dispatch(new fromStore.HidePlanItemPopup());
+        this.store.dispatch(new fromStore.HideItemPopup());
     }
 }

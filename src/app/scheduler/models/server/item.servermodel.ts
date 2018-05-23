@@ -1,7 +1,7 @@
 import { ProductServer, MeasurementUnitServer } from './shared.servermodel';
 import { SubItemContainerServer } from './preplanitem.servermodel';
 
-export interface PlanItemServer {
+export interface ItemServer {
     idItem: number;
     code: string;
     name: string;
@@ -14,20 +14,20 @@ export interface PlanItemServer {
     limitDateTo: Date;
 }
 
-export interface PlanItemHierarchyServer {
+export interface ItemHierarchyServer {
     id: number;
     code: string;
-    alternatives: PlanItemHierarchyAlternativeServer[];
+    alternatives: ItemHierarchyAlternativeServer[];
 }
 
-export interface PlanItemHierarchyAlternativeServer {
+export interface ItemHierarchyAlternativeServer {
     id: number;
     name: string;
     code: string;
-    subItems: PlanSubItemServer[];
+    subItems: SubItemServer[];
 }
 
-export interface PlanSubItemServer {
+export interface SubItemServer {
     id: number;
     name: string;
     code: string;

@@ -1,4 +1,4 @@
-import * as fromPlanItems from './planitems.reducer';
+import * as fromItems from './items.reducer';
 import * as fromFilters from './filters.reducer';
 import * as fromContainers from './containers.reducer';
 import * as fromEvents from './events.reducer';
@@ -8,7 +8,7 @@ import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 export interface SchedulerState {
     filters: fromFilters.FilterState;
-    planitems: fromPlanItems.PlanItemState;
+    items: fromItems.ItemState;
     containers: fromContainers.ContainerState;
     events: fromEvents.EventsState;
     preplanitems: fromPreplanitems.PreplanitemState;
@@ -17,7 +17,7 @@ export interface SchedulerState {
 export function getInitialState() {
     return {
         filters: fromFilters.initialState,
-        planitems: fromPlanItems.initialState,
+        items: fromItems.initialState,
         containers: fromContainers.initialState,
         events: fromEvents.initialState,
         preplanitems: fromPreplanitems.initState
@@ -26,14 +26,14 @@ export function getInitialState() {
 
 export const reducers: ActionReducerMap<SchedulerState> = {
     filters: fromFilters.filtersReducer,
-    planitems: fromPlanItems.planItemsReducer,
+    items: fromItems.itemsReducer,
     containers: fromContainers.containerReducer,
     events: fromEvents.eventsReducer,
     preplanitems: fromPreplanitems.prePlanItems
 };
 
 export const getSchedulerState = createFeatureSelector<SchedulerState>('scheduler');
-export { PlanItemState, PlanItemUIState } from './planitems.reducer';
+export { ItemState, ItemUIState } from './items.reducer';
 export { FilterState } from './filters.reducer';
 export { ContainerState } from './containers.reducer';
 export { EventsState } from './events.reducer';

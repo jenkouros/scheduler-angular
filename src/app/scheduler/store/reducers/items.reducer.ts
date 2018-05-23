@@ -1,21 +1,21 @@
-import * as fromPlanItems from '../actions/planitems.action';
+import * as fromActions from '../actions/items.action';
 import CustomStore from 'devextreme/data/custom_store';
-import { PlanItem, PlanItemHierarchy } from '../../models/planitem.dto';
+import { Item, ItemHierarchy } from '../../models/item.dto';
 
-export interface PlanItemUIState {
+export interface ItemUIState {
     popupOpened: boolean;
 }
 
-export interface PlanItemState {
-    items: PlanItem[];
+export interface ItemState {
+    items: Item[];
     itemsStore: CustomStore | null;
-    selectedItemHierarchy: PlanItemHierarchy | null;
+    selectedItemHierarchy: ItemHierarchy | null;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
-    uiState: PlanItemUIState;
+    uiState: ItemUIState;
 }
 
-export const initialState: PlanItemState = {
+export const initialState: ItemState = {
     items: [],
     itemsStore: null,
     selectedItemHierarchy: null,
@@ -26,21 +26,21 @@ export const initialState: PlanItemState = {
     }
 };
 
-export function planItemsReducer(state = initialState, action: fromPlanItems.PlanItemAction): PlanItemState {
+export function itemsReducer(state = initialState, action: fromActions.ItemActions): ItemState {
     switch (action.type) {
-        case fromPlanItems.REGISTER_PLANITEMS_STORE: {
+        case fromActions.REGISTER_ITEMS_STORE: {
             return {
                 ...state,
                 itemsStore: action.payload
             };
         }
-        case fromPlanItems.LOAD_PLANITEMS_SUCCESS: {
+        case fromActions.LOAD_ITEMS_SUCCESS: {
             return {
                 ...state,
                 items: [...action.payload]
             };
         }
-        case fromPlanItems.LOAD_PLANITEMHIERARCHY: {
+        case fromActions.LOAD_ITEMHIERARCHY: {
             return {
                 ...state,
                 selectedItemHierarchyLoaded: false,
@@ -48,7 +48,7 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 selectedItemHierarchy: null
             };
         }
-        case fromPlanItems.LOAD_PLANITEMHIERARCHY_FAIL: {
+        case fromActions.LOAD_ITEMHIERARCHY_FAIL: {
             return {
                 ...state,
                 selectedItemHierarchyLoaded: false,
@@ -56,7 +56,7 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 selectedItemHierarchy: null
             };
         }
-        case fromPlanItems.LOAD_PLANITEMHIERARCHY_SUCCESS: {
+        case fromActions.LOAD_ITEMHIERARCHY_SUCCESS: {
             return {
                 ...state,
                 selectedItemHierarchyLoaded: true,
@@ -64,7 +64,7 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 selectedItemHierarchy: { ...action.payload }
             };
         }
-        case fromPlanItems.SHOW_PLANITEM_POPUP: {
+        case fromActions.SHOW_ITEM_POPUP: {
             return {
                 ...state,
                 uiState: {
@@ -73,7 +73,7 @@ export function planItemsReducer(state = initialState, action: fromPlanItems.Pla
                 }
             };
         }
-        case fromPlanItems.HIDE_PLANITEM_POPUP: {
+        case fromActions.HIDE_ITEM_POPUP: {
             return {
                 ...state,
                 uiState: {

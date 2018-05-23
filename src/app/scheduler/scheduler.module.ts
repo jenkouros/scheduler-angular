@@ -8,7 +8,6 @@ import * as fromContainers from './containers';
 import { SchedulerRouterModule } from './scheduler-router.module';
 // import * as fromServices from './services';
 import { HttpClientModule } from '@angular/common/http';
-import { PlanitemListComponent } from './components';
 import { EffectsModule } from '@ngrx/effects';
 import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // Dx Component
@@ -24,17 +23,15 @@ import {
 } from 'devextreme-angular';
 
 import { CommonModule } from '@angular/common';
-import { PlanItemsService } from './services/planitems.service';
-import { PlanItemHierarchyService } from './services/planitemhierarchy.service';
+import { ItemsService } from './services/items.service';
 import { FiltersService } from './services/filters.service';
 import { ContainersService } from './services/containers.service';
 import { EventsService } from './services/events.service';
 import { PreplanitemsService } from './services/preplanitems.service';
-import { PlanItemEffects } from './store/effects/planitem.effect';
+import { ItemsEffects } from './store/effects/items.effect';
 import { FiltersEffects } from './store/effects/filters.effect';
 import { ContainersEffects } from './store/effects/containers.effect';
 import { EventsEffects } from './store/effects/events.effect';
-import { PlanItemHierarchyEffects } from './store/effects/planitemhierarchy.effect';
 import { PreplanitemEffects } from './store/effects/preplanitem.effect';
 import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
 
@@ -48,12 +45,11 @@ import { PreplanitemDraggableDirective } from './components/preplanitem-item/pre
         SchedulerRouterModule,
         StoreModule.forFeature('scheduler', reducers),
         EffectsModule.forFeature([
-            PlanItemEffects,
+            ItemsEffects,
             FiltersEffects,
             ContainersEffects,
             EventsEffects,
-            PreplanitemEffects,
-            PlanItemHierarchyEffects
+            PreplanitemEffects
         ]),
         SharedModule,
         DxSchedulerModule,
@@ -72,8 +68,7 @@ import { PreplanitemDraggableDirective } from './components/preplanitem-item/pre
         PreplanitemDraggableDirective],
     providers: [
         // ...fromServices.services
-        PlanItemsService,
-        PlanItemHierarchyService,
+        ItemsService,
         FiltersService,
         ContainersService,
         EventsService,
