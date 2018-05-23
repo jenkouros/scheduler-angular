@@ -41,7 +41,7 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
 
     currentDate: Date = new Date();
     schedulerResources: any = [];
-    groups: any[];
+    groups = ['containerId'];
     groupsHasValue = false;
     currentView = 'timelineDay';
     cellDurations: any[] = [5, 10, 20, 30, 60];
@@ -57,16 +57,36 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
         this.currentHour = this.currentDate.getHours();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes): void {
+        if (changes.planItems) {
+            this.planItems = [... changes.planItems.currentValue];
+        }
+        if (changes.selectedPreplanItem) {
+            this.selectedPreplanItem = Object.assign({}, changes.selectedPreplanItem.currentValue);
+        }
+        if (changes.selectedContainers) {
+            this.selectedContainers = [...changes.selectedContainers.currentValue];
+            this.selectedContainerIds = this.selectedContainers.map(i => i.id);
+            this.visible = this.selectedContainers.length > 0;
+            this.schedulerResources = this.getResources(this.selectedContainers);
+        }
+        if (changes.preplanItemDragEnd) {
+            this.preplanItemDragEnd = changes.preplanItemDragEnd.currentValue;
+        }
+        /*
         this.ShowAvailableContainers(this.selectedPreplanItem, 'allowed');
         this.removeMovebleCss(this.preplanItemDragEnd);
         this.selectedContainerIds = this.selectedContainers.map(i => i.id);
         this.schedulerResources = this.getResources(this.selectedContainers);
         this.visible = this.selectedContainers.length > 0;
         // this.onContentReady(null);
+        */
     }
 
     ngOnInit() {
+
+
+
         // this.store.select(fromStore.getSelectedContainerSelectList).subscribe(
         //     (containers) => {
         //         this.selectedContainers = containers;
@@ -104,8 +124,10 @@ export class PlanViewerComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
     ngAfterViewInit() {
+        this.ShowAvailableContainers(this.selectedPreplanItem, 'allowed');
         this.selectedStartDate = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate = this.scheduler.instance.getEndViewDate();
+
     }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
