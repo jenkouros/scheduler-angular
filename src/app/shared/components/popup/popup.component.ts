@@ -8,18 +8,10 @@ import { visitSiblingRenderNodes } from '@angular/core/src/view/util';
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent implements OnInit {
-  private visibleValue = false;
-  @Output() visibleChange = new EventEmitter<boolean>();
+
+  @Output() visibilityChanged = new EventEmitter<boolean>();
   @Input() title: string;
-
-  get visible() {
-    return this.visibleValue;
-  }
-
-  @Input() set visible(visible: boolean) {
-    this.visibleValue = visible;
-    this.visibleChange.emit(this.visibleValue);
-  }
+  @Input() visible = false;
 
   @Input() hasConfirmBtn = true;
   @Input() hasCancelBtn = true;
@@ -29,9 +21,23 @@ export class PopupComponent implements OnInit {
   @Input() height: any = () => window.innerHeight * 0.8;
   @Input() width: any = () => window.innerWidth * 0.8;
 
-  constructor() { }
+  constructor() {
+    // this.hide = this.hide.bind(this);
+    this.onHidding = this.onHidding.bind(this);
+  }
 
   ngOnInit() {
+    if (!this.cancelCallback) {
+      this.cancelCallback = this.onHidding;
+    }
+  }
+
+  // hide() {
+  //   this.visible = false;
+  // }
+
+  onHidding() {
+    this.visibilityChanged.emit(false);
   }
 
 }

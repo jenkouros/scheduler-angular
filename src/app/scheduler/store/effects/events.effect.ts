@@ -47,12 +47,18 @@ export class EventsEffects {
         .pipe(
             map((action: fromAction.ReloadEvents) => action.payload.containerIds),
             withLatestFrom(this.store.select(state => state.scheduler.events)),
-            mergeMap(([containerIds, state]) => {
-                return containerIds.map(c => new fromAction.LoadEvents({
-                    containerIds: [c],
-                    dateTo: state.entities[c].dateTo,
-                    dateFrom: state.entities[c].dateFrom
-                }));
+            map(([containerIds, state]) => {
+                return new fromAction.LoadEvents({
+                    containerIds: containerIds,
+                    dateTo: state.entities[containerIds[0]].dateTo,
+                    dateFrom: state.entities[containerIds[0]].dateFrom
+                });
+
+                // return containerIds.map(c => new fromAction.LoadEvents({
+                //     containerIds: [c],
+                //     dateTo: state.entities[c].dateTo,
+                //     dateFrom: state.entities[c].dateFrom
+                // }));
             })
         );
 
@@ -68,6 +74,25 @@ export class EventsEffects {
                 );
             })
         );
+
+    @Effect()
+    massToggleLock$ = this.actions$
+        .ofType(fromAction.MASS_TOGGLE_EVENTS_LOCK)
+        .pipe(
+            switchMap((action: fromAction.MassToggleEventsLock) => {
+                return this.eventsService.toggleMassLocks(
+                    action.payload.containerIds,
+                    action.payload.fromDate,
+                    action.payload.toDate,
+                    true
+                )
+                .pipe(
+                    map(events => new fromAction.ReloadEvents({ containerIds: action.payload.containerIds })),
+                    catchError(error => of(new fromAction.LoadEventsFail()))
+                );
+            })
+        );
+
 
     @Effect()
     createEvent$  = this.actions$

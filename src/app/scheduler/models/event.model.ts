@@ -100,4 +100,10 @@ export class PlannedEvent {
     }
 }
 
+export interface PlanItemsLoadRequest {
+    fromDate: Date;
+    toDate: Date;
+    containerIds: number[];
+}
+
 

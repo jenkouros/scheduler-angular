@@ -106,6 +106,24 @@ export class EventsService {
             );
     }
 
+    toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {
+        const url = lock ? 'massLockItems' : 'massUnLockItems';
+        const request = {
+            containerIds: containerIds,
+            fromDate: moment(fromDate).format(),
+            toDate: moment(toDate).format()
+        };
+
+        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, request).pipe(
+                map(response => {
+                    if (response.code !== ApiResponseResult.success) {
+                        throw response.messages;
+                    }
+                    return true;
+                })
+            );
+    }
+
     /*
         getEvents(containerIds: number[], fromDate: Date, toDate: Date) {
             // TODO - go to server

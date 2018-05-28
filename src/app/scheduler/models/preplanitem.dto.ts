@@ -1,7 +1,7 @@
 import { Container } from './container.dto';
 import { PreplanitemServer, PreplanitemBasicServer, SubItemContainerServer } from './server/preplanitem.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
-import { PlanSubItem } from './planitem.dto';
+import { SubItem } from './item.dto';
 import { SubItemContainer } from './subitem.dto';
 import { ItemBatch } from './itembatch.dto';
 
@@ -17,7 +17,7 @@ export class PreplanItem {
     unit: MeasurementUnit;
     containers: SubItemContainer[];
     item: PreplanItemBasicData;
-    subItem: PlanSubItem;
+    subItem: SubItem;
     itemBatch: ItemBatch;
 
     static fromServer(serverData: PreplanitemServer) {
@@ -27,7 +27,7 @@ export class PreplanItem {
         result.unit = MeasurementUnit.fromServer(serverData.unit);
         result.item = PreplanItemBasicData.fromServer(serverData.item);
         result.containers = serverData.containers.map(c => SubItemContainer.fromServer(c));
-        result.subItem = PlanSubItem.fromServer(serverData.subItem);
+        result.subItem = SubItem.fromServer(serverData.subItem);
         result.itemBatch = ItemBatch.fromServer(serverData.itemBatch);
         return result;
     }

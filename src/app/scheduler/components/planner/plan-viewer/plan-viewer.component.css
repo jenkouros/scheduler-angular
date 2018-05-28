@@ -53,3 +53,8 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     background-color: #06605c ;
     border-color: #06605c ;
 }
+
+::ng-deep .dx-scheduler-appointment-move {
+    left:  20px;
+   transition: 0.1s;
+}

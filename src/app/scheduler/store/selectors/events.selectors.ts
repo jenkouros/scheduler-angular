@@ -42,3 +42,8 @@ export function getEventsForContainers(containerIds: number[]) {
         }
     );
 }
+
+export const getEventsUiState = createSelector(
+    getEventsState,
+    state => state.uiState
+);

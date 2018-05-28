@@ -10,14 +10,15 @@
     </div>   
 </div>
 
-<button type="button" (click)="removeBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
-<button type="button" class="btn btn-primary">Masovno zaklepanje</button>     
+<button type="button" (click)="onRemoveBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
+<button type="button" (click)="onShowMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>     
+<app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
 <dx-scheduler id="scheduler" 
-    [dataSource]="data"
+    [dataSource]="planItems"
     [views]="['day', 'week', 'timelineDay']" 
     [(currentView)]="currentView"         
     [groups]="['containerId']" 
@@ -30,8 +31,7 @@
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
-    (onAppointmentDeleting)="onAppointmentDeleting($event)"
-    (onAppointmentAdding)="onAppointmentAdding($event)"
+    (onAppointmentDeleting)="onAppointmentDeleting($event)"    
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
     (onCellClick)="onCellClick($event)"
     appointmentTooltipTemplate="tooltip-template">
@@ -42,7 +42,7 @@
 
     <div *dxTemplate="let plannedEvent of 'tooltip-template'">
         <div class='event-tooltip'>
-            <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='toggleLock(plannedEvent)'></dx-button>
+            <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
             <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='updateAppointment(plannedEvent)'></dx-button>
             <dx-button icon="trash" type="danger" text="Izbriši" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
         </div>
