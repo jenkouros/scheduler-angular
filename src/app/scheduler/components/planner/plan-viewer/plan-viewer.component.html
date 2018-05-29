@@ -34,7 +34,8 @@
     (onAppointmentDeleting)="onAppointmentDeleting($event)"    
     (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
     (onCellClick)="onCellClick($event)"
-    appointmentTooltipTemplate="tooltip-template">
+    appointmentTooltipTemplate="tooltip-template"    
+    >
    
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           

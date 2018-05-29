@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import { ContainerSelect } from '../../../models/container.viewModel';
 import { PreplanItem } from '../../../models/preplanitem.dto';
 import { ToggleMassLockPopup } from '../../../store';
+import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -51,10 +52,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
-    currentHour: number;
-
+    // currentHour: number;
+    offset: {top: number, left: number} = { top: 0, left: 0 };
     constructor(private store: Store<fromStore.SchedulerState>) {
-        this.currentHour = this.currentDate.getHours();
+        // this.currentHour = this.currentDate.getHours();
     }
 
     ngOnChanges(changes): void {
@@ -88,7 +89,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     ngAfterViewInit() {
         this.selectedStartDate = this.scheduler.instance.getStartViewDate();
         this.selectedEndDate = this.scheduler.instance.getEndViewDate();
-
     }
     getResources(containers: any) {
         const workplaceGroups: any[] = [];
@@ -109,14 +109,15 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     optionChanged(e: any) {
-
-        if (e.fullName === 'dataSource' || e.fullName === 'visible' ) {
-            e.component.repaint();
-            e.component.scrollToTime(this.currentHour, 0);
+        console.log(e.fullName, this.offset);
+        if (e.fullName === 'dataSource' || e.fullName === 'visible') {
+           e.component.repaint();
+           Scrollable.getInstance(e.component.element().querySelector('.dx-scrollable')).scrollTo(this.offset);
         }
 
         if (e.fullName === 'currentView' || e.fullName === 'currentDate'  || e.fullName === 'resources' || e.name === 'cellDuration') {
-
+            e.component.repaint();
+            Scrollable.getInstance(e.component.element().querySelector('.dx-scrollable')).scrollTo(this.offset);
                 setTimeout(() => {
                     if (this.selectedStartDate !== e.component.getStartViewDate() ||
                         this.selectedEndDate !== e.component.getEndViewDate()) {
@@ -140,7 +141,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
     onAppointmentDeleting(e) {
         this.planItemDelete.emit(e.appointmentData);
-        this.currentHour = moment(e.appointmentData.startDate).toDate().getHours();
+        // this.currentHour = moment(e.appointmentData.startDate).toDate().getHours();
     }
 
     updateAppointment(appointment: PlannedEvent) {
@@ -163,7 +164,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
             // console.log('onAppointmentUpdating - moved', event);
             this.planItemUpdate.emit(event);
         }
-        this.currentHour = moment(event.startDate).toDate().getHours();
+        // this.currentHour = moment(event.startDate).toDate().getHours();
 
     }
 
@@ -185,6 +186,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     onContentReady(event) {
+        const a = Scrollable.getInstance((<any>this.scheduler).instance.element().querySelector('.dx-scrollable'));
+        a.off('scroll');
+        a.on('scroll', (e) => {
+            this.offset = e.scrollOffset;
+           // console.log(this.offset);
+        });
+
+
         const plannedItemsEl = (<any>this.scheduler)
             .element.nativeElement.querySelectorAll('.dx-scheduler-scrollable-appointments');
         for (let i = 0; i < plannedItemsEl.length; i++) {
