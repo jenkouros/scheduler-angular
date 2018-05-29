@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import { ContainerSelect } from '../../../models/container.viewModel';
 import { PreplanItem } from '../../../models/preplanitem.dto';
 import { ToggleMassLockPopup } from '../../../store';
+import * as fromSchedulerModel from '../../../models/planner.model';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -41,7 +42,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
     currentDate: Date = new Date();
     schedulerResources: any = [];
-    groups = ['containerId'];
+    groups = [fromSchedulerModel.RESOURCES_FIELD];
     groupsHasValue = false;
     currentView = 'timelineDay';
     cellDurations: any[] = [5, 10, 20, 30, 60];
@@ -58,22 +59,23 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes): void {
-        if (changes.planItems) {
-            this.planItems = [... changes.planItems.currentValue];
-        }
+        // if (changes.planItems) {
+            // this.planItems = [... changes.planItems.currentValue];
+        // }
         if (changes.selectedPreplanItem) {
-            this.selectedPreplanItem = changes.selectedPreplanItem.currentValue !== null ? changes.selectedPreplanItem.currentValue : null;
+            // this.selectedPreplanItem = changes.selectedPreplanItem.currentValue !== null
+            //    ? changes.selectedPreplanItem.currentValue : null;
             this.ShowAvailableContainers(this.selectedPreplanItem, 'allowed');
 
         }
         if (changes.selectedContainers) {
-            this.selectedContainers = [...changes.selectedContainers.currentValue];
+            // this.selectedContainers = [...changes.selectedContainers.currentValue];
             this.selectedContainerIds = this.selectedContainers.map(i => i.id);
             this.visible = this.selectedContainers.length > 0;
             this.schedulerResources = this.getResources(this.selectedContainers);
         }
         if (changes.preplanItemDragEnd) {
-            this.preplanItemDragEnd = changes.preplanItemDragEnd.currentValue;
+            // this.preplanItemDragEnd = changes.preplanItemDragEnd.currentValue;
             this.removeAppointmentCss(this.preplanItemDragEnd, 'dx-scheduler-appointment-move');
         }
     }
@@ -102,35 +104,69 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         });
         return [
             {
-                fieldExpr: 'containerId',
+                fieldExpr: fromSchedulerModel.RESOURCES_FIELD,
                 dataSource: workplaceGroups
             }
         ];
     }
 
-    optionChanged(e: any) {
-
-        if (e.fullName === 'dataSource' || e.fullName === 'visible' ) {
-            e.component.repaint();
-            e.component.scrollToTime(this.currentHour, 0);
+    optionChanged(e: fromSchedulerModel.OptionChangedModel) {
+        if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION  ) {
+                e.component.repaint();
+                // e.component.scrollToTime(this.currentHour, 0);
         }
 
-        if (e.fullName === 'currentView' || e.fullName === 'currentDate'  || e.fullName === 'resources' || e.name === 'cellDuration') {
+        if (e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION) {
 
+            const resourceUpdated = this.isResourceUpdated(e);
+            const timeBoundsChanged = e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
+                e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE;
+                // this.selectedStartDate.getTime() !== e.component.getStartViewDate().getTime() ||
+                // this.selectedEndDate.getTime() !== e.component.getEndViewDate().getTime();
+            if (resourceUpdated || timeBoundsChanged) {
                 setTimeout(() => {
-                    if (this.selectedStartDate !== e.component.getStartViewDate() ||
-                        this.selectedEndDate !== e.component.getEndViewDate()) {
-
-                            this.selectedStartDate = e.component.getStartViewDate();
-                            this.selectedEndDate = e.component.getEndViewDate();
-                            this.planItemLoad.emit({
-                                containerIds: this.selectedContainerIds,
-                                fromDate: this.selectedStartDate,
-                                toDate: this.selectedEndDate
-                            });
-                    }
+                    this.selectedStartDate = e.component.getStartViewDate();
+                    this.selectedEndDate = e.component.getEndViewDate();
+                    this.planItemLoad.emit({
+                        containerIds: this.selectedContainerIds,
+                        fromDate: this.selectedStartDate,
+                        toDate: this.selectedEndDate
+                    });
                 }, 100);
+            }
         }
+    }
+
+    private isResourceUpdated(model: fromSchedulerModel.OptionChangedModel) {
+        if (model.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES) {
+            const resourceChangedModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>model.value).filter(i =>
+                i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
+            const resourcePreviousValueModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>model.previousValue).filter(i =>
+                i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
+
+            if (resourceChangedModel && resourceChangedModel.length === 1) {
+                if (!resourcePreviousValueModel || resourcePreviousValueModel.length !== 1) {
+                    return false;
+                }
+
+                if (resourceChangedModel[0].dataSource.length > resourcePreviousValueModel[0].dataSource.length) {
+                    return true;
+                }
+
+                for (let i = 0; i < resourceChangedModel[0].dataSource.length; i++) {
+                    if (!resourcePreviousValueModel[0].dataSource.find(previous =>
+                        previous.id === resourceChangedModel[0].dataSource[i].id)) {
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     deleteAppointment(appointment: PlannedEvent) {

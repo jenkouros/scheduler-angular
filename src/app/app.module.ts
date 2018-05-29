@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeSl from '@angular/common/locales/sl';
 
@@ -20,10 +20,15 @@ import { locale, loadMessages } from 'devextreme/localization';
 // import { DevExtremeModule } from 'devextreme-angular';
 import 'devextreme-intl';
 import * as messagesSl from './shared/localization/sl.json';
+import { SignalRService } from './scheduler/services/signalr.service';
 
 loadMessages(messagesSl);
 locale(navigator.language);
 registerLocaleData(localeSl, 'sl');
+export function init_signalR(signalRService: SignalRService): () => Promise<any> {
+  return () => signalRService.init();
+}
+
 
 @NgModule({
   declarations: [
@@ -40,7 +45,9 @@ registerLocaleData(localeSl, 'sl');
     FontAwesomeModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'sl' }
+    SignalRService,
+    { provide: LOCALE_ID, useValue: 'sl' },
+    { provide: APP_INITIALIZER, useFactory: init_signalR, deps: [SignalRService], multi: true }
   ],
   bootstrap: [AppComponent]
   })

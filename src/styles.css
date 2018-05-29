@@ -53,4 +53,8 @@ input.ng-invalid.ng-touched {
     border: 1px solid red;
 }
     
-  
+hr.redline {
+    border-top: 1px solid #DE1A1A;
+    border-bottom: 1px solid #DE1A1A;
+    height: 2px;
+}

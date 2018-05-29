@@ -55,10 +55,17 @@ export function containerReducer (
                 selectedContainers: newSelection
             };
         }
-        case fromAction.RESELECT_CONTAINERS: {
+        // case fromAction.RESELECT_CONTAINERS: {
+        //     return {
+        //         ...state,
+        //         selectedContainers: action.payload
+        //     };
+        // }
+
+        case fromAction.DESELECT_ALL_CONTAINERS: {
             return {
                 ...state,
-                selectedContainers: action.payload
+                selectedContainers: []
             };
         }
 
