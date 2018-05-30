@@ -175,6 +175,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     onAppointmentDeleting(e) {
+        e.cancel = true;
         this.planItemDelete.emit(e.appointmentData);
         this.currentHour = moment(e.appointmentData.startDate).toDate().getHours();
     }
@@ -185,6 +186,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     onAppointmentUpdating(e) {
+        e.cancel = true;
         // logika za kontrolo ali lahko izvedemo update
         const event: PlannedEvent = e.newData;
 
