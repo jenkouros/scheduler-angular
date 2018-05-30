@@ -15,8 +15,6 @@ export class SignalRService {
             })
             .configureLogging(LogLevel.Information)
             .build();
-            this.hubConnect();
-            // this._hubConnection.start().catch(err => console.error('error'));
 
             this._hubConnection.onclose(() => {
                 console.log('Reconnecting');
@@ -30,6 +28,8 @@ export class SignalRService {
                 console.log('BroadcastContainerUpdate was called: ' + containerId);
                 this.containerUpdate$.next(containerId);
             });
+
+            this.hubConnect();
 
             resolve();
         });
