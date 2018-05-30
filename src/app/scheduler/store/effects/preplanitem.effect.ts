@@ -51,10 +51,11 @@ export class PreplanitemEffects {
             switchMap((action: fromActions.DeleteItemBatch) => {
                 return this.preplanitemService.deleteItemBatch(action.payload)
                 .pipe(
-                    mergeMap(result => [
-                        new fromActions.LoadPreplanItems()
-                        // also refresh calendars
-                    ]),
+                    map(result => new fromActions.LoadPreplanItems()),
+                    // mergeMap(result => [
+                    //     new fromActions.LoadPreplanItems(),
+                    //     new fromActions.ReloadAllSelectedContainersEvents()
+                    // ]),
                     catchError((error) => {
                         console.log(error);
                         return of(new fromActions.DeleteItemBatchFail()); // CREATE NEW FAIL ACTION TODO

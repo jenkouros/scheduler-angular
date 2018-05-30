@@ -28,8 +28,8 @@ export class PreplanitemsService {
 
     deleteItemBatch(itemBatchId: number) {
         // TODO create methods on serverside
-        return this.http.get<ApiResponse<PreplanitemServer[]>>
-            (environment.apiUrl + '/preplanitems');
+        return this.http.delete<ApiResponse<PreplanitemServer[]>>
+            (environment.apiUrl + '/preplanitems?idItemBatch=' + itemBatchId);
     }
 
     createPreplanitems(requestModel: PreplanItemRequest) {

@@ -1,4 +1,7 @@
+const serverUrl = 'http://10.10.20.11:21000';
+
 export const environment = {
-  production: false,
-  apiUrl: 'http://10.10.20.11:21000/api'
+    production: true,
+    apiUrl: `${serverUrl}/api`,
+    signalRUrl: `${serverUrl}/containershub`
 };

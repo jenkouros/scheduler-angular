@@ -33,6 +33,6 @@ export class PreplanItemsComponent implements OnInit {
     }
 
     onDeleteBatch(batchId: number) {
-
+        this.store.dispatch(new fromStore.DeleteItemBatch(batchId));
     }
 }

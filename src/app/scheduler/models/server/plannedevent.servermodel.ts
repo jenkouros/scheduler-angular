@@ -20,4 +20,14 @@ export interface PlannedEventServer {
     title: string;
     isLocked: boolean;
     allowedContainers: SubItemContainerServer[];
+    sequencePlanItems: PlannedEventSimpleServer[];
+}
+
+export interface PlannedEventSimpleServer {
+    idPrePlanItem: number;
+    code: string;
+    name: string;
+    timeStartPreparation: Date | null;
+    timeEnd: Date | null;
+    containerCode: string | null;
 }

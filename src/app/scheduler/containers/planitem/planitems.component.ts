@@ -29,17 +29,31 @@ export class PlanitemsComponent implements OnInit {
     selectedContainers$: Observable<ContainerSelect[]>;
     planItems$: Observable<PlannedEvent[]>;
     prePlanItemDragEnd$: Observable<boolean>;
-
+    private _containers: ContainerSelect[] = [];
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
     ngOnInit(): void {
         this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
         this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
-        this.selectedContainers$.subscribe(containers => {
-            if (containers) {
-                this.planItems$ = this.store.pipe(select(fromStore.getEventsForContainers(containers.map(i => i.id))));
-            }
-        });
+        this.planItems$ = this.store.pipe(select(fromStore.getEvents));
+        // this.selectedContainers$.subscribe(containers => {
+        //     if (containers && containers.length > 0) {
+        //         if (containers.length > this._containers.length) {
+        //             console.log('get events from selector');
+        //             this.planItems$ = this.store.pipe(
+        //                 select(fromStore.getEventsForContainers(containers.map(i => i.id)))
+        //             );
+        //         }
+        //         this._containers = containers;
+        //         // this.planItems$ = this.store.pipe(
+        //         //     map(fromStore.getEventsForContainers(ids)),
+        //         //     distinctUntilChanged()
+        //         // );
+        //         // this.planItems$.subscribe(data => console.log(data));
+        //     } else {
+        //         this._containers = [];
+        //     }
+        // });
         this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
     }
 

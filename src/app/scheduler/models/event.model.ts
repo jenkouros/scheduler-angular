@@ -1,4 +1,4 @@
-import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
+import { PlannedEventServer, PlannedEventSimpleServer } from '../models/server/plannedevent.servermodel';
 import { PreplanItem } from './preplanitem.dto';
 import { SubItemContainerServer } from './server/preplanitem.servermodel';
 import { SubItemContainer } from './subitem.dto';
@@ -28,17 +28,27 @@ export class PlannedEvent {
     endDate: Date;
     title: string;
     containers: SubItemContainer[];
+    sequencePlanItems: PlannedEventSimple[];
     isLocked: boolean;
     isPlanned: boolean;
     preplanItem: PreplanItem | null;
 
-    // constructor (public id: number, public containerId: number, public title: string,
-    //     public description: string, public startDate: Date, public endDate: Date,
-    //     public containers: SubItemContainerServer[],
-    //     public preplanedItem: any = null,
-    //     public isPlanned  = true,
-    //     ) {
-    // }
+    get sequenceWarning(): boolean {
+        if (!this.sequencePlanItems) {
+            return false;
+        }
+
+        let lastEnd: Date | null = null;
+        for (const planItem of this.sequencePlanItems) {
+            if (lastEnd && planItem.timeStartPreparation && planItem.timeStartPreparation < lastEnd) {
+                return true;
+            }
+            if (planItem.timeEnd) { // if planned
+                lastEnd = planItem.timeEnd;
+            }
+        }
+        return false;
+    }
 
     static createFromPreplanitem(idPrePlanItem: number,
         idContainer: number,
@@ -86,6 +96,7 @@ export class PlannedEvent {
         result.containers = event.allowedContainers.map(SubItemContainer.fromServer);
         result.isPlanned = true;
         result.isLocked = event.isLocked;
+        result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
         return result;
 
 
@@ -97,6 +108,26 @@ export class PlannedEvent {
         //     event.timeStartPreparation,
         //     event.timeEnd,
         //     [...event.containers]);
+    }
+}
+
+export class PlannedEventSimple {
+    idPrePlanItem: number;
+    code: string;
+    name: string;
+    timeStartPreparation: Date | null;
+    timeEnd: Date | null;
+    containerCode: string | null;
+
+    static fromServer(data: PlannedEventSimpleServer) {
+        const result = new PlannedEventSimple();
+        result.code = data.code;
+        result.name = data.name;
+        result.idPrePlanItem = data.idPrePlanItem;
+        result.containerCode = data.containerCode;
+        result.timeStartPreparation = data.timeStartPreparation;
+        result.timeEnd = data.timeEnd;
+        return result;
     }
 }
 
