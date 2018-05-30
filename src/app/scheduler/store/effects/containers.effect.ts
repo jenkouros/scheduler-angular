@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { ContainersService } from '../../services';
 import { Actions, Effect } from '@ngrx/effects';
 import * as fromActions from '../actions';
-import { switchMap, map, catchError, withLatestFrom, mergeMap } from 'rxjs/operators';
+import { switchMap, map, catchError, withLatestFrom, mergeMap, tap } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 
@@ -13,6 +13,8 @@ import { ContainersService } from '../../services/containers.service';
 // import { ContainerState } from '../reducers/containers.reducer';
 import { AppState } from '../../../store/app.reducers';
 import { SignalRService } from '../../services/signalr.service';
+import { getSelectedContainerSelectList } from '..';
+import { ContainerSelect } from '../../models/container.viewModel';
 
 @Injectable()
 export class ContainersEffects {
@@ -45,31 +47,6 @@ export class ContainersEffects {
             map((action: fromActions.RemoveContainersBlankSpace) => action.payload.containerIds),
             switchMap(containerIds => this.containersService.removeContainersBlankSpace(containerIds))
         );
-        // .pipe(
-        //     withLatestFrom(this.store.select(state => state.scheduler.events)),
-        //     switchMap(([action, state]) => {
-        //         const containerIds = (<fromActions.RemoveContainersBlankSpace>action).payload.containerIds;
-        //         return this.containersService.removeContainersBlankSpace(containerIds)
-        //             .pipe(
-        //                 map(response => {
-        //                     const containerEvents: ContainerEvents[] = [];
-        //                     for (const i of containerIds) {
-        //                         if ( state.entities[i] ) {
-        //                             containerEvents.push(state.entities[i]);
-        //                         }
-        //                     }
-        //                     const dates = this.containersService.getDateBoundsForLoadedContainerEvents(containerEvents);
-
-        //                     return new fromActions.LoadEvents(
-        //                         {
-        //                             containerIds: containerIds,
-        //                             dateTo: dates.maxToDate,
-        //                             dateFrom: dates.minFromDate
-        //                         });
-        //                 })
-        //             );
-        //     })
-        // );
 
     @Effect()
     reselectContainers = this.actions$
@@ -105,6 +82,22 @@ export class ContainersEffects {
         );
 
     signalRConnection() {
+        this.store.select(getSelectedContainerSelectList).pipe(
+            mergeMap(selectedContainers =>
+                this.signalRService.connectionStarted$.pipe(
+                    map(c => {
+                        console.log('merge map');
+                        return selectedContainers.map(i => i.id);
+                    })
+                )
+            )
+        ).subscribe(selectedContainers => {
+            console.log('RE-register to signalR: ' +  selectedContainers);
+            if (selectedContainers && selectedContainers.length > 0) {
+                this.signalRService.containerSubscribe(selectedContainers);
+            }
+        });
+
         this.signalRService.containerUpdate$.subscribe(containerId => {
             this.store.dispatch(new fromActions.ReloadEvents({containerIds: [containerId]}));
         });
