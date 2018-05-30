@@ -31,20 +31,24 @@ export function eventsReducer(
 ): EventsState {
     switch (action.type) {
         case fromAction.LOAD_EVENTS: {
-            const events = { ...state.entities };
-            for (const i of action.payload.containerIds) {
-                const containerEvents: ContainerEvents = {
-                    ...events[i],
-                    dateFrom: action.payload.dateFrom,
-                    dateTo: action.payload.dateTo,
-                    events: events[i] ? [...events[i].events] : []
-                };
-                events[i] = containerEvents;
-            }
+            // const events = { ...state.entities };
+            // for (const i of action.payload.containerIds) {
+            //     const containerEvents: ContainerEvents = {
+            //         ...events[i],
+            //         dateFrom: action.payload.dateFrom,
+            //         dateTo: action.payload.dateTo,
+            //         events: events[i] ? [...events[i].events] : []
+            //     };
+            //     events[i] = containerEvents;
+            // }
+            // return {
+            //     ...state,
+            //     loading: true,
+            //     entities: events
+            // };
             return {
                 ...state,
-                loading: true,
-                entities: events
+                loading: true
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
