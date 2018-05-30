@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 export class SignalRService {
     private _hubConnection: HubConnection;
     containerUpdate$ = new Subject<number>();
+    connectionStarted$ = new Subject<boolean>();
 
     init() {
         return new Promise((resolve, reject) => {
@@ -14,8 +15,16 @@ export class SignalRService {
             })
             .configureLogging(LogLevel.Information)
             .build();
+            this.hubConnect();
+            // this._hubConnection.start().catch(err => console.error('error'));
 
-            this._hubConnection.start().catch(err => console.error(err));
+            this._hubConnection.onclose(() => {
+                console.log('Reconnecting');
+                setTimeout(() =>
+                    this.hubConnect()
+                    // this._hubConnection.start()
+                , 2000);
+            });
 
             this._hubConnection.on('BroadcastContainerUpdate', (containerId) => {
                 console.log('BroadcastContainerUpdate was called: ' + containerId);
@@ -23,6 +32,20 @@ export class SignalRService {
             });
 
             resolve();
+        });
+    }
+
+    private hubConnect() {
+        this._hubConnection.start()
+        .then(_ => {
+            this.connectionStarted$.next(true);
+        })
+        .catch(err => {
+            console.log('error');
+            setTimeout(() =>
+                this.hubConnect()
+                // this._hubConnection.start()
+            , 2000);
         });
     }
 
