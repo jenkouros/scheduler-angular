@@ -18,7 +18,8 @@ export const TOGGLE_LOCK = '[Event] Toggle lock';
 export const MASS_TOGGLE_EVENTS_LOCK = '[Event] Mass Toggle Events Lock';
 export const TOGGLE_MASSLOCK_POPUP_VISIBILITY = '[Event] Toggle mass lock popup visibility';
 export const RELOAD_ALL_EVENTS = '[Event] Reload All Selected Containers Events';
-
+export const REMOVE_EVENTS = '[Event] Remove DeSelected Containers Events';
+export const REMOVE_ALL_EVENTS = '[Event] Remove Events';
 export class LoadEvents implements Action {
     readonly type = LOAD_EVENTS;
     constructor(public payload: { containerIds: number[], dateFrom: Date, dateTo: Date }) {
@@ -98,6 +99,15 @@ export class UpdateEventFail implements Action {
     constructor() {}
 }
 
+export class RemoveEventsByContainerId implements Action {
+    readonly type = REMOVE_EVENTS;
+    constructor(public payload: number ) {}
+}
+
+export class RemoveEvents implements Action {
+    readonly type = REMOVE_ALL_EVENTS;
+}
+
 export type EventsAction =
     | LoadEvents
     | LoadEventsSuccess
@@ -115,4 +125,6 @@ export type EventsAction =
     | MassToggleEventsLock
     | ReloadEvents
     | ToggleMassLockPopup
-    | ReloadAllSelectedContainersEvents;
+    | ReloadAllSelectedContainersEvents
+    | RemoveEventsByContainerId
+    | RemoveEvents;

@@ -89,12 +89,18 @@ export class ContainersEffects {
                 this.signalRService.containerSubscribe(action.payload))
         );
 
-    @Effect({ dispatch : false })
+    // @Effect({ dispatch : false })
+    @Effect()
     deselectContainer = this.actions$
         .ofType(fromActions.DESELECT_CONTAINERS)
         .pipe(
-            map((action: fromActions.SelectContainers) =>
-                this.signalRService.containerSubscribe(action.payload, false))
+            map((action: fromActions.SelectContainers) => {
+                this.signalRService.containerSubscribe(action.payload, false);
+                const containerId = action.payload[0];
+                return new fromActions.RemoveEventsByContainerId(containerId);
+
+
+            })
         );
 
     @Effect({ dispatch : false })
