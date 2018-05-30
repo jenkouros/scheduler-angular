@@ -141,7 +141,7 @@ export class EventsEffects {
 
 
     /** LOCK */
-    @Effect()
+    @Effect({ dispatch: false })
     toggleLock$ = this.actions$
         .ofType(fromAction.TOGGLE_LOCK)
         .pipe(
