@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel, HttpTransportType } from '@aspnet/signalr';
 import { environment } from '../../../environments/environment';
 import { Observable, Subject } from 'rxjs';
 
@@ -9,7 +9,9 @@ export class SignalRService {
     init() {
         return new Promise((resolve, reject) => {
             this._hubConnection = new HubConnectionBuilder()
-            .withUrl(environment.signalRUrl)
+            .withUrl(environment.signalRUrl, {
+                transport: HttpTransportType.LongPolling
+            })
             .configureLogging(LogLevel.Information)
             .build();
 
