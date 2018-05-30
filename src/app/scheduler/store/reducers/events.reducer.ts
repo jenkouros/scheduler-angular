@@ -157,6 +157,25 @@ export function eventsReducer(
             };
         }
 
+        case fromAction.REMOVE_EVENTS: {
+            const { [action.payload]: removed, ...events} = state.entities;
+            console.log(action.payload);
+            return {
+                ...state,
+                entities: events,
+                loaded: false,
+                loading: false
+            };
+        }
+        case fromAction.REMOVE_ALL_EVENTS: {
+            return {
+                ...state,
+                entities: {},
+                loaded: false,
+                loading: false
+            };
+        }
+
         default:
             return state;
     }

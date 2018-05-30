@@ -74,19 +74,24 @@ export class ContainersEffects {
       )
     );
 
-  @Effect({ dispatch: false })
+  @Effect()
   deselectContainer = this.actions$
-    .ofType(fromActions.DESELECT_CONTAINERS)
-    .pipe(
-      map((action: fromActions.SelectContainers) =>
-        this.signalRService.containerSubscribe(action.payload, false)
-      )
-    );
+      .ofType(fromActions.DESELECT_CONTAINERS)
+      .pipe(
+          map((action: fromActions.SelectContainers) => {
+              this.signalRService.containerSubscribe(action.payload, false);
+              const containerId = action.payload[0];
+              return new fromActions.RemoveEventsByContainerId(containerId);
+          })
+      );
 
   @Effect({ dispatch: false })
   deselectAllContainer = this.actions$
     .ofType(fromActions.DESELECT_ALL_CONTAINERS)
-    .pipe(map(action => this.signalRService.removeSubscriptions()));
+    .pipe(map(action => {
+      this.signalRService.removeSubscriptions();
+      return new fromActions.RemoveEvents();
+    }));
 
   signalRConnection() {
     this.signalRService.connectionStarted$.subscribe(conn =>

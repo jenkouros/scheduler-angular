@@ -19,6 +19,7 @@ import { ContainerSelect } from '../../../models/container.viewModel';
 import { PreplanItem } from '../../../models/preplanitem.dto';
 import { ToggleMassLockPopup } from '../../../store';
 import * as fromSchedulerModel from '../../../models/planner.model';
+import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
 
 @Component({
     selector: 'app-plan-viewer',
@@ -52,16 +53,16 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     selectedStartDate: Date;
     selectedEndDate: Date;
     visible = false;
-    currentHour: number;
-
+    // currentHour: number;
+    offset: {top: number, left: number} = { top: 0, left: 0 };
     constructor(private store: Store<fromStore.SchedulerState>) {
-        this.currentHour = this.currentDate.getHours();
+        // this.currentHour = this.currentDate.getHours();
     }
 
     ngOnChanges(changes): void {
-        // if (changes.planItems) {
-            // this.planItems = [... changes.planItems.currentValue];
-        // }
+        if (changes.planItems) {
+             this.planItems = [...changes.planItems.currentValue];
+        }
         if (changes.selectedPreplanItem) {
             // this.selectedPreplanItem = changes.selectedPreplanItem.currentValue !== null
             //    ? changes.selectedPreplanItem.currentValue : null;
@@ -111,17 +112,22 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     optionChanged(e: fromSchedulerModel.OptionChangedModel) {
-        if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE ||
-            e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE ||
-            e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION  ) {
-                e.component.repaint();
-                // e.component.scrollToTime(this.currentHour, 0);
+
+        if (e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE   ) {
+            e.component.repaint();
+            Scrollable.getInstance(e.component.element().querySelector('.dx-scrollable')).scrollTo(this.offset);
         }
 
         if (e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
             e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE ||
             e.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES ||
-            e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION) {
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION ||
+            e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE) {
+                console.log(e.fullName);
+
+            e.component.repaint();
+            Scrollable.getInstance(e.component.element().querySelector('.dx-scrollable')).scrollTo(this.offset);
+
 
             const resourceUpdated = this.isResourceUpdated(e);
             const timeBoundsChanged = e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
@@ -129,6 +135,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
                 // this.selectedStartDate.getTime() !== e.component.getStartViewDate().getTime() ||
                 // this.selectedEndDate.getTime() !== e.component.getEndViewDate().getTime();
             if (resourceUpdated || timeBoundsChanged) {
+                console.log('change');
                 setTimeout(() => {
                     this.selectedStartDate = e.component.getStartViewDate();
                     this.selectedEndDate = e.component.getEndViewDate();
@@ -143,12 +150,12 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     private isResourceUpdated(model: fromSchedulerModel.OptionChangedModel) {
+
         if (model.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES) {
             const resourceChangedModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>model.value).filter(i =>
                 i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
             const resourcePreviousValueModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>model.previousValue).filter(i =>
                 i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
-
             if (resourceChangedModel && resourceChangedModel.length === 1) {
                 if (!resourcePreviousValueModel || resourcePreviousValueModel.length !== 1) {
                     return false;
@@ -177,7 +184,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     onAppointmentDeleting(e) {
         e.cancel = true;
         this.planItemDelete.emit(e.appointmentData);
-        this.currentHour = moment(e.appointmentData.startDate).toDate().getHours();
     }
 
     updateAppointment(appointment: PlannedEvent) {
@@ -201,7 +207,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
             // console.log('onAppointmentUpdating - moved', event);
             this.planItemUpdate.emit(event);
         }
-        this.currentHour = moment(event.startDate).toDate().getHours();
+       //  this.currentHour = moment(event.startDate).toDate().getHours();
 
     }
 
@@ -223,6 +229,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     onContentReady(event) {
+
+         // ref to scrollable
+         const scrollable = Scrollable.getInstance((<any>this.scheduler).instance.element().querySelector('.dx-scrollable'));
+         // scrollable.off('scroll');
+         scrollable.on('scroll', (e) => {
+             this.offset = e.scrollOffset;
+         });
+
         const plannedItemsEl = (<any>this.scheduler)
             .element.nativeElement.querySelectorAll('.dx-scheduler-scrollable-appointments');
         for (let i = 0; i < plannedItemsEl.length; i++) {
@@ -406,4 +420,3 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         this.showMassLockPopup.emit(this.selectedContainerIds);
     }
 }
-
