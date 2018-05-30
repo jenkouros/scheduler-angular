@@ -186,11 +186,12 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
 
     onContentReady(event) {
-        const a = Scrollable.getInstance((<any>this.scheduler).instance.element().querySelector('.dx-scrollable'));
-        a.off('scroll');
-        a.on('scroll', (e) => {
+
+        // ref to scrollable
+        const scrollable = Scrollable.getInstance((<any>this.scheduler).instance.element().querySelector('.dx-scrollable'));
+        scrollable.off('scroll');
+        scrollable.on('scroll', (e) => {
             this.offset = e.scrollOffset;
-           // console.log(this.offset);
         });
 
 
