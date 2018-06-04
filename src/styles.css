@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+
+.span-link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.bg-kolektor {
+   background-color: #084578;
+}
+
+.bg-kolektor-secondary {
+    background-color: #F0F2EF;
+}
+
+.bg-kolektor-third {
+    background-color: #cfd6e2;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #272838;
+}
+
+a.nav-link {
+    color: #084578; 
+}
+
+a.nav-link.active {
+    color: white;
+    background-color: #084578 !important;
+}
+
+.draggable {
+    cursor: move;
+    user-select: none;
+}
+
+dx-select-box.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+/* popup margins */
+.dx-popup-content .dx-fieldset {
+    margin-top: 10px;
+}
+/* end popup margins */
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+    
+hr.redline {
+    border-top: 1px solid #DE1A1A;
+    border-bottom: 1px solid #DE1A1A;
+    height: 2px;
+}

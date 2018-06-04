@@ -1,0 +1,30 @@
+<dx-popup 
+  [title]="title" 
+  [dragEnabled]="false" 
+  [closeOnOutsideClick]="true" 
+  [visible]="visible"
+  [width]="width"
+  [height]="height"
+  (onHiding)="onHidding()"
+>
+  <dxi-toolbar-item *ngIf="hasCancelBtn"
+    toolbar="bottom" 
+    location="after" 
+    widget="dxButton" 
+    [options]="{ text: 'Prekliči', onClick: cancelCallback }">
+  </dxi-toolbar-item>
+
+  <dxi-toolbar-item *ngIf="hasConfirmBtn"
+    toolbar="bottom"
+    location="after" 
+    widget="dxButton" 
+    [options]="{ text: 'Potrdi', type: 'success', onClick: confirmCallback }">
+  </dxi-toolbar-item>
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+      <ng-content></ng-content>
+    </dx-scroll-view>   
+  </div>
+
+</dx-popup>
