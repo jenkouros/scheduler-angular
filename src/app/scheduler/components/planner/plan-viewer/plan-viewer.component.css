@@ -58,3 +58,13 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     left:  20px;
    transition: 0.1s;
 }
+
+.toolbar {   
+    margin-top: 5px;
+    background-color: #f5f5f5;
+    border-top:  1px dotted;
+    border-left:  1px dotted;
+    border-right:  1px dotted;
+    border-bottom:  none;
+    border-color: rgba(221, 221, 221, 0.6)
+}

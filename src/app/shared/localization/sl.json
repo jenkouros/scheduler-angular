@@ -211,7 +211,7 @@
 
         "dxScheduler-recurrenceRepeatOnDate": "on date",
         "dxScheduler-recurrenceRepeatCount": "occurrence(s)",
-        "dxScheduler-allDay": "All day",
+        "dxScheduler-allDay": "Ves dan",
 
         "dxScheduler-confirmRecurrenceEditMessage": "Do you want to edit only this appointment or the whole series?",
         "dxScheduler-confirmRecurrenceDeleteMessage": "Do you want to delete only this appointment or the whole series?",

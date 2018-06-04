@@ -1,17 +1,26 @@
 <!-- <button (click)="removeBlankSpace()" class="btn btn-success" type="button">Zgosti</button> -->
-<div class="cellDurationContainer" [hidden]="!visible">
-    <div></div>
-    <div class="dx-field">
-        <div class="dx-field-label">Dolžina celice</div>
-        <div class="dx-field-value">
-            <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
-            </dx-select-box>
-        </div>
-    </div>   
+<div class="toolbar" [hidden]="!visible">
+    <div class="cellDurationContainer" >
+        <div></div>
+        <div class="dx-field">
+            <div class="dx-field-label">Dolžina celice</div>
+            <div class="dx-field-value">
+                <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
+                </dx-select-box>
+            </div>
+        </div>   
+    </div>    
+    <button type="button" (click)="onRemoveBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
+    <button type="button" (click)="onShowMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>     
+</div>
+<div class="card" [hidden]="visible">
+    <div class="card-body">
+        Za razporejanje izberite delovno mesto.
+    </div>
 </div>
 
-<button type="button" (click)="onRemoveBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
-<button type="button" (click)="onShowMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>     
+
+
 <app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
