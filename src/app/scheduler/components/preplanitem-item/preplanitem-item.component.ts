@@ -30,6 +30,7 @@ export class PrePlanitemItemComponent implements OnInit {
 
   onConfirmDeleteBatchPopup() {
     this.deleteBatch.emit(this.preplanitem.itemBatch.idItemBatch);
+    this.onCloseDeleteBatchPopup();
   }
 
   onShowDeleteBatchPopup() {

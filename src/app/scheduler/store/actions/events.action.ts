@@ -17,8 +17,9 @@ export const RELOAD_EVENTS = '[Event] Reload events';
 export const TOGGLE_LOCK = '[Event] Toggle lock';
 export const MASS_TOGGLE_EVENTS_LOCK = '[Event] Mass Toggle Events Lock';
 export const TOGGLE_MASSLOCK_POPUP_VISIBILITY = '[Event] Toggle mass lock popup visibility';
-
-
+export const RELOAD_ALL_EVENTS = '[Event] Reload All Selected Containers Events';
+export const REMOVE_EVENTS = '[Event] Remove DeSelected Containers Events';
+export const REMOVE_ALL_EVENTS = '[Event] Remove Events';
 export class LoadEvents implements Action {
     readonly type = LOAD_EVENTS;
     constructor(public payload: { containerIds: number[], dateFrom: Date, dateTo: Date }) {
@@ -45,10 +46,14 @@ export class ReloadEvents implements Action {
     constructor(public payload: { containerIds: number[] }) {}
 }
 
+export class ReloadAllSelectedContainersEvents implements Action {
+    readonly type = RELOAD_ALL_EVENTS;
+}
+
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
     // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
-    constructor(public payload: { events: PlannedEvent[], dateFrom: Date, dateTo: Date } ) {}
+    constructor(public payload: { events: PlannedEvent[], dateFrom: Date, dateTo: Date, containers: number[] } ) {}
 }
 export class LoadEventsFail implements Action {
     readonly type = LOAD_EVENTS_FAIL;
@@ -86,12 +91,21 @@ export class UpdateEvent implements Action {
 
 export class UpdateEventSuccess implements Action {
     readonly type = UPDATE_EVENT_SUCCESS;
-    constructor(public payload: PlannedEvent) {}
+    // constructor(public payload: PlannedEvent) {}
 }
 
 export class UpdateEventFail implements Action {
     readonly type = UPDATE_EVENT_FAIL;
     constructor() {}
+}
+
+export class RemoveEventsByContainerId implements Action {
+    readonly type = REMOVE_EVENTS;
+    constructor(public payload: number ) {}
+}
+
+export class RemoveEvents implements Action {
+    readonly type = REMOVE_ALL_EVENTS;
 }
 
 export type EventsAction =
@@ -110,4 +124,7 @@ export type EventsAction =
     | ToggleEventLock
     | MassToggleEventsLock
     | ReloadEvents
-    | ToggleMassLockPopup;
+    | ToggleMassLockPopup
+    | ReloadAllSelectedContainersEvents
+    | RemoveEventsByContainerId
+    | RemoveEvents;

@@ -60,14 +60,14 @@ export class EventsService {
         );
     }
 
-    updateEvent(event: PlannedEvent): Observable<PlannedEvent> {
+    updateEvent(event: PlannedEvent): Observable<boolean> {
         const planningItem = {
             idPlanItem: event.id,
             idContainer: event.containerId,
             timeStart: moment(event.startDate).format(),
             timeEnd: moment(event.endDate).format()
         };
-        return this.http.put<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
+        return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
             {
                 headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
             }).pipe(
@@ -75,7 +75,8 @@ export class EventsService {
                 if (response.code !== ApiResponseResult.success) {
                     throw response.messages;
                 }
-                return PlannedEvent.fromServer(response.result);
+                return true;
+                // return PlannedEvent.fromServer(response.result);
             } )
         );
     }

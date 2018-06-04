@@ -1,5 +1,5 @@
 import * as fromAction from '../actions/events.action';
-import { ContainerEvents } from '../../models/event.model';
+import { ContainerEvents, PlannedEvent } from '../../models/event.model';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
@@ -31,39 +31,60 @@ export function eventsReducer(
 ): EventsState {
     switch (action.type) {
         case fromAction.LOAD_EVENTS: {
-            const events = { ...state.entities };
-            for (const i of action.payload.containerIds) {
-                const containerEvents: ContainerEvents = {
-                    ...events[i],
-                    dateFrom: action.payload.dateFrom,
-                    dateTo: action.payload.dateTo,
-                    events: events[i] ? [...events[i].events] : []
-                };
-                events[i] = containerEvents;
-            }
+            // const events = { ...state.entities };
+            // for (const i of action.payload.containerIds) {
+            //     const containerEvents: ContainerEvents = {
+            //         ...events[i],
+            //         dateFrom: action.payload.dateFrom,
+            //         dateTo: action.payload.dateTo,
+            //         events: events[i] ? [...events[i].events] : []
+            //     };
+            //     events[i] = containerEvents;
+            // }
+            // return {
+            //     ...state,
+            //     loading: true,
+            //     entities: events
+            // };
             return {
                 ...state,
-                loading: true,
-                entities: events
+                loading: true
             };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
             const events: { [id: number]: ContainerEvents } = { ...state.entities };
-            const initDictionary: number[] = [];
+
+            const dict: {[containerId: number]: PlannedEvent[] } = {};
+
+            // const initDictionary: number[] = [];
             for (const event of action.payload.events) {
                 if (event.hasOwnProperty('containerId')) {
-                    if (initDictionary.indexOf(event.containerId) < 0) {
-                        events[event.containerId].events = [];
-                        initDictionary.push(event.containerId);
+                    if (!dict[event.containerId]) {
+                        dict[event.containerId] = [];
                     }
+                    dict[event.containerId].push(event);
 
-                    events[event.containerId] = {
-                        events: [...events[event.containerId].events, event],
-                        dateFrom: action.payload.dateFrom,
-                        dateTo: action.payload.dateTo
-                    };
+                    // if (initDictionary.indexOf(event.containerId) < 0) {
+                    //     events[event.containerId].events = [];
+                    //     initDictionary.push(event.containerId);
+                    // }
+
+                    // events[event.containerId] = {
+                    //     events: [...events[event.containerId].events, event],
+                    //     dateFrom: action.payload.dateFrom,
+                    //     dateTo: action.payload.dateTo
+                    // };
                 }
             }
+
+            for (const key of action.payload.containers) {
+                events[key] = {
+                    events: dict[key] || [],
+                    dateFrom: action.payload.dateFrom,
+                    dateTo: action.payload.dateTo
+                };
+            }
+
 
             return {
                 ...state,
@@ -86,24 +107,24 @@ export function eventsReducer(
                 loading: true
             };
         }
-        case fromAction.UPDATE_EVENT_SUCCESS:
-        case fromAction.CREATE_EVENT_SUCCESS: {
-            const events =  { ...state.entities };
+        // case fromAction.UPDATE_EVENT_SUCCESS:
+        // case fromAction.CREATE_EVENT_SUCCESS: {
+        //     const events =  { ...state.entities };
 
-            // if (!events[action.payload.containerId]) {
-            //     events[action.payload.containerId] = <any>{};
-            // }
+        //     // if (!events[action.payload.containerId]) {
+        //     //     events[action.payload.containerId] = <any>{};
+        //     // }
 
-            events[action.payload.containerId] = {
-                ...events[action.payload.containerId],
-                events: [...events[action.payload.containerId].events || [], action.payload]
-            };
+        //     events[action.payload.containerId] = {
+        //         ...events[action.payload.containerId],
+        //         events: [...events[action.payload.containerId].events || [], action.payload]
+        //     };
 
-            return {
-                ...state,
-                entities: events
-            };
-        }
+        //     return {
+        //         ...state,
+        //         entities: events
+        //     };
+        // }
         case fromAction.CREATE_EVENT_FAIL: {
             return {
                 ...state,
@@ -133,6 +154,25 @@ export function eventsReducer(
                         massLockPopupContainers: action.payload.containerIds
                     }
                 }
+            };
+        }
+
+        case fromAction.REMOVE_EVENTS: {
+            const { [action.payload]: removed, ...events} = state.entities;
+            console.log(action.payload);
+            return {
+                ...state,
+                entities: events,
+                loaded: false,
+                loading: false
+            };
+        }
+        case fromAction.REMOVE_ALL_EVENTS: {
+            return {
+                ...state,
+                entities: {},
+                loaded: false,
+                loading: false
             };
         }
 

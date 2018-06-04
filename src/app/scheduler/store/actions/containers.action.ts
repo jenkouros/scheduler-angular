@@ -7,6 +7,7 @@ export const LOAD_CONTAINERS_SUCCESS = '[Containers] Load containers Success';
 export const SELECT_CONTAINERS = '[Containers] Select containers';
 export const DESELECT_CONTAINERS = '[Containers] Deselect containers';
 export const RESELECT_CONTAINERS = '[Containers] Reselect containers';
+export const DESELECT_ALL_CONTAINERS = '[Containers] Deselect all containers';
 
 export const LOAD_PLANNINGITEMS = '[Containers] Load planning items';
 export const LOAD_PLANNINGITEMS_FAIL = '[Containers] Load planning items fail';
@@ -37,6 +38,10 @@ export class DeselectContainers implements Action {
     constructor(public payload: number[]) {}
 }
 
+export class DeselectAllContainers implements Action {
+    readonly type = DESELECT_ALL_CONTAINERS;
+}
+
 export class ReselectContainers implements Action {
     readonly type = RESELECT_CONTAINERS;
     constructor(public payload: number[]) {}
@@ -55,5 +60,6 @@ export type ContainersAction
     | LoadContainersSuccess
     | SelectContainers
     | DeselectContainers
-    | ReselectContainers;
+    | ReselectContainers
+    | DeselectAllContainers;
 
