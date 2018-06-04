@@ -39,7 +39,7 @@ a.nav-link.active {
     user-select: none;
 }
 
-dx-select-box.ng-invalid.ng-dirty {
+dx-select-box.ng-invalid.ng-touched {
     border: 1px solid red;
 }
 
