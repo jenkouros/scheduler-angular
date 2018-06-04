@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../store';
+import { Container } from '../../models/container.dto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-planner',
@@ -6,8 +10,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./planner.component.css']
 })
 export class PlannerComponent implements OnInit {
-
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

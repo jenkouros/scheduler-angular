@@ -1,3 +1,53 @@
-<p>
-  group-list works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+        <div>System</div>
+      <div class="card-deck">
+        <div *ngFor="let group of groups">
+          <div 
+            *ngIf="group.type === 'system'"
+            [ngClass]="(group.selected == 'true') ? 'card border-dark mb-3' : 'card border-light mb-3'"
+            (click)="onClick(group.id, group.selected)"
+            style="max-width: 12rem; cursor:pointer;">
+            <div class="card-header">[{{ group.id }}]=>{{ group.name }}</div>
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <!-- <a href="#" class="card-link">Izberi</a>
+              <a href="#" class="card-link">Uredi</a> -->
+              <button type="button" class="btn btn-light" [disabled]="group.selected == 'true'">Izberi</button>
+              <button type="button" class="btn btn-light">Uredi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>Usrer</div>
+      <div class="card-deck">
+        <div *ngFor="let group of groups">
+          <div 
+            *ngIf="group.type === 'user'" 
+            [ngClass]="(group.selected == 'true') ? 'card border-dark mb-3' : 'card border-light mb-3'"
+            (click)="onClick(group.id, group.selected)"
+            style="max-width: 12rem; cursor:pointer;">
+            <div class="card-header">[{{ group.id }}]=>{{ group.name }}</div>
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <!-- <a href="#" class="card-link">Izberi</a>
+              <a href="#" class="card-link">Uredi</a> -->
+              <button type="button" class="btn btn-light" [disabled]="group.selected == 'true'">Izberi</button>
+              <button type="button" class="btn btn-light">Uredi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+<app-loader ></app-loader>
+
+
+<!-- card classess: selectded = true->card bg-light mb-3 selected = false->card border-dark mb-3 -->
+<!-- [ngClass]="{'card border-dark mb-3':group.selected == 'true', 'card border-light mb-3':group.selected == 'false'}"  -->
+            

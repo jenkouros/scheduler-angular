@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkorderItemComponent } from './workorder-item.component';
+import { MassLockPopupComponent } from './mass-lock-popup.component';
 
-describe('WorkorderItemComponent', () => {
-  let component: WorkorderItemComponent;
-  let fixture: ComponentFixture<WorkorderItemComponent>;
+describe('MassLockPopupComponent', () => {
+  let component: MassLockPopupComponent;
+  let fixture: ComponentFixture<MassLockPopupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkorderItemComponent ]
+      declarations: [ MassLockPopupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkorderItemComponent);
+    fixture = TestBed.createComponent(MassLockPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,82 @@
+<app-popup
+  title="Planiraj delovni nalog"
+  [visible]="visible"
+  (visibilityChanged)="popupVisibilityChanged($event)"
+  [cancelCallback]="hideItemInfo"
+  [confirmCallback]="onSubmit">
+  
+  <div *ngIf="itemHierarchy && itemHierarchy?.item">
+    <div class="row">
+      <app-fieldset header="Delovni nalog" class="col">
+        <app-field label="Šifra" [isStatic]="true">
+            {{ itemHierarchy!.item.code }}
+        </app-field>
+        <app-field label="Artikel" [isStatic]="true">
+            {{ itemHierarchy!.item.article.code }} - 
+            {{ itemHierarchy!.item.article.name }}
+        </app-field>
+      </app-fieldset>
+
+      <app-fieldset header="ERP" class="col">
+        <app-field label="Količina" [isStatic]="true">
+            {{ itemHierarchy!.item.quantity }} {{ itemHierarchy!.item.measurementUnit.code }}
+        </app-field>
+        <app-field label="Datum" [isStatic]="true">
+            {{ itemHierarchy!.item.limitDateFrom | date:'mediumDate' }} -  
+            {{ itemHierarchy!.item.limitDateTo | date:'mediumDate' }}      
+        </app-field>
+      </app-fieldset>
+    </div>
+
+    <form [formGroup]="createPreplanItemsForm">
+      <div class="row">
+        <app-fieldset header="Planiranje delovnega naloga" class="col-6">
+          <app-field label="Količina">
+            <input 
+              type="number" 
+              class="form-control"
+              formControlName="batchQuantity">
+            <p class="help-block" *ngIf="batchQuantityControl.invalid && batchQuantityControl.touched">
+              Vnesite veljavno količino.
+            </p>
+          </app-field>
+
+          <app-field label="Število šarž">
+            <input 
+              type="number" 
+              class="form-control"
+              formControlName="batchCount">
+            <p class="help-block" *ngIf="batchCountControl.invalid && batchCountControl.touched">
+              Vnesite veljavno število šarž.
+            </p>
+          </app-field>
+
+          <app-field label="Alternativa">
+            <dx-select-box 
+              [dataSource]="itemHierarchy!.alternativeOptions" 
+              name="alternative" 
+              valueExpr="id"
+              displayExpr="name" 
+              placeholder="Izberi alternativo" 
+              [showClearButton]="true" 
+              formControlName="idAlternative">
+            </dx-select-box>
+            <p class="help-block" *ngIf="alternativeIdControl.invalid && alternativeIdControl.touched">
+              Izberite alternativo.
+            </p>
+          </app-field>
+        </app-fieldset>
+      </div>
+
+      <div class="row">
+        <app-fieldset class="col">
+          <app-alternative 
+            *ngIf="alternatives && alternativeIdControl.value" 
+            [alternative]="getSelectedAlternative()">
+          </app-alternative>
+        </app-fieldset>
+      </div>
+
+    </form>
+  </div>
+</app-popup>

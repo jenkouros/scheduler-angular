@@ -1,0 +1,125 @@
+{
+    "planitems":
+    {
+        "status": "ok",
+        "code": 200,
+        "messages": [],
+        "result": {
+            "metadata": {
+                "page": 1,
+                "pageSize": 15,
+                "pageCount": 10,
+                "totalCount": 150
+            },
+            "records": [
+                {
+                    "id": 1,
+                    "code": "100000",
+                    "quantity": 1000,
+                    "quantityBatch": 100,
+                    "quantityPlanned": 0,
+                    "measurementUnit": {
+                        "name": "kilogram",
+                        "code": "kg"
+                    },
+                    "product": {
+                        "id": 52000,
+                        "code": "701233",
+                        "name": "Bencin D40"
+                    },
+                    "limitDateFrom": "1975-08-19T23:15:30.000Z",
+                    "limitDateTo": "1975-08-19T23:15:30.000Z"
+                },
+                {
+                    "id": 2,
+                    "code": "100001",
+                    "quantity": 1000,
+                    "quantityBatch": 100,
+                    "quantityPlanned": 0,
+                    "measurementUnit": {
+                        "name": "kilogram",
+                        "code": "kg"
+                    },
+                    "product": {
+                        "id": 52000,
+                        "code": "701233",
+                        "name": "Bencin D40"
+                    },
+                    "limitDateFrom": "1975-08-19T23:15:30.000Z",
+                    "limitDateTo": "1975-08-19T23:15:30.000Z"
+                }
+            ]
+        }
+    },
+    "filters": {
+        "status": "ok",
+        "code": 200,
+        "messages": [],
+        "result": [
+            {
+                "sequence": 1,
+                "name": "Lokacija",
+                "id": 1,
+                "type": "checkbox", 
+                "values": [
+                    { "id": 80, "name": "Ljubljana-Črnuče" },
+                    { "id": 81, "name": "Idrija" },
+                    { "id": 82, "name": "Maribor" }
+                ]
+            },
+            {
+                "sequence": 3,
+                "name": "Vrsta proizvodnje",
+                "id": 3,
+                "type": "checkbox", 
+                "values": [
+                    { "id": 1, "name": "Izdelovalna proizvodnja" },
+                    { "id": 2, "name": "Pakirna proizvodnja" }
+                ]
+            },
+            {
+                "sequence": 2,
+                "name": "Nadzornik",
+                "id": 2,
+                "type": "autocomplete",
+                "values": [
+                    { "id": 1, "name": "Tomislav Tomc" },
+                    { "id": 2, "name": "Radoslav Radenc" }
+                ]
+            }
+        ]
+    },
+    "groups": [
+        { 
+            "id": 1,
+            "name": "Ljubljana-Črnuče",
+            "type": "system",
+            "filters": [
+                { "id": 1, "values": [80] }
+            ]
+        },
+        { 
+            "id": 2,
+            "name": "Tomx",
+            "type": "user",
+            "filters": [
+                { "id": 2, "values": [1] }
+            ],
+            "containers": [
+                1095, 1096, 1097, 1098, 1099
+            ]
+        }
+    ],
+    "containers": [
+        { 
+            "id": 1095, 
+            "name": "PP1", 
+            "code": "PP1",
+            "filters": {
+                "1": [80],
+                "2": [1, 2]
+            }
+        }
+    ]
+
+}

@@ -1,0 +1,60 @@
+
+::ng-deep .dx-scheduler-appointment-content{    
+    padding: 0px;
+    margin: 0px;
+}
+/*
+https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
+*/
+::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
+    height: 100px;
+}
+
+/* ::ng-deep #scheduler .dx-scheduler-group-header  {
+    height: 100px;
+} */
+
+
+.cellDurationContainer{
+    float: right;
+    width: 250px;    
+  }
+
+::ng-deep .allowed {
+    background-color: #bfd9f0;
+    font-size: 1.2rem !important;   
+    border-left:5px solid #a8cef0 !important;
+    transition: all 0.1s
+}
+  .btn {
+    margin: 2px;
+    color: #087873;
+    background-color: #F0F2EF;
+    border-color: #F0F2EF;  
+}
+
+.btn:hover {
+    margin: 2px;
+    color: #087873;
+    background-color: #e3e7e1;
+    border-color: #e3e7e1;
+}
+
+.btn-primary {
+    margin: 2px;
+    color: #fff;
+    background-color: #087873;
+    border-color: #087873;   
+}
+
+.btn-primary:hover {
+    margin: 2px;
+    color: #fff;
+    background-color: #06605c ;
+    border-color: #06605c ;
+}
+
+::ng-deep .dx-scheduler-appointment-move {
+    left:  20px;
+   transition: 0.1s;
+}

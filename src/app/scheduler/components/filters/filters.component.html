@@ -1,3 +1,19 @@
-<p>
-  filters works!
-</p>
+ <div *ngFor="let filterElement of (filtersState$ | async)">
+
+  <h5 class="mt-3">{{ filterElement.name }}</h5>     
+  <app-filter-checkbox *ngIf="filterElement.type === FilterTypeEnum.checkbox"
+    [filterValues]="filterElement.valuesSelect"
+    (add)="onFilterChange(filterElement.id, $event, false)"
+    (remove)="onFilterChange(filterElement.id, $event, true)">
+  </app-filter-checkbox>
+
+  <app-filter-autocomplete *ngIf="filterElement.type === FilterTypeEnum.autocomplete"
+    [filterValues]="filterElement.valuesSelect"
+    [placeholder]="filterElement.name"
+    (add)="onFilterChange(filterElement.id, $event, false)"
+    (remove)="onFilterChange(filterElement.id, $event, true)">
+  </app-filter-autocomplete>
+</div>
+
+
+

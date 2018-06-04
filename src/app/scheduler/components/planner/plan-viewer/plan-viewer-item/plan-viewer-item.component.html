@@ -1,0 +1,19 @@
+<div class="plannerItemContainer">
+  <!-- <div class="progressWrapper">
+          <div class="progressInfo">45%</div>          
+  </div>                 -->
+  <div class="plannerItem">
+    <div class="m-2">
+      <h6 class="white-text">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</h6>
+      <div>{{ plannerItemData.itemName }}</div>
+      <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
+    </div>
+  </div>
+  <div class="info pull-right mt-2 mr-2 text-center">
+      <div *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></div>
+      <div *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></div>
+  </div>
+ 
+  <!-- 
+  <div class="status">&nbsp;</div> -->
+</div>
