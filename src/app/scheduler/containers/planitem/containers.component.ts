@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { ContainerSelect } from '../../models/container.viewModel';
 
 @Component({
     selector: 'app-containers',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <app-container-item
             *ngFor="let container of (containers$ | async)"

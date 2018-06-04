@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { PlannedEvent, PlanItemsLoadRequest } from '../../models/event.model';
@@ -8,6 +8,7 @@ import { ContainerSelect } from '../../models/container.viewModel';
 
 @Component({
     selector: 'app-planitems',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <app-plan-viewer
             [selectedPreplanItem]="selectedPrePlanItem$ | async"

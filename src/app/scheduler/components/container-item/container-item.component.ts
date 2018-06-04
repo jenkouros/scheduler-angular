@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
@@ -6,6 +6,7 @@ import { ContainerSelect } from '../../models/container.viewModel';
 
 @Component({
   selector: 'app-container-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './container-item.component.html',
   styleUrls: ['./container-item.component.css']
 })

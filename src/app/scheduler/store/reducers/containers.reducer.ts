@@ -41,18 +41,26 @@ export function containerReducer (
             };
         }
         case fromAction.SELECT_CONTAINERS: {
-            const selectionToAdd = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
+            // const selectionToAdd = action.payload.filter(i => state.selectedContainers.indexOf(i) < 0);
+            // return {
+            //     ...state,
+            //     selectedContainers: selectionToAdd.concat(state.selectedContainers)
+            // };
             return {
                 ...state,
-                selectedContainers: selectionToAdd.concat(state.selectedContainers)
+                selectedContainers: [...state.selectedContainers, ...action.payload]
             };
         }
         case fromAction.DESELECT_CONTAINERS: {
-            const selectedContainers = [...state.selectedContainers];
-            const newSelection = selectedContainers.filter(i => action.payload.indexOf(i) < 0);
+            // const selectedContainers = [...state.selectedContainers];
+            // const newSelection = selectedContainers.filter(i => action.payload.indexOf(i) < 0);
+            // return {
+            //     ...state,
+            //     selectedContainers: newSelection
+            // };
             return {
                 ...state,
-                selectedContainers: newSelection
+                selectedContainers: state.selectedContainers.filter(s => action.payload.indexOf(s) < 0)
             };
         }
         // case fromAction.RESELECT_CONTAINERS: {

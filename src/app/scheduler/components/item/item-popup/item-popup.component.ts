@@ -49,6 +49,12 @@ export class ItemPopupComponent implements OnChanges {
   get alternativeIdControl() {
     return this.createPreplanItemsForm.get('idAlternative') as FormControl;
   }
+  get batchQuantityControl() {
+    return this.createPreplanItemsForm.get('batchQuantity') as FormControl;
+  }
+  get batchCountControl() {
+    return this.createPreplanItemsForm.get('batchCount') as FormControl;
+  }
 
   selectAlternative(alternativeId: number) {
     this.createPreplanItemsForm.patchValue({
@@ -75,7 +81,18 @@ export class ItemPopupComponent implements OnChanges {
     if (valid) {
       this.createPreplanItems.emit(value);
       this.hideItemInfo();
+    } else {
+      this.markFormControlsAsTouched();
     }
+  }
+
+  markFormControlsAsTouched() {
+    Object.keys(this.createPreplanItemsForm.controls).forEach(field => {
+      const control = this.createPreplanItemsForm.get(field);
+      if (control) {
+        control.markAsTouched({ onlySelf: true });
+      }
+    });
   }
 
 }
