@@ -135,28 +135,38 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   optionChanged(e: fromSchedulerModel.OptionChangedModel) {
     console.log(e.fullName);
     this.offset = this.getScrollPosition();
+    console.log(this.offset);
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE) {
         // this.scrollScheduler();
       e.component.repaint();
-      Scrollable.getInstance(
+      /*Scrollable.getInstance(
+        e.component.element().querySelector('.dx-scrollable')
+      ).scrollTo(this.offset);*/
+    }
+    if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE
+    ) {
+      // e.component.repaint();
+      setTimeout(() => {
+        Scrollable.getInstance(
         e.component.element().querySelector('.dx-scrollable')
       ).scrollTo(this.offset);
+    });
     }
-
     if (
       e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
       e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE ||
       e.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES ||
-      e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION ||
-      e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE
+      e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION
     ) {
 
         // this.scrollScheduler();
-          e.component.repaint();
-          Scrollable.getInstance(
+          // e.component.repaint();
+
+          setTimeout(() => {
+            Scrollable.getInstance(
             e.component.element().querySelector('.dx-scrollable')
           ).scrollTo(this.offset);
-
+        });
 
       const resourceUpdated = this.isResourceUpdated(e);
       const timeBoundsChanged =
@@ -175,7 +185,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
             fromDate: this.selectedStartDate,
             toDate: this.selectedEndDate
           });
-        }, 100);
+        });
       }
     }
   }
@@ -281,14 +291,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   onContentReady(event) {
-    // // ref to scrollable
-    // const scrollable = Scrollable.getInstance(
-    //   (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
-    // );
-    // scrollable.on('scroll', e => {
-    //   this.offset = { top: e.scrollOffset.top || 0, left: e.scrollOffset.left || 0  };
-    //   // console.log(this.offset);
-    // });
+     // ref to scrollable
+    const scrollable = Scrollable.getInstance(
+       (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
+     );
+     scrollable.on('scroll', e => {
+       this.offset = { top: e.scrollOffset.top || 0, left: e.scrollOffset.left || 0  };
+       // console.log(this.offset);
+     });
 
     const plannedItemsEl = (<any>this
       .scheduler).element.nativeElement.querySelectorAll(

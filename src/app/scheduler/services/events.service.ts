@@ -61,11 +61,12 @@ export class EventsService {
     }
 
     updateEvent(event: PlannedEvent): Observable<boolean> {
+
         const planningItem = {
             idPlanItem: event.id,
             idContainer: event.containerId,
-            timeStart: moment(event.startDate).format(),
-            timeEnd: moment(event.endDate).format()
+            timeStart: moment(new Date(event.startDate)).format(),
+            timeEnd: moment(new Date(event.endDate)).format()
         };
         return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
             {

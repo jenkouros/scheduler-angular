@@ -7,13 +7,11 @@
 https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
 */
 ::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
-    height: 100px;
+    height: 90px;
 }
-
-/* ::ng-deep #scheduler .dx-scheduler-group-header  {
-    height: 100px;
-} */
-
+::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
+    width: 90px;
+}
 
 .cellDurationContainer{
     float: right;

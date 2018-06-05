@@ -23,6 +23,7 @@ import * as messagesSl from './shared/localization/sl.json';
 import { SignalRService } from './scheduler/services/signalr.service';
 
 loadMessages(messagesSl);
+// Set locale according the browser language
 locale('sl');
 registerLocaleData(localeSl, 'sl');
 export function init_signalR(signalRService: SignalRService): () => Promise<any> {
@@ -46,7 +47,7 @@ export function init_signalR(signalRService: SignalRService): () => Promise<any>
   ],
   providers: [
     SignalRService,
-    { provide: LOCALE_ID, useValue: 'sl' },
+    { provide: LOCALE_ID, useValue: 'sl-SI' },
     { provide: APP_INITIALIZER, useFactory: init_signalR, deps: [SignalRService], multi: true }
   ],
   bootstrap: [AppComponent]

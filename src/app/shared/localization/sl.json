@@ -204,10 +204,10 @@
 
         "dxScheduler-switcherAgenda": "Agenda",
 
-        "dxScheduler-switcherTimelineDay": "Časovnica dan",
-        "dxScheduler-switcherTimelineWeek": "Časovnica teden",
-        "dxScheduler-switcherTimelineWorkWeek": "Časovnica delovni teden",
-        "dxScheduler-switcherTimelineMonth": "Časovnica mesec",
+        "dxScheduler-switcherTimelineDay": "Časovnica [dan]",
+        "dxScheduler-switcherTimelineWeek": "Časovnica [teden]",
+        "dxScheduler-switcherTimelineWorkWeek": "Časovnica [delovni teden]",
+        "dxScheduler-switcherTimelineMonth": "Časovnica [mesec]",
 
         "dxScheduler-recurrenceRepeatOnDate": "on date",
         "dxScheduler-recurrenceRepeatCount": "occurrence(s)",

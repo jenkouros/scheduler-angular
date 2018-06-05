@@ -97,6 +97,7 @@ export class PlannedEvent {
         result.isPlanned = true;
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
+
         return result;
 
 
