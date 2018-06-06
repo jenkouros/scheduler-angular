@@ -135,9 +135,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   optionChanged(e: fromSchedulerModel.OptionChangedModel) {
-    console.log(e.fullName);
+    // console.log(e.fullName);
     this.offset = this.getScrollPosition();
-    console.log(this.offset);
+    // console.log(this.offset);
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE) {
         // this.scrollScheduler();
       e.component.repaint();
@@ -321,7 +321,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       events.on(plannedItemsEl[i], 'dxdragenter', e => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(e.target, e);
         e.target.classList.add('dx-scheduler-appointment-move');
         /*
         const f = this.findParentBySelector(
@@ -548,7 +547,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   private scrollScheduler() {
     this.isScrollInProgress = true;
     this.scheduler.instance.repaint();
-    console.log(this.offset);
+    // console.log(this.offset);
     Scrollable.getInstance(this.scheduler.instance.element().querySelector('.dx-scrollable')).scrollTo(this.offset);
     this.isScrollInProgress = false;
   }
