@@ -92,6 +92,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       this.visible = this.selectedContainers.length > 0;
       this.schedulerResources = this.getResources(this.selectedContainers);
     }
+    /*
     if (changes.preplanItemDragEnd) {
       // this.preplanItemDragEnd = changes.preplanItemDragEnd.currentValue;
       this.removeAppointmentCss(
@@ -99,6 +100,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         'dx-scheduler-appointment-move'
       );
     }
+    */
   }
 
   removeAppointmentCss(remove: boolean, className: string) {
@@ -302,14 +304,26 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
     const plannedItemsEl = (<any>this
       .scheduler).element.nativeElement.querySelectorAll(
-      '.dx-scheduler-scrollable-appointments'
+      '.dx-scheduler-appointment'
     );
     for (let i = 0; i < plannedItemsEl.length; i++) {
-      events.off(plannedItemsEl[i], 'dragover');
-      events.off(plannedItemsEl[i], 'dragend');
-      events.on(plannedItemsEl[i], 'dragover', e => {
+      events.off(plannedItemsEl[i], 'dxdragenter');
+      // events.off(plannedItemsEl[i], 'dragend');
+      events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
+        this.removeAppointmentCss(
+          e.target,
+          'dx-scheduler-appointment-move'
+        );
+
+          // e.target.classList.remove('dx-scheduler-appointment-move');
+      });
+
+      events.on(plannedItemsEl[i], 'dxdragenter', e => {
         e.preventDefault();
         e.stopPropagation();
+        console.log(e.target, e);
+        e.target.classList.add('dx-scheduler-appointment-move');
+        /*
         const f = this.findParentBySelector(
           e.target,
           '.dx-scheduler-appointment'
@@ -318,6 +332,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         if (f) {
           f.classList.add('dx-scheduler-appointment-move');
         }
+        */
       });
     }
     const elements = (<any>this
