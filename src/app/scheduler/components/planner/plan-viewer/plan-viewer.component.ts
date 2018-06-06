@@ -109,7 +109,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       '.dx-scheduler-appointment'
     );
     for (let i = 0; i < plannedItemsEl.length; i++) {
-      plannedItemsEl[i].classList.remove(className);
+     plannedItemsEl[i].classList.remove(className, className + '-right');
     }
   }
   ngAfterViewInit() {
@@ -306,22 +306,31 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       .scheduler).element.nativeElement.querySelectorAll(
       '.dx-scheduler-appointment'
     );
+    let movementX = 0;
     for (let i = 0; i < plannedItemsEl.length; i++) {
       events.off(plannedItemsEl[i], 'dxdragenter');
-      // events.off(plannedItemsEl[i], 'dragend');
+      // events.off(plannedItemsEl[i], 'dxdragstart');
+       events.on(plannedItemsEl[i], 'dxdragstart', (e) => {
+          movementX = e.movementX;
+      });
       events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
         this.removeAppointmentCss(
           e.target,
           'dx-scheduler-appointment-move'
         );
-
-          // e.target.classList.remove('dx-scheduler-appointment-move');
       });
 
       events.on(plannedItemsEl[i], 'dxdragenter', e => {
         e.preventDefault();
         e.stopPropagation();
-        e.target.classList.add('dx-scheduler-appointment-move');
+
+        const x = e.movementX;
+        movementX = movementX - x;
+        if (movementX  > 0) {
+          e.target.classList.add('dx-scheduler-appointment-move-right');
+        } else {
+          e.target.classList.add('dx-scheduler-appointment-move');
+        }
         /*
         const f = this.findParentBySelector(
           e.target,
@@ -564,5 +573,33 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     const offset = Scrollable.getInstance(this.scheduler.instance.element().querySelector('.dx-scrollable')).scrollOffset();
     this.scheduler.instance.repaint();
     Scrollable.getInstance(this.scheduler.instance.element().querySelector('.dx-scrollable')).scrollTo(offset);
+  }
+
+  getPosition(el) {
+    let xPos = 0;
+    let yPos = 0;
+console.log(el);
+    while (el) {
+
+      if (el.tagName === 'BODY') {
+        // deal with browser quirks with body/window/document and page scroll
+        const xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+        const yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+        xPos += (el.offsetLeft - xScroll + el.clientLeft);
+        yPos += (el.offsetTop - yScroll + el.clientTop);
+      } else {
+        // for all other non-BODY elements
+        xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+      }
+
+
+      el = el.offsetParent;
+    }
+    return {
+      x: xPos,
+      y: yPos
+    };
   }
 }

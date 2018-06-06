@@ -7,10 +7,10 @@
 https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
 */
 ::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
-    height: 90px;
+    height: 100px;
 }
 ::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
-    width: 90px;
+    width: 100px;
 }
 
 .cellDurationContainer{
@@ -53,9 +53,14 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 }
 
 ::ng-deep .dx-scheduler-appointment-move {
-    left:  20px;
-   transition: 0.1s;
+   left:  50px;
+   transition: 0.15s;
 }
+
+::ng-deep .dx-scheduler-appointment-move-right{
+    left: -50px;
+    transition: 0.15s;
+ }
 
 .toolbar {   
     margin-top: 5px;
