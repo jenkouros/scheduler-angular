@@ -141,9 +141,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE) {
         // this.scrollScheduler();
       e.component.repaint();
-      /*Scrollable.getInstance(
+      Scrollable.getInstance(
         e.component.element().querySelector('.dx-scrollable')
-      ).scrollTo(this.offset);*/
+      ).scrollTo(this.offset);
     }
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE
     ) {
