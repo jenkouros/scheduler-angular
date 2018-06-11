@@ -406,7 +406,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
                 draggedData.description,
                 draggedData.subItem.name,
                 cellData.startDate,
-                moment(cellData.startDate)
+                moment(new Date(cellData.startDate))
                   .add(duration, 'minutes')
                   .toDate(),
                 draggedData.containers,
