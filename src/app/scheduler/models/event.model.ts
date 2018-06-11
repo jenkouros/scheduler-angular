@@ -9,10 +9,25 @@ export interface ContainerEvents {
     dateTo: Date;
 }
 
+export interface PlanItemsLoadRequest {
+    fromDate: Date;
+    toDate: Date;
+    containerIds: number[];
+}
+
+export interface PlannedEventMove {
+    idPlanItem: number;
+    idPrePlanItem: number;
+    timeStart: Date;
+    timeEnd: Date;
+    planItemMoveStatus: PlanItemMoveStatusEnum;
+}
+
 export class PlannedEvent {
     id: number;
     idPrePlanItem: number;
     idPlan: number;
+    idItemBatch: number;
     containerId: number;
     idSubItemContainer: number;
     idPlanItemStatus: number;
@@ -79,6 +94,7 @@ export class PlannedEvent {
         result.id = event.idPlanItem;
         result.idPrePlanItem = event.idPrePlanItem;
         result.idPlan = event.idPlan;
+        result.idItemBatch = event.idItemBatch;
         result.containerId = event.idContainer;
         result.idSubItemContainer = event.idSubItemContainer;
         result.idPlanItemStatus = event.idPlanItemStatus;
@@ -132,10 +148,12 @@ export class PlannedEventSimple {
     }
 }
 
-export interface PlanItemsLoadRequest {
-    fromDate: Date;
-    toDate: Date;
-    containerIds: number[];
+export enum PlanItemMoveStatusEnum {
+    Unchanged = 1,
+    Added = 2,
+    Removed = 3,
+    Moved = 4
 }
+
 
 

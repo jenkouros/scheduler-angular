@@ -26,7 +26,9 @@ import * as fromStore from '../../../store';
 import { PlanViewerItemComponent } from '../../../components/index';
 import {
   PlannedEvent,
-  PlanItemsLoadRequest
+  PlanItemsLoadRequest,
+  PlannedEventMove,
+  PlanItemMoveStatusEnum
 } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
@@ -49,6 +51,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Input() selectedContainers: ContainerSelect[] = [];
   @Input() planItems: PlannedEvent[] = [];
   @Input() preplanItemDragEnd: boolean;
+  @Input() timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
 
   @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
   @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
@@ -58,6 +61,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Output() removeBlankSpace = new EventEmitter<number[]>();
   @Output() toggleLock = new EventEmitter<PlannedEvent>();
   @Output() showMassLockPopup = new EventEmitter<number[]>();
+  @Output() resolveSequence = new EventEmitter<number>();
+  @Output() clearTimeSuggestion = new EventEmitter();
 
   currentDate: Date = new Date();
   schedulerResources: any = [];
@@ -97,6 +102,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       this.visible = this.selectedContainers.length > 0;
       this.schedulerResources = this.getResources(this.selectedContainers);
     }
+    // if (changes.timeUpdateSuggestion) {
+
+    // }
     /*
     if (changes.preplanItemDragEnd) {
       // this.preplanItemDragEnd = changes.preplanItemDragEnd.currentValue;
@@ -558,6 +566,32 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     this.showMassLockPopup.emit(this.selectedContainerIds);
   }
 
+  onResolveSequence(idItemBatch: number) {
+    this.resolveSequence.emit(idItemBatch);
+  }
+
+  onClearTimeSuggestion() {
+    this.clearTimeSuggestion.emit();
+  }
+
+  getPlanItemClass(planItemMoveStatus: PlanItemMoveStatusEnum) {
+    switch (planItemMoveStatus) {
+      case PlanItemMoveStatusEnum.Unchanged: {
+        return 'alert-primary';
+      }
+      case PlanItemMoveStatusEnum.Added: {
+        return 'alert-success';
+      }
+      case PlanItemMoveStatusEnum.Moved: {
+        return 'alert-warning';
+      }
+      case PlanItemMoveStatusEnum.Removed: {
+        return 'alert-danger';
+      }
+
+    }
+  }
+
   private scrollScheduler() {
     this.isScrollInProgress = true;
     this.scheduler.instance.repaint();
@@ -583,7 +617,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   getPosition(el) {
     let xPos = 0;
     let yPos = 0;
-console.log(el);
+    console.log(el);
     while (el) {
 
       if (el.tagName === 'BODY') {

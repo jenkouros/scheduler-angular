@@ -34,6 +34,7 @@ import { ContainersEffects } from './store/effects/containers.effect';
 import { EventsEffects } from './store/effects/events.effect';
 import { PreplanitemEffects } from './store/effects/preplanitem.effect';
 import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
+import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
 
 
 @NgModule({
@@ -65,7 +66,9 @@ import { PreplanitemDraggableDirective } from './components/preplanitem-item/pre
     declarations: [
         ...fromContainers.containers,
         ...fromComponents.components,
-        PreplanitemDraggableDirective],
+        PreplanitemDraggableDirective,
+        PlanItemStatusPipe
+    ],
     providers: [
         // ...fromServices.services
         ItemsService,

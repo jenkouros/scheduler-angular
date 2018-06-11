@@ -40,6 +40,10 @@ export const getEventsForContainers = (containerIds: number[]) => createSelector
     }
 );
 
+export const getItemBatchTimeUpdateSuggestion = createSelector(
+    getEventsState,
+    state => state.timeUpdateSuggestion
+);
 
 export const getEventsUiState = createSelector(
     getEventsState,

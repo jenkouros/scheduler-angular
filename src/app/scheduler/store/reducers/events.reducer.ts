@@ -1,15 +1,17 @@
 import * as fromAction from '../actions/events.action';
-import { ContainerEvents, PlannedEvent } from '../../models/event.model';
+import { ContainerEvents, PlannedEvent, PlannedEventMove } from '../../models/event.model';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
     loading: boolean;
     loaded: boolean;
+    timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
     uiState: {
         massLockPopup: {
             visibility: boolean,
             massLockPopupContainers: number[]
-        }
+        },
+        idItemBatchTimeUpdateSuggestion: number | null
     };
 }
 
@@ -17,11 +19,13 @@ export const initialState: EventsState = {
     entities: {},
     loaded: false,
     loading: false,
+    timeUpdateSuggestion: null,
     uiState: {
         massLockPopup: {
             visibility: false,
             massLockPopupContainers: []
-        }
+        },
+        idItemBatchTimeUpdateSuggestion: null
     }
 };
 
@@ -31,21 +35,6 @@ export function eventsReducer(
 ): EventsState {
     switch (action.type) {
         case fromAction.LOAD_EVENTS: {
-            // const events = { ...state.entities };
-            // for (const i of action.payload.containerIds) {
-            //     const containerEvents: ContainerEvents = {
-            //         ...events[i],
-            //         dateFrom: action.payload.dateFrom,
-            //         dateTo: action.payload.dateTo,
-            //         events: events[i] ? [...events[i].events] : []
-            //     };
-            //     events[i] = containerEvents;
-            // }
-            // return {
-            //     ...state,
-            //     loading: true,
-            //     entities: events
-            // };
             return {
                 ...state,
                 loading: true
@@ -107,24 +96,6 @@ export function eventsReducer(
                 loading: true
             };
         }
-        // case fromAction.UPDATE_EVENT_SUCCESS:
-        // case fromAction.CREATE_EVENT_SUCCESS: {
-        //     const events =  { ...state.entities };
-
-        //     // if (!events[action.payload.containerId]) {
-        //     //     events[action.payload.containerId] = <any>{};
-        //     // }
-
-        //     events[action.payload.containerId] = {
-        //         ...events[action.payload.containerId],
-        //         events: [...events[action.payload.containerId].events || [], action.payload]
-        //     };
-
-        //     return {
-        //         ...state,
-        //         entities: events
-        //     };
-        // }
         case fromAction.CREATE_EVENT_FAIL: {
             return {
                 ...state,
@@ -156,7 +127,6 @@ export function eventsReducer(
                 }
             };
         }
-
         case fromAction.REMOVE_EVENTS: {
             const { [action.payload]: removed, ...events} = state.entities;
             console.log(action.payload);
@@ -173,6 +143,34 @@ export function eventsReducer(
                 entities: {},
                 loaded: false,
                 loading: false
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idItemBatchTimeUpdateSuggestion: action.payload
+                }
+            };
+        }
+        case fromAction.CLEAR_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idItemBatchTimeUpdateSuggestion: null
+                },
+                timeUpdateSuggestion: null
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION_SUCCESS: {
+            const suggestion: { [idPrePlanItem: number]: PlannedEventMove } = {};
+            action.payload.forEach(move => suggestion[move.idPrePlanItem] = move);
+
+            return {
+                ...state,
+                timeUpdateSuggestion: suggestion
             };
         }
 

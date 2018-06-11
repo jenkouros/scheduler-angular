@@ -4,6 +4,7 @@ export interface PlannedEventServer {
     idPlanItem: number;
     idPrePlanItem: number;
     idPlan: number;
+    idItemBatch: number;
     idContainer: number;
     idSubItemContainer: number;
     idPlanItemStatus: number;

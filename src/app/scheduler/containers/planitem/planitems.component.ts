@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
-import { PlannedEvent, PlanItemsLoadRequest } from '../../models/event.model';
+import { PlannedEvent, PlanItemsLoadRequest, PlannedEventMove } from '../../models/event.model';
 import { PreplanItem } from '../../models/preplanitem.dto';
 import { Observable } from 'rxjs';
 import { ContainerSelect } from '../../models/container.viewModel';
@@ -15,13 +15,16 @@ import { ContainerSelect } from '../../models/container.viewModel';
             [selectedContainers]="selectedContainers$ | async"
             [planItems]="planItems$ | async"
             [preplanItemDragEnd]="prePlanItemDragEnd$ | async"
+            [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
             (removeBlankSpace)="onRemoveBlankSpace($event)"
             (toggleLock)="onToggleLock($event)"
             (showMassLockPopup)="onShowMassLockPopup($event)"
             (planItemLoad)="onPlanItemLoad($event)"
             (planItemCreate)="onPlanItemCreate($event)"
             (planItemUpdate)="onPlanItemUpdate($event)"
-            (planItemDelete)="onPlanItemDelete($event)">
+            (planItemDelete)="onPlanItemDelete($event)"
+            (resolveSequence)="onResolveSequence($event)"
+            (clearTimeSuggestion)="onClearTimeSuggestion()">
         </app-plan-viewer>
     `
 })
@@ -30,6 +33,8 @@ export class PlanitemsComponent implements OnInit {
     selectedContainers$: Observable<ContainerSelect[]>;
     planItems$: Observable<PlannedEvent[]>;
     prePlanItemDragEnd$: Observable<boolean>;
+    timeUpdateSuggestion$: Observable<{[idPrePlanItem: number]: PlannedEventMove } | null>;
+
     private _containers: ContainerSelect[] = [];
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
@@ -55,6 +60,7 @@ export class PlanitemsComponent implements OnInit {
         //         this._containers = [];
         //     }
         // });
+        this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
         this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
     }
 
@@ -92,5 +98,13 @@ export class PlanitemsComponent implements OnInit {
 
     onShowMassLockPopup(containerIds: number[]) {
         this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: containerIds, visibility: true }));
+    }
+
+    onResolveSequence(idItemBatch: number) {
+        this.store.dispatch(new fromStore.GetItemBatchTimeUpdateSuggestion(idItemBatch));
+    }
+
+    onClearTimeSuggestion() {
+        this.store.dispatch(new fromStore.ClearItemBatchTimeUpdateSuggestion());
     }
 }
