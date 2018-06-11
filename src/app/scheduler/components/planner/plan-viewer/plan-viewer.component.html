@@ -53,8 +53,20 @@
     <div *dxTemplate="let plannedEvent of 'tooltip-template'">
             <h4>#{{ plannedEvent.subItemCode }} {{ plannedEvent.subItemName }}</h4>
             <hr class="redline">
+
         <div class='event-tooltip text-left'>
-            
+            <div *ngIf="plannedEvent.isLocked" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <fa-icon [icon]="faLock"></fa-icon> Operacija je zaklenjena.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div *ngIf="plannedEvent.sequenceWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <fa-icon [icon]="faWarning"></fa-icon> Operacije niso razporejene zaporedno.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             <h6>Delovni nalog</h6>
             <table class="table">
                 <tr>

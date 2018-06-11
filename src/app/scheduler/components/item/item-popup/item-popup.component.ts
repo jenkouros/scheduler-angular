@@ -74,6 +74,7 @@ export class ItemPopupComponent implements OnChanges {
 
   hideItemInfo() {
     this.close.emit();
+    this.createPreplanItemsForm.reset();
   }
 
   onSubmit() {

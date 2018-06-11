@@ -36,6 +36,8 @@ import { ToggleMassLockPopup } from '../../../store';
 import * as fromSchedulerModel from '../../../models/planner.model';
 import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
 
+import { faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-plan-viewer',
   templateUrl: './plan-viewer.component.html',
@@ -70,6 +72,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   selectedEndDate: Date;
   visible = false;
   isScrollInProgress = false;
+
+  faLock = faLock;
+  faWarning = faExclamationTriangle;
 
   // currentHour: number;
   offset: { top: number; left: number } = { top: 0, left: 0 };
