@@ -9,9 +9,7 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 ::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
     height: 100px;
 }
-::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
-    width: 100px;
-}
+
 
 .cellDurationContainer{
     float: right;
