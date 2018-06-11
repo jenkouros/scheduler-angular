@@ -306,14 +306,15 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       .scheduler).element.nativeElement.querySelectorAll(
       '.dx-scheduler-appointment'
     );
-    let movementX = 0;
-    for (let i = 0; i < plannedItemsEl.length; i++) {
+      for (let i = 0; i < plannedItemsEl.length; i++) {
       events.off(plannedItemsEl[i], 'dxdragenter');
-      // events.off(plannedItemsEl[i], 'dxdragstart');
-       events.on(plannedItemsEl[i], 'dxdragstart', (e) => {
-          movementX = e.movementX;
-      });
       events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
+        this.removeAppointmentCss(
+          e.target,
+          'dx-scheduler-appointment-move'
+        );
+      });
+      events.on(plannedItemsEl[i], 'dxdrop', (e) => {
         this.removeAppointmentCss(
           e.target,
           'dx-scheduler-appointment-move'
@@ -323,14 +324,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       events.on(plannedItemsEl[i], 'dxdragenter', e => {
         e.preventDefault();
         e.stopPropagation();
+        e.target.classList.add('dx-scheduler-appointment-move');
 
-        const x = e.movementX;
-        movementX = movementX - x;
-        if (movementX  > 0) {
-          e.target.classList.add('dx-scheduler-appointment-move-right');
-        } else {
-          e.target.classList.add('dx-scheduler-appointment-move');
-        }
         /*
         const f = this.findParentBySelector(
           e.target,
