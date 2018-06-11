@@ -51,14 +51,10 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 }
 
 ::ng-deep .dx-scheduler-appointment-move {
-   left:  50px;
+   /*left:  50px;*/
+   opacity: 0.2;
    transition: 0.15s;
 }
-
-::ng-deep .dx-scheduler-appointment-move-right{
-    left: -50px;
-    transition: 0.15s;
- }
 
 .toolbar {   
     margin-top: 5px;

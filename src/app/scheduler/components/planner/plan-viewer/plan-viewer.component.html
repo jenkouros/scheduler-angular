@@ -26,13 +26,27 @@
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
-<dx-scheduler id="scheduler" [dataSource]="planItems" [views]="['day', 'week', 'timelineDay',  'timelineWeek', 'timelineWorkWeek']"
-    [(currentView)]="currentView" [groups]="['containerId']" [resources]="schedulerResources" [currentDate]="currentDate" [crossScrollingEnabled]="true"
-    [(cellDuration)]="cellDuration" [visible]="visible" appointmentTemplate="appointment-template" (onOptionChanged)="optionChanged($event)"
-    (onContentReady)="onContentReady($event)" (onAppointmentUpdating)="onAppointmentUpdating($event)" (onAppointmentDeleting)="onAppointmentDeleting($event)"
+<dx-scheduler id="scheduler" 
+    [dataSource]="planItems"
+    [views]="['day', 'week', 'timelineDay',  'timelineWeek']" 
+    [(currentView)]="currentView"         
+    [groups]="['containerId']" 
+    [resources]="schedulerResources"
+    [currentDate]="currentDate"        
+    [crossScrollingEnabled]="true" 
+    [(cellDuration)]="cellDuration"
+    [visible] = "visible"
+    appointmentTemplate="appointment-template" 
+    (onOptionChanged)="optionChanged($event)"
+    (onContentReady)="onContentReady($event)" 
+    (onAppointmentUpdating)="onAppointmentUpdating($event)"
+    (onAppointmentDeleting)="onAppointmentDeleting($event)"    
+    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
     (onAppointmentClick)="onClearTimeSuggestion()"
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)" (onCellClick)="onCellClick($event)" appointmentTooltipTemplate="tooltip-template">
-
+    (onCellClick)="onCellClick($event)"
+    appointmentTooltipTemplate="tooltip-template"    
+    >
+   
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
         <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>
     </div>
