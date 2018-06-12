@@ -61,7 +61,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Output() removeBlankSpace = new EventEmitter<number[]>();
   @Output() toggleLock = new EventEmitter<PlannedEvent>();
   @Output() showMassLockPopup = new EventEmitter<number[]>();
-  @Output() resolveSequence = new EventEmitter<number>();
+  @Output() resolveSequence = new EventEmitter<PlannedEventMove[]>();
+  @Output() getResolveSequenceSuggestion = new EventEmitter<number>();
   @Output() clearTimeSuggestion = new EventEmitter();
 
   currentDate: Date = new Date();
@@ -83,9 +84,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   // currentHour: number;
   offset: { top: number; left: number } = { top: 0, left: 0 };
-  constructor(private store: Store<fromStore.SchedulerState>) {
-    // this.currentHour = this.currentDate.getHours();
-  }
 
   ngOnChanges(changes): void {
     if (changes.planItems) {
@@ -561,8 +559,22 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     this.showMassLockPopup.emit(this.selectedContainerIds);
   }
 
-  onResolveSequence(idItemBatch: number) {
-    this.resolveSequence.emit(idItemBatch);
+  onGetResolveSequenceSuggestion(idItemBatch: number) {
+    this.getResolveSequenceSuggestion.emit(idItemBatch);
+  }
+  onResolveSequence() {
+    if (this.timeUpdateSuggestion === null) {
+      this.onClearTimeSuggestion();
+      return;
+    }
+    const request: PlannedEventMove[] = [];
+    for (const key in this.timeUpdateSuggestion) {
+      if (this.timeUpdateSuggestion.hasOwnProperty(key)) {
+        request.push(this.timeUpdateSuggestion[key]);
+      }
+    }
+    this.resolveSequence.emit(request);
+    this.scheduler.instance.hideAppointmentTooltip();
   }
 
   onClearTimeSuggestion() {

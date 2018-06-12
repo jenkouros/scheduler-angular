@@ -83,6 +83,9 @@ export class DeleteEventFail implements Action {
 export const UPDATE_EVENT = '[Event] Update an event';
 export const UPDATE_EVENT_SUCCESS = '[Event] Update an event - success';
 export const UPDATE_EVENT_FAIL = '[Event] Update an event - fail';
+export const UPDATE_EVENTS = '[Event] Update events';
+export const UPDATE_EVENTS_SUCCESS = '[Event] Update events - success';
+export const UPDATE_EVENTS_FAIL = '[Event] Update events - fail';
 
 export class UpdateEvent implements Action {
     readonly type = UPDATE_EVENT;
@@ -96,7 +99,20 @@ export class UpdateEventSuccess implements Action {
 
 export class UpdateEventFail implements Action {
     readonly type = UPDATE_EVENT_FAIL;
-    constructor() {}
+}
+
+export class UpdateEvents implements Action {
+    readonly type = UPDATE_EVENTS;
+    constructor(public payload: PlannedEventMove[]) {}
+}
+
+export class UpdateEventsSuccess implements Action {
+    readonly type = UPDATE_EVENTS_SUCCESS;
+    // constructor(public payload: PlannedEvent) {}
+}
+
+export class UpdateEventsFail implements Action {
+    readonly type = UPDATE_EVENTS_FAIL;
 }
 
 export const REMOVE_EVENTS = '[Event] Remove DeSelected Containers Events';
@@ -149,4 +165,7 @@ export type EventsAction =
     | RemoveEvents
     | GetItemBatchTimeUpdateSuggestion
     | GetItemBatchTimeUpdateSuggestionSuccess
-    | ClearItemBatchTimeUpdateSuggestion;
+    | ClearItemBatchTimeUpdateSuggestion
+    | UpdateEvents
+    | UpdateEventsFail
+    | UpdateEventsSuccess;

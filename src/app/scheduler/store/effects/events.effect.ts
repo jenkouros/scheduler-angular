@@ -112,6 +112,16 @@ export class EventsEffects {
     )
   );
 
+  @Effect()
+  updateEvents$ = this.actions$.ofType(fromAction.UPDATE_EVENTS).pipe(
+    switchMap((action: fromAction.UpdateEvents) =>
+      this.eventsService.updateEvents(action.payload).pipe(
+        map(event => new fromAction.UpdateEventsSuccess()),
+        catchError(error => of(new fromAction.UpdateEventsFail()))
+      )
+    )
+  );
+
   /** DELETE EVENTS */
   @Effect()
   deleteEvent$ = this.actions$.ofType(fromAction.DELETE_EVENT).pipe(

@@ -63,7 +63,7 @@
                 </div>
                 <div *ngIf="plannedEvent.sequenceWarning" class="alert alert-warning" role="alert">
                     <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Operacije niso razporejene zaporedno.
-                    <a (click)="onResolveSequence(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
+                    <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
                 </div>
                 <h6>Delovni nalog</h6>
                 <table class="table">
@@ -128,7 +128,8 @@
                             <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
                         </tr>
                     </table> -->
-                    <button (click)="onClearTimeSuggestion()">Prekliči</button>
+                    <button class="btn btn-default" (click)="onClearTimeSuggestion()">Prekliči</button>
+                    <button class="btn btn-success" (click)="onResolveSequence()">Potrdi</button>
             </div>
         </div>
     </div>

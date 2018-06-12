@@ -23,6 +23,7 @@ import { ContainerSelect } from '../../models/container.viewModel';
             (planItemCreate)="onPlanItemCreate($event)"
             (planItemUpdate)="onPlanItemUpdate($event)"
             (planItemDelete)="onPlanItemDelete($event)"
+            (getResolveSequenceSuggestion)="onGetResolveSequenceSuggestion($event)"
             (resolveSequence)="onResolveSequence($event)"
             (clearTimeSuggestion)="onClearTimeSuggestion()">
         </app-plan-viewer>
@@ -100,7 +101,11 @@ export class PlanitemsComponent implements OnInit {
         this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: containerIds, visibility: true }));
     }
 
-    onResolveSequence(idItemBatch: number) {
+    onResolveSequence(eventMoveList: PlannedEventMove[]) {
+        this.store.dispatch(new fromStore.UpdateEvents(eventMoveList));
+    }
+
+    onGetResolveSequenceSuggestion(idItemBatch: number) {
         this.store.dispatch(new fromStore.GetItemBatchTimeUpdateSuggestion(idItemBatch));
     }
 

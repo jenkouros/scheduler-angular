@@ -2,7 +2,7 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent, PlannedEventMove } from '../models/event.model';
+import { PlannedEvent, PlannedEventMove, PlanItemPutRequest, PlanItemMoveStatusEnum } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -80,6 +80,26 @@ export class EventsService {
                 // return PlannedEvent.fromServer(response.result);
             } )
         );
+    }
+
+    updateEvents(changedEvents: PlannedEventMove[]) {
+        const request = changedEvents
+            .filter(i => i.planItemMoveStatus !== PlanItemMoveStatusEnum.Unchanged)
+            .map(i => <PlanItemPutRequest>{
+                idContainer: i.idContainer,
+                idPlanItem: i.idPlanItem,
+                timeEnd: moment(i.timeEnd).format(),
+                timeStart: moment(i.timeStart).format()
+            });
+        return this.http.put<ApiResponse<void>>(environment.apiUrl + '/planitems/planitemslist', request)
+            .pipe(
+                map(response => {
+                    if (response.code !== ApiResponseResult.success) {
+                        throw response.messages;
+                    }
+                    return true;
+                })
+            );
     }
 
     deleteEvent(event: PlannedEvent): Observable<boolean> {

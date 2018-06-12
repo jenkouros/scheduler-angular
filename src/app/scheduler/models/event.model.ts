@@ -15,9 +15,18 @@ export interface PlanItemsLoadRequest {
     containerIds: number[];
 }
 
+export interface PlanItemPutRequest {
+    idPlanItem: number;
+    idContainer: number;
+    timeStart: Date | string;
+    timeEnd: Date | string;
+    comment?: string;
+}
+
 export interface PlannedEventMove {
     idPlanItem: number;
     idPrePlanItem: number;
+    idContainer: number;
     timeStart: Date;
     timeEnd: Date;
     planItemMoveStatus: PlanItemMoveStatusEnum;
