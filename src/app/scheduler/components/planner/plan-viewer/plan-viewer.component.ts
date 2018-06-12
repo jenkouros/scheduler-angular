@@ -122,7 +122,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       '.dx-scheduler-appointment'
     );
     for (let i = 0; i < plannedItemsEl.length; i++) {
-     plannedItemsEl[i].classList.remove(className, className + '-right');
+     plannedItemsEl[i].classList.remove(className);
     }
   }
   ngAfterViewInit() {
@@ -322,12 +322,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       for (let i = 0; i < plannedItemsEl.length; i++) {
       events.off(plannedItemsEl[i], 'dxdragenter');
       events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
-        this.removeAppointmentCss(
-          e.target,
-          'dx-scheduler-appointment-move'
-        );
+        setTimeout(() => {
+          this.removeAppointmentCss(
+                    e.target,
+                    'dx-scheduler-appointment-move'
+                  );
+        });
       });
-      events.on(plannedItemsEl[i], 'dxdrop', (e) => {
+      events.on(plannedItemsEl[i], 'dxdragend', (e) => {
         this.removeAppointmentCss(
           e.target,
           'dx-scheduler-appointment-move'
@@ -335,8 +337,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       });
 
       events.on(plannedItemsEl[i], 'dxdragenter', e => {
-        e.preventDefault();
-        e.stopPropagation();
         e.target.classList.add('dx-scheduler-appointment-move');
 
         /*
