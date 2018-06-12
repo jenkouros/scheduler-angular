@@ -52,7 +52,7 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 
 ::ng-deep .dx-scheduler-appointment-move {
     background-color: #fff3cd;    
-    height: 5px !important;  
+    height: 10px !important;  
     transition: 0.5s;
 }
 
