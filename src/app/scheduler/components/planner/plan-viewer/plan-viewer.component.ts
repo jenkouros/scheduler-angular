@@ -321,6 +321,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     );
       for (let i = 0; i < plannedItemsEl.length; i++) {
       events.off(plannedItemsEl[i], 'dxdragenter');
+      /*
+      events.off(plannedItemsEl[i], 'dxdragleave');
       events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
         setTimeout(() => {
           this.removeAppointmentCss(
@@ -329,6 +331,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
                   );
         });
       });
+      */
       events.on(plannedItemsEl[i], 'dxdragend', (e) => {
         this.removeAppointmentCss(
           e.target,
