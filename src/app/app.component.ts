@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
 import { environment } from '../environments/environment';
 
+interface Nav {
+  link: string;
+  name: string;
+  exact: boolean;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,4 +15,17 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
   title = 'app';
+
+  navigation: Nav[] = [
+    {
+      link: '/scheduler',
+      name: 'Planiranje',
+      exact: false
+    },
+    {
+      link: '/worktime',
+      name: 'Urnik strojev',
+      exact: true
+    }
+  ];
 }
