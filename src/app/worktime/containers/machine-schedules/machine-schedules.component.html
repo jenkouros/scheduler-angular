@@ -1,0 +1,15 @@
+<dx-toolbar [items]="items"></dx-toolbar>
+
+<div class="icon-bar" *ngFor="let item of schedules" >
+            <app-schedule-item 
+            [scheduleData]="item" 
+            (selectSchedule)="handleSelect($event)"
+            [selected]="selectedId===item.id">
+        </app-schedule-item>
+    </div>
+<!--
+<app-schedule-item *ngFor="let item of schedules" 
+    [scheduleData]="item" 
+    (selectSchedule)="handleSelect($event)"
+    [selected]="selectedId===item.id">
+</app-schedule-item>-->

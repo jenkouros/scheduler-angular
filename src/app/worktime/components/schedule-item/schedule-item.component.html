@@ -1,0 +1,10 @@
+<!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': selected}" (click)="onSelectShedule(scheduleData.id)">
+  {{scheduleData.timeStart | date:'shortDate'}} - {{scheduleData.timeEnd | date:'shortDate'}}
+</button>
+-->
+<div class="toolbar-item" [ngClass]="{'active': selected}" (click)="onSelectShedule(scheduleData.id)">
+    {{scheduleData.timeStart | date:'shortDate'}} - {{scheduleData.timeEnd | date:'shortDate'}}
+    <div *ngIf="selected" class="toolbar-icons">
+      <fa-icon class="cursor-pointer" size="md" [icon]="checkIcon"></fa-icon>
+    </div>
+</div>
