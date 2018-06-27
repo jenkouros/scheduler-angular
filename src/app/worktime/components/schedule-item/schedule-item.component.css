@@ -1,0 +1,26 @@
+ 
+  .toolbar-item:not(.active):hover {    
+    background-color: #d4d9dd;
+  }
+  
+  .active {
+    background-color: #084578;
+    color: #f0f0f0;  
+  }
+
+  .toolbar-item {
+    display: flex; 
+    flex-direction: row;
+    text-align: left;
+    padding: 5px; 
+    cursor: pointer;
+    border:1px solid white ;
+    height: 45px;
+    align-items: center;
+    /*border-radius: 5px;*/
+  }
+
+
+  .toolbar-icons {
+    margin-left: auto;
+  }

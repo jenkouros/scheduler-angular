@@ -6,7 +6,8 @@ import { SchedulerComponent } from './scheduler/components';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/scheduler/planitems', pathMatch: 'full' },
-    { path: 'scheduler', loadChildren: './scheduler/scheduler.module#SchedulerModule' }
+    { path: 'scheduler', loadChildren: './scheduler/scheduler.module#SchedulerModule' },
+    { path: 'worktime', loadChildren: './worktime/worktime.module#WorktimeModule' }
 ];
 
 @NgModule({

@@ -16,5 +16,10 @@ export interface Rule {
 
 export interface RuleRepeatOption {
     id: number;
-    
+}
+
+export interface Schedule {
+    id: number;
+    timeStart: Date;
+    timeEnd: Date;
 }
