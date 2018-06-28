@@ -1,0 +1,20 @@
+.toolbar {
+  background-color: #eeeeee;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  cursor: pointer;
+  align-items: center;
+  padding-top: 5px;
+  margin-bottom: 10px;
+}
+
+.toolbar-desc {
+  padding-left: 10px;
+}
+.toolbar-icons {
+  margin-left: auto;
+}
+.btn {
+  margin: 1px;
+}
