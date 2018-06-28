@@ -1,0 +1,56 @@
+<app-popup 
+  title="Urejanje operacije" 
+  [confirmCallback]="onFormSubmit"
+  [cancelCallback]="onFormHide"
+  (visibilityChanged)="onPopupVisibilityChanged($event)"
+  [visible]="visible" 
+  [width]="'550px'" 
+  [height]="'650px'">
+  <div *ngIf="planItem">
+    <form [formGroup]="planItemEditForm">
+      <app-field label="Operacija" [isStatic]="true">
+        {{ planItem!.subItemName }}
+      </app-field>
+      <app-field label="Količina" [isStatic]="true">
+        {{ planItem!.quantity }} {{ planItem!.unitQuantity }}
+      </app-field>
+      <app-field label="Delovno mesto">
+          <!-- [value]="planItem!.containerId" -->
+        <dx-select-box
+          
+          [items]="containers"
+          displayExpr="container.displayExpression"
+          valueExpr="container.id"
+          formControlName="idContainer"
+        ></dx-select-box>
+      </app-field>
+      <app-field label="Začetek priprave">
+        <app-datebox type="datetime" formControlName="preparationStartTime" ></app-datebox>
+      </app-field>
+      <div class="ml-5">
+        <app-field label="Čas priprave" [isStatic]="true">
+          {{ preparationDurationControl.value }}
+        </app-field>
+        <app-field label="Zakleni normativ" [isStatic]="true">
+          <dx-check-box formControlName="isPreparationTimeLocked"></dx-check-box>
+        </app-field>
+      </div>
+      <app-field label="Začetek izdelave">
+        <app-datebox type="datetime" formControlName="executionStartTime"></app-datebox>
+      </app-field>
+      <div class="ml-5">
+        <app-field label="Čas izdelave" [isStatic]="true">
+          {{ executionDurationControl.value }}
+        </app-field>
+        <app-field label="Zakleni normativ" [isStatic]="true">
+          <dx-check-box formControlName="isExecutionTimeLocked"></dx-check-box>
+        </app-field>
+      </div>
+
+      <app-field label="Konec izdelave">
+        <app-datebox type="datetime" formControlName="executionEndTime"></app-datebox>
+      </app-field>
+    </form>
+
+  </div>
+</app-popup>

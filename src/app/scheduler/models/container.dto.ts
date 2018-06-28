@@ -4,6 +4,9 @@ export class Container {
     id: number;
     code: string;
     name: string;
+    get displayExpression() {
+        return `${this.code} ${this.name}`;
+    }
 
     static fromServer(containerServer: ContainerServer): Container {
         const result = new Container();

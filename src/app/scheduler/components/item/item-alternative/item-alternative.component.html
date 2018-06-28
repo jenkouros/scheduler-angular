@@ -4,7 +4,8 @@
     <div class="row">
         <app-subitem 
             class="col-4 mb-3" 
-            [subItem]="subItem" 
+            [subItem]="subItem"
+            [quantity]="quantity"
             *ngFor="let subItem of alternative.planSubItems">
         </app-subitem>
     </div>

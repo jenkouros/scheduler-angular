@@ -10,9 +10,11 @@ export class SignalRService {
     init() {
         return new Promise((resolve, reject) => {
             this._hubConnection = new HubConnectionBuilder()
-            .withUrl(environment.signalRUrl, {
-                transport: HttpTransportType.LongPolling
-            })
+            .withUrl(environment.signalRUrl
+                , {
+                    transport: HttpTransportType.LongPolling
+                }
+            )
             .configureLogging(LogLevel.Information)
             .build();
 
@@ -50,11 +52,13 @@ export class SignalRService {
     }
 
     containerSubscribe(containerIds: number[], subscribe = true) {
+        console.log('Container subscribe: ' + containerIds.join(',') + ' , with subscibe: ' + subscribe);
         this._hubConnection.invoke(subscribe ? 'Subscribe' : 'Unsubscribe', containerIds)
             .catch(err => console.log(err.toString()));
     }
 
     removeSubscriptions() {
+        console.log('Remove subscription');
         this._hubConnection.invoke('RemoveSubscriptions', false)
             .catch(err => console.log(err.toString()));
     }

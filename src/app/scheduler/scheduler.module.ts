@@ -19,7 +19,8 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxFormModule
+    DxFormModule,
+    DxCheckBoxModule
 } from 'devextreme-angular';
 
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,8 @@ import { EventsEffects } from './store/effects/events.effect';
 import { PreplanitemEffects } from './store/effects/preplanitem.effect';
 import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
+import { TimeHelper } from './helpers/time.helper';
+import { PlanViewerFormHelper } from './components/planner/plan-viewer/plan-viewer.form.helper';
 
 
 @NgModule({
@@ -61,7 +64,8 @@ import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemsta
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxFormModule
+        DxFormModule,
+        DxCheckBoxModule
     ],
     declarations: [
         ...fromContainers.containers,

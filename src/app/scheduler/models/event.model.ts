@@ -18,8 +18,18 @@ export interface PlanItemsLoadRequest {
 export interface PlanItemPutRequest {
     idPlanItem: number;
     idContainer: number;
-    timeStart: Date | string;
-    timeEnd: Date | string;
+    timePreparationStart: Date | string;
+    timeExecutionStart?: Date | string;
+    timeExecutionEnd: Date | string;
+    comment?: string;
+}
+
+export interface PlanItemCreateRequest {
+    idPrePlanItem: number;
+    idContainer: number;
+    timePreparationStart: Date | string;
+    timeExecutionStart: Date | string;
+    timeExecutionEnd: Date | string;
     comment?: string;
 }
 
@@ -45,17 +55,34 @@ export class PlannedEvent {
     description: string;
     itemCode: string;
     itemName: string;
+    articleCode: string;
+    articleName: string;
     subItemCode: string;
     subItemName: string;
-    timeStartPreparation: Date;
-    startDate: Date;
-    endDate: Date;
+    // timeStartPreparation: Date;
+    timeStartExecution: Date;
+    // timeEndExecution: Date;
     title: string;
     containers: SubItemContainer[];
     sequencePlanItems: PlannedEventSimple[];
     isLocked: boolean;
     isPlanned: boolean;
     preplanItem: PreplanItem | null;
+    startDate: Date;
+    endDate: Date;
+
+    get timeEndExecution() {
+        return this.endDate;
+    }
+    set timeEndExecution(newValue) {
+        this.endDate = newValue;
+    }
+    get timeStartPreparation() {
+        return this.startDate;
+    }
+    set timeStartPreparation(newValue) {
+        this.startDate = newValue;
+    }
 
     get sequenceWarning(): boolean {
         if (!this.sequencePlanItems) {
@@ -76,10 +103,15 @@ export class PlannedEvent {
 
     static createFromPreplanitem(idPrePlanItem: number,
         idContainer: number,
-        title: string, description: string, subItemName: string,
-        startDate: Date,
-        endDate: Date,
+        title: string,
+        description: string,
+        subItemName: string,
+        startPreparationDate: Date,
+        startExecutionDate: Date,
+        endExecutionDate: Date,
         subItemContainers: SubItemContainer[],
+        quantity: number,
+        unitQuantity: string,
         // preplanItem: PreplanItem | null = null,
         isPlanned: boolean = true
     ) {
@@ -89,10 +121,12 @@ export class PlannedEvent {
         result.title = title;
         result.subItemName = subItemName;
         result.description = description;
-        result.startDate = startDate;
-        result.endDate = endDate;
+        result.timeStartPreparation = startPreparationDate;
+        result.timeStartExecution = startExecutionDate;
+        result.timeEndExecution = endExecutionDate;
         result.containers = subItemContainers;
-        // result.preplanItem = preplanItem;
+        result.quantity = quantity;
+        result.unitQuantity = unitQuantity;
         result.isPlanned = isPlanned;
         result.isLocked = false;
         return result;
@@ -112,11 +146,13 @@ export class PlannedEvent {
         result.description = event.comment;
         result.itemCode = event.itemCode;
         result.itemName = event.itemName;
+        result.articleCode = event.articleCode;
+        result.articleName = event.articleName;
         result.subItemCode = event.subItemCode;
         result.subItemName = event.subItemName;
         result.timeStartPreparation = event.timeStartPreparation;
-        result.startDate = event.timeStart;
-        result.endDate = event.timeEnd;
+        result.timeStartExecution = event.timeStart;
+        result.timeEndExecution = event.timeEnd;
         result.title = event.title;
         result.containers = event.allowedContainers.map(SubItemContainer.fromServer);
         result.isPlanned = true;

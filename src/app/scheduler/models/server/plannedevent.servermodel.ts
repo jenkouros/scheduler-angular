@@ -13,6 +13,8 @@ export interface PlannedEventServer {
     comment: string;
     itemCode: string;
     itemName: string;
+    articleCode: string;
+    articleName: string;
     subItemCode: string;
     subItemName: string;
     timeStartPreparation: Date;

@@ -5,7 +5,7 @@
   <div class="plannerItem">
     <div class="m-2">
       <h6 class="white-text">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</h6>
-      <div>{{ plannerItemData.itemName }}</div>
+      <div>{{ plannerItemData.itemName }} | {{ plannerItemData.articleCode }} </div>
       <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
     </div>
   </div>

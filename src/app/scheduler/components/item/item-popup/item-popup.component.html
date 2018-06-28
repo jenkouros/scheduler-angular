@@ -72,11 +72,12 @@
         <app-fieldset class="col">
           <app-alternative 
             *ngIf="alternatives && alternativeIdControl.value" 
+            [quantity]="batchQuantityControl.valid ? batchQuantityControl.value : 0"
             [alternative]="getSelectedAlternative()">
           </app-alternative>
         </app-fieldset>
       </div>
-
     </form>
+
   </div>
 </app-popup>

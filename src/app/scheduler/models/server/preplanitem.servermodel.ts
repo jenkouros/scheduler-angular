@@ -28,8 +28,8 @@ export interface SubItemContainerServer {
     isDefault: boolean;
     quantity: number;
     unitQuantity: string;
-    executionNormative: number;
-    unitExecutionNormative: string;
-    preparationNormative: number;
-    unitPreparationNormative: string;
+    executionNormativeInMinutes: number;
+    // unitExecutionNormative: string;
+    preparationNormativeInMinutes: number;
+    // unitPreparationNormative: string;
 }

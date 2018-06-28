@@ -2,7 +2,7 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent, PlannedEventMove, PlanItemPutRequest, PlanItemMoveStatusEnum } from '../models/event.model';
+import { PlannedEvent, PlannedEventMove, PlanItemPutRequest, PlanItemMoveStatusEnum, PlanItemCreateRequest } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -41,11 +41,12 @@ export class EventsService {
     }
 
     createEvent(event: PlannedEvent): Observable<PlannedEvent> {
-        const planningItem = {
+        const planningItem = <PlanItemCreateRequest>{
             idPrePlanItem: event.idPrePlanItem,
             idContainer: event.containerId,
-            timeStart: moment(event.startDate).format(),
-            timeEnd: moment(event.endDate).format()
+            timePreparationStart: moment(event.timeStartPreparation).format(),
+            timeExecutionStart: moment(event.timeStartExecution).format(),
+            timeExecutionEnd: moment(event.timeEndExecution).format()
         };
         return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -62,11 +63,12 @@ export class EventsService {
 
     updateEvent(event: PlannedEvent): Observable<boolean> {
 
-        const planningItem = {
+        const planningItem = <PlanItemPutRequest>{
             idPlanItem: event.id,
             idContainer: event.containerId,
-            timeStart: moment(new Date(event.startDate)).format(),
-            timeEnd: moment(new Date(event.endDate)).format()
+            timePreparationStart: moment(new Date(event.timeStartPreparation)).format(),
+            timeExecutionStart: moment(new Date(event.timeStartExecution)).format(),
+            timeExecutionEnd: moment(new Date(event.timeEndExecution)).format()
         };
         return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -88,8 +90,8 @@ export class EventsService {
             .map(i => <PlanItemPutRequest>{
                 idContainer: i.idContainer,
                 idPlanItem: i.idPlanItem,
-                timeEnd: moment(i.timeEnd).format(),
-                timeStart: moment(i.timeStart).format()
+                timeExecutionEnd: moment(i.timeEnd).format(),
+                timePreparationStart: moment(i.timeStart).format()
             });
         return this.http.put<ApiResponse<void>>(environment.apiUrl + '/planitems/planitemslist', request)
             .pipe(

@@ -55,14 +55,18 @@ export class ContainersEffects {
       )
     );
 
-  @Effect()
+  @Effect({ dispatch: false })
   reselectContainers = this.actions$
     .ofType(fromActions.RESELECT_CONTAINERS)
     .pipe(
-      mergeMap((action: fromActions.ReselectContainers) => [
-        new fromActions.DeselectAllContainers(),
-        new fromActions.SelectContainers(action.payload)
-      ])
+      tap((action: fromActions.ReselectContainers) => {
+        this.store.dispatch(new fromActions.DeselectAllContainers());
+        this.store.dispatch(new fromActions.SelectContainers(action.payload));
+      })
+      // mergeMap((action: fromActions.ReselectContainers) => [
+      //   new fromActions.DeselectAllContainers(),
+      //   new fromActions.SelectContainers(action.payload)
+      // ])
     );
 
   @Effect({ dispatch: false })
@@ -85,12 +89,13 @@ export class ContainersEffects {
           })
       );
 
-  @Effect({ dispatch: false })
+  @Effect({ dispatch : false })
   deselectAllContainer = this.actions$
     .ofType(fromActions.DESELECT_ALL_CONTAINERS)
-    .pipe(map(action => {
-      this.signalRService.removeSubscriptions();
-      return new fromActions.RemoveEvents();
+    .pipe(
+      map(action => {
+        // this.signalRService.removeSubscriptions();
+        // return new fromActions.RemoveEvents();
     }));
 
   signalRConnection() {

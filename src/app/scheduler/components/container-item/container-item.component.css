@@ -27,6 +27,10 @@
     border-color: #063760 ;
 }
 
+button {
+    line-height: 95%;
+}
+
  /*
   * KOLEKTROR color
   * background-color: #084578; 

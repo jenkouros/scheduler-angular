@@ -8,7 +8,7 @@ import { ItemHierarchyAlternative } from '../../../models/item.dto';
 })
 export class ItemAlternativeComponent implements OnInit {
   @Input() alternative: ItemHierarchyAlternative;
-
+  @Input() quantity = 0;
   constructor() { }
 
   ngOnInit() {

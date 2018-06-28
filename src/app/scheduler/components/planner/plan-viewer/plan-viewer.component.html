@@ -10,8 +10,8 @@
             </div>
         </div>
     </div>
-    <button type="button" (click)="onRemoveBlankSpace()" class="btn btn-primary">Zgoščevanje</button>
-    <button type="button" (click)="onShowMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>
+    <button type="button" (click)="onRemoveBlankSpace()" class="btn btn-custom-primary">Zgoščevanje</button>
+    <button type="button" (click)="onShowMassLockPopup()" class="btn btn-custom-primary">Masovno zaklepanje</button>
 </div>
 <div class="card" [hidden]="visible">
     <div class="card-body">
@@ -19,14 +19,13 @@
     </div>
 </div>
 
-
-
 <app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
 <dx-scheduler id="scheduler" 
+    [editing]="{ allowAdding: false }"
     [dataSource]="planItems"
     [views]="['day', 'week', 'timelineDay',  'timelineWeek']" 
     [(currentView)]="currentView"         
@@ -41,9 +40,8 @@
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
     (onAppointmentDeleting)="onAppointmentDeleting($event)"    
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-    (onAppointmentClick)="onClearTimeSuggestion()"
-    (onCellClick)="onCellClick($event)"
+    (onAppointmentClick)="onAppointmentClick($event)"
+    (onAppointmentDblClick)="onAppointmentDblClick($event)"
     appointmentTooltipTemplate="tooltip-template"    
     >
    
@@ -66,19 +64,49 @@
                     <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
                 </div>
                 <h6>Delovni nalog</h6>
-                <table class="table">
-                    <tr>
-                        <td>Šifra</td>
-                        <th>{{ plannedEvent.itemName }}</th>
-                    </tr>
-                    <tr>
-                        <td>Količina</td>
-                        <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
-                    </tr>
-                </table>
+
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Šifra</td>
+                                <th>{{ plannedEvent.itemName }}</th>
+                                <td>Priprava</td>
+                                <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Izdelek</td>
+                                <th>{{ plannedEvent.articleCode }} - {{ plannedEvent.articleName }}</th>
+                                <td>Izdelava</td>
+                                <th>{{ plannedEvent.timeStartExecution | date:'mediumDate' }} {{ plannedEvent.timeStartExecution | date:'shortTime' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Količina</td>
+                                <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
+                                <td>Konec</td>
+                                <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
+                            </tr>
+                        </table>
+
+                    <!-- <div class="col-6">
+                        <table class="table">
+                            <tr>
+                                <td>Priprava</td>
+                                <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Izdelava</td>
+                                <th>{{ plannedEvent.timeStartExecution | date:'mediumDate' }} {{ plannedEvent.timeStartExecution | date:'shortTime' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Konec</td>
+                                <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
+                            </tr>
+                        </table>
+                    </div> -->
+                    
+                    
 
                 <h6>Operacije delovnega naloga</h6>
-                <table class="table">
+                <table class="table table-sm">
                     <tr *ngFor="let op of plannedEvent.sequencePlanItems" [ngClass]="{'font-weight-bold': op.idPrePlanItem === plannedEvent.idPrePlanItem}">
                         <td>#{{ op.code }} {{ op.name }}</td>
                         <td>{{ op.containerCode }}</td>
@@ -87,7 +115,7 @@
                     </tr>
                 </table>
                 <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
-                <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='updateAppointment(plannedEvent)'></dx-button>
+                <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='showUpdateAppointmentPopup(plannedEvent)'></dx-button>
                 <dx-button icon="trash" type="danger" text="Izbriši" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
             </div>
 
@@ -104,12 +132,17 @@
                         <tbody>
                             <tr *ngFor="let op of plannedEvent.sequencePlanItems">
                                 <td>#{{ op.code }}</td>
-                                <td>{{ op.timeStartPreparation | date:'short' }} - {{ op.timeEnd | date:'short' }}</td>
+                                <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }} - 
+                                    {{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
                                 <td *ngIf="timeUpdateSuggestion[op.idPrePlanItem]" class="alert" [ngClass]="getPlanItemClass(timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus)">
-                                    {{ timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus | planItemStatusName }}</td>                                
-                                <td *ngIf="timeUpdateSuggestion[op.idPrePlanItem]">
-                                    {{ timeUpdateSuggestion[op.idPrePlanItem].timeStart | date:'short' }} - 
-                                    {{ timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date:'short' }}</td>
+                                    {{ timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus | planItemStatusName }}</td>  
+                                <td *ngIf="!timeUpdateSuggestion[op.idPrePlanItem]"></td>                            
+                                <td>
+                                    <ng-container *ngIf="timeUpdateSuggestion[op.idPrePlanItem] && timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus !== 1">
+                                    {{ timeUpdateSuggestion[op.idPrePlanItem].timeStart | date:'mediumDate' }} {{ timeUpdateSuggestion[op.idPrePlanItem].timeStart | date:'shortTime' }} - 
+                                     {{ timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date:'mediumDate' }} {{ timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date:'shortTime' }}
+                                    </ng-container>    
+                                </td>
                             
                             </tr>
                         </tbody>
@@ -128,10 +161,20 @@
                             <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
                         </tr>
                     </table> -->
-                    <button class="btn btn-default" (click)="onClearTimeSuggestion()">Prekliči</button>
-                    <button class="btn btn-success" (click)="onResolveSequence()">Potrdi</button>
+                    <div class="float-right">
+                        <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">Prekliči</button>
+                        <button class="btn btn-success" (click)="onResolveSequence()">Potrdi</button>
+                    </div>
             </div>
         </div>
     </div>
 
 </dx-scheduler>
+
+<app-plan-viewer-item-edit 
+    [visible]="planItemEditMode" 
+    [planItem]="planItemEditing" 
+    (planItemUpdate)="updateAppointment($event)"
+    (planItemCreate)="createAppointment($event)"
+    (popupClose)="planItemEditMode = false">
+</app-plan-viewer-item-edit>

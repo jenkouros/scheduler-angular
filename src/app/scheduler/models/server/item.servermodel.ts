@@ -31,8 +31,8 @@ export interface SubItemServer {
     id: number;
     name: string;
     code: string;
-    defaultExecutionNormative: number;
-    defaultPreparationtNormative: number;
+    defaultExecutionNormativeInMinutes: number;
+    defaultPreparationtNormativeInMinutes: number;
     // normativeTimeWorker: number;
     sequenceNumber: number;
     isPlanable: boolean;

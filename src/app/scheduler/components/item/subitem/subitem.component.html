@@ -7,16 +7,16 @@
                 <tbody>
                     <tr>
                         <td class="pr-3">Priprava:</td>
-                        <th>{{ subItem.normativeTimePreparation }} min</th>
+                        <th>{{ convertTime(subItem.normativeTimePreparation) }}</th>
                     </tr>
                     <tr>
-                        <td class="pr-3">Stroj:</td>
-                        <th>{{ subItem.normativeTimeMachine }} min</th>
+                        <td class="pr-3">Izdelava:</td>
+                        <th>{{ convertTime(subItem.normativeTimeMachine * quantity) }}</th>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="pr-3">Operater:</td>
                         <th>{{ subItem.normativeTimeWorker }} min</th>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>

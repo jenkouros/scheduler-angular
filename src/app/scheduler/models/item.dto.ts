@@ -81,8 +81,8 @@ export class SubItem {
         result.id = planSubItemServer.id;
         result.name = planSubItemServer.name;
         result.code = planSubItemServer.code;
-        result.normativeTimeMachine = planSubItemServer.defaultExecutionNormative;
-        result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormative;
+        result.normativeTimeMachine = planSubItemServer.defaultExecutionNormativeInMinutes;
+        result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormativeInMinutes;
         // result.normativeTimeWorker = planSubItemServer.normativeTimeWorker;
         result.sequence = planSubItemServer.sequenceNumber;
         result.planable = planSubItemServer.isPlanable;

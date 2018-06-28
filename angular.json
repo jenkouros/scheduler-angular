@@ -31,7 +31,7 @@
             "scripts": []
           },
           "configurations": {
-            "prod": {
+            "production": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -44,6 +44,14 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.localhost.ts"
+                }
+              ]
+            },
+            "livartest": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.livartest.ts"
                 }
               ]
             }
