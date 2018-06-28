@@ -1,0 +1,21 @@
+<div class="toolbar">
+    <button type="button" (click)="onSelected('timetable')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='timetable'}">
+        <fa-icon class="cursor-pointer" size="md" [icon]="listIcon"></fa-icon>&nbsp;Nazaj na seznam
+    </button>
+    <div class="toolbar-desc">
+        <strong>{{selectedCalendar.description}}</strong>, veljavnost {{selectedCalendar.timeStart | date:'longDate'}} - {{selectedCalendar.timeEnd
+        | date:'longDate'}}
+    </div>
+
+    <div class="toolbar-icons">
+        <button type="button" (click)="onSelected('calendar')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='calendar'}">
+            <fa-icon class="cursor-pointer" size="md" [icon]="viewIcon"></fa-icon>&nbsp;Pregled
+        </button>
+        <button type="button" (click)="onSelected('schedule')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='schedule'}">
+            <fa-icon class="cursor-pointer" size="md" [icon]="editIcon"></fa-icon>&nbsp;Urejanje
+        </button>
+        <button type="button" (click)="deleteSchedule()" class="btn btn-light" disabled>
+            <fa-icon class="cursor-pointer" size="md" [icon]="deleteIcon"></fa-icon>
+        </button>
+    </div>
+</div>

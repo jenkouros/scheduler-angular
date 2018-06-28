@@ -1,0 +1,23 @@
+<dx-tab-panel #tabPanel [height]="260" [dataSource]="timeTablesTypes" [selectedIndex]="0">
+    <div *dxTemplate="let schedule of 'title'">
+        <span>{{schedule.name}}</span>
+    </div>
+    <div *dxTemplate="let schedule of 'item'">
+        <div class="tabpanel-item">
+            <div>
+                common template {{timeTables | json}}
+            </div>
+        </div>
+    </div>
+    <div *dxTemplate="let schedule of 'customTemplate'">
+        <div class="tabpanel-item">
+            <div>
+                custom template
+            </div>
+        </div>
+    </div>
+</dx-tab-panel>
+<div class="item-box">
+    selectedIndex
+    <span>{{tabPanel.selectedIndex + 1}}</span>
+</div>

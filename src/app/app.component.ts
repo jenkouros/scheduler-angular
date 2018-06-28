@@ -25,7 +25,7 @@ export class AppComponent {
     {
       link: '/worktime',
       name: 'Urnik strojev',
-      exact: true
+      exact: false
     }
   ];
 }

@@ -1,3 +1,7 @@
-import { MachineSchedulesComponent } from './machine-schedules/machine-schedules.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { TimeTablesComponent } from './time-tables/time-tables.component';
 
-export * from './machine-schedules/machine-schedules.component';
+export const containers: any[] = [ScheduleComponent, TimeTablesComponent];
+
+export * from './time-tables/time-tables.component';
+export * from './schedule/schedule.component';
