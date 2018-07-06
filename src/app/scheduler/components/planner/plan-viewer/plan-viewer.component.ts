@@ -28,7 +28,8 @@ import {
   PlannedEvent,
   PlanItemsLoadRequest,
   PlannedEventMove,
-  PlanItemMoveStatusEnum
+  PlanItemMoveStatusEnum,
+  PlannedEventNotWorkingHoursMove
 } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
@@ -38,9 +39,11 @@ import { ToggleMassLockPopup } from '../../../store';
 import * as fromSchedulerModel from '../../../models/planner.model';
 import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
 
-import { faLock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { PlanViewerFormHelper } from './plan-viewer.form.helper';
 import { SubItemContainer } from '../../../models/subitem.dto';
+import { TimeHelper } from '../../../helpers/time.helper';
+import { PlanSchedule } from '../../../models/planschedule.dto';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -51,9 +54,13 @@ import { SubItemContainer } from '../../../models/subitem.dto';
 export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Input() selectedPreplanItem: PreplanItem | null = null;
   @Input() selectedContainers: ContainerSelect[] = [];
-  @Input() planItems: PlannedEvent[] = [];
+  @Input() planItemGetReponse: { planItems: PlannedEvent[], notWorkingHoursEvents: {[idContainer: number]: PlanSchedule[]} } = {
+    planItems: [],
+    notWorkingHoursEvents: {}
+  };
   @Input() preplanItemDragEnd: boolean;
   @Input() timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
+  @Input() notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
 
   @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
   @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
@@ -67,6 +74,16 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Output() getResolveSequenceSuggestion = new EventEmitter<number>();
   @Output() clearTimeSuggestion = new EventEmitter();
 
+  @Output() resolveNotWorkingHours = new EventEmitter<PlannedEventMove>();
+  @Output() getResolveNotWorkingHoursSuggestion = new EventEmitter<number>();
+  @Output() clearNotWorkingHoursSuggestion = new EventEmitter();
+
+  // notWorkingHours: { startDate: Date, endDate: Date }[] = [
+  //   { startDate: new Date(2018, 6, 7, 0, 0), endDate: new Date(2018, 6, 7, 23, 59) },
+  //   { startDate: new Date(2018, 6, 8, 14, 30), endDate: new Date(2018, 6, 8, 15, 15) }
+  // ];
+
+  notWorkingHoursResolveMode = 'movePlanItem';
   currentDate: Date = new Date();
   schedulerResources: any = [];
   groups = [fromSchedulerModel.RESOURCES_FIELD];
@@ -86,13 +103,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   faLock = faLock;
   faWarning = faExclamationTriangle;
+  faExclamation = faExclamationCircle;
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
   ngOnChanges(changes): void {
-    if (changes.planItems) {
-      this.planItems = [...changes.planItems.currentValue];
-    }
+    // if (changes.planItems) {
+    //   this.planItems = [...changes.planItems.currentValue];
+    // }
     if (changes.selectedPreplanItem) {
       this.showAvailableContainers(this.selectedPreplanItem, 'allowed');
     }
@@ -126,6 +144,57 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     ];
   }
 
+  isViewHorizontal(viewName: string) {
+    if (viewName.toLowerCase().includes('timeline') || viewName.toLowerCase() === 'agenda') {
+      return false;
+    }
+    return true;
+  }
+
+  markNotWorkingHours(cellData) {
+    function getTransparentColor() {
+      return 'transparent';
+    }
+    function getNoWorkingColor() {
+      return 'rgb(218, 218, 218)';
+      // 'rgba(86, 202, 133, 0.2)';
+    }
+
+    function getGradient(data: {startMarginProcent: number, durationMarginProcent: number}[], isHorizontalView: boolean) {
+      let gradient = `linear-gradient(${isHorizontalView ? 'to bottom' : 'to right'},${getTransparentColor()}`;
+      data.forEach(element => {
+        gradient += `,${getTransparentColor()} ${element.startMarginProcent}%`;
+        gradient += `,${getNoWorkingColor()} ${element.startMarginProcent}%`;
+        gradient += `,${getNoWorkingColor()} ${element.startMarginProcent + element.durationMarginProcent}%`;
+        gradient += `,${getTransparentColor()} ${element.startMarginProcent + element.durationMarginProcent}%`;
+      });
+
+      gradient += ')';
+      return gradient;
+    }
+
+    const styleObject = {};
+    if (!cellData.groups || !this.planItemGetReponse.notWorkingHoursEvents[cellData.groups.containerId]) {
+      return styleObject;
+    }
+    const collapsingObject = TimeHelper.getCollapsingMarginProcent(
+      this.planItemGetReponse.notWorkingHoursEvents[cellData.groups.containerId],
+      cellData.startDate, cellData.endDate);
+    if (!collapsingObject.isCollapsing || collapsingObject.data.length === 0) {
+      return styleObject;
+    }
+    // styleObject['left-margin'] = `${collapsingObject.startMarginProcent}%`;
+    // styleObject['width'] = `${collapsingObject.durationMarginProcent}%`;
+    styleObject['background'] = getGradient(collapsingObject.data, this.isViewHorizontal((<any>this.scheduler.instance)._currentView));
+    styleObject['height'] = '100%';
+    styleObject['margin'] = '-1px';
+    // styleObject['background-color'] = 'rgba(86, 202, 133, 0.1)';
+    styleObject['background-position'] = 'center center';
+    styleObject['background-repeat'] = 'no-repeat';
+    return styleObject;
+  }
+
+
   /** DEVEXTREME EVENT HANDLERS */
   onAppointmentDeleting(e) {
     e.cancel = true;
@@ -139,6 +208,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
     $event.component.__tooltipTimeout = setTimeout(() => {
         this.onClearTimeSuggestion();
+        this.onClearNotWorkingHoursSuggestion();
         $event.component.showAppointmentTooltip($event.appointmentData, $event.appointmentElement);
     }, 500);
   }
@@ -287,21 +357,23 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
                 );
                 return false;
               }
-
-              const duration =
-                (selectedContainer.preparationNormative +
-                  selectedContainer.executionNormative * draggedData.quantity );
+              const calculatedStartTime = this.getCalculatedStartTimeInCell(cellData.groups.containerId,
+                cellData.startDate, cellData.endDate);
+              console.log(calculatedStartTime);
+              console.log(cellData.startDate);
+              const duration = selectedContainer.preparationNormative +
+                  selectedContainer.executionNormative * draggedData.quantity;
               const plannedEvent = PlannedEvent.createFromPreplanitem(
                 draggedData.id,
                 cellData.groups.containerId,
                 draggedData.subItem.code,
                 '',
                 draggedData.subItem.name,
-                new Date(cellData.startDate),
-                moment(new Date(cellData.startDate))
+                calculatedStartTime,
+                moment(calculatedStartTime)
                   .add(selectedContainer.preparationNormative, 'm')
                   .toDate(),
-                moment(new Date(cellData.startDate))
+                moment(calculatedStartTime)
                   .add(duration, 'm')
                   .toDate(),
                 containers,
@@ -329,6 +401,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       Scrollable.getInstance(
         e.component.element().querySelector('.dx-scrollable')
       ).scrollTo(this.offset);
+      console.log(this.offset);
     }
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE
     ) {
@@ -337,6 +410,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         Scrollable.getInstance(
         e.component.element().querySelector('.dx-scrollable')
       ).scrollTo(this.offset);
+      console.log(this.offset);
     });
     }
     if (
@@ -426,11 +500,51 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       }
     }
     this.resolveSequence.emit(request);
+    this.onClearTimeSuggestion();
     this.scheduler.instance.hideAppointmentTooltip();
   }
 
   onClearTimeSuggestion() {
     this.clearTimeSuggestion.emit();
+  }
+
+  onGetResolveNotWorkingHoursSuggestion(idPlanItem: number) {
+    this.getResolveNotWorkingHoursSuggestion.emit(idPlanItem);
+  }
+
+  onResolveNotWorkingHours() {
+    if (!this.notWorkingHoursUpdateSuggestion) { return; }
+    const plannedEventMove = this.notWorkingHoursUpdateSuggestion[this.notWorkingHoursResolveMode];
+    if (!plannedEventMove) { return; }
+    this.resolveNotWorkingHours.emit(plannedEventMove);
+    this.onClearNotWorkingHoursSuggestion();
+    this.scheduler.instance.hideAppointmentTooltip();
+  }
+
+  onClearNotWorkingHoursSuggestion() {
+    this.clearNotWorkingHoursSuggestion.emit();
+  }
+
+
+  private getCalculatedStartTimeInCell(idContainer: number, cellStartTime: Date, cellEndTime: Date) {
+    let calculatedStartDate = cellStartTime;
+    if (!this.planItemGetReponse || !this.planItemGetReponse.planItems) {
+      return calculatedStartDate;
+    }
+
+    for (let i = 0; i < this.planItemGetReponse.planItems.length; i++) {
+      const planItem = this.planItemGetReponse.planItems[i];
+      const planItemStartTime = new Date(planItem.timeStartPreparation);
+      const planItemEndTime = new Date(planItem.timeEndExecution);
+
+      if (planItem.containerId === idContainer &&
+        cellEndTime > planItemStartTime &&
+        cellStartTime < planItemEndTime &&
+        calculatedStartDate < planItemEndTime) {
+        calculatedStartDate = planItemEndTime;
+      }
+    }
+    return calculatedStartDate;
   }
 
   private showToast(event, value, type) {
@@ -481,6 +595,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       case PlanItemMoveStatusEnum.Removed: {
         return 'alert-danger';
       }
+      default:
+        return 'alert-warning';
 
     }
   }

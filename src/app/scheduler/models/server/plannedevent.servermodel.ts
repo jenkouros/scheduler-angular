@@ -1,4 +1,11 @@
 import { SubItemContainerServer } from './preplanitem.servermodel';
+import { PlanScheduleServer } from './planschedule.servermodel';
+
+
+export interface PlanItemResponseServer {
+    planItems: PlannedEventServer [];
+    notWorkingHoursEvents: PlanScheduleServer[];
+}
 
 export interface PlannedEventServer {
     idPlanItem: number;
@@ -22,6 +29,7 @@ export interface PlannedEventServer {
     timeEnd: Date;
     title: string;
     isLocked: boolean;
+    isInNotWorkingHours: boolean;
     allowedContainers: SubItemContainerServer[];
     sequencePlanItems: PlannedEventSimpleServer[];
 }

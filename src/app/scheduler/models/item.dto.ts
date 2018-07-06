@@ -2,7 +2,8 @@ import {
     ItemHierarchyServer,
     ItemServer,
     SubItemServer,
-    ItemHierarchyAlternativeServer } from './server/item.servermodel';
+    ItemHierarchyAlternativeServer,
+    ItemProgressServer} from './server/item.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
 import { SubItemContainer } from './subitem.dto';
 
@@ -13,7 +14,8 @@ export class Item {
     name: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
-    quantityPlanned: number; // ze planirana kolicina
+    // quantityPlanned: number; ze planirana kolicina
+    itemProgresses: ItemProgress[];
     measurementUnit: MeasurementUnit;
     article: Product;
     limitDateFrom: Date;
@@ -26,11 +28,23 @@ export class Item {
         result.idItem = planItemServer.idItem;
         result.quantity = planItemServer.quantity;
         result.quantityBatch = planItemServer.quantityBatch;
-        result.quantityPlanned = planItemServer.quantityPlanned;
+        // result.quantityPlanned = planItemServer.quantityPlanned;
+        result.itemProgresses = planItemServer.itemProgresses.map(ItemProgress.fromServer);
         result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
         result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
+        return result;
+    }
+}
+
+export class ItemProgress {
+    idPlan: number;
+    quantityPlanned: number;
+    static fromServer(serverData: ItemProgressServer) {
+        const result = new ItemProgress();
+        result.idPlan = serverData.idPlan;
+        result.quantityPlanned = serverData.quantityPlanned;
         return result;
     }
 }
@@ -73,7 +87,7 @@ export class SubItem {
     normativeTimePreparation: number;
     normativeTimeWorker: number;
     sequence: number;
-    planable: boolean;
+    plannable: boolean;
     quantity: number;
 
     static fromServer(planSubItemServer: SubItemServer) {
@@ -85,7 +99,7 @@ export class SubItem {
         result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormativeInMinutes;
         // result.normativeTimeWorker = planSubItemServer.normativeTimeWorker;
         result.sequence = planSubItemServer.sequenceNumber;
-        result.planable = planSubItemServer.isPlanable;
+        result.plannable = planSubItemServer.isPlanable;
         result.quantity = planSubItemServer.defaultQuantity;
         return result;
     }

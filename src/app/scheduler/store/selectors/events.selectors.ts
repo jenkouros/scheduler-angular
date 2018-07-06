@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import * as fromFeature from '../reducers';
 import { PlannedEvent } from '../../models/event.model';
+import { PlanSchedule } from '../../models/planschedule.dto';
 
 export const getEventsState = createSelector(
     fromFeature.getSchedulerState,
@@ -18,12 +19,17 @@ export const getEvents = createSelector(
     _getStoreEvents,
     storeEvents => {
         let events: PlannedEvent[] = [];
+        const notWorkingHoursEvents: {[idContainer: number]: PlanSchedule[]} = {};
         for (const key in storeEvents) {
             if (storeEvents.hasOwnProperty(key)) {
+                notWorkingHoursEvents[key] = storeEvents[key].notWorkingHoursEvents;
                 events = events.concat(storeEvents[key].events);
             }
         }
-        return events;
+        return {
+            planItems: events,
+            notWorkingHoursEvents: notWorkingHoursEvents
+        };
     }
 );
 
@@ -43,6 +49,11 @@ export const getEventsForContainers = (containerIds: number[]) => createSelector
 export const getItemBatchTimeUpdateSuggestion = createSelector(
     getEventsState,
     state => state.timeUpdateSuggestion
+);
+
+export const getNotWorkingHoursUpdateSuggestion = createSelector(
+    getEventsState,
+    state => state.notWorkingHoursTimeUpdateSuggestion
 );
 
 export const getEventsUiState = createSelector(

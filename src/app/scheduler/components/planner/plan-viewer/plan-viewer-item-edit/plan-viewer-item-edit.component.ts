@@ -11,8 +11,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-plan-viewer-item-edit',
   templateUrl: './plan-viewer-item-edit.component.html',
-  styleUrls: ['./plan-viewer-item-edit.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./plan-viewer-item-edit.component.css']
 })
 
 export class PlanViewerItemEditComponent implements OnInit, OnChanges {
@@ -61,6 +60,7 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
       preparationDuration: [''],
       executionDuration: ['']
     });
+    this.onFormChanges();
   }
 
   setForm(planItem: PlannedEvent | null) {
@@ -69,8 +69,8 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
       'preparationStartTime': planItem ? new Date(planItem.timeStartPreparation) : new Date(),
       'executionStartTime': planItem ? new Date(planItem.timeStartExecution) : new Date(),
       'executionEndTime': planItem ? new Date(planItem.timeEndExecution) : new Date(),
-      'isExecutionTimeLocked': true,
-      'isPreparationTimeLocked': true,
+      'isExecutionTimeLocked': false,
+      'isPreparationTimeLocked': false,
       'preparationDuration': TimeHelper.convertMinutesIntoString(TimeHelper.getDateDiffInMinutes(
         new Date(planItem ? planItem.timeStartPreparation : new Date()),
         new Date(planItem ? planItem.timeStartExecution : new Date())
@@ -80,7 +80,6 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
         new Date(planItem ? planItem.timeEndExecution : new Date())
       ))
     });
-    this.onFormChanges();
   }
 
   onFormChanges() {

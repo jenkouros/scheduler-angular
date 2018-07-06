@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 
 import { of } from 'rxjs';
-import { PlannedEvent } from '../../models/event.model';
+import { PlannedEvent, PlanItemsGetResponse } from '../../models/event.model';
 import { EventsService } from '../../services/events.service';
 import { ContainersService } from '../../services/containers.service';
 import { Store } from '@ngrx/store';
@@ -39,9 +39,10 @@ export class EventsEffects {
         )
         .pipe(
           map(
-            events =>
+            (planItemResponse: PlanItemsGetResponse) =>
               new fromAction.LoadEventsSuccess({
-                events,
+                events: planItemResponse.planItems,
+                notWorkingHoursEvents: planItemResponse.notWorkingHoursEvents,
                 dateFrom: action.payload.dateFrom,
                 dateTo: action.payload.dateTo,
                 containers: action.payload.containerIds
@@ -91,8 +92,17 @@ export class EventsEffects {
     )
   );
 
+  @Effect({dispatch: false})
+  createEventSuccessCheckNotPlannable$ = this.actions$
+    .ofType(fromAction.CREATE_EVENT_SUCCESS)
+    .pipe(
+      switchMap((action: fromAction.CreateEventSuccess) =>
+        this.eventsService.checkForNotPlannableEvents(action.payload.id)
+      )
+    );
+
   @Effect()
-  createEventSuccess$ = this.actions$
+  createEventSuccessReloadPreplanItems$ = this.actions$
     .ofType(fromAction.CREATE_EVENT_SUCCESS)
     .pipe(
       map(
@@ -115,7 +125,7 @@ export class EventsEffects {
   @Effect()
   updateEvents$ = this.actions$.ofType(fromAction.UPDATE_EVENTS).pipe(
     switchMap((action: fromAction.UpdateEvents) =>
-      this.eventsService.updateEvents(action.payload).pipe(
+      this.eventsService.updateEvents(action.payload.planItemMoves, action.payload.fixPlanItems).pipe(
         map(event => new fromAction.UpdateEventsSuccess()),
         catchError(error => of(new fromAction.UpdateEventsFail()))
       )
@@ -190,6 +200,20 @@ export class EventsEffects {
             .pipe(
                 map(result => new fromAction.GetItemBatchTimeUpdateSuggestionSuccess(result)),
                 catchError(error => of(new fromAction.ClearItemBatchTimeUpdateSuggestion()))
+            )
+        )
+    );
+
+  @Effect()
+  notWorkingHoursTimeSuggestion$ = this.actions$
+    .ofType(fromAction.GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION)
+    .pipe(
+        map((action: fromAction.GetNotWorkingHoursPlanItemUpdateSuggestion) => action.payload),
+        switchMap(idPlanItem =>
+            this.eventsService.getTimeSuggestionForNotWorkingHours(idPlanItem)
+            .pipe(
+                map(result => new fromAction.GetNotWorkingHoursPlanItemUpdateSuggestionSuccess(result)),
+                catchError(error => of(new fromAction.ClearNotWorkingHoursPlanItemUpdateSuggestion()))
             )
         )
     );

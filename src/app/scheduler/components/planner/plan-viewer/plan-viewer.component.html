@@ -26,8 +26,8 @@
 </div>
 <dx-scheduler id="scheduler" 
     [editing]="{ allowAdding: false }"
-    [dataSource]="planItems"
-    [views]="['day', 'week', 'timelineDay',  'timelineWeek']" 
+    [dataSource]="planItemGetReponse.planItems"
+    [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth']" 
     [(currentView)]="currentView"         
     [groups]="['containerId']" 
     [resources]="schedulerResources"
@@ -36,6 +36,7 @@
     [(cellDuration)]="cellDuration"
     [visible] = "visible"
     appointmentTemplate="appointment-template" 
+    dataCellTemplate="datacell-template"
     (onOptionChanged)="optionChanged($event)"
     (onContentReady)="onContentReady($event)" 
     (onAppointmentUpdating)="onAppointmentUpdating($event)"
@@ -55,14 +56,19 @@
 
         <div class='event-tooltip text-left'>
 
-            <div *ngIf="!timeUpdateSuggestion">
+            <div *ngIf="!timeUpdateSuggestion && !notWorkingHoursUpdateSuggestion">
                 <div *ngIf="plannedEvent.isLocked" class="alert alert-warning mb-2" role="alert">
                     <fa-icon class="mr-2" [icon]="faLock"></fa-icon> Operacija je zaklenjena.
+                </div>
+                <div *ngIf="plannedEvent.isInNotWorkingHours" class="alert alert-warning mb-2" role="alert">
+                    <fa-icon class="mr-2" [icon]="faExclamation"></fa-icon> Operacija je planirana v nedelovnem času.
+                    <a (click)="onGetResolveNotWorkingHoursSuggestion(plannedEvent.id)" class="span-link alert-link">Razreši</a>
                 </div>
                 <div *ngIf="plannedEvent.sequenceWarning" class="alert alert-warning" role="alert">
                     <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Operacije niso razporejene zaporedno.
                     <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
                 </div>
+
                 <h6>Delovni nalog</h6>
 
                         <table class="table table-sm">
@@ -147,26 +153,50 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- <table class="table">
-                        <tr *ngFor="let op of timeUpdateSuggestion">
-                            <thead>
-                                <tr>
-                                    <th colspan="4">Izvirni podatki</th>
-                                    <th>Predlagane spremembe</th>
-                                </tr>
-                            </thead>
-                            <td>{{ op.idPlanItem }}</td>
-                            <td>{{ op.planItemMoveStatus }}</td>
-                            <td>{{ op.timeStart | date:'mediumDate' }} {{ op.timeStart | date:'shortTime' }}</td>
-                            <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
-                        </tr>
-                    </table> -->
                     <div class="float-right">
                         <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">Prekliči</button>
                         <button class="btn btn-success" (click)="onResolveSequence()">Potrdi</button>
                     </div>
             </div>
+
+            <div *ngIf="notWorkingHoursUpdateSuggestion">
+                <div class="mb-3">
+                    <h4>Izvirni podatki</h4>
+                    <span class="dx-field">{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }} -
+                        {{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}
+                    </span>
+                </div>
+                <div>
+                    <h4>Razrešitev prekrivanja</h4>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="movePlanItem" [(ngModel)]="notWorkingHoursResolveMode" checked>
+                            <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">Premakni operacijo
+                                <strong>
+                                    {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'shortTime' }} - 
+                                    {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'shortTime' }}                                    
+                                </strong>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="extendPlanItem" [(ngModel)]="notWorkingHoursResolveMode">
+                            <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">Razširi operacijo 
+                                <strong>
+                                    {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'shortTime' }} - 
+                                    {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'shortTime' }}                                    
+                                </strong>
+                            </label>
+                        </div>
+                </div>
+                    <div class="float-right">
+                        <button class="btn btn-default mr-1" (click)="onClearNotWorkingHoursSuggestion()">Prekliči</button>
+                        <button class="btn btn-success" (click)="onResolveNotWorkingHours()">Potrdi</button>
+                    </div>
+            </div>
         </div>
+    </div>
+
+    <div *dxTemplate="let cellData of 'datacell-template'" [ngStyle]="markNotWorkingHours(cellData)">
+        {{cellData.text}}
     </div>
 
 </dx-scheduler>

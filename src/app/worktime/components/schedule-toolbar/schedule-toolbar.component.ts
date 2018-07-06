@@ -20,6 +20,12 @@ export class ScheduleToolbarComponent implements OnInit {
   listIcon = faChevronLeft;
   selectedIcon = 'calendar';
 
+  // PREVENT ERROR
+  visible = true;
+  deleteSchedule() {
+
+  }
+
   @Input() selectedCommand: string;
   @Input() selectedCalendar: Calendar;
 
@@ -31,4 +37,7 @@ export class ScheduleToolbarComponent implements OnInit {
   onSelected(action: string) {
     this.selectedAction.emit(action);
   }
+
+
+
 }

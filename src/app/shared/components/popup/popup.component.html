@@ -23,7 +23,10 @@
 
   <div *dxTemplate="let data of 'content'">
     <dx-scroll-view>
-      <ng-content></ng-content>
+      <div class="mr-3">
+          <ng-content></ng-content>
+      </div>
+      
     </dx-scroll-view>   
   </div>
 

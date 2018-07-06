@@ -35,7 +35,7 @@ export class PreplanitemEffects {
             switchMap((action: fromActions.CreatePreplanItems) => {
                 return this.preplanitemService.createPreplanitems(action.payload)
                 .pipe(
-                    map(filters => new fromActions.LoadPreplanItems()), // MAYBE JUST ADD? TODO
+                    mergeMap(filters => [new fromActions.LoadPreplanItems(), new fromActions.LoadItems()]), // MAYBE JUST ADD? TODO
                     catchError((error) => {
                         console.log(error);
                         return of(new fromActions.LoadPreplanItemsFail()); // CREATE NEW FAIL ACTION TODO
@@ -51,7 +51,7 @@ export class PreplanitemEffects {
             switchMap((action: fromActions.DeleteItemBatch) => {
                 return this.preplanitemService.deleteItemBatch(action.payload)
                 .pipe(
-                    map(result => new fromActions.LoadPreplanItems()),
+                    mergeMap(result => [new fromActions.LoadPreplanItems(), new fromActions.LoadItems()]),
                     // mergeMap(result => [
                     //     new fromActions.LoadPreplanItems(),
                     //     new fromActions.ReloadAllSelectedContainersEvents()

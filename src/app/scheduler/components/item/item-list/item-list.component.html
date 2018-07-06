@@ -24,7 +24,11 @@
     [showNavigationButtons]="true">
   </dxo-pager>
 
-  <dxi-column dataField="name" caption="Ime naloga"></dxi-column>
+  <dxi-column caption="Nalog">
+    <dxi-column dataField="name" caption="Koda"></dxi-column>
+    <dxi-column dataField="itemProgresses[0].quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="Planirana količina"></dxi-column>
+    <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+  </dxi-column>
   <dxi-column caption="Artikel">
     <dxi-column dataField="article.code" caption="Šifra"></dxi-column>
     <dxi-column dataField="article.name" caption="Naziv"></dxi-column>
@@ -43,5 +47,9 @@
 
   <div *dxTemplate="let cell of 'dateCellTemplate'">
     {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+  </div>
+
+  <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
+    {{ cell.displayValue ? cell.displayValue : 0 }}
   </div>
 </dx-data-grid>

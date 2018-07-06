@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { PlannedEvent, PlannedEventMove } from '../../models/event.model';
+import { PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
+import { PlanSchedule } from '../../models/planschedule.dto';
 
 
 export const LOAD_EVENTS = '[Events] Load Events';
@@ -23,7 +24,12 @@ export class ReloadAllSelectedContainersEvents implements Action {
 export class LoadEventsSuccess implements Action {
     readonly type = LOAD_EVENTS_SUCCESS;
     // constructor(public payload: { [id: number]: PlannedEvent[] }) {}
-    constructor(public payload: { events: PlannedEvent[], dateFrom: Date, dateTo: Date, containers: number[] } ) {}
+    constructor(public payload: {
+        events: PlannedEvent[],
+        notWorkingHoursEvents: PlanSchedule[],
+        dateFrom: Date,
+        dateTo: Date,
+        containers: number[] } ) {}
 }
 export class LoadEventsFail implements Action {
     readonly type = LOAD_EVENTS_FAIL;
@@ -103,7 +109,7 @@ export class UpdateEventFail implements Action {
 
 export class UpdateEvents implements Action {
     readonly type = UPDATE_EVENTS;
-    constructor(public payload: PlannedEventMove[]) {}
+    constructor(public payload: { planItemMoves: PlannedEventMove[], fixPlanItems: boolean }) {}
 }
 
 export class UpdateEventsSuccess implements Action {
@@ -142,6 +148,21 @@ export class ClearItemBatchTimeUpdateSuggestion implements Action {
     readonly type = CLEAR_ITEMBATCH_TIMEUPDATE_SUGGESTION;
 }
 
+export const GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION = '[Event] Get PlanItem notworkingHours update suggestion';
+export const GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION_SUCCESS = '[Event] Get PlanItem notworkingHours update suggestion SUCCESS';
+export const CLEAR_NOTWORKINGHOURS_PLANITEM_SUGGESTION = '[Event] Clear PlanItem notworkingHours update suggestion';
+
+export class GetNotWorkingHoursPlanItemUpdateSuggestion implements Action {
+    readonly type = GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION;
+    constructor(public payload: number) {}
+}
+export class GetNotWorkingHoursPlanItemUpdateSuggestionSuccess implements Action {
+    readonly type = GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION_SUCCESS;
+    constructor(public payload: PlannedEventNotWorkingHoursMove) {}
+}
+export class ClearNotWorkingHoursPlanItemUpdateSuggestion implements Action {
+    readonly type = CLEAR_NOTWORKINGHOURS_PLANITEM_SUGGESTION;
+}
 
 export type EventsAction =
     | LoadEvents
@@ -166,6 +187,9 @@ export type EventsAction =
     | GetItemBatchTimeUpdateSuggestion
     | GetItemBatchTimeUpdateSuggestionSuccess
     | ClearItemBatchTimeUpdateSuggestion
+    | GetNotWorkingHoursPlanItemUpdateSuggestion
+    | GetNotWorkingHoursPlanItemUpdateSuggestionSuccess
+    | ClearNotWorkingHoursPlanItemUpdateSuggestion
     | UpdateEvents
     | UpdateEventsFail
     | UpdateEventsSuccess;

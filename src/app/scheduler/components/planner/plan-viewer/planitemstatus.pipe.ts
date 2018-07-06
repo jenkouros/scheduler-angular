@@ -11,6 +11,7 @@ export class PlanItemStatusPipe implements PipeTransform {
             case PlanItemMoveStatusEnum.Moved: return 'Spremenjen';
             case PlanItemMoveStatusEnum.Removed: return 'Odstranjen';
             case PlanItemMoveStatusEnum.Unchanged: return 'Nespremenjen';
+            case PlanItemMoveStatusEnum.ExtendedForNotWorkingHours: return 'Razširjen';
         }
     }
 }

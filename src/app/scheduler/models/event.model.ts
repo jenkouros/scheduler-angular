@@ -1,10 +1,12 @@
-import { PlannedEventServer, PlannedEventSimpleServer } from '../models/server/plannedevent.servermodel';
+import { PlannedEventServer, PlannedEventSimpleServer, PlanItemResponseServer } from '../models/server/plannedevent.servermodel';
 import { PreplanItem } from './preplanitem.dto';
 import { SubItemContainerServer } from './server/preplanitem.servermodel';
 import { SubItemContainer } from './subitem.dto';
+import { PlanSchedule } from './planschedule.dto';
 
 export interface ContainerEvents {
     events: PlannedEvent[];
+    notWorkingHoursEvents: PlanSchedule[];
     dateFrom: Date;
     dateTo: Date;
 }
@@ -22,6 +24,8 @@ export interface PlanItemPutRequest {
     timeExecutionStart?: Date | string;
     timeExecutionEnd: Date | string;
     comment?: string;
+    fixPlanItem?: boolean;
+    planItemMoveStatus: PlanItemMoveStatusEnum;
 }
 
 export interface PlanItemCreateRequest {
@@ -40,6 +44,23 @@ export interface PlannedEventMove {
     timeStart: Date;
     timeEnd: Date;
     planItemMoveStatus: PlanItemMoveStatusEnum;
+}
+
+export interface PlannedEventNotWorkingHoursMove {
+    extendPlanItem: PlannedEventMove;
+    movePlanItem: PlannedEventMove;
+}
+
+export class PlanItemsGetResponse {
+    planItems: PlannedEvent[];
+    notWorkingHoursEvents: PlanSchedule[];
+
+    static fromServer(serverData: PlanItemResponseServer) {
+        const result = new PlanItemsGetResponse();
+        result.planItems = serverData.planItems.map(PlannedEvent.fromServer);
+        result.notWorkingHoursEvents = serverData.notWorkingHoursEvents.map(PlanSchedule.fromServer);
+        return result;
+    }
 }
 
 export class PlannedEvent {
@@ -66,6 +87,7 @@ export class PlannedEvent {
     containers: SubItemContainer[];
     sequencePlanItems: PlannedEventSimple[];
     isLocked: boolean;
+    isInNotWorkingHours: boolean;
     isPlanned: boolean;
     preplanItem: PreplanItem | null;
     startDate: Date;
@@ -158,6 +180,7 @@ export class PlannedEvent {
         result.isPlanned = true;
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
+        result.isInNotWorkingHours = event.isInNotWorkingHours;
 
         return result;
 
@@ -197,7 +220,8 @@ export enum PlanItemMoveStatusEnum {
     Unchanged = 1,
     Added = 2,
     Removed = 3,
-    Moved = 4
+    Moved = 4,
+    ExtendedForNotWorkingHours = 5
 }
 
 

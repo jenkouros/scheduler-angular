@@ -13,7 +13,7 @@
       <div *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></div>
       
       <div *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></div>
-     
+      <div *ngIf="plannerItemData.isInNotWorkingHours"><fa-icon [icon]="faExclamation"></fa-icon></div>
       <!-- <div></div> -->
   </div>
  

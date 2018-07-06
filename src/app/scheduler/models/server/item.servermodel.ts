@@ -7,11 +7,17 @@ export interface ItemServer {
     name: string;
     quantity: number; // celotna kolicina
     quantityBatch: number; // kolicina sarze
-    quantityPlanned: number; // ze planirana kolicina
+    // quantityPlanned: number; // ze planirana kolicina
+    itemProgresses: ItemProgressServer[];
     measurementUnit: MeasurementUnitServer;
     article: ProductServer;
     limitDateFrom: Date;
     limitDateTo: Date;
+}
+
+export interface ItemProgressServer {
+    idPlan: number;
+    quantityPlanned: number;
 }
 
 export interface ItemHierarchyServer {

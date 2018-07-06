@@ -1,17 +1,20 @@
 import * as fromAction from '../actions/events.action';
-import { ContainerEvents, PlannedEvent, PlannedEventMove } from '../../models/event.model';
+import { ContainerEvents, PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
+import { PlanSchedule } from '../../models/planschedule.dto';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
     loading: boolean;
     loaded: boolean;
     timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
+    notWorkingHoursTimeUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
     uiState: {
         massLockPopup: {
             visibility: boolean,
             massLockPopupContainers: number[]
         },
-        idItemBatchTimeUpdateSuggestion: number | null
+        idItemBatchTimeUpdateSuggestion: number | null,
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: number | null
     };
 }
 
@@ -20,12 +23,14 @@ export const initialState: EventsState = {
     loaded: false,
     loading: false,
     timeUpdateSuggestion: null,
+    notWorkingHoursTimeUpdateSuggestion: null,
     uiState: {
         massLockPopup: {
             visibility: false,
             massLockPopupContainers: []
         },
-        idItemBatchTimeUpdateSuggestion: null
+        idItemBatchTimeUpdateSuggestion: null,
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
     }
 };
 
@@ -45,30 +50,29 @@ export function eventsReducer(
 
             const dict: {[containerId: number]: PlannedEvent[] } = {};
 
-            // const initDictionary: number[] = [];
             for (const event of action.payload.events) {
                 if (event.hasOwnProperty('containerId')) {
                     if (!dict[event.containerId]) {
                         dict[event.containerId] = [];
                     }
                     dict[event.containerId].push(event);
+                }
+            }
 
-                    // if (initDictionary.indexOf(event.containerId) < 0) {
-                    //     events[event.containerId].events = [];
-                    //     initDictionary.push(event.containerId);
-                    // }
-
-                    // events[event.containerId] = {
-                    //     events: [...events[event.containerId].events, event],
-                    //     dateFrom: action.payload.dateFrom,
-                    //     dateTo: action.payload.dateTo
-                    // };
+            const notWorkingHoursDict: {[containerId: number]: PlanSchedule[] } = [];
+            for (const notWorkingHoursEvent of action.payload.notWorkingHoursEvents) {
+                if (notWorkingHoursEvent.hasOwnProperty('idContainer')) {
+                    if (!notWorkingHoursDict[notWorkingHoursEvent.idContainer]) {
+                        notWorkingHoursDict[notWorkingHoursEvent.idContainer] = [];
+                    }
+                    notWorkingHoursDict[notWorkingHoursEvent.idContainer].push(notWorkingHoursEvent);
                 }
             }
 
             for (const key of action.payload.containers) {
                 events[key] = {
                     events: dict[key] || [],
+                    notWorkingHoursEvents: notWorkingHoursDict[key] || [],
                     dateFrom: action.payload.dateFrom,
                     dateTo: action.payload.dateTo
                 };
@@ -171,6 +175,32 @@ export function eventsReducer(
             return {
                 ...state,
                 timeUpdateSuggestion: suggestion
+            };
+        }
+        case fromAction.GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION_SUCCESS: {
+            return {
+                ...state,
+                notWorkingHoursTimeUpdateSuggestion: action.payload
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idPlanItemNotWorkingHoursTimeUpdateSuggestion: action.payload
+                }
+            };
+        }
+
+        case fromAction.CLEAR_NOTWORKINGHOURS_PLANITEM_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
+                },
+                notWorkingHoursTimeUpdateSuggestion: null
             };
         }
 

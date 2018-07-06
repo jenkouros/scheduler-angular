@@ -2,19 +2,22 @@
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent, PlannedEventMove, PlanItemPutRequest, PlanItemMoveStatusEnum, PlanItemCreateRequest } from '../models/event.model';
+import { PlannedEvent, PlannedEventMove, PlanItemPutRequest,
+    PlanItemMoveStatusEnum, PlanItemCreateRequest, PlanItemsGetResponse, PlannedEventNotWorkingHoursMove } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
+import { PlannedEventServer, PlanItemResponseServer } from '../models/server/plannedevent.servermodel';
 import * as moment from 'moment';
+import { PlanSchedule } from '../models/planschedule.dto';
+import { PlanScheduleServer } from '../models/server/planschedule.servermodel';
 
 
 @Injectable()
 export class EventsService {
     constructor(private http: HttpClient) { }
 
-    getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
+    getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlanItemsGetResponse> {
         let httpParams = new HttpParams()
             .set('IdPlan', '1')
             .set('timeStart', moment(fromDate).toISOString())
@@ -24,17 +27,12 @@ export class EventsService {
             httpParams = httpParams.append('containers', id.toString());
         });
 
-        const serachParams = {
-            params: httpParams
-
-        };
-
-        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
+        return this.http.get<ApiResponse<PlanItemResponseServer>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
             map((response) => {
                 if (response.code !== ApiResponseResult.success) {
                     throw response.messages;
                 }
-                return response.result.map(PlannedEvent.fromServer);
+                return PlanItemsGetResponse.fromServer(response.result);
             }),
             catchError((error: any) => observableThrowError(error.json))
         );
@@ -61,6 +59,18 @@ export class EventsService {
         );
     }
 
+    checkForNotPlannableEvents(idPlanItem: number): Observable<boolean> {
+        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/checkForNotPlannablePlanItems', idPlanItem)
+        .pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return true;
+            } )
+        );
+    }
+
     updateEvent(event: PlannedEvent): Observable<boolean> {
 
         const planningItem = <PlanItemPutRequest>{
@@ -68,7 +78,8 @@ export class EventsService {
             idContainer: event.containerId,
             timePreparationStart: moment(new Date(event.timeStartPreparation)).format(),
             timeExecutionStart: moment(new Date(event.timeStartExecution)).format(),
-            timeExecutionEnd: moment(new Date(event.timeEndExecution)).format()
+            timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
+            planItemMoveStatus: PlanItemMoveStatusEnum.Moved
         };
         return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -84,14 +95,16 @@ export class EventsService {
         );
     }
 
-    updateEvents(changedEvents: PlannedEventMove[]) {
+    updateEvents(changedEvents: PlannedEventMove[], fixPlanItem: boolean = false) {
         const request = changedEvents
             .filter(i => i.planItemMoveStatus !== PlanItemMoveStatusEnum.Unchanged)
             .map(i => <PlanItemPutRequest>{
                 idContainer: i.idContainer,
                 idPlanItem: i.idPlanItem,
                 timeExecutionEnd: moment(i.timeEnd).format(),
-                timePreparationStart: moment(i.timeStart).format()
+                timePreparationStart: moment(i.timeStart).format(),
+                fixPlanItem: fixPlanItem,
+                planItemMoveStatus: i.planItemMoveStatus
             });
         return this.http.put<ApiResponse<void>>(environment.apiUrl + '/planitems/planitemslist', request)
             .pipe(
@@ -150,6 +163,19 @@ export class EventsService {
 
     getTimeUpdateSuggestion(idItemBatch) {
         return this.http.post<ApiResponse<PlannedEventMove[]>>(environment.apiUrl + '/planitems/requestTimeUpdateByItemBatch', idItemBatch)
+        .pipe(
+            map((response) => {
+                if (response.code !== ApiResponseResult.success) {
+                    throw response.messages;
+                }
+                return response.result;
+            } )
+        );
+    }
+
+    getTimeSuggestionForNotWorkingHours(idPlanItem) {
+        return this.http.post<ApiResponse<PlannedEventNotWorkingHoursMove>>(environment.apiUrl +
+            '/planitems/getTimeSuggestionForNotWorkingHours', idPlanItem)
         .pipe(
             map((response) => {
                 if (response.code !== ApiResponseResult.success) {

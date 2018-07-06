@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { faLock, faLockOpen, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faLockOpen, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { PlannedEvent } from '../../../../models/event.model';
 
 @Component({
@@ -12,6 +12,7 @@ export class PlanViewerItemComponent implements OnInit {
   @Input() plannerItemData: PlannedEvent;
   faLock = faLock;
   faWarning = faExclamationTriangle;
+  faExclamation = faExclamationCircle;
   constructor() { }
 
   ngOnInit() {

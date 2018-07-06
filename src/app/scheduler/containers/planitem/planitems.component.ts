@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
-import { PlannedEvent, PlanItemsLoadRequest, PlannedEventMove } from '../../models/event.model';
+import { PlannedEvent, PlanItemsLoadRequest, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
 import { PreplanItem } from '../../models/preplanitem.dto';
 import { Observable } from 'rxjs';
 import { ContainerSelect } from '../../models/container.viewModel';
+import { PlanSchedule } from '../../models/planschedule.dto';
 
 @Component({
     selector: 'app-planitems',
@@ -13,9 +14,10 @@ import { ContainerSelect } from '../../models/container.viewModel';
         <app-plan-viewer
             [selectedPreplanItem]="selectedPrePlanItem$ | async"
             [selectedContainers]="selectedContainers$ | async"
-            [planItems]="planItems$ | async"
+            [planItemGetReponse]="planItems$ | async"
             [preplanItemDragEnd]="prePlanItemDragEnd$ | async"
             [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
+            [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
             (removeBlankSpace)="onRemoveBlankSpace($event)"
             (toggleLock)="onToggleLock($event)"
             (showMassLockPopup)="onShowMassLockPopup($event)"
@@ -25,16 +27,21 @@ import { ContainerSelect } from '../../models/container.viewModel';
             (planItemDelete)="onPlanItemDelete($event)"
             (getResolveSequenceSuggestion)="onGetResolveSequenceSuggestion($event)"
             (resolveSequence)="onResolveSequence($event)"
-            (clearTimeSuggestion)="onClearTimeSuggestion()">
+            (clearTimeSuggestion)="onClearTimeSuggestion()"
+            (getResolveNotWorkingHoursSuggestion)="onGetResolveNotWorkingHoursSuggestion($event)"
+            (resolveNotWorkingHours)="onResolveNotWorkingHours($event)"
+            (clearNotWorkingHoursSuggestion)="onClearNotWorkingHoursSuggestion()"
+            >
         </app-plan-viewer>
     `
 })
 export class PlanitemsComponent implements OnInit {
     selectedPrePlanItem$: Observable<PreplanItem | null>;
     selectedContainers$: Observable<ContainerSelect[]>;
-    planItems$: Observable<PlannedEvent[]>;
+    planItems$: Observable<{planItems: PlannedEvent[], notWorkingHoursEvents: {[idContainer: number]: PlanSchedule[]}}>;
     prePlanItemDragEnd$: Observable<boolean>;
     timeUpdateSuggestion$: Observable<{[idPrePlanItem: number]: PlannedEventMove } | null>;
+    notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
 
     private _containers: ContainerSelect[] = [];
     constructor(private store: Store<fromStore.SchedulerState>) {}
@@ -62,6 +69,7 @@ export class PlanitemsComponent implements OnInit {
         //     }
         // });
         this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
+        this.notWorkingHoursUpdateSuggestion$ = this.store.select(fromStore.getNotWorkingHoursUpdateSuggestion);
         this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
     }
 
@@ -102,7 +110,7 @@ export class PlanitemsComponent implements OnInit {
     }
 
     onResolveSequence(eventMoveList: PlannedEventMove[]) {
-        this.store.dispatch(new fromStore.UpdateEvents(eventMoveList));
+        this.store.dispatch(new fromStore.UpdateEvents({planItemMoves: eventMoveList, fixPlanItems: false}));
     }
 
     onGetResolveSequenceSuggestion(idItemBatch: number) {
@@ -111,5 +119,17 @@ export class PlanitemsComponent implements OnInit {
 
     onClearTimeSuggestion() {
         this.store.dispatch(new fromStore.ClearItemBatchTimeUpdateSuggestion());
+    }
+
+    onResolveNotWorkingHours(eventMove: PlannedEventMove) {
+        this.store.dispatch(new fromStore.UpdateEvents({planItemMoves: [eventMove], fixPlanItems: true}));
+    }
+
+    onGetResolveNotWorkingHoursSuggestion(idPlanItem: number) {
+        this.store.dispatch(new fromStore.GetNotWorkingHoursPlanItemUpdateSuggestion(idPlanItem));
+    }
+
+    onClearNotWorkingHoursSuggestion() {
+        this.store.dispatch(new fromStore.ClearNotWorkingHoursPlanItemUpdateSuggestion());
     }
 }
