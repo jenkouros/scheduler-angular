@@ -12,16 +12,26 @@
     <a class="nav-link" (click)="selected = 'groups'" routerLink='groups' routerLinkActive='active'>Skupine</a>
   </li> -->
   <li class="nav-item">
-    <a class="nav-link" (click)="selected = 'workorders'" routerLink='planitems' routerLinkActive='active'>Delovni nalogi</a>
+    <a class="nav-link" (click)="selected = 'workorders'" routerLink='planitems' routerLinkActive='active'>
+      <fa-icon class="mr-3" style="padding-left:1px" size="lg" [icon]="faItems"></fa-icon> Delovni nalogi
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" (click)="selected = 'planner'" routerLink='planner' routerLinkActive='active'>Razporejanje</a>
+    
+    <a class="nav-link" (click)="selected = 'planner'" routerLink='planner' routerLinkActive='active'>
+        <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razporejanje
+    </a>
   </li>
-  <li><hr class="redline"></li>
+  <li><hr class="mb-1"></li>
   <li>
-    <div class="mx-2 mt-1">
-        <app-preplanitems></app-preplanitems>
-    </div>
+    
+        <dx-scroll-view #scrollElement [height]="getScrollHeight(scrollElement.element)">
+            <div class="mx-2">
+              <app-preplanitems></app-preplanitems>
+          </div>
+        </dx-scroll-view>
+        
+    
     
   </li>
 </ul>

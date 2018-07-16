@@ -27,14 +27,10 @@ export class EventsService {
             httpParams = httpParams.append('containers', id.toString());
         });
 
-        return this.http.get<ApiResponse<PlanItemResponseServer>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
+        return this.http.get<PlanItemResponseServer>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
             map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return PlanItemsGetResponse.fromServer(response.result);
-            }),
-            catchError((error: any) => observableThrowError(error.json))
+                return PlanItemsGetResponse.fromServer(response);
+            })
         );
     }
 
@@ -46,33 +42,21 @@ export class EventsService {
             timeExecutionStart: moment(event.timeStartExecution).format(),
             timeExecutionEnd: moment(event.timeEndExecution).format()
         };
-        return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
+        return this.http.post<PlannedEventServer>(environment.apiUrl + '/planitems', planningItem,
             {
                 headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
             }).pipe(
             map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return PlannedEvent.fromServer(response.result);
-            } )
+                return PlannedEvent.fromServer(response);
+            })
         );
     }
 
-    checkForNotPlannableEvents(idPlanItem: number): Observable<boolean> {
-        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/checkForNotPlannablePlanItems', idPlanItem)
-        .pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return true;
-            } )
-        );
+    checkForNotPlannableEvents(idPlanItem: number) {
+        return this.http.post(environment.apiUrl + '/planitems/checkForNotPlannablePlanItems', idPlanItem);
     }
 
-    updateEvent(event: PlannedEvent): Observable<boolean> {
-
+    updateEvent(event: PlannedEvent) {
         const planningItem = <PlanItemPutRequest>{
             idPlanItem: event.id,
             idContainer: event.containerId,
@@ -81,18 +65,7 @@ export class EventsService {
             timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
             planItemMoveStatus: PlanItemMoveStatusEnum.Moved
         };
-        return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
-            {
-                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-            }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return true;
-                // return PlannedEvent.fromServer(response.result);
-            } )
-        );
+        return this.http.put(environment.apiUrl + '/planitems', planningItem);
     }
 
     updateEvents(changedEvents: PlannedEventMove[], fixPlanItem: boolean = false) {
@@ -106,41 +79,16 @@ export class EventsService {
                 fixPlanItem: fixPlanItem,
                 planItemMoveStatus: i.planItemMoveStatus
             });
-        return this.http.put<ApiResponse<void>>(environment.apiUrl + '/planitems/planitemslist', request)
-            .pipe(
-                map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return true;
-                })
-            );
+        return this.http.put(environment.apiUrl + '/planitems/planitemslist', request);
     }
 
-    deleteEvent(event: PlannedEvent): Observable<boolean> {
-        return this.http.delete<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems?idPlanItem=' + event.id ,
-            {
-                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-            }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return true;
-            } )
-        );
+    deleteEvent(event: PlannedEvent) {
+        return this.http.delete(environment.apiUrl + '/planitems?idPlanItem=' + event.id);
     }
 
-    toggleLock(event: PlannedEvent): Observable<boolean> {
+    toggleLock(event: PlannedEvent) {
         const url = event.isLocked ? 'unlockItem' : 'lockItem';
-        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, event.id).pipe(
-                map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return true;
-                })
-            );
+        return this.http.post(environment.apiUrl + '/planitems/' + url, event.id);
     }
 
     toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {
@@ -151,38 +99,16 @@ export class EventsService {
             toDate: moment(toDate).format()
         };
 
-        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, request).pipe(
-                map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return true;
-                })
-            );
+        return this.http.post(environment.apiUrl + '/planitems/' + url, request);
     }
 
     getTimeUpdateSuggestion(idItemBatch) {
-        return this.http.post<ApiResponse<PlannedEventMove[]>>(environment.apiUrl + '/planitems/requestTimeUpdateByItemBatch', idItemBatch)
-        .pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return response.result;
-            } )
-        );
+        return this.http.post<PlannedEventMove[]>(environment.apiUrl +
+            '/planitems/requestTimeUpdateByItemBatch', idItemBatch);
     }
 
     getTimeSuggestionForNotWorkingHours(idPlanItem) {
-        return this.http.post<ApiResponse<PlannedEventNotWorkingHoursMove>>(environment.apiUrl +
-            '/planitems/getTimeSuggestionForNotWorkingHours', idPlanItem)
-        .pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return response.result;
-            } )
-        );
+        return this.http.post<PlannedEventNotWorkingHoursMove>(environment.apiUrl +
+            '/planitems/getTimeSuggestionForNotWorkingHours', idPlanItem);
     }
 }

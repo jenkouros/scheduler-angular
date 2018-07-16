@@ -58,7 +58,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     planItems: [],
     notWorkingHoursEvents: {}
   };
-  @Input() preplanItemDragEnd: boolean;
+  // @Input() preplanItemDragEnd: boolean;
   @Input() timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
   @Input() notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
 
@@ -207,10 +207,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         clearTimeout($event.component.__tooltipTimeout);
     }
     $event.component.__tooltipTimeout = setTimeout(() => {
-        this.onClearTimeSuggestion();
-        this.onClearNotWorkingHoursSuggestion();
         $event.component.showAppointmentTooltip($event.appointmentData, $event.appointmentElement);
     }, 500);
+    this.onClearTimeSuggestion();
+    this.onClearNotWorkingHoursSuggestion();
   }
 
   onAppointmentDblClick($event) {

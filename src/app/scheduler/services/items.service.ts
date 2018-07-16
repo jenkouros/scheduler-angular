@@ -28,16 +28,16 @@ export class ItemsService {
 
     getItemHierarchy(itemId): Observable<ItemHierarchy> {
         return this.http
-            .get<ApiResponse<ItemHierarchyServer>>(environment.apiUrl + '/items?idItem=' + itemId)
+            .get<ItemHierarchyServer>(environment.apiUrl + '/items?idItem=' + itemId)
             .pipe(
                 map((response) => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return ItemHierarchy.fromServer(response.result);
+                    return ItemHierarchy.fromServer(response);
                 }),
-                catchError((error: any) => throwError(error.json()))
             );
+    }
+
+    hideItem(itemId: number) {
+        return this.http.post(environment.apiUrl + '/items/hideItem', itemId);
     }
 
 }

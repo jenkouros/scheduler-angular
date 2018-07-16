@@ -15,15 +15,11 @@ export class FiltersService {
 
     getFilters(): Observable<Filter[]> {
         return this.http
-            .get<ApiResponse<FilterServer[]>>(environment.apiUrl + '/filters')
+            .get<FilterServer[]>(environment.apiUrl + '/filters')
             .pipe(
                 map((response) => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return response.result.map(f => Filter.fromServer(f));
-                }),
-                catchError((error: any) => observableThrowError(error.json()))
+                    return response.map(f => Filter.fromServer(f));
+                })
             );
     }
 }

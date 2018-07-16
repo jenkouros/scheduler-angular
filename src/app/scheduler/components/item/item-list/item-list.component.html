@@ -5,6 +5,7 @@
   id="gridContainer" 
   [dataSource]="store"
   [showRowLines]="true" 
+  [showBorders]="true"
   [rowAlternationEnabled]="true">
 
   <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -25,13 +26,13 @@
   </dxo-pager>
 
   <dxi-column caption="Nalog">
-    <dxi-column dataField="name" caption="Koda"></dxi-column>
-    <dxi-column dataField="itemProgresses[0].quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="Planirana količina"></dxi-column>
+    <dxi-column dataField="name" caption="Koda" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="itemProgresses[0].quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="Splanirano"></dxi-column>
     <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
   </dxi-column>
   <dxi-column caption="Artikel">
-    <dxi-column dataField="article.code" caption="Šifra"></dxi-column>
-    <dxi-column dataField="article.name" caption="Naziv"></dxi-column>
+    <dxi-column dataField="article.code" caption="Šifra" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="article.name" caption="Naziv" cssClass="font-weight-500"></dxi-column>
   </dxi-column>
   <dxi-column caption="ERP">
     <dxi-column dataField="quantity" caption="Količina"></dxi-column>
@@ -39,10 +40,17 @@
     <dxi-column dataField="limitDateFrom" dataType="date" caption="Datum od" cellTemplate="dateCellTemplate"></dxi-column>
     <dxi-column dataField="limitDateTo" dataType="date" caption="Datum do" cellTemplate="dateCellTemplate"></dxi-column>
   </dxi-column>
-  <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
-  
+
+    <dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
+    <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
+
+
   <div *dxTemplate="let cell of 'planCellTemplate'">
     <a class="span-link" (click)="onSelectItem(cell.data)">Planiraj</a>
+  </div>
+
+  <div *dxTemplate="let cell of 'deleteCellTemplate'">
+    <a class="span-link" (click)="onDeleteItem(cell.data)">Skrij</a>
   </div>
 
   <div *dxTemplate="let cell of 'dateCellTemplate'">

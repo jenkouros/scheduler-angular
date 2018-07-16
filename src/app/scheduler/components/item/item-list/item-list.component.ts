@@ -10,6 +10,7 @@ import { Item } from '../../../models/item.dto';
 export class ItemListComponent implements OnInit {
   @Input() store: CustomStore | null;
   @Output() selectItem = new EventEmitter<Item>();
+  @Output() hideItem = new EventEmitter<Item>();
 
   constructor() {}
 
@@ -19,6 +20,12 @@ export class ItemListComponent implements OnInit {
   onSelectItem(item: Item) {
     if (item) {
       this.selectItem.emit(item);
+    }
+  }
+
+  onDeleteItem(item: Item) {
+    if (item) {
+      this.hideItem.emit(item);
     }
   }
 }

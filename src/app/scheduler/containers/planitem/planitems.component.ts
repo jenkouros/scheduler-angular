@@ -6,6 +6,7 @@ import { PreplanItem } from '../../models/preplanitem.dto';
 import { Observable } from 'rxjs';
 import { ContainerSelect } from '../../models/container.viewModel';
 import { PlanSchedule } from '../../models/planschedule.dto';
+import { PreplanitemUiState } from '../../models/preplanItem.store';
 
 @Component({
     selector: 'app-planitems',
@@ -15,7 +16,6 @@ import { PlanSchedule } from '../../models/planschedule.dto';
             [selectedPreplanItem]="selectedPrePlanItem$ | async"
             [selectedContainers]="selectedContainers$ | async"
             [planItemGetReponse]="planItems$ | async"
-            [preplanItemDragEnd]="prePlanItemDragEnd$ | async"
             [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
             [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
             (removeBlankSpace)="onRemoveBlankSpace($event)"
@@ -39,7 +39,7 @@ export class PlanitemsComponent implements OnInit {
     selectedPrePlanItem$: Observable<PreplanItem | null>;
     selectedContainers$: Observable<ContainerSelect[]>;
     planItems$: Observable<{planItems: PlannedEvent[], notWorkingHoursEvents: {[idContainer: number]: PlanSchedule[]}}>;
-    prePlanItemDragEnd$: Observable<boolean>;
+    prePlanItemUiState$: Observable<PreplanitemUiState>;
     timeUpdateSuggestion$: Observable<{[idPrePlanItem: number]: PlannedEventMove } | null>;
     notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
 
@@ -70,7 +70,7 @@ export class PlanitemsComponent implements OnInit {
         // });
         this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
         this.notWorkingHoursUpdateSuggestion$ = this.store.select(fromStore.getNotWorkingHoursUpdateSuggestion);
-        this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
+        // this.prePlanItemUiState$ = this.store.select(fromStore.getPrePlanItemUiState);
     }
 
     onPlanItemLoad(loadRequest: PlanItemsLoadRequest) {

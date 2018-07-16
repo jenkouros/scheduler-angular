@@ -14,10 +14,11 @@ import { ContainerItemComponent } from './container-item/container-item.componen
 import { ItemAlternativeComponent } from './item/item-alternative/item-alternative.component';
 import { SubItemComponent } from './item/subitem/subitem.component';
 import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
-import { PrePlanitemItemComponent } from './preplanitem-item/preplanitem-item.component';
+import { PrePlanitemItemComponent } from './preplanitem/preplanitem-item/preplanitem-item.component';
 import { ItemPopupComponent } from './item/item-popup/item-popup.component';
 import { MassLockPopupComponent } from './planner/mass-lock-popup/mass-lock-popup.component';
 import { PlanViewerItemEditComponent } from './planner/plan-viewer/plan-viewer-item-edit/plan-viewer-item-edit.component';
+import { PreplanitemDeletePopupComponent } from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.component';
 
 
 export const components: any[] = [
@@ -38,6 +39,7 @@ export const components: any[] = [
     SubItemComponent,
     PlanViewerItemComponent,
     PrePlanitemItemComponent,
+    PreplanitemDeletePopupComponent,
     ItemPopupComponent,
     MassLockPopupComponent,
     PlanViewerItemEditComponent
@@ -58,8 +60,10 @@ export * from './filters/filter-autocomplete/filter-autocomplete.component';
 export * from './item/item-alternative/item-alternative.component';
 export * from './item/subitem/subitem.component';
 export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
-export * from './preplanitem-item/preplanitem-item.component';
+export * from './preplanitem/preplanitem-item/preplanitem-item.component';
 export * from './item/item-popup/item-popup.component';
 export * from './planner/mass-lock-popup/mass-lock-popup.component';
 export * from './container-item/container-item.component';
 export * from './planner/plan-viewer/plan-viewer-item-edit/plan-viewer-item-edit.component';
+export * from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.component';
+

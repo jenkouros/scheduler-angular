@@ -8,7 +8,8 @@ const schedulerRoutes: Routes = [
         { path: 'filters', component: FiltersComponent },
         { path: 'groups', component: GroupsComponent },
         { path: 'planitems', component: ItemsComponent },
-        { path: 'planner', component: PlannerComponent }
+        { path: 'planner', component: PlannerComponent },
+        { path: '**', redirectTo: 'planitems' }
     ]}
 ];
 

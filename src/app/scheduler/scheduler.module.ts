@@ -20,7 +20,8 @@ import {
     DxSelectBoxModule,
     DxTextBoxModule,
     DxFormModule,
-    DxCheckBoxModule
+    DxCheckBoxModule,
+    DxScrollViewModule
 } from 'devextreme-angular';
 
 import { CommonModule } from '@angular/common';
@@ -34,14 +35,17 @@ import { FiltersEffects } from './store/effects/filters.effect';
 import { ContainersEffects } from './store/effects/containers.effect';
 import { EventsEffects } from './store/effects/events.effect';
 import { PreplanitemEffects } from './store/effects/preplanitem.effect';
-import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
+import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
 import { TimeHelper } from './helpers/time.helper';
 import { PlanViewerFormHelper } from './components/planner/plan-viewer/plan-viewer.form.helper';
+import { CoreModule } from '../core/core.module';
+import { NotifyService } from '../shared/services/notify.service';
 
 
 @NgModule({
     imports: [
+        CoreModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -65,7 +69,8 @@ import { PlanViewerFormHelper } from './components/planner/plan-viewer/plan-view
         DxSelectBoxModule,
         DxTextBoxModule,
         DxFormModule,
-        DxCheckBoxModule
+        DxCheckBoxModule,
+        DxScrollViewModule
     ],
     declarations: [
         ...fromContainers.containers,
@@ -79,7 +84,8 @@ import { PlanViewerFormHelper } from './components/planner/plan-viewer/plan-view
         FiltersService,
         ContainersService,
         EventsService,
-        PreplanitemsService
+        PreplanitemsService,
+        NotifyService
     ]
 })
 export class SchedulerModule {

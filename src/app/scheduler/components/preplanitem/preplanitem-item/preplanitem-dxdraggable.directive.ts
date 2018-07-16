@@ -3,7 +3,7 @@ import {  Directive, ElementRef, OnDestroy, Input, Output, OnInit, AfterViewInit
 import * as events from 'devextreme/events';
 import { Attribute } from '@angular/compiler';
 import { Store } from '@ngrx/store';
-import * as fromStore from '../../store';
+import * as fromStore from '../../../store';
 
 
 @Directive({

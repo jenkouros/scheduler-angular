@@ -1,7 +1,7 @@
-<div class="card text-white" [ngClass]="subItem.plannable ? 'bg-kolektor' : 'bg-secondary'">
-    <div class="card-body">
-        <h5 class="card-title text-white">{{ subItem.code }} - {{ subItem.name }}</h5>
-        <div class="card-text">
+<div class="card text-dark" [ngClass]="subItem.plannable ? 'bg-kolektor-light' : ''">
+    <div class="card-body p-2">
+        <h6 class="card-title mb-1">{{ subItem.code }} - {{ subItem.name }}</h6>
+        <div class="card-text" *ngIf="subItem.plannable">
             <table>
                 <thead></thead>
                 <tbody>

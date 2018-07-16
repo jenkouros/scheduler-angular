@@ -15,9 +15,15 @@ export const LOAD_ITEMHIERARCHY_SUCCESS = '[Item] Load selected plan item hierar
 export const SHOW_ITEM_POPUP = '[Item] Show plan item popup';
 export const HIDE_ITEM_POPUP = '[Item] Hide plan item popup';
 
+export const HIDE_ITEM = '[Item] Hide item';
 
 export class LoadItems implements Action {
     readonly type = LOAD_ITEMS;
+}
+
+export class HideItem implements Action {
+    readonly type = HIDE_ITEM;
+    constructor(public payload: number) {}
 }
 
 export class RegisterItemStore implements Action {

@@ -1,16 +1,17 @@
 import * as fromAction from '../actions/preplanitems.action';
 import { PreplanItem } from '../../models/preplanitem.dto';
+import { PreplanitemState } from '../../models/preplanItem.store';
 
-export interface PreplanitemState {
-    preplanItems: PreplanItem[];
-    selectedPreplanItems: PreplanItem | null;
-    draggedEnded: boolean;
-}
+export { PreplanitemState } from '../../models/preplanItem.store';
 
 export const initState: PreplanitemState = {
     preplanItems: [],
     selectedPreplanItems: null,
-    draggedEnded: true
+    uiState: {
+        draggedEnded: true,
+        isDeletePopupVisible: false,
+        idDeleteItemBatchCandidate: null
+    }
 };
 
 export function prePlanItems(state = initState, action: fromAction.PreplanitemAction): PreplanitemState {
@@ -31,16 +32,43 @@ export function prePlanItems(state = initState, action: fromAction.PreplanitemAc
             return {
                 ...state,
                 selectedPreplanItems: {...action.payload },
-                draggedEnded : false
+                uiState: {
+                    ...state.uiState,
+                    draggedEnded : false
+                }
             };
         }
         case(fromAction.DRAGEND_PREPLANITEM): {
             return {
                 ...state,
                 selectedPreplanItems: null,
-                draggedEnded : true
+                uiState: {
+                    ...state.uiState,
+                    draggedEnded : true
+                }
             };
         }
+        case(fromAction.SHOW_ITEMBATCH_DELETE_POPUP): {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idDeleteItemBatchCandidate: action.payload.idItemBatch,
+                    isDeletePopupVisible: true
+                }
+            };
+        }
+        case(fromAction.HIDE_ITEMBATCH_DELETE_POPUP): {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idDeleteItemBatchCandidate: null,
+                    isDeletePopupVisible: false
+                }
+            };
+        }
+
         default:
             return state;
     }

@@ -14,28 +14,16 @@ export class ContainersService {
     constructor(private http: HttpClient) {}
 
     getContainers(): Observable<Container[]> {
-        return this.http.get<ApiResponse<ContainerServer[]>>(environment.apiUrl + '/containers').pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return response.result.map(Container.fromServer);
+        return this.http.get<ContainerServer[]>(environment.apiUrl + '/containers').pipe(
+            map((containers) => {
+                return containers.map(Container.fromServer);
             }),
             catchError((error: any) => observableThrowError(error.json))
             );
     }
 
     removeContainersBlankSpace(containerIds: number[]) {
-        return this.http.post<ApiResponse<any>>(environment.apiUrl + '/containers/removeBlankSpace', containerIds)
-            .pipe(
-                map(response => {
-                    if (response.code === ApiResponseResult.success) {
-                        return;
-                    }
-                    throw response.messages;
-                }),
-                catchError(error => observableThrowError(error.json))
-            );
+        return this.http.post(environment.apiUrl + '/containers/removeBlankSpace', containerIds);
     }
 
     getDateBoundsForLoadedContainerEvents(containerEventsList: ContainerEvents[]) {

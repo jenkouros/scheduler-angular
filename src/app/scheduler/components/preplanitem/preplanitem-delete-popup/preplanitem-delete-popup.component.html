@@ -1,0 +1,12 @@
+<app-popup 
+  [visible]="preplanItemUiState !== null && preplanItemUiState!.isDeletePopupVisible"
+  (visibilityChanged)="popupVisibilityChanged($event)"
+  title="Potrdi brisanje"
+  [cancelCallback]="onHideDeleteBatchPopup"
+  [confirmCallback]="onConfirmDeleteBatchPopup"
+  width="300px"
+  height="auto">
+  <p>
+    Izbrišem celotno šaržo?
+  </p>
+</app-popup>

@@ -13,22 +13,18 @@ export class PreplanitemsService {
     constructor(private http: HttpClient) {}
 
     getPreplanitems() {
-        return this.http.get<ApiResponse<PreplanitemServer[]>>
+        return this.http.get<PreplanitemServer[]>
             (environment.apiUrl + '/preplanitems')
             .pipe(
                 map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return response.result.map(f => PreplanItem.fromServer(f));
-                }),
-                catchError((error: any) => observableThrowError(error.json()))
+                    return response.map(f => PreplanItem.fromServer(f));
+                })
             );
     }
 
     deleteItemBatch(itemBatchId: number) {
         // TODO create methods on serverside
-        return this.http.delete<ApiResponse<PreplanitemServer[]>>
+        return this.http.delete<PreplanitemServer[]>
             (environment.apiUrl + '/preplanitems?idItemBatch=' + itemBatchId);
     }
 

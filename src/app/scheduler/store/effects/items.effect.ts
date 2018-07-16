@@ -45,4 +45,17 @@ export class ItemsEffects {
                     );
             })
         );
+
+    @Effect()
+    hideItem$ = this.actions$
+        .ofType(fromActions.HIDE_ITEM)
+        .pipe(
+            switchMap((action: fromActions.HideItem) => {
+                return this.itemService.hideItem(action.payload)
+                    .pipe(
+                        map(_ => new fromActions.LoadItems()),
+                        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
+                    );
+            })
+        );
 }
