@@ -5,7 +5,8 @@ export interface TimeTable {
   name: string;
   description: string;
   timeStart: Date;
-  timeEnnd: Date;
+  timeEnd: Date;
+  recurrenceRule: string;
 }
 
 export interface TimeTableType {

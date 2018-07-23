@@ -61,9 +61,19 @@ export function reducer(
       const id = action.payload;
       return {
         ...state,
-        selectedId: id,
-        loading: false,
-        loaded: false
+        selectedId: id
+      };
+    }
+    case fromCalendars.UPDATE_CALENDAR_SUCCESS:
+    case fromCalendars.CREATE_CALENDAR_SUCCESS: {
+      const calendar = action.payload;
+      const entities = {
+        ...state.entities,
+        [calendar.id]: calendar
+      };
+      return {
+        ...state,
+        entities
       };
     }
   }

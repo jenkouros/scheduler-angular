@@ -1,6 +1,7 @@
 import * as fromFeature from '../reducers';
 import * as fromCalendars from '../reducers/calendars.reducer';
 import { createSelector } from '@ngrx/store';
+import * as fromRoot from '../../../store/app.reducers';
 
 // calendars state
 export const getCalendarsState = createSelector(
@@ -36,11 +37,24 @@ export const getCalendarsSelectedId = createSelector(
   fromCalendars.getCalendarsSelectedId
 );
 
+export const getCalendarsSelectedOld = createSelector(
+  getCalendarsEntities,
+  fromRoot.getRouterState,
+  (entities, router) => {
+    console.log('test', entities, router);
+    return router.state && entities[router.state.params.calendarId];
+  }
+);
+
 export const getCalendarsSelected = createSelector(
   getCalendarsEntities,
   getCalendarsSelectedId,
   (entities, id) => {
-    // console.log(entities, id);
     return entities[id];
   }
 );
+// = (containerIds: number[]) => createSelector(
+export const getCalendarById = (id: number) =>
+  createSelector(getCalendarsEntities, entities => {
+    return entities[id];
+  });

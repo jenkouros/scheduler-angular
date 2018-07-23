@@ -6,6 +6,7 @@ import {
   faChevronLeft
 } from '@fortawesome/free-solid-svg-icons';
 import { Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Calendar } from '../../models/calendar.model';
 
 @Component({
@@ -20,24 +21,25 @@ export class ScheduleToolbarComponent implements OnInit {
   listIcon = faChevronLeft;
   selectedIcon = 'calendar';
 
-  // PREVENT ERROR
-  visible = true;
-  deleteSchedule() {
-
-  }
-
   @Input() selectedCommand: string;
   @Input() selectedCalendar: Calendar;
 
   @Output() selectedAction = new EventEmitter<string>();
-  constructor() {}
 
-  ngOnInit() {}
+  // PREVENT ERROR
+  enabled = true;
+  deleteSchedule() {}
 
-  onSelected(action: string) {
-    this.selectedAction.emit(action);
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.selectedCommand = 'calendar';
+    console.log('selectedCommand', this.selectedCalendar);
   }
 
-
-
+  onSelected(action: string) {
+    console.log(`timetables/${this.selectedCalendar.id}/˘{action}`);
+    this.router.navigate([`timetables/${this.selectedCalendar.id}/${action}`]);
+    this.selectedAction.emit(action);
+  }
 }

@@ -1,0 +1,26 @@
+<dx-data-grid id="gridContainer" [dataSource]="dataSource">
+  <dxo-paging [pageSize]="3"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
+  </dxo-pager>
+
+
+  <dxi-column caption="Naziv koledarja" dataField="description"></dxi-column>
+  <dxi-column caption="Opomba" dataField=""></dxi-column>
+  <dxi-column caption="Veljaven od" dataField="timeStart" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
+  <dxi-column caption="Veljaven do" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
+
+
+  <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplte" [width]="100"></dxi-column>
+  <dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>
+
+  <div *dxTemplate="let cell of 'dateCellTemplate'">
+    {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+  </div>
+  <div *dxTemplate="let cell of 'editCelltemplte'">
+    <a class="span-link" (click)="onEditItem(cell.data)">Uredi</a>
+  </div>
+
+  <div *dxTemplate="let cell of 'selectCellTemplate'">
+    <a class="span-link" (click)="onSelectItem(cell.data)">Preglej</a>
+  </div>
+</dx-data-grid>

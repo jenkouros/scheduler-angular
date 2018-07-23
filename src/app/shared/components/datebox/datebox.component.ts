@@ -21,6 +21,7 @@ import { forwardRef } from '@angular/core';
 export class DateboxComponent implements OnInit, AfterViewInit, ControlValueAccessor {
   @Input() date = new Date();
   @Input() type = 'date';
+  @Input() isValid = true;
   @Output() change = new EventEmitter<Date>();
 
   propagateChange = (_: any) => {};

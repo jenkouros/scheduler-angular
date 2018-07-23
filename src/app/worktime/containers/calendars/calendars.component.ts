@@ -6,23 +6,22 @@ import * as fromStore from '../../store';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-time-tables',
-  styleUrls: ['./time-tables.component.css'],
+  selector: 'app-calendars',
   template: `
   <dx-toolbar
     [items]="items"
   >
   </dx-toolbar>
-  <div class="icon-bar" *ngFor="let calendar of (calendars$ | async)">
-      <app-time-table
-        [scheduleData]="calendar"
-        (selectSchedule)="handleSelect($event)"
-        [selected]="selectedId===calendar.id">
-      </app-time-table>
-  </div>
-  `
+
+  <app-calendar-items
+  (editItem)="onEdit($event)"
+  (selectItem)="onSelect($event)"
+  [dataSource]="(calendars$ | async)">
+  </app-calendar-items>
+  `,
+  styleUrls: ['./calendars.component.css']
 })
-export class TimeTablesComponent implements OnInit {
+export class CalendarsComponent implements OnInit {
   selectedId: number;
   items: any[];
   calendars$: Observable<Calendar[]>;
@@ -46,7 +45,10 @@ export class TimeTablesComponent implements OnInit {
 
         options: {
           icon: 'plus',
-          onClick: () => {}
+          text: 'Dodaj',
+          onClick: () => {
+            this.router.navigate(['timetables/new']);
+          }
         }
       }
     ];
@@ -54,12 +56,25 @@ export class TimeTablesComponent implements OnInit {
 
   ngOnInit() {
     this.calendars$ = this.store.select(fromStore.getAllCalendars);
-    this.store.dispatch(new fromStore.LoadCalendars());
+    // this.store.dispatch(new fromStore.LoadCalendars());
+  }
+
+  onEdit(id: number) {
+    this.selectedId = id;
+    console.log('calendarId', id);
+    this.store.dispatch(new fromStore.SelectCalendar(id));
+    this.router.navigate([`timetables/edit/${id}`]);
+  }
+  onSelect(id: number) {
+    this.selectedId = id;
+    console.log('calendarId', id);
+    this.store.dispatch(new fromStore.SelectCalendar(id));
+    this.router.navigate([`timetables/${id}`]);
   }
 
   handleSelect(id: number) {
     this.selectedId = id;
     this.store.dispatch(new fromStore.SelectCalendar(id));
-    this.router.navigate(['worktime/schedule']);
+    this.router.navigate([`timetables/${id}`]);
   }
 }

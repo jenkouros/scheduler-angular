@@ -1,13 +1,26 @@
-<dx-tab-panel #tabPanel [height]="260" [dataSource]="timeTablesTypes" [selectedIndex]="0">
+<dx-tab-panel #tabPanel [dataSource]="timeTablesTypes" [selectedIndex]="0">
+
     <div *dxTemplate="let schedule of 'title'">
         <span>{{schedule.name}}</span>
     </div>
+
     <div *dxTemplate="let schedule of 'item'">
         <div class="tabpanel-item">
-            <div>
-                common template {{timeTables | json}}
+            <p>edit {{schedule.id}}</p>
+            <div *ngFor="let timeTableEvent of timeTables, let i=index">
+                <ul>
+                    <div *ngIf="timeTableEvent.idTimeTableType===schedule.id">
+                        <app-timetable-event (edit)="onEdit($event)" [timeTableEvent]="timeTableEvent" [index]="i+1">
+                        </app-timetable-event>
+                    </div>
+                </ul>
             </div>
         </div>
+    </div>
+
+    <div class="item-box">
+        {{timeTableEvent | json}}
+        <span>{{tabPanel.selectedIndex + 1}}</span>
     </div>
     <div *dxTemplate="let schedule of 'customTemplate'">
         <div class="tabpanel-item">
@@ -17,7 +30,3 @@
         </div>
     </div>
 </dx-tab-panel>
-<div class="item-box">
-    selectedIndex
-    <span>{{tabPanel.selectedIndex + 1}}</span>
-</div>
