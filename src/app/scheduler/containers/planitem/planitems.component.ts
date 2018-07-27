@@ -13,6 +13,7 @@ import { PreplanitemUiState } from '../../models/preplanItem.store';
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <app-plan-viewer
+            [currentDate]="currentDate"
             [selectedPreplanItem]="selectedPrePlanItem$ | async"
             [selectedContainers]="selectedContainers$ | async"
             [planItemGetReponse]="planItems$ | async"
@@ -42,6 +43,7 @@ export class PlanitemsComponent implements OnInit {
     prePlanItemUiState$: Observable<PreplanitemUiState>;
     timeUpdateSuggestion$: Observable<{[idPrePlanItem: number]: PlannedEventMove } | null>;
     notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
+    currentDate = new Date();
 
     private _containers: ContainerSelect[] = [];
     constructor(private store: Store<fromStore.SchedulerState>) {}
@@ -50,6 +52,7 @@ export class PlanitemsComponent implements OnInit {
         this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
         this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
         this.planItems$ = this.store.pipe(select(fromStore.getEvents));
+
         // this.selectedContainers$.subscribe(containers => {
         //     if (containers && containers.length > 0) {
         //         if (containers.length > this._containers.length) {
@@ -70,6 +73,11 @@ export class PlanitemsComponent implements OnInit {
         // });
         this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
         this.notWorkingHoursUpdateSuggestion$ = this.store.select(fromStore.getNotWorkingHoursUpdateSuggestion);
+        this.store.select(fromStore.getEventsUiState).subscribe(i => {
+            if (i.schedulerCurrentDate && i.schedulerCurrentDate !== this.currentDate) {
+                this.currentDate = i.schedulerCurrentDate;
+            }
+        });
         // this.prePlanItemUiState$ = this.store.select(fromStore.getPrePlanItemUiState);
     }
 

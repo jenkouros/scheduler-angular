@@ -4,6 +4,9 @@ import { PlanSchedule } from '../models/planschedule.dto';
 export class TimeHelper {
 
     static convertMinutesIntoString(minutes: number) {
+        if (!minutes) {
+            minutes = 0;
+        }
         const hours = Math.floor(minutes / 60);
         const minutesLeft = Math.round(minutes % 60);
         let result = hours > 0 ? `${hours}h` : '';

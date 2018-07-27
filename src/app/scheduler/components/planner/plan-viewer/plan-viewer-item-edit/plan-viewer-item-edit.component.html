@@ -1,4 +1,5 @@
 <app-popup 
+  [validToConfirm]="planItemEditForm.valid"
   title="Urejanje operacije" 
   [confirmCallback]="onFormSubmit"
   [cancelCallback]="onFormHide"
@@ -17,7 +18,6 @@
       <app-field label="Delovno mesto">
           <!-- [value]="planItem!.containerId" -->
         <dx-select-box
-          
           [items]="containers"
           displayExpr="container.displayExpression"
           valueExpr="container.id"
@@ -25,7 +25,11 @@
         ></dx-select-box>
       </app-field>
       <app-field label="Začetek priprave">
-        <app-datebox type="datetime" formControlName="preparationStartTime" ></app-datebox>
+        <app-datebox 
+          type="datetime" 
+          formControlName="preparationStartTime" 
+          [max]="executionStartTimeControl.value">
+        </app-datebox>
       </app-field>
       <div class="ml-5">
         <app-field label="Čas priprave" [isStatic]="true">
@@ -36,7 +40,12 @@
         </app-field>
       </div>
       <app-field label="Začetek izdelave">
-        <app-datebox type="datetime" formControlName="executionStartTime"></app-datebox>
+        <app-datebox 
+          type="datetime" 
+          formControlName="executionStartTime"
+          [max]="executionEndTimeControl.value"
+          [min]="preparationStartTimeControl.value">
+        </app-datebox>
       </app-field>
       <div class="ml-5">
         <app-field label="Čas izdelave" [isStatic]="true">
@@ -48,8 +57,16 @@
       </div>
 
       <app-field label="Konec izdelave">
-        <app-datebox type="datetime" formControlName="executionEndTime"></app-datebox>
+        <app-datebox 
+          type="datetime" 
+          formControlName="executionEndTime"
+          [min]="executionStartTimeControl.value">
+        </app-datebox>
       </app-field>
+      <!-- {{ planItemEditForm.invalid }} <br>
+      {{ planItemEditForm.controls['preparationStartTime'].value }} <br>
+      {{ planItemEditForm.controls['executionStartTime'].value }} <br>
+      {{ planItemEditForm.controls['executionEndTime'].value }} -->
     </form>
 
   </div>

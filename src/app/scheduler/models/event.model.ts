@@ -72,6 +72,7 @@ export class PlannedEvent {
     idSubItemContainer: number;
     idPlanItemStatus: number;
     quantity: number;
+    manufacturedQuantity: number;
     unitQuantity: string;
     description: string;
     itemCode: string;
@@ -92,6 +93,9 @@ export class PlannedEvent {
     preplanItem: PreplanItem | null;
     startDate: Date;
     endDate: Date;
+
+
+    color: string;
 
     get timeEndExecution() {
         return this.endDate;
@@ -123,6 +127,17 @@ export class PlannedEvent {
         return false;
     }
 
+    get statusDescription() {
+        switch (this.idPlanItemStatus) {
+            case PlanItemStatusEnum.Running: return 'V izvajanju';
+            case PlanItemStatusEnum.Finished: return 'Zaključen';
+            case PlanItemStatusEnum.Canceled: return 'Preklican';
+            case PlanItemStatusEnum.Planned: return 'Planiran';
+            case PlanItemStatusEnum.Scheduled: return 'Planiran';
+        }
+        return '-';
+    }
+
     static createFromPreplanitem(idPrePlanItem: number,
         idContainer: number,
         title: string,
@@ -151,6 +166,7 @@ export class PlannedEvent {
         result.unitQuantity = unitQuantity;
         result.isPlanned = isPlanned;
         result.isLocked = false;
+
         return result;
     }
 
@@ -181,7 +197,8 @@ export class PlannedEvent {
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
         result.isInNotWorkingHours = event.isInNotWorkingHours;
-
+        result.color = colorMapper(event.idPlanItemStatus);
+        result.manufacturedQuantity = event.quantity / 2;
         return result;
 
 
@@ -224,5 +241,39 @@ export enum PlanItemMoveStatusEnum {
     ExtendedForNotWorkingHours = 5
 }
 
+export enum PlanItemStatusEnum {
+    Scheduled = 1,
+    WaitingForArticles = 2,
+    NoArticles = 3,
+    ArticlesPrepared = 4,
+    Planned = 5,
+    Running = 6,
+    Finished = 7,
+    Canceled = 8
+}
+
+export interface PlanItemSearch {
+    planItemName: string;
+    planItemCode: string;
+    itemName: string;
+    articleName: string;
+    articleCode: string;
+    containerCode: string;
+    containerName: string;
+    containerId: number;
+    timeStartPreparation: Date;
+    timeStart: Date;
+    timeEnd: Date;
+    quantity: number;
+    statusName: string;
+}
+
+function colorMapper(planItemStatus: PlanItemStatusEnum) {
+    switch (planItemStatus) {
+        case PlanItemStatusEnum.Running:
+            return '#6cb56c';
+    }
+    return '#337ab7';
+}
 
 

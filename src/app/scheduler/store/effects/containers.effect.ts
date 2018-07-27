@@ -82,7 +82,7 @@ export class ContainersEffects {
   deselectContainer = this.actions$
       .ofType(fromActions.DESELECT_CONTAINERS)
       .pipe(
-          map((action: fromActions.SelectContainers) => {
+          map((action: fromActions.DeselectContainers) => {
               this.signalRService.containerSubscribe(action.payload, false);
               const containerId = action.payload[0];
               return new fromActions.RemoveEventsByContainerId(containerId);

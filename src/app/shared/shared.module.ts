@@ -8,16 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { FieldsetComponent } from './components/fieldset/fieldset.component';
 import { FieldComponent } from './components/fieldset/field/field.component';
 import { PopupComponent } from './components/popup/popup.component';
-import { DxPopupModule, DxScrollViewModule, DxDateBoxModule } from 'devextreme-angular';
+import { DxPopupModule, DxScrollViewModule, DxDateBoxModule, DxValidatorModule, DxValidationSummaryModule } from 'devextreme-angular';
 import { DateboxComponent } from './components/datebox/datebox.component';
 
 @NgModule({
     exports: [
         CommonModule,
-        // NgSelectModule,
         NgbModule,
-        // PaginationComponent,
-        // PageLengthComponent,
         LoaderComponent,
         FieldsetComponent,
         FieldComponent,
@@ -27,15 +24,14 @@ import { DateboxComponent } from './components/datebox/datebox.component';
     imports: [
         CommonModule,
         FormsModule,
-        // NgSelectModule,
         NgbModule.forRoot(),
         DxPopupModule,
         DxScrollViewModule,
-        DxDateBoxModule
+        DxDateBoxModule,
+        DxValidatorModule,
+        DxValidationSummaryModule
     ],
     declarations: [
-        // PaginationComponent,
-        // PageLengthComponent,
         LoaderComponent,
         FieldsetComponent,
         FieldComponent,

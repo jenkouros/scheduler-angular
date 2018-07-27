@@ -29,7 +29,8 @@ import {
   PlanItemsLoadRequest,
   PlannedEventMove,
   PlanItemMoveStatusEnum,
-  PlannedEventNotWorkingHoursMove
+  PlannedEventNotWorkingHoursMove,
+  PlanItemStatusEnum
 } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
@@ -44,6 +45,7 @@ import { PlanViewerFormHelper } from './plan-viewer.form.helper';
 import { SubItemContainer } from '../../../models/subitem.dto';
 import { TimeHelper } from '../../../helpers/time.helper';
 import { PlanSchedule } from '../../../models/planschedule.dto';
+import { ColorHelper } from '../../../helpers/color.helper';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -61,7 +63,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   // @Input() preplanItemDragEnd: boolean;
   @Input() timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
   @Input() notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
-
+  @Input() currentDate: Date = new Date();
   @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
   @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
   @Output() planItemCreate = new EventEmitter<PlannedEvent>();
@@ -84,7 +86,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   // ];
 
   notWorkingHoursResolveMode = 'movePlanItem';
-  currentDate: Date = new Date();
   schedulerResources: any = [];
   groups = [fromSchedulerModel.RESOURCES_FIELD];
   groupsHasValue = false;
@@ -157,20 +158,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
     function getNoWorkingColor() {
       return 'rgb(218, 218, 218)';
-      // 'rgba(86, 202, 133, 0.2)';
-    }
-
-    function getGradient(data: {startMarginProcent: number, durationMarginProcent: number}[], isHorizontalView: boolean) {
-      let gradient = `linear-gradient(${isHorizontalView ? 'to bottom' : 'to right'},${getTransparentColor()}`;
-      data.forEach(element => {
-        gradient += `,${getTransparentColor()} ${element.startMarginProcent}%`;
-        gradient += `,${getNoWorkingColor()} ${element.startMarginProcent}%`;
-        gradient += `,${getNoWorkingColor()} ${element.startMarginProcent + element.durationMarginProcent}%`;
-        gradient += `,${getTransparentColor()} ${element.startMarginProcent + element.durationMarginProcent}%`;
-      });
-
-      gradient += ')';
-      return gradient;
     }
 
     const styleObject = {};
@@ -185,7 +172,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
     // styleObject['left-margin'] = `${collapsingObject.startMarginProcent}%`;
     // styleObject['width'] = `${collapsingObject.durationMarginProcent}%`;
-    styleObject['background'] = getGradient(collapsingObject.data, this.isViewHorizontal((<any>this.scheduler.instance)._currentView));
+    styleObject['background'] = ColorHelper.getGradient(collapsingObject.data,
+      this.isViewHorizontal((<any>this.scheduler.instance)._currentView), getNoWorkingColor(), getTransparentColor());
     styleObject['height'] = '100%';
     styleObject['margin'] = '-1px';
     // styleObject['background-color'] = 'rgba(86, 202, 133, 0.1)';
@@ -236,7 +224,25 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     this.planItemUpdate.emit(event);
   }
 
+  onAppointmentRedered(e) {
+    if (e.appointmentData.idPlanItemStatus === PlanItemStatusEnum.Running) {
+      e.appointmentElement.style.background = ColorHelper.getGradient(
+        [{startMarginProcent: 0, durationMarginProcent: e.appointmentData.manufacturedQuantity * 100 / e.appointmentData.quantity }],
+        false, e.appointmentData.color, ColorHelper.shadeColor(e.appointmentData.color, 10)
+      );
+      e.appointmentElement.style.backgroundPosition = 'center center';
+      e.appointmentElement.style.backgroundRepeat = 'no-repeat';
+    } else {
+      e.appointmentElement.style.backgroundColor = e.appointmentData.color;
+    }
+  }
+
   onContentReady(event) {
+    if (this.currentView === 'agenda') {
+      (<any>this.scheduler).instance.getWorkSpace().option('rowHeight', 75);
+    }
+
+
      // ref to scrollable
     const scrollable = Scrollable.getInstance(
        (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
@@ -468,7 +474,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   showUpdateAppointmentPopup(appointment: PlannedEvent) {
     this.scheduler.instance.hideAppointmentTooltip();
-    this.scheduler.instance.showAppointmentPopup(appointment, false);
+    this.planItemEditing = appointment;
+    this.planItemEditMode = true;
+    // this.scheduler.instance.showAppointmentPopup(appointment, false);
   }
 
   onRemoveBlankSpace() {

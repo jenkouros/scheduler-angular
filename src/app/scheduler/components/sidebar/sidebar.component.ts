@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { faClipboardList, faCalendar, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faCalendar, faCalendarAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,6 +13,7 @@ export class SidebarComponent implements OnInit {
 
   faItems = faClipboardList;
   faPlanItems = faCalendarAlt;
+  faSearch = faSearch;
 
   ngOnInit() {
     // if (this.selected === '') {

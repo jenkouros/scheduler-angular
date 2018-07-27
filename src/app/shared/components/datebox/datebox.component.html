@@ -1,1 +1,13 @@
-<dx-date-box (valueChange)="dateChanged($event)" [type]="type" [value]="date"></dx-date-box>
+<dx-date-box 
+    (valueChange)="dateChanged($event)"
+    [type]="type" 
+    [value]="date"
+    [acceptCustomValue]="false"
+    [max]="max"
+    [min]="min"
+    invalidDateMessage="Neveljaven format datuma"
+    dateOutOfRangeMessage="Neveljavna vrednost datuma">
+    <dx-validator>
+        <dxi-validation-rule type="required" message="Obvezno polje"></dxi-validation-rule>
+    </dx-validator>
+</dx-date-box>

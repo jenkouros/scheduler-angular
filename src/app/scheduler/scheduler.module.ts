@@ -21,7 +21,11 @@ import {
     DxTextBoxModule,
     DxFormModule,
     DxCheckBoxModule,
-    DxScrollViewModule
+    DxScrollViewModule,
+    DxNumberBoxModule,
+    DxValidatorModule,
+    DxValidationSummaryModule,
+    DxProgressBarModule
 } from 'devextreme-angular';
 
 import { CommonModule } from '@angular/common';
@@ -41,6 +45,8 @@ import { TimeHelper } from './helpers/time.helper';
 import { PlanViewerFormHelper } from './components/planner/plan-viewer/plan-viewer.form.helper';
 import { CoreModule } from '../core/core.module';
 import { NotifyService } from '../shared/services/notify.service';
+import { SearchEffects } from './store/effects/search.effect';
+import { SearchService } from './services/search.service';
 
 
 @NgModule({
@@ -57,7 +63,8 @@ import { NotifyService } from '../shared/services/notify.service';
             FiltersEffects,
             ContainersEffects,
             EventsEffects,
-            PreplanitemEffects
+            PreplanitemEffects,
+            SearchEffects
         ]),
         SharedModule,
         DxSchedulerModule,
@@ -68,9 +75,13 @@ import { NotifyService } from '../shared/services/notify.service';
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
+        DxNumberBoxModule,
         DxFormModule,
         DxCheckBoxModule,
-        DxScrollViewModule
+        DxScrollViewModule,
+        DxValidatorModule,
+        DxValidationSummaryModule,
+        DxProgressBarModule
     ],
     declarations: [
         ...fromContainers.containers,
@@ -85,7 +96,8 @@ import { NotifyService } from '../shared/services/notify.service';
         ContainersService,
         EventsService,
         PreplanitemsService,
-        NotifyService
+        NotifyService,
+        SearchService
     ]
 })
 export class SchedulerModule {

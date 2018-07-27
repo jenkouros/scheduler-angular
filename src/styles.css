@@ -13,6 +13,9 @@
 .bg-kolektor {
    background-color: #1f5684;
 }
+.bg-kolektor-primary {
+    color: rgb(0, 96, 177);
+}
 
 .bg-kolektor-light {
     background-color: #ccd9e9 !important;
@@ -47,9 +50,9 @@ h1, h2, h3, h4, h5 {
     user-select: none;
 }
 
-dx-select-box.ng-invalid.ng-touched {
+/* dx-select-box.ng-invalid.ng-touched {
     border: 1px solid red;
-}
+} */
 
 /* popup margins */
 .dx-popup-content .dx-fieldset {

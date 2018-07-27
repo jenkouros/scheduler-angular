@@ -14,7 +14,8 @@ export interface EventsState {
             massLockPopupContainers: number[]
         },
         idItemBatchTimeUpdateSuggestion: number | null,
-        idPlanItemNotWorkingHoursTimeUpdateSuggestion: number | null
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: number | null,
+        schedulerCurrentDate: Date | null
     };
 }
 
@@ -30,7 +31,8 @@ export const initialState: EventsState = {
             massLockPopupContainers: []
         },
         idItemBatchTimeUpdateSuggestion: null,
-        idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: null,
+        schedulerCurrentDate: null
     }
 };
 
@@ -201,6 +203,16 @@ export function eventsReducer(
                     idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
                 },
                 notWorkingHoursTimeUpdateSuggestion: null
+            };
+        }
+
+        case fromAction.SET_CURRENTDATE: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    schedulerCurrentDate: action.payload
+                }
             };
         }
 

@@ -7,6 +7,7 @@ import { SimpleChanges } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { TimeHelper } from '../../../../helpers/time.helper';
 import * as moment from 'moment';
+import { DateValidators } from '../../../../../shared/validators/date.validators';
 
 @Component({
   selector: 'app-plan-viewer-item-edit',
@@ -50,20 +51,28 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    this.planItemEditForm = this.fb.group({
-      idContainer: ['', Validators.required],
-      preparationStartTime: ['', Validators.required],
-      executionStartTime: ['', Validators.required],
-      executionEndTime: ['', Validators.required],
-      isPreparationTimeLocked: [''],
-      isExecutionTimeLocked: [''],
-      preparationDuration: [''],
-      executionDuration: ['']
-    });
+    this.planItemEditForm = this.fb.group(
+      {
+        idContainer: ['', Validators.required],
+        preparationStartTime: ['', Validators.required],
+        executionStartTime: ['', [Validators.required, DateValidators.validateDate]],
+        executionEndTime: ['', Validators.required],
+        isPreparationTimeLocked: [''],
+        isExecutionTimeLocked: [''],
+        preparationDuration: [''],
+        executionDuration: ['']
+      },
+      {
+        validator: [
+          DateValidators.maxDate('preparationStartTime', 'executionStartTime'),
+          DateValidators.maxDate('executionStartTime', 'executionEndTime')
+        ]
+      });
     this.onFormChanges();
   }
 
   setForm(planItem: PlannedEvent | null) {
+    this.planItemEditForm.reset();
     this.planItemEditForm.setValue({
       'idContainer': planItem ? planItem.containerId : '',
       'preparationStartTime': planItem ? new Date(planItem.timeStartPreparation) : new Date(),

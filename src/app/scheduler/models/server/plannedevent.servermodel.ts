@@ -17,6 +17,7 @@ export interface PlannedEventServer {
     idPlanItemStatus: number;
     quantity: number;
     unitQuantity: string;
+    manufacturedQuantity: number;
     comment: string;
     itemCode: string;
     itemName: string;
