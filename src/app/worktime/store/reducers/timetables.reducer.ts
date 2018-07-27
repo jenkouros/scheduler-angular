@@ -3,12 +3,14 @@ import * as fromTimeTables from '../actions/timetables.actions';
 
 export interface TimeTablesState {
   entities: { [id: number]: TimeTable };
+  calendarId: number;
   loading: boolean;
   loaded: boolean;
 }
 
 export const initialState: TimeTablesState = {
   entities: {},
+  calendarId: 0,
   loading: false,
   loaded: false
 };
@@ -21,26 +23,29 @@ export function reducer(
     case fromTimeTables.LOAD_TIMETABLES: {
       return {
         ...state,
+        calendarId: action.payload,
         loading: true,
         loaded: false
       };
     }
     case fromTimeTables.LOAD_TIMETABLES_SUCCESS: {
       const timetables = action.payload;
-      const entities = timetables.reduce(
+      let entities = {};
+      entities = timetables.reduce(
         // tslint:disable-next-line:no-shadowed-variable
         (entities: { [id: number]: TimeTable }, timetable: TimeTable) => {
           return {
-            // ...entities,
+            ...entities,
             [timetable.id]: timetable
           };
         },
         {
-          ...state.entities
+          // init value, resetiram vedno
+          // ...state.entities
         }
       );
       return {
-        /*...state,*/
+        ...state,
         loading: false,
         loaded: true,
         entities
@@ -59,4 +64,8 @@ export function reducer(
 }
 
 // export level of state
-export const getTimeTableEntities = (state: TimeTablesState) => state.entities;
+export const getTimeTablesEntities = (state: TimeTablesState) => state.entities;
+export const getTimeTablesLoading = (state: TimeTablesState) => state.loading;
+export const getTimeTablesLoaded = (state: TimeTablesState) => state.loaded;
+export const getTimeTablesCalendarId = (state: TimeTablesState) =>
+  state.calendarId;

@@ -23,7 +23,7 @@ export class AppComponent {
       exact: false
     },
     {
-      link: '/worktime',
+      link: '/timetables',
       name: 'Urnik strojev',
       exact: false
     }

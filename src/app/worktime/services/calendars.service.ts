@@ -5,7 +5,6 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Calendar } from '../models/calendar.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import date_box from 'devextreme/ui/date_box';
 
 @Injectable()
 export class CalendarsService {
@@ -13,13 +12,10 @@ export class CalendarsService {
 
   getCalendars(): Observable<Calendar[]> {
     return this.http
-      .get<ApiResponse<Calendar[]>>(`${environment.apiUrl}/calendars`)
+      .get<Calendar[]>(`${environment.apiUrl}/calendars`)
       .pipe(
         map(response => {
-          if (response.code !== ApiResponseResult.success) {
-            throw response.messages;
-          }
-          return response.result;
+          return response;
         }),
         catchError((error: any) => throwError(error.json()))
       );
@@ -27,10 +23,10 @@ export class CalendarsService {
 
   createCalendar(payload: Calendar): Observable<Calendar> {
     return this.http
-      .post<ApiResponse<Calendar>>(`${environment.apiUrl}/calendars`, payload)
+      .post<Calendar>(`${environment.apiUrl}/calendars`, payload)
       .pipe(
         map(response => {
-          return this.HandleCalendarsServiceResponse(response);
+          return response;
         }),
         catchError((error: any) => throwError(error.json()))
       );
@@ -38,10 +34,21 @@ export class CalendarsService {
 
   updateCalendar(payload: Calendar): Observable<Calendar> {
     return this.http
-      .put<ApiResponse<Calendar>>(`${environment.apiUrl}/calendars`, payload)
+      .put<Calendar>(`${environment.apiUrl}/calendars`, payload)
       .pipe(
         map(response => {
-          return this.HandleCalendarsServiceResponse(response);
+          return response;
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
+  }
+
+  removeCalendar(payload: Calendar): Observable<Calendar> {
+    return this.http
+      .delete<Calendar>(`${environment.apiUrl}/calendars/${payload.id}`)
+      .pipe(
+        map(response => {
+          return response;
         }),
         catchError((error: any) => throwError(error.json()))
       );

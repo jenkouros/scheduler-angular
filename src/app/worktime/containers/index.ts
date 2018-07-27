@@ -1,7 +1,16 @@
-import { ScheduleComponent } from './schedule/schedule.component';
-import { TimeTablesComponent } from './time-tables/time-tables.component';
+import { CalendarDetailComponent } from './calendar-detail/calendar-detail.component';
+import { CalendarsComponent } from './calendars/calendars.component';
+import { CalendarItemComponent } from './calendar-item/calendar-item.component';
+import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
 
-export const containers: any[] = [ScheduleComponent, TimeTablesComponent];
+export const containers: any[] = [
+  CalendarDetailComponent,
+  CalendarsComponent,
+  CalendarItemComponent,
+  ScheduleDetailComponent
+];
 
-export * from './time-tables/time-tables.component';
-export * from './schedule/schedule.component';
+export * from './calendars/calendars.component';
+export * from './calendar-detail/calendar-detail.component';
+export * from './calendar-item/calendar-item.component';
+export * from './schedule-detail/schedule-detail.component';

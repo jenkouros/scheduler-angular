@@ -1,5 +1,5 @@
 <div class="toolbar">
-    <button type="button" (click)="onSelected('timetable')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='timetable'}">
+    <button type="button" (click)="onSelected('timetable')" [disabled]="!enabled" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='timetable'}">
         <fa-icon class="cursor-pointer" size="md" [icon]="listIcon"></fa-icon>&nbsp;Nazaj na seznam
     </button>
     <div class="toolbar-desc">
@@ -8,10 +8,10 @@
     </div>
 
     <div class="toolbar-icons">
-        <button type="button" (click)="onSelected('calendar')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='calendar'}">
+        <button type="button" (click)="onSelected('calendar')" [disabled]="!enabled" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='calendar'}">
             <fa-icon class="cursor-pointer" size="md" [icon]="viewIcon"></fa-icon>&nbsp;Pregled
         </button>
-        <button type="button" (click)="onSelected('schedule')" [disabled]="visible" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='schedule'}">
+        <button type="button" (click)="onSelected('schedule')" [disabled]="!enabled" [ngClass]="{'btn': true, 'btn-primary': selectedCommand==='schedule'}">
             <fa-icon class="cursor-pointer" size="md" [icon]="editIcon"></fa-icon>&nbsp;Urejanje
         </button>
         <button type="button" (click)="deleteSchedule()" class="btn btn-light" disabled>
@@ -19,3 +19,4 @@
         </button>
     </div>
 </div>
+<router-outlet></router-outlet>

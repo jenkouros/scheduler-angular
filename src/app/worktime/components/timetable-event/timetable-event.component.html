@@ -1,0 +1,16 @@
+<li>
+  <div class="toolbar">
+    <div>
+      <span class="title">
+        <strong>#{{index}} {{ timeTableEvent.description }}</strong> | od {{ timeTableEvent.timeStart | date }} do {{ timeTableEvent.timeEnd
+        | date }}</span>
+    </div>
+    <div class="toolbar-icons">
+      <button type="button" class="btn btn-sm btn-light mr-1 mb-1" (click)="onEdit()">
+        <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Uredi</button>
+      <button type="button" class="btn btn-sm btn-light mb-1">
+        <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> Briši</button>
+    </div>
+  </div>
+
+</li>

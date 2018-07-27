@@ -20,15 +20,12 @@ export class TimeTablesService {
     );
 
     return this.http
-      .get<ApiResponse<TimeTable[]>>(`${environment.apiUrl}/timetables`, {
+      .get<TimeTable[]>(`${environment.apiUrl}/timetables`, {
         params: httpParams
       })
       .pipe(
         map(response => {
-          if (response.code !== ApiResponseResult.success) {
-            throw response.messages;
-          }
-          return response.result;
+          return response;
         }),
         catchError((error: any) => throwError(error.json()))
       );

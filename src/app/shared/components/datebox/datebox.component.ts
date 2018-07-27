@@ -26,6 +26,7 @@ export class DateboxComponent implements OnInit, AfterViewInit, ControlValueAcce
   @Input() type = 'date';
   @Input() max: Date | undefined = undefined;
   @Input() min: Date | undefined = undefined;
+  @Input() isValid = true;
   @Output() change = new EventEmitter<Date>();
 
   invalidDateFormatMessage = 'Neveljaven format datuma';
