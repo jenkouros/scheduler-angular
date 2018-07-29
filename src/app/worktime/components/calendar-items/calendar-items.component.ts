@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Calendar } from "../../models/calendar.model";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Calendar } from '../../models/calendar.model';
 
 @Component({
-  selector: "app-calendar-items",
-  templateUrl: "./calendar-items.component.html",
-  styleUrls: ["./calendar-items.component.css"]
+  selector: 'app-calendar-items',
+  templateUrl: './calendar-items.component.html',
+  styleUrls: ['./calendar-items.component.css']
 })
 export class CalendarItemsComponent implements OnInit {
   @Input() dataSource: Calendar[];

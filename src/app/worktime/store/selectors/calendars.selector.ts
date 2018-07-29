@@ -41,7 +41,6 @@ export const getCalendarsSelectedOld = createSelector(
   getCalendarsEntities,
   fromRoot.getRouterState,
   (entities, router) => {
-    console.log('test', entities, router);
     return router.state && entities[router.state.params.calendarId];
   }
 );
@@ -57,4 +56,14 @@ export const getCalendarsSelected = createSelector(
 export const getCalendarById = (id: number) =>
   createSelector(getCalendarsEntities, entities => {
     return entities[id];
+  });
+
+export const getCalendarPopupVisibility = createSelector(
+  getCalendarsState,
+  fromCalendars.getCalendarPopupVisibility
+);
+
+export const getSubCalendars = (calendarId: number) =>
+  createSelector(getCalendarsEntities, entities => {
+    return entities[calendarId].subCalendars;
   });

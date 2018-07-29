@@ -12,7 +12,8 @@ import {
   DxTabPanelModule,
   DxDataGridModule,
   DxTabsModule,
-  DxTextBoxModule
+  DxTextBoxModule,
+  DxScrollViewModule
 } from 'devextreme-angular';
 
 // containers
@@ -37,36 +38,20 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [fromGuards.CalendarsGuard],
-    component:
-      fromContainers.CalendarsComponent /*, children: [
-       { path: 'schedule', component: ScheduleComponent},
-     { path: 'calendar', component: CalendarComponent }
-    ],*/
-  },
-  {
-    path: 'new',
-    canActivate: [fromGuards.CalendarsGuard],
-    component: fromContainers.CalendarItemComponent
-  },
-  {
-    path: 'edit/:calendarId',
-    canActivate: [fromGuards.CalendarExistsGuard],
-    component: fromContainers.CalendarItemComponent
-  },
-  {
-    path: ':calendarId',
-    canActivate: [fromGuards.CalendarsGuard],
-    component: fromContainers.CalendarDetailComponent,
+    component: fromComponents.WorktimeComponent,
     children: [
-      { path: '', redirectTo: 'calendar' },
       {
-        path: 'calendar',
-        component: fromComponents.CalendarComponent
+        path: '',
+        component: fromContainers.ScheduleDetailComponent
       },
       {
-        path: 'schedule',
-        canActivate: [fromGuards.TimeTablesGuard],
-        component: fromContainers.ScheduleDetailComponent
+        path: 'schedule/:id',
+        canActivate: [fromGuards.CalendarsGuard],
+        component:
+          fromContainers.ScheduleDetailComponent /*, children: [
+             { path: 'schedule', component: ScheduleComponent},
+           { path: 'calendar', component: CalendarComponent }
+          ],*/
       }
     ]
   }
@@ -85,6 +70,7 @@ const routes: Routes = [
     DxDataGridModule,
     DxTabsModule,
     DxTextBoxModule,
+    DxScrollViewModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

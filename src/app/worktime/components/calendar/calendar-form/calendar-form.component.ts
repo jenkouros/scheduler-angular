@@ -5,26 +5,32 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnInit
 } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-  FormArray,
   FormBuilder,
   Validators
 } from '@angular/forms';
 
-import { Calendar } from '../../models/calendar.model';
+import { Calendar } from '../../../models/calendar.model';
 
 @Component({
   selector: 'app-calendar-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-
+  <app-popup height="auto" width="70%"
+  [visible]="visible"
+  (visibilityChanged)="popupVisibility($event)"
+  [cancelCallback]="onCancel"
+  [confirmCallback]="onSubmit"
+  [title] = "header"
+  >
   <form [formGroup]="form">
   <div class="dx-fieldset">
-    <div class="dx-fieldset-header">Urejanje urnika</div>
+    <div class="dx-fieldset-header">{{header}}</div>
         <app-field label="Naziv urnika">
           <dx-text-box placeholder="Naziv urnika..."
             formControlName="description"
@@ -44,7 +50,7 @@ import { Calendar } from '../../models/calendar.model';
           ></app-datebox>
         </app-field>
         <ng-content></ng-content>
-
+<!--
         <div class="actions">
         <button disabled
             type="button"
@@ -72,28 +78,36 @@ import { Calendar } from '../../models/calendar.model';
             Shrani urnik
           </button>
 
-        </div>
+        </div>-->
       </div>
   </form>
-
+  </app-popup>
   `,
   styleUrls: ['./calendar-form.component.css']
 })
 export class CalendarFormComponent implements OnChanges {
   exists = false;
+  header: string;
   date = new Date();
+
   @Input() calendar: Calendar;
+  @Input() visible: boolean;
   @Output() create = new EventEmitter<Calendar>();
   @Output() update = new EventEmitter<Calendar>();
-  @Output() remove = new EventEmitter<Calendar>();
+  // @Output() remove = new EventEmitter<Calendar>();
+  @Output() cancel = new EventEmitter<boolean>();
 
   form = this.fb.group({
     description: ['', Validators.required],
     timeStart: ['', Validators.required],
-    timeEnd: ['', Validators.required]
+    timeEnd: ['', Validators.required],
+    subCalendars: []
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+  }
 
   get descriptionControl() {
     return this.form.get('description') as FormControl;
@@ -116,16 +130,27 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.exists = false;
+    this.form.reset();
     if (this.calendar && this.calendar.id) {
       this.exists = true;
       this.form.patchValue(this.calendar);
     }
+    this.header = this.exists ? 'Urejanje koledarja' : 'Kreiranje koledarja';
   }
 
-  createTimeTable(form: FormGroup) {
-    const { value, valid } = form;
-    if (valid) {
-      this.create.emit(value);
+  onSubmit() {
+    const { value, valid, touched } = this.form;
+    if (!this.exists) {
+      // create
+      if (valid) {
+        this.create.emit(value);
+      }
+    } else {
+      // update
+      if (touched && valid) {
+        this.update.emit({ ...this.calendar, ...value });
+      }
     }
   }
 
@@ -135,12 +160,12 @@ export class CalendarFormComponent implements OnChanges {
       this.update.emit({ ...this.calendar, ...value });
     }
   }
-
+  /*
   removeTimeTable(form: FormGroup) {
     const { value, valid, touched } = form;
     this.update.emit({ ...this.calendar, ...value });
   }
-
+*/
   isformValid(): boolean {
     const { valid } = this.form;
 
@@ -151,5 +176,13 @@ export class CalendarFormComponent implements OnChanges {
     const { valid, touched } = this.form;
 
     return valid && touched;
+  }
+
+  onCancel() {
+    this.cancel.emit(false);
+  }
+
+  popupVisibility(popupVisible: boolean) {
+    this.cancel.emit(popupVisible);
   }
 }

@@ -20,11 +20,11 @@ export class ScheduleDetailComponent implements OnInit {
   calendar: Calendar;
   timetables$: Observable<TimeTable[]>;
   timeTablesTypes: TimeTableType[] = [
-    {
+    /*{
       id: 0,
       name: 'Urnik',
       template: 'customTemplate'
-    },
+    },*/
     {
       id: 1,
       name: 'Osnovni urnik'
