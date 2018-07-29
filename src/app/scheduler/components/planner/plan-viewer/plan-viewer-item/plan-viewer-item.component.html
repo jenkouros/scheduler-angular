@@ -1,22 +1,37 @@
-<div class="plannerItemContainer">
+<!-- <div class="plannerItemContainer"> -->
   <!-- <div class="progressWrapper">
           <div class="progressInfo">45%</div>          
   </div>                 -->
-  <div class="plannerItem">
-    <div class="m-2">
+  <!-- <div class="plannerItem"> -->
+    <div class="p-1 d-flex appointment" [ngClass]="viewName">
+      <div class="flex-grow-1" style="min-width: 0; overflow: hidden;">
+        <div class="d-flex flex-column">
+          <div class="white-text font-weight-bold">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
+          <div>{{ plannerItemData.itemName }} | {{ plannerItemData.articleCode }} </div>
+          <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
+        </div>
+      </div> 
+      <div class="flex-shrink-1">
+          <span class="ml-1" *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></span>
+          <span class="ml-1" *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></span>
+          <span class="ml-1" *ngIf="plannerItemData.isInNotWorkingHours"><fa-icon [icon]="faExclamation"></fa-icon></span>
+      </div>
+
+    </div>
+
+
+
+    <!-- <div class="m-2">
       <h6 class="white-text">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</h6>
       <div>{{ plannerItemData.itemName }} | {{ plannerItemData.articleCode }} </div>
       <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
-    </div>
-  </div>
-  <div class="info pull-right mt-2 mr-2 text-center">
+    </div> -->
+  <!-- </div> -->
+  <!-- <div class="info pull-right mt-2 mr-2 text-center">
       <div *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></div>
       
       <div *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></div>
       <div *ngIf="plannerItemData.isInNotWorkingHours"><fa-icon [icon]="faExclamation"></fa-icon></div>
-      <!-- <div></div> -->
-  </div>
- 
-  <!-- 
-  <div class="status">&nbsp;</div> -->
-</div>
+  </div> -->
+<!-- 
+</div> -->

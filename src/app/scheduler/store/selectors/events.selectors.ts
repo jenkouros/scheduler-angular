@@ -51,6 +51,7 @@ export const getItemBatchTimeUpdateSuggestion = createSelector(
     state => state.timeUpdateSuggestion
 );
 
+
 export const getNotWorkingHoursUpdateSuggestion = createSelector(
     getEventsState,
     state => state.notWorkingHoursTimeUpdateSuggestion

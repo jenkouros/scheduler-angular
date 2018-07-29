@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SchedulerComponent, FiltersComponent, GroupsComponent, PlannerComponent } from './components';
-import { ItemsComponent } from './containers';
+import { ItemsComponent, SearcherComponent } from './containers';
 
 const schedulerRoutes: Routes = [
     { path: '', component: SchedulerComponent, children: [
@@ -9,6 +9,7 @@ const schedulerRoutes: Routes = [
         { path: 'groups', component: GroupsComponent },
         { path: 'planitems', component: ItemsComponent },
         { path: 'planner', component: PlannerComponent },
+        { path: 'search', component: SearcherComponent },
         { path: '**', redirectTo: 'planitems' }
     ]}
 ];

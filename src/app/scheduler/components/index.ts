@@ -19,6 +19,9 @@ import { ItemPopupComponent } from './item/item-popup/item-popup.component';
 import { MassLockPopupComponent } from './planner/mass-lock-popup/mass-lock-popup.component';
 import { PlanViewerItemEditComponent } from './planner/plan-viewer/plan-viewer-item-edit/plan-viewer-item-edit.component';
 import { PreplanitemDeletePopupComponent } from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.component';
+import { SearchComponent } from './search/search.component';
+import { ItemsSearchComponent } from './search/items/items-search.component';
+import { PlanItemsSearchComponent } from './search/planitems/planitems-search.component';
 
 
 export const components: any[] = [
@@ -42,7 +45,10 @@ export const components: any[] = [
     PreplanitemDeletePopupComponent,
     ItemPopupComponent,
     MassLockPopupComponent,
-    PlanViewerItemEditComponent
+    PlanViewerItemEditComponent,
+    SearchComponent,
+    ItemsSearchComponent,
+    PlanItemsSearchComponent
 ];
 
 export * from './filters/filters.component';
@@ -66,4 +72,6 @@ export * from './planner/mass-lock-popup/mass-lock-popup.component';
 export * from './container-item/container-item.component';
 export * from './planner/plan-viewer/plan-viewer-item-edit/plan-viewer-item-edit.component';
 export * from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.component';
-
+export * from './search/search.component';
+export * from './search/items/items-search.component';
+export * from './search/planitems/planitems-search.component';

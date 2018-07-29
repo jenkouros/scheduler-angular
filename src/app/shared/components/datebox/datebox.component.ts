@@ -1,10 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Inject, LOCALE_ID } from '@angular/core';
 import { Input } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { forwardRef } from '@angular/core';
+import { DxDateBoxComponent } from 'devextreme-angular';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-datebox',
@@ -19,14 +21,19 @@ import { forwardRef } from '@angular/core';
   ]
 })
 export class DateboxComponent implements OnInit, AfterViewInit, ControlValueAccessor {
+  @ViewChild(DxDateBoxComponent) dateBox: DxDateBoxComponent;
   @Input() date = new Date();
   @Input() type = 'date';
+  @Input() max: Date | undefined = undefined;
+  @Input() min: Date | undefined = undefined;
   @Input() isValid = true;
   @Output() change = new EventEmitter<Date>();
 
+  invalidDateFormatMessage = 'Neveljaven format datuma';
+
   propagateChange = (_: any) => {};
 
-  constructor() { }
+  constructor(@Inject(LOCALE_ID) private localId) { }
 
   ngOnInit() {
   }
@@ -35,10 +42,26 @@ export class DateboxComponent implements OnInit, AfterViewInit, ControlValueAcce
     this.change.emit(this.date);
   }
 
-  dateChanged(date: Date) {
+  dateChanged(date) {
+    console.log(date);
     this.change.emit(date);
     this.propagateChange(date);
   }
+
+  // Use this method if you allow user input change... Invalid date input change is not sync with visual change interface
+  // onChanged(e): void {
+  //   if (!this.dateBox.isValid) {
+  //     if (this.dateBox.validationError.message !== this.invalidDateFormatMessage) {
+  //       const changedDate = moment(e.srcElement.value, 'L LT', this.localId);
+  //       if (changedDate.isValid) {
+  //         this.dateChanged(changedDate.toDate());
+  //         return;
+  //       }
+  //     }
+  //     this.dateChanged(NaN);
+  //   }
+
+  // }
 
   writeValue(obj: any): void {
     if (obj) {

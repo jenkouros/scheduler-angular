@@ -18,7 +18,13 @@
     toolbar="bottom"
     location="after" 
     widget="dxButton" 
-    [options]="{ text: 'Potrdi', type: 'success', onClick: confirmCallback }">
+    [options]="{ 
+      text: 'Potrdi',
+      useSubmitBehavior: true,
+      type: 'success', 
+      onClick: confirmCallback, 
+      disabled: validToConfirm !== null && validToConfirm !== true
+  }">
   </dxi-toolbar-item>
 
   <div *dxTemplate="let data of 'content'">

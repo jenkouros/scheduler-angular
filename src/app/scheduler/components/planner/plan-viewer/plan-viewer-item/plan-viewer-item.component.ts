@@ -10,6 +10,7 @@ import { PlannedEvent } from '../../../../models/event.model';
 export class PlanViewerItemComponent implements OnInit {
 
   @Input() plannerItemData: PlannedEvent;
+  @Input() viewName = '';
   faLock = faLock;
   faWarning = faExclamationTriangle;
   faExclamation = faExclamationCircle;

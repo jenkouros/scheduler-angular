@@ -22,7 +22,14 @@
         <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razporejanje
     </a>
   </li>
-  <li><hr class="mb-1"></li>
+
+  <li class="nav-item">
+    
+    <a class="nav-link" (click)="selected = 'searcher'" routerLink='search' routerLinkActive='active'>
+        <fa-icon class="mr-3" size="lg" [icon]="faSearch"></fa-icon> Iskalnik
+    </a>
+  </li>
+  <li><hr class="mb-1 mt-3"></li>
   <li>
     
         <dx-scroll-view #scrollElement [height]="getScrollHeight(scrollElement.element)">

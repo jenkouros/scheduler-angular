@@ -3,6 +3,7 @@ import { ItemHierarchyViewModel } from '../../../models/item.viewmodel';
 import { NgForm, FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ItemHierarchyAlternative } from '../../../models/item.dto';
 import { PreplanItemRequest } from '../../../models/preplanitem.dto';
+import { FormValidators } from '../../../../shared/validators/form.validators';
 
 @Component({
   selector: 'app-item-popup',
@@ -28,7 +29,7 @@ export class ItemPopupComponent implements OnChanges {
     this.createPreplanItemsForm = this.fb.group({
       batchQuantity: ['', Validators.required],
       batchCount: ['', Validators.required],
-      idAlternative: ['', Validators.required]
+      idAlternative: ['', [Validators.required, FormValidators.noEmptyValue]]
     });
   }
 

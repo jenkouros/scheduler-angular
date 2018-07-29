@@ -15,6 +15,7 @@ export class PopupComponent implements OnInit {
 
   @Input() hasConfirmBtn = true;
   @Input() hasCancelBtn = true;
+  @Input() validToConfirm: boolean | null = null;
   // @Input() hasScrollView = true;
   @Input() confirmCallback: () => void;
   @Input() cancelCallback: () => void;

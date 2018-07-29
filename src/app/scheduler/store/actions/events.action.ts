@@ -164,6 +164,13 @@ export class ClearNotWorkingHoursPlanItemUpdateSuggestion implements Action {
     readonly type = CLEAR_NOTWORKINGHOURS_PLANITEM_SUGGESTION;
 }
 
+export const SET_CURRENTDATE = '[Event] Set current date';
+
+export class SetSchedulerCurrentDate {
+    readonly type = SET_CURRENTDATE;
+    constructor(public payload: Date) {}
+}
+
 export type EventsAction =
     | LoadEvents
     | LoadEventsSuccess
@@ -192,4 +199,6 @@ export type EventsAction =
     | ClearNotWorkingHoursPlanItemUpdateSuggestion
     | UpdateEvents
     | UpdateEventsFail
-    | UpdateEventsSuccess;
+    | UpdateEventsSuccess
+    | SetSchedulerCurrentDate
+    ;

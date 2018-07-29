@@ -1,5 +1,10 @@
-<app-popup height="auto" width="70%" [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
-  [visible]="visible" (visibilityChanged)="popupVisibilityChanged($event)" [cancelCallback]="hideItemInfo" [confirmCallback]="onSubmit">
+<app-popup height="auto" width="70%" 
+  [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
+  [visible]="visible" 
+  [cancelCallback]="hideItemInfo" 
+  [confirmCallback]="onSubmit"
+  [validToConfirm]="createPreplanItemsForm.valid"
+  (visibilityChanged)="popupVisibilityChanged($event)" >
 
   <div *ngIf="itemHierarchy && itemHierarchy?.item">
     <div class="row">
@@ -25,26 +30,42 @@
           <h6 class="mb-3">Planiranje delovnega naloga</h6>
           <div class="card card-body bg-light">
             <app-field label="Količina">
-              <input type="number" class="form-control" formControlName="batchQuantity">
+              <dx-number-box formControlName="batchQuantity">
+                  <dx-validator>                     
+                      <dxi-validation-rule type="required" message="Polje je obvezno">
+                      </dxi-validation-rule>
+                  </dx-validator>
+              </dx-number-box>
+              <!-- <input type="number" class="form-control" formControlName="batchQuantity">
               <p class="help-block" *ngIf="batchQuantityControl.invalid && batchQuantityControl.touched">
                 Vnesite veljavno količino.
-              </p>
+              </p> -->
             </app-field>
 
             <app-field label="Število šarž">
-              <input type="number" class="form-control" formControlName="batchCount">
+              <dx-number-box formControlName="batchCount">
+                <dx-validator>                     
+                    <dxi-validation-rule type="required" message="Polje je obvezno">
+                    </dxi-validation-rule>
+                </dx-validator>
+              </dx-number-box>
+              <!-- <input type="number" class="form-control" formControlName="batchCount">
               <p class="help-block" *ngIf="batchCountControl.invalid && batchCountControl.touched">
                 Vnesite veljavno število šarž.
-              </p>
+              </p> -->
             </app-field>
 
             <app-field label="Alternativa">
               <dx-select-box [dataSource]="itemHierarchy!.alternativeOptions" name="alternative" valueExpr="id" displayExpr="name" placeholder="Izberi alternativo"
                 [showClearButton]="true" formControlName="idAlternative">
+                <dx-validator>                     
+                    <dxi-validation-rule type="required" message="Polje je obvezno">
+                    </dxi-validation-rule>                    
+                </dx-validator>
               </dx-select-box>
-              <p class="help-block" *ngIf="alternativeIdControl.invalid && alternativeIdControl.touched">
+              <!-- <p class="help-block" *ngIf="alternativeIdControl.invalid && alternativeIdControl.touched">
                 Izberite alternativo.
-              </p>
+              </p> -->
             </app-field>
           </div>
           <!-- </app-fieldset> -->

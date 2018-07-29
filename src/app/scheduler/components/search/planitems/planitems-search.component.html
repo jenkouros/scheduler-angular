@@ -1,0 +1,58 @@
+<dx-data-grid 
+  [columnAutoWidth]="true" 
+  [allowColumnResizing]="true" 
+  columnResizingMode="nextColumn" 
+  [dataSource]="store"
+  [showRowLines]="true" 
+  [showBorders]="true"
+  [rowAlternationEnabled]="true">
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-remote-operations 
+    [filtering]="true" 
+    [sorting]="false" 
+    [grouping]="false" 
+    [paging]="true" 
+    [summary]="false">
+  </dxo-remote-operations>
+
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager 
+    [showPageSizeSelector]="true" 
+    [allowedPageSizes]="[10, 15, 30]" 
+    [showInfo]="true" 
+    [showNavigationButtons]="true">
+  </dxo-pager>
+
+  <dxi-column caption="Operacija">
+    <dxi-column alignment="center" dataField="" cellTemplate="openInScheduler"></dxi-column>
+ 
+    <dxi-column dataField="planItemCode" caption="Šifra" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="planItemName" caption="Naziv" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="containerCode" caption="Šifra DM"></dxi-column>
+    <dxi-column dataField="containerName" caption="Naziv DM"></dxi-column>
+    <dxi-column dataField="quantity" caption="Količina"></dxi-column>
+    <dxi-column dataField="statusName" caption="Status"></dxi-column>
+    <dxi-column dataField="timeStartPreparation" dataType="date" caption="Priprava" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
+    <dxi-column dataField="timeStart" dataType="date" caption="Začetek" cellTemplate="dateCellTemplate"></dxi-column>
+    <dxi-column dataField="timeEnd" dataType="date" caption="Konec" cellTemplate="dateCellTemplate"></dxi-column>
+    
+  </dxi-column>
+  <dxi-column caption="Nalog">
+    <dxi-column dataField="itemName" caption="Šifra" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="articleCode" caption="Šifra artikla" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="articleName" caption="Naziv artikla" cssClass="font-weight-500"></dxi-column>
+  </dxi-column>
+
+  <div *dxTemplate="let cell of 'dateCellTemplate'">
+    {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+  </div>
+
+  <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
+    {{ cell.displayValue ? cell.displayValue : 0 }}
+  </div>
+
+  <div *dxTemplate="let cell of 'openInScheduler'">
+        <a class="span-link" (click)="onOpenInScheduler(cell.data)">Odpri</a>
+      </div>
+</dx-data-grid>

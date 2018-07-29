@@ -24,10 +24,10 @@
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
     Za prikaz koledarja izberite eno ali več delovnih mest
 </div>
-<dx-scheduler id="scheduler" 
+<dx-scheduler id="scheduler"
     [editing]="{ allowAdding: false }"
     [dataSource]="planItemGetReponse.planItems"
-    [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth']" 
+    [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda']" 
     [(currentView)]="currentView"         
     [groups]="['containerId']" 
     [resources]="schedulerResources"
@@ -43,11 +43,13 @@
     (onAppointmentDeleting)="onAppointmentDeleting($event)"    
     (onAppointmentClick)="onAppointmentClick($event)"
     (onAppointmentDblClick)="onAppointmentDblClick($event)"
-    appointmentTooltipTemplate="tooltip-template"    
+    (onAppointmentRendered)="onAppointmentRedered($event)"
+    appointmentTooltipTemplate="tooltip-template"   
+    dropDownAppointmentTemplate="appointment-template" 
     >
    
     <div *dxTemplate="let plannedEvent of 'appointment-template'">
-        <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>
+        <app-plan-viewer-item [viewName]="currentView" [plannerItemData]="plannedEvent"></app-plan-viewer-item>
     </div>
 
     <div *dxTemplate="let plannedEvent of 'tooltip-template'">
@@ -68,12 +70,10 @@
                     <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Operacije niso razporejene zaporedno.
                     <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
                 </div>
-
-                <h6>Delovni nalog</h6>
-
+                    <h6>Operacija</h6>
                         <table class="table table-sm">
                             <tr>
-                                <td>Šifra</td>
+                                <td>DN</td>
                                 <th>{{ plannedEvent.itemName }}</th>
                                 <td>Priprava</td>
                                 <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
@@ -89,6 +89,15 @@
                                 <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
                                 <td>Konec</td>
                                 <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Izdelano</td>
+                                <th>{{ plannedEvent.manufacturedQuantity }}  {{ plannedEvent.unitQuantity }} 
+                                    ({{ plannedEvent.manufacturedQuantity * 100 / 
+                                        (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)
+                                </th>
+                                <td>Status</td>
+                                <th><span class="p-1 text-white" [ngStyle]="{'background-color': plannedEvent.color}">{{ plannedEvent.statusDescription }}</span></th>
                             </tr>
                         </table>
 
@@ -111,7 +120,7 @@
                     
                     
 
-                <h6>Operacije delovnega naloga</h6>
+                <h6>Delovni nalog</h6>
                 <table class="table table-sm">
                     <tr *ngFor="let op of plannedEvent.sequencePlanItems" [ngClass]="{'font-weight-bold': op.idPrePlanItem === plannedEvent.idPrePlanItem}">
                         <td>#{{ op.code }} {{ op.name }}</td>
