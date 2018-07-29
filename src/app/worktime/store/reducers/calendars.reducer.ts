@@ -1,10 +1,5 @@
 import * as fromCalendars from '../actions/calendars.actions';
-import {
-  Calendar,
-  SubCalendar,
-  CalendarEntity
-} from '../../models/calendar.model';
-import { SubCalendarItemComponent } from '../../components';
+import { Calendar, SubCalendar } from '../../models/calendar.model';
 
 export interface CalendarsState {
   entities: { [id: number]: Calendar };
@@ -41,25 +36,6 @@ export function reducer(
       const entities = schedules.reduce(
         // tslint:disable-next-line:no-shadowed-variable
         (entities: { [id: number]: Calendar }, calendar: Calendar) => {
-          const newSubCalendar: {
-            [id: number]: SubCalendar;
-          } = calendar.subCalendars.reduce(
-            (
-              subCalendars: { [id: number]: SubCalendar },
-              subCalendar: SubCalendar
-            ) => {
-              console.log({ [subCalendar.idCalendar]: subCalendar });
-              return {
-                ...subCalendars,
-                [subCalendar.id]: subCalendar
-              };
-            },
-            {}
-          );
-          const newCalendar = {
-            ...calendar,
-            subCalendars: newSubCalendar
-          };
           return {
             ...entities,
             [calendar.id]: calendar
@@ -113,26 +89,22 @@ export function reducer(
     }
     case fromCalendars.CALENDAR_POPUP_VISIBLE: {
       const popupVisible = action.payload;
-      console.log('reducer visibility', popupVisible);
       return {
         ...state,
         popupVisible
       };
     }
-    case fromCalendars.UPDATE_SUBCALENDAR_SUCCESS:
-    case fromCalendars.CREATE_SUBCALENDAR_SUCCESS: {
-      const subCalendar = action.payload;
-      const subCalendars = {
-        ...state.entities[subCalendar.idCalendar].subCalendars,
-        [subCalendar.id]: subCalendar
-      };
-
+    case fromCalendars.UPDATE_CALENDAR_SUBCALENDAR: {
+      const item = action.payload;
+      const subcalendars = [
+        ...state.entities[item.idCalendar].subCalendars,
+        item
+      ];
+      console.log(subcalendars);
       const calendar = {
-        ...state.entities[subCalendar.idCalendar],
-        subCalendars
+        ...state.entities[item.idCalendar],
+        subCalendars: subcalendars
       };
-      console.log(calendar);
-
       const entities = {
         ...state.entities,
         [calendar.id]: calendar

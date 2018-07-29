@@ -92,61 +92,13 @@ export class CalendarPopupVisible implements Action {
   constructor(public payload: boolean) {}
 }
 
-// create subcalendar
-export const CREATE_SUBCALENDAR = '[WorkTime] Create SubCalendar';
-export const CREATE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Create SubCalendar Success';
-export const CREATE_SUBCALENDAR_FAIL = '[WorkTime] Create SubCalendar Fail';
-
-export class CreateSubCalendar implements Action {
-  readonly type = CREATE_SUBCALENDAR;
-  constructor(public payload: SubCalendar) {}
-}
-export class CreateSubCalendarSuccess implements Action {
-  readonly type = CREATE_SUBCALENDAR_SUCCESS;
-  constructor(public payload: SubCalendar) {}
-}
-export class CreateSubCalendarFail implements Action {
-  readonly type = CREATE_SUBCALENDAR_FAIL;
-  constructor(public payload: any) {}
-}
-
 // update subcalendar
-export const UPDATE_SUBCALENDAR = '[WorkTime] Update SubCalendar';
-export const UPDATE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Update SubCalendar Success';
-export const UPDATE_SUBCALENDAR_FAIL = '[WorkTime] Update SubCalendar Fail';
+export const UPDATE_CALENDAR_SUBCALENDAR =
+  '[WorkTime] Update calendar subcalendar';
 
-export class UpdateSubCalendar implements Action {
-  readonly type = UPDATE_SUBCALENDAR;
+export class UpdateCalendarSubCalendar implements Action {
+  readonly type = UPDATE_CALENDAR_SUBCALENDAR;
   constructor(public payload: SubCalendar) {}
-}
-export class UpdateSubCalendarSuccess implements Action {
-  readonly type = UPDATE_SUBCALENDAR_SUCCESS;
-  constructor(public payload: SubCalendar) {}
-}
-export class UpdateSubCalendarFail implements Action {
-  readonly type = UPDATE_SUBCALENDAR_FAIL;
-  constructor(public payload: any) {}
-}
-
-// delete calendar
-export const REMOVE_SUBCALENDAR = '[WorkTime] Remove SubCalendar';
-export const REMOVE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Remove SubCalendar Success';
-export const REMOVE_SUBCALENDAR_FAIL = '[WorkTime] Remove SubCalendar Fail';
-
-export class RemoveSubCalendar implements Action {
-  readonly type = REMOVE_SUBCALENDAR;
-  constructor(public payload: SubCalendar) {}
-}
-export class RemoveSubCalendarSuccess implements Action {
-  readonly type = REMOVE_SUBCALENDAR_SUCCESS;
-  constructor(public payload: SubCalendar) {}
-}
-export class RemoveSubCalendarFail implements Action {
-  readonly type = REMOVE_SUBCALENDAR_FAIL;
-  constructor(public payload: any) {}
 }
 
 // calendars types
@@ -166,12 +118,4 @@ export type CalendarsActions =
   | RemoveCalendarSuccess
   | RemoveCalendarFail
   | CalendarPopupVisible
-  | CreateSubCalendar
-  | CreateSubCalendarSuccess
-  | CreateSubCalendarFail
-  | UpdateSubCalendar
-  | UpdateSubCalendarSuccess
-  | UpdateSubCalendarFail
-  | RemoveSubCalendar
-  | RemoveSubCalendarSuccess
-  | RemoveSubCalendarFail;
+  | UpdateCalendarSubCalendar;

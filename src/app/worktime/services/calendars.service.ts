@@ -54,6 +54,7 @@ export class CalendarsService {
 
   // subcalendars
   createSubCalendar(payload: SubCalendar): Observable<SubCalendar> {
+    console.log(payload);
     return this.http
       .post<SubCalendar>(`${environment.apiUrl}/calendars/subcalendar`, payload)
       .pipe(

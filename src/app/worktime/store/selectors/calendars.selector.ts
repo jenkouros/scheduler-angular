@@ -1,5 +1,6 @@
 import * as fromFeature from '../reducers';
 import * as fromCalendars from '../reducers/calendars.reducer';
+import * as fromSubCalendars from '../reducers/subcalendars.reducer';
 import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducers';
 

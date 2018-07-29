@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as fromServices from '../../services';
 import * as calendarActions from '../actions/calendars.actions';
+import * as subcalendarActions from '../actions/subcalendars.actions';
 
 import { Actions, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map } from 'rxjs/operators';
@@ -73,7 +74,6 @@ export class CalendarsEffects {
     )
     .pipe(
       map(() => {
-        console.log('visibility');
         return new calendarActions.CalendarPopupVisible(false);
       })
     );
@@ -92,38 +92,12 @@ export class CalendarsEffects {
   );
 
   @Effect()
-  createSubCalendar$ = this.actions$
-    .ofType(calendarActions.CREATE_SUBCALENDAR)
+  calendarSubCalendarSuccess$ = this.actions$
+    .ofType(subcalendarActions.CREATE_SUBCALENDAR_SUCCESS)
     .pipe(
-      map((action: calendarActions.CreateSubCalendar) => action.payload),
-      switchMap(subcalendar => {
-        return this.calendarsService.createSubCalendar(subcalendar).pipe(
-          map(
-            newSubCalendar =>
-              new calendarActions.CreateSubCalendarSuccess(newSubCalendar)
-          ),
-          catchError(error =>
-            of(new calendarActions.CreateSubCalendarFail(error))
-          )
-        );
-      })
-    );
-
-  @Effect()
-  updateSubCalendar$ = this.actions$
-    .ofType(calendarActions.UPDATE_SUBCALENDAR)
-    .pipe(
-      map((action: calendarActions.UpdateSubCalendar) => action.payload),
-      switchMap(subcalendar => {
-        return this.calendarsService.updateSubCalendar(subcalendar).pipe(
-          map(
-            newSubCalendar =>
-              new calendarActions.UpdateSubCalendarSuccess(newSubCalendar)
-          ),
-          catchError(error =>
-            of(new calendarActions.UpdateSubCalendarFail(error))
-          )
-        );
+      map((action: subcalendarActions.CreateSubCalendarSuccess) => {
+        console.log(action);
+        return new calendarActions.UpdateCalendarSubCalendar(action.payload);
       })
     );
 }

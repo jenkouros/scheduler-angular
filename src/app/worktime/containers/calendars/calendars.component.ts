@@ -25,7 +25,6 @@ import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-an
         [calendar]="calendar"
         (remove)="onRemove($event)"
         (select)="onSelect($event)"
-        (createSchedule)="onCreateSchedule($event)"
         >
         </app-calendar-item>
 
@@ -132,11 +131,6 @@ export class CalendarsComponent implements OnInit, AfterContentInit {
 
   onCreate(calendar: Calendar) {
     this.store.dispatch(new fromStore.CreateCalendar(calendar));
-  }
-
-  onCreateSchedule(subCalendar: SubCalendar) {
-    console.log(subCalendar);
-    this.store.dispatch(new fromStore.CreateSubCalendar(subCalendar));
   }
 
   onUpdate(calendar: Calendar) {
