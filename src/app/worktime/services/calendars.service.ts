@@ -75,11 +75,11 @@ export class CalendarsService {
         catchError((error: any) => throwError(error.json()))
       );
   }
-
+  // .delete<Calendar>(`${environment.apiUrl}/calendars/${payload.id}`)
   removeSubCalendar(payload: SubCalendar): Observable<SubCalendar> {
     return this.http
       .delete<SubCalendar>(
-        `${environment.apiUrl}/calendars/subcalendar/${payload.id}`
+        `${environment.apiUrl}/calendars/subcalendar?id=${payload.id}`
       )
       .pipe(
         map(response => {

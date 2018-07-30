@@ -3,14 +3,14 @@ import * as fromTimeTables from '../actions/timetables.actions';
 
 export interface TimeTablesState {
   entities: { [id: number]: TimeTable };
-  calendarId: number;
+  subcalendarId: number;
   loading: boolean;
   loaded: boolean;
 }
 
 export const initialState: TimeTablesState = {
   entities: {},
-  calendarId: 0,
+  subcalendarId: 0,
   loading: false,
   loaded: false
 };
@@ -23,7 +23,7 @@ export function reducer(
     case fromTimeTables.LOAD_TIMETABLES: {
       return {
         ...state,
-        calendarId: action.payload,
+        subcalendarId: action.payload,
         loading: true,
         loaded: false
       };
@@ -68,4 +68,4 @@ export const getTimeTablesEntities = (state: TimeTablesState) => state.entities;
 export const getTimeTablesLoading = (state: TimeTablesState) => state.loading;
 export const getTimeTablesLoaded = (state: TimeTablesState) => state.loaded;
 export const getTimeTablesCalendarId = (state: TimeTablesState) =>
-  state.calendarId;
+  state.subcalendarId;

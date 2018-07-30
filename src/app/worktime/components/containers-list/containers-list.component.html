@@ -1,0 +1,7 @@
+<dx-data-grid [dataSource]="dataSource1" keyExpr="id" [hoverStateEnabled]="true" (onSelectionChanged)="onSelected($event)">
+  <dxo-selection mode="multiple"></dxo-selection>
+  <dxo-paging [pageSize]="3"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
+  </dxo-pager>
+  <dxi-column [caption]="header" dataField="description" [width]="250" alignment="center"></dxi-column>
+</dx-data-grid>

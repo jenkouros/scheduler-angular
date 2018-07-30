@@ -10,7 +10,7 @@ export class SubCalendarItemComponent implements OnInit {
   @Input() subCalendars: SubCalendar[];
   @Output() create = new EventEmitter<string>();
   @Output() remove = new EventEmitter<SubCalendar>();
-
+  @Output() select = new EventEmitter<SubCalendar>();
   constructor() {}
 
   ngOnInit() {}
@@ -21,5 +21,9 @@ export class SubCalendarItemComponent implements OnInit {
 
   removeSubCalendar(subCalendar: SubCalendar) {
     this.remove.emit(subCalendar);
+  }
+
+  selectSubCalendar(subCalendar: SubCalendar) {
+    this.select.emit(subCalendar);
   }
 }

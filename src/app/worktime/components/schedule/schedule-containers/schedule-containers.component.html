@@ -1,0 +1,43 @@
+<div class="card mb-1">
+  <div class="card-body pt-2 pl-2 pr-2 pb-1" style="font-size: 14px;">
+    <h5 class="card-title">Izbira delovnih mest</h5>
+    <div class="containers-container">
+      <div>
+        <!--<dx-data-grid id="gridContainer" [dataSource]="dataSource">
+          <dxo-paging [pageSize]="3"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
+          </dxo-pager>
+          <dxi-column caption="Razpoložljiva delovna mesta" dataField="description" [width]="250" alignment="center"></dxi-column>
+        </dx-data-grid>-->
+        <app-containers-list [header]="'Razpoložljiva delovna mesta'" (selected)="onSelected($event)"></app-containers-list>
+      </div>
+      <div class="buttons-center">
+        <div>
+          <button (click)="onAddItems()" type="button" class="btn btn-md btn-light mr-1 mb-1" [disabled]="!isAddingEnabled">
+            <fa-icon class="cursor-pointer fa-2x" [icon]="rightArrowIcon" [size]="4"></fa-icon>
+          </button>
+        </div>
+        <div>
+          <button (click)="onRemoveItems()" type="button" class="btn btn-md btn-light mr-1 mb-1" [disabled]="!isRemovingEnabled">
+            <fa-icon class="cursor-pointer fa-2x" [icon]="leftArrowIcon"></fa-icon>
+          </button>
+        </div>
+      </div>
+
+
+
+
+      <div>
+        <!-- <dx-data-grid id="gridSelectedContainers" [dataSource]="dataSource">
+          <dxo-paging [pageSize]="3"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
+          </dxo-pager>
+          <dxi-column caption="Izbrana delovna mesta" dataField="description" [width]="250" alignment="center"></dxi-column>
+        </dx-data-grid>-->
+        <app-containers-list [header]="'Izbrana delovna mesta'" (selected)="onDeSelected($event)"></app-containers-list>
+      </div>
+    </div>
+
+
+  </div>
+</div>

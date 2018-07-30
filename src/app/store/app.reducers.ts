@@ -52,7 +52,6 @@ export class CustomSerializer
       state = state.firstChild;
     }
     const { params } = state;
-    console.log('CustomSerializer');
     return { url, queryParams, params };
   }
 }

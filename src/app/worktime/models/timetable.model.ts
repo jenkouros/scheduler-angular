@@ -1,3 +1,12 @@
+import { Container } from '../../scheduler/models/container.dto';
+
+export interface Schedule {
+  subCalendar: number;
+  selectedContainers: Container[];
+  unselectedContainers: Container[];
+  timeTables: TimeTable[];
+}
+
 export interface TimeTable {
   id: number;
   idCalendar: number;

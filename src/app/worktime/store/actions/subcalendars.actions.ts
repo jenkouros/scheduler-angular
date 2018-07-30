@@ -76,6 +76,14 @@ export class RemoveSubCalendarFail implements Action {
   constructor(public payload: any) {}
 }
 
+// select subcalendar
+export const SELECT_SUBCALENDAR = '[WorkTime] Select SubCalendar';
+
+export class SelectSubCalendar implements Action {
+  readonly type = SELECT_SUBCALENDAR;
+  constructor(public payload: number) {}
+}
+
 // calendars types
 export type SubCalendarsActions =
   | LoadSubCalendars
@@ -89,4 +97,5 @@ export type SubCalendarsActions =
   | UpdateSubCalendarFail
   | RemoveSubCalendar
   | RemoveSubCalendarSuccess
-  | RemoveSubCalendarFail;
+  | RemoveSubCalendarFail
+  | SelectSubCalendar;

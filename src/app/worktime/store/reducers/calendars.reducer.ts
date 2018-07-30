@@ -114,6 +114,19 @@ export function reducer(
         entities
       };
     }
+    case fromCalendars.REMOVE_CALENDAR_SUBCALENDAR: {
+      const entities = { ...state.entities };
+      entities[action.payload.idCalendar].subCalendars = [
+        ...entities[action.payload.idCalendar].subCalendars.filter(
+          subcalendar => subcalendar.id !== action.payload.id
+        )
+      ];
+
+      return {
+        ...state,
+        entities
+      };
+    }
   }
   return state;
 }

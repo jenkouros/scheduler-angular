@@ -6,21 +6,21 @@ import { environment } from '../../../environments/environment';
 import { Calendar } from '../models/calendar.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import date_box from 'devextreme/ui/date_box';
-import { TimeTable } from '../models/timetable.model';
+import { TimeTable, Schedule } from '../models/timetable.model';
 import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class TimeTablesService {
   constructor(private http: HttpClient) {}
 
-  getTimeTables(calendarId: number): Observable<TimeTable[]> {
+  getTimeTables(subCalendarId: number): Observable<Schedule> {
     const httpParams = new HttpParams().set(
-      'idCalendar',
-      calendarId.toString()
+      'idSubCalendar',
+      subCalendarId.toString()
     );
 
     return this.http
-      .get<TimeTable[]>(`${environment.apiUrl}/timetables`, {
+      .get<Schedule>(`${environment.apiUrl}/calendars/subcalendar`, {
         params: httpParams
       })
       .pipe(

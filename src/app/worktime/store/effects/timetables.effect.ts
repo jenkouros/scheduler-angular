@@ -3,7 +3,7 @@ import * as fromServices from '../../services';
 
 import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -16,12 +16,19 @@ export class TimeTablesEffects {
   @Effect()
   loadTimeTables$ = this.actions$.ofType(fromActions.LOAD_TIMETABLES).pipe(
     switchMap((action: fromActions.LoadTimeTables) => {
-      const calendarId = action.payload;
-      // console.log('calendarId', calendarId);
-      return this.timetablesService.getTimeTables(calendarId).pipe(
-        map(timetables => new fromActions.LoadTimeTablesSuccess(timetables)),
+      const id = action.payload;
+      return this.timetablesService.getTimeTables(id).pipe(
+        mergeMap(schedule => {
+          console.log(schedule);
+          return [new fromActions.LoadTimeTablesSuccess(schedule.timeTables)];
+        }),
         catchError(error => of(new fromActions.LoadTimeTablesFail(error)))
       );
+      /*map(
+          schedule => new fromActions.LoadTimeTablesSuccess(schedule.timeTables)
+        ),
+        catchError(error => of(new fromActions.LoadTimeTablesFail(error)))
+      );*/
     })
   );
 }

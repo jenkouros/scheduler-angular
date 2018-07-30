@@ -100,6 +100,14 @@ export class UpdateCalendarSubCalendar implements Action {
   readonly type = UPDATE_CALENDAR_SUBCALENDAR;
   constructor(public payload: SubCalendar) {}
 }
+// remove
+export const REMOVE_CALENDAR_SUBCALENDAR =
+  '[WorkTime] Remove calendar subcalendar';
+
+export class RemoveCalendarSubCalendar implements Action {
+  readonly type = REMOVE_CALENDAR_SUBCALENDAR;
+  constructor(public payload: SubCalendar) {}
+}
 
 // calendars types
 export type CalendarsActions =
@@ -118,4 +126,5 @@ export type CalendarsActions =
   | RemoveCalendarSuccess
   | RemoveCalendarFail
   | CalendarPopupVisible
-  | UpdateCalendarSubCalendar;
+  | UpdateCalendarSubCalendar
+  | RemoveCalendarSubCalendar;

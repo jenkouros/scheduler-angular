@@ -78,6 +78,14 @@ export function reducer(
         entities
       };
     }
+    case fromSubCalendars.SELECT_SUBCALENDAR: {
+      const id = action.payload;
+      console.log(id);
+      return {
+        ...state,
+        selectedId: id
+      };
+    }
   }
   return state;
 }
@@ -85,5 +93,8 @@ export function reducer(
 // export level of state
 export const getSubCalendarsEntities = (state: SubCalendarsState) =>
   state.entities;
-export const getCalendarsLoading = (state: SubCalendarsState) => state.loading;
-export const getCalendarsLoaded = (state: SubCalendarsState) => state.loaded;
+export const getSubCalendarsLoading = (state: SubCalendarsState) =>
+  state.loading;
+export const getSubCalendarsLoaded = (state: SubCalendarsState) => state.loaded;
+export const getSubCalendarsSelectedId = (state: SubCalendarsState) =>
+  state.selectedId;

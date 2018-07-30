@@ -96,8 +96,16 @@ export class CalendarsEffects {
     .ofType(subcalendarActions.CREATE_SUBCALENDAR_SUCCESS)
     .pipe(
       map((action: subcalendarActions.CreateSubCalendarSuccess) => {
-        console.log(action);
         return new calendarActions.UpdateCalendarSubCalendar(action.payload);
+      })
+    );
+
+  @Effect()
+  calendarSubCalendarRemoveSuccess$ = this.actions$
+    .ofType(subcalendarActions.REMOVE_SUBCALENDAR_SUCCESS)
+    .pipe(
+      map((action: subcalendarActions.RemoveSubCalendarSuccess) => {
+        return new calendarActions.RemoveCalendarSubCalendar(action.payload);
       })
     );
 }

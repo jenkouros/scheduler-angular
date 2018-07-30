@@ -1,0 +1,12 @@
+.containers-container {
+  display: grid;
+  width: 800px;
+  grid-template-columns: 2fr 1fr 2fr; /* fraction*/
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.buttons-center {
+  text-align: center;
+}

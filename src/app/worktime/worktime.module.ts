@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -33,7 +32,7 @@ import { reducers, effects } from './store';
 import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { SubCalendarComponent } from './containers/sub-calendar/sub-calendar.component';
+import { ContainersListComponent } from './components/containers-list/containers-list.component';
 
 const routes: Routes = [
   {
@@ -47,7 +46,7 @@ const routes: Routes = [
       },
       {
         path: 'schedule/:id',
-        canActivate: [fromGuards.CalendarsGuard],
+        canActivate: [fromGuards.TimeTablesGuard],
         component:
           fromContainers.ScheduleDetailComponent /*, children: [
              { path: 'schedule', component: ScheduleComponent},
@@ -59,7 +58,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [...fromContainers.containers, ...fromComponents.components, SubCalendarComponent],
+  declarations: [
+    ...fromContainers.containers,
+    ...fromComponents.components,
+    ContainersListComponent
+  ],
   imports: [
     CoreModule,
     CommonModule,

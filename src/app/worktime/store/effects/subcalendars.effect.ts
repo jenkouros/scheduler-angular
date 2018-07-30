@@ -80,8 +80,7 @@ export class SubCalendarsEffects {
       switchMap(subCalendar => {
         return this.calendarsService.removeSubCalendar(subCalendar).pipe(
           map(
-            newCalendar =>
-              new subcalendarActions.RemoveSubCalendarSuccess(newCalendar)
+            () => new subcalendarActions.RemoveSubCalendarSuccess(subCalendar)
           ),
           catchError(error =>
             of(new subcalendarActions.RemoveSubCalendarFail(error))
