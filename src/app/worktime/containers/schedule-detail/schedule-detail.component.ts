@@ -29,8 +29,7 @@ import { Container } from '../../../scheduler/models/container.dto';
       ></app-schedule-events>
     </div>
 </div>
-  `,
-  styleUrls: ['./schedule-detail.component.css']
+  `
 })
 export class ScheduleDetailComponent implements OnInit {
   timetables$: Observable<TimeTable[]>;
@@ -53,11 +52,13 @@ export class ScheduleDetailComponent implements OnInit {
     );
   }
 
-  removeFromSelected(ids: number[]) {}
-
   addToSelected(selected: SelectedContainers) {
-    console.log(selected);
     this.store.dispatch(new fromStore.AddToSelectedContainers(selected));
+  }
+
+  removeFromSelected(selected: SelectedContainers) {
+    console.log(selected);
+    this.store.dispatch(new fromStore.RemoveFromSelectedContainers(selected));
   }
 
   onAdd(openPopup: boolean) {

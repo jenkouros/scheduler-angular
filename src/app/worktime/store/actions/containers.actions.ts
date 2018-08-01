@@ -44,10 +44,34 @@ export class AddToSelectedContainersFail implements Action {
   constructor(public payload: any) {}
 }
 
+// remove from selected
+export const REMOVE_FROM_SELECTED_CONTAINERS =
+  '[WorkTime] Remove From Selected Containers';
+export const REMOVE_FROM_SELECTED_CONTAINERS_SUCCESS =
+  '[WorkTime] Remove From Selected Containers Success';
+export const REMOVE_FROM_SELECTED_CONTAINERS_FAIL =
+  '[WorkTime] Remove From Selected Containers Fail';
+
+export class RemoveFromSelectedContainers implements Action {
+  readonly type = REMOVE_FROM_SELECTED_CONTAINERS;
+  constructor(public payload: SelectedContainers) {}
+}
+export class RemoveFromSelectedContainersSuccess implements Action {
+  readonly type = REMOVE_FROM_SELECTED_CONTAINERS_SUCCESS;
+  constructor(public payload: SelectedContainers) {}
+}
+export class RemoveFromSelectedContainersFail implements Action {
+  readonly type = REMOVE_FROM_SELECTED_CONTAINERS_FAIL;
+  constructor(public payload: any) {}
+}
+
 export type ContainersActions =
   | LoadContainers
   | LoadContainersSuccess
   | LoadContainersFail
   | AddToSelectedContainers
   | AddToSelectedContainersSuccess
-  | AddToSelectedContainersFail;
+  | AddToSelectedContainersFail
+  | RemoveFromSelectedContainers
+  | RemoveFromSelectedContainersSuccess
+  | RemoveFromSelectedContainersFail;

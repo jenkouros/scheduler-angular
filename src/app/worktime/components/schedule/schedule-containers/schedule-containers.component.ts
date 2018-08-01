@@ -52,15 +52,13 @@ export class ScheduleContainersComponent implements OnInit {
   }
 
   onRemoveItems(item: Container) {
-    console.log(this.toRemoveContainers);
     this.remove.emit({
       id: this.selectedSubCalendar.id,
-      containersIds: this.toAddContainers
+      containersIds: this.toRemoveContainers
     });
   }
 
   onAddItems() {
-    console.log('add', this.toAddContainers);
     this.add.emit({
       id: this.selectedSubCalendar.id,
       containersIds: this.toAddContainers

@@ -24,6 +24,7 @@ export class ContainersService {
         }),
         catchError((error: any) => throwError(error.json()))
       );
+
     /*
     return this.http
       .post<Schedule>(
@@ -40,5 +41,22 @@ export class ContainersService {
         catchError((error: any) => throwError(error.json()))
       );
       */
+  }
+
+  removeFromSelectedContainers(
+    payload: SelectedContainers
+  ): Observable<Schedule> {
+    return this.http
+      .delete<ScheduleServer>(
+        `${environment.apiUrl}/calendars/subcalendarcontainer?idSubCalendar=${
+          payload.id
+        }&containerIds=${payload.containersIds.join(', ')}`
+      )
+      .pipe(
+        map(response => {
+          return Schedule.fromServer(response);
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
   }
 }
