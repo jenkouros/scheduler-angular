@@ -1,6 +1,6 @@
-<dx-data-grid id="gridContainer" [dataSource]="dataSource">
-  <dxo-paging [pageSize]="3"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
+<dx-data-grid id="gridContainer" [dataSource]="timeTables" (onToolbarPreparing)="onToolbarPreparing($event)">
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]" [showInfo]="true" [showNavigationButtons]="true">
   </dxo-pager>
 
 
@@ -10,17 +10,25 @@
   <dxi-column caption="Veljaven do" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
 
 
-  <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplte" [width]="100"></dxi-column>
-  <dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>
+  <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplate" [width]="100"></dxi-column>
+  <!--<dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>-->
 
   <div *dxTemplate="let cell of 'dateCellTemplate'">
     {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
   </div>
-  <div *dxTemplate="let cell of 'editCelltemplte'">
-    <a class="span-link" (click)="onEditItem(cell.data)">Uredi</a>
+  <div *dxTemplate="let cell of 'editCelltemplate'">
+    <a class="span-link" (click)="onSelect(cell.data)">Uredi</a>
   </div>
 
+  <!-- 
   <div *dxTemplate="let cell of 'selectCellTemplate'">
-    <a class="span-link" (click)="onSelectItem(cell.data)">Preglej</a>
+    <a class="span-link" (click)="onSelect(cell.data)">Preglej</a>
+  </div>
+-->
+  <div *dxTemplate="let data of 'header'">
+    <div class="informer">
+      <h5 class="name">Pregled dogodkov</h5>
+    </div>
   </div>
 </dx-data-grid>
+<app-schedule-event></app-schedule-event>

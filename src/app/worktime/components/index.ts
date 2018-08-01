@@ -8,6 +8,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { ScheduleContainersComponent } from './schedule/schedule-containers/schedule-containers.component';
 import { ScheduleEventsComponent } from './schedule/schedule-events/schedule-events.component';
 import { ScheduleEventPopupComponent } from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
+import { ContainersListComponent } from './containers-list/containers-list.component';
 
 export const components: any[] = [
   CalendarItemComponent,
@@ -17,7 +18,8 @@ export const components: any[] = [
   SubCalendarItemComponent,
   ScheduleContainersComponent,
   ScheduleEventsComponent,
-  ScheduleEventPopupComponent
+  ScheduleEventPopupComponent,
+  ContainersListComponent
 ];
 
 export * from './calendar';
@@ -26,3 +28,4 @@ export * from './schedule/schedule.component';
 export * from './schedule/schedule-containers/schedule-containers.component';
 export * from './schedule/schedule-events/schedule-events.component';
 export * from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
+export * from './containers-list/containers-list.component';

@@ -5,7 +5,7 @@ import {
   ViewChild,
   AfterContentInit
 } from '@angular/core';
-import { Calendar, SubCalendar } from '../../models/calendar.model';
+import { Calendar } from '../../models/calendar.model';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as fromStore from '../../store';

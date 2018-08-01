@@ -4,15 +4,19 @@ import * as fromTimeTables from '../actions/timetables.actions';
 export interface TimeTablesState {
   entities: { [id: number]: TimeTable };
   subcalendarId: number;
+  selectedId: number;
   loading: boolean;
   loaded: boolean;
+  popupVisible: boolean;
 }
 
 export const initialState: TimeTablesState = {
   entities: {},
   subcalendarId: 0,
+  selectedId: 0,
   loading: false,
-  loaded: false
+  loaded: false,
+  popupVisible: false
 };
 
 export function reducer(
@@ -58,6 +62,25 @@ export function reducer(
         loaded: false
       };
     }
+    case fromTimeTables.TIMETABLE_POPUP_VISIBLE: {
+      return {
+        ...state,
+        popupVisible: action.payload
+      };
+    }
+    case fromTimeTables.SELECT_TIMETABLE: {
+      console.log('selected', action.payload);
+      return {
+        ...state,
+        selectedId: action.payload
+      };
+    }
+    case fromTimeTables.DESELECT_TIMETABLE: {
+      return {
+        ...state,
+        selectedId: 0
+      };
+    }
   }
 
   return state;
@@ -66,6 +89,10 @@ export function reducer(
 // export level of state
 export const getTimeTablesEntities = (state: TimeTablesState) => state.entities;
 export const getTimeTablesLoading = (state: TimeTablesState) => state.loading;
+export const getTimeTablesSelectdId = (state: TimeTablesState) =>
+  state.selectedId;
 export const getTimeTablesLoaded = (state: TimeTablesState) => state.loaded;
-export const getTimeTablesCalendarId = (state: TimeTablesState) =>
+export const getTimeTablesSubCalendarId = (state: TimeTablesState) =>
   state.subcalendarId;
+export const getTimeTablePopupVisibility = (state: TimeTablesState) =>
+  state.popupVisible;

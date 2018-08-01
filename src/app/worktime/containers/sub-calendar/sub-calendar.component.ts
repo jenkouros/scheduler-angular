@@ -10,8 +10,7 @@ import { Store } from '@ngrx/store';
   template: `
   <app-subcalendar-item [subCalendars]="(subCalendars$ | async)"
   (create)="onCreate($event)"
-  (remove)="onRemove($event)"
-  (select)="onSelect($event)">
+  (remove)="onRemove($event)">
   </app-subcalendar-item>
   `
 })
@@ -28,6 +27,7 @@ export class SubCalendarComponent implements OnInit {
 
   onRemove(subCalendar: SubCalendar) {
     this.store.dispatch(new fromStore.RemoveSubCalendar(subCalendar));
+    console.log('remove subcalnedar');
   }
 
   onCreate(name: string) {
@@ -37,9 +37,5 @@ export class SubCalendarComponent implements OnInit {
       name
     };
     this.store.dispatch(new fromStore.CreateSubCalendar(sCalendar));
-  }
-
-  onSelect(subCalendar: SubCalendar) {
-    this.store.dispatch(new fromStore.SelectSubCalendar(subCalendar.id));
   }
 }

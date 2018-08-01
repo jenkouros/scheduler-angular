@@ -12,3 +12,8 @@ export interface SubCalendar {
   idCalendar: number;
   name: string;
 }
+
+export interface SelectedContainers {
+  id: number;
+  containersIds: number[];
+}

@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Calendar } from '../models/calendar.model';
-import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import date_box from 'devextreme/ui/date_box';
-import { TimeTable, Schedule } from '../models/timetable.model';
+import { Schedule, ScheduleServer } from '../models/timetable.model';
 import { HttpParams } from '@angular/common/http';
+import { SubCalendar, SelectedContainers } from '../models/calendar.model';
 
 @Injectable()
 export class TimeTablesService {
@@ -20,17 +18,19 @@ export class TimeTablesService {
     );
 
     return this.http
-      .get<Schedule>(`${environment.apiUrl}/calendars/subcalendar`, {
+      .get<ScheduleServer>(`${environment.apiUrl}/calendars/subcalendar`, {
         params: httpParams
       })
       .pipe(
         map(response => {
-          return response;
+          return Schedule.fromServer(response);
         }),
         catchError((error: any) => throwError(error.json()))
       );
   }
 }
+
+// subcalendars
 
 /*
 getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {

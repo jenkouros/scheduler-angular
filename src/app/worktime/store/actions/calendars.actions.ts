@@ -6,6 +6,7 @@ export const LOAD_CALENDARS_SUCCESS = '[WorkTime] Load Calendars Success';
 export const LOAD_CALENDARS_FAIL = '[WorkTime] Load Calendars Fail';
 export const SELECT_CALENDAR = '[WorkTime] Select Calendar';
 export const DESELECT_CALENDAR = '[WorkTime] DeSelect Calendar';
+
 export class LoadCalendars implements Action {
   readonly type = LOAD_CALENDARS;
 }

@@ -1,10 +1,17 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Calendar, SubCalendar } from '../../../models/calendar.model';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { select } from '../../../../../../node_modules/@ngrx/store';
 
 @Component({
   selector: 'app-calendar-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar-item.component.html',
   styleUrls: ['./calendar-item.component.css']
 })
@@ -19,9 +26,7 @@ export class CalendarItemComponent implements OnInit {
   deleteIcon = faTrash;
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.calendar);
-  }
+  ngOnInit() {}
 
   addSchedule() {}
 
@@ -34,6 +39,10 @@ export class CalendarItemComponent implements OnInit {
   }
 
   onCreateSchedule(name: string) {
-    this.createSchedule.emit({ id: 0, idCalendar: this.calendar.id, name });
+    this.createSchedule.emit({
+      id: 0,
+      idCalendar: this.calendar.id,
+      name
+    });
   }
 }

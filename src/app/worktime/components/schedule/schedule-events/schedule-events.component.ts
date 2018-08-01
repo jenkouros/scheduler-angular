@@ -1,28 +1,50 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { TimeTable } from '../../../models/timetable.model';
 
 @Component({
   selector: 'app-schedule-events',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './schedule-events.component.html',
   styleUrls: ['./schedule-events.component.css']
 })
 export class ScheduleEventsComponent implements OnInit {
-  @Input() dataSource: TimeTable[];
-  @Output() editItem = new EventEmitter<number>();
-  @Output() selectItem = new EventEmitter<number>();
-  constructor() {}
+  @Input() timeTables: TimeTable[];
+  @Output() add = new EventEmitter<boolean>();
+  @Output() select = new EventEmitter<number>();
 
   ngOnInit() {}
 
-  onSelectItem(item: TimeTable) {
+  onSelect(item: TimeTable) {
     if (item) {
-      this.selectItem.emit(item.id);
+      this.select.emit(item.id);
     }
   }
+  newTimeTable() {
+    this.add.emit(true);
+  }
 
-  onEditItem(item: TimeTable) {
-    if (item) {
-      this.editItem.emit(item.id);
-    }
+  onToolbarPreparing(e) {
+    e.toolbarOptions.items.unshift(
+      {
+        location: 'before',
+        template: 'header'
+      },
+      {
+        location: 'after',
+        widget: 'dxButton',
+        options: {
+          icon: 'add',
+          text: 'Dodaj dogodek',
+          onClick: this.newTimeTable.bind(this)
+        }
+      }
+    );
   }
 }

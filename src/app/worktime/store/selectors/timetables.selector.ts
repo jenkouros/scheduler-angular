@@ -2,8 +2,6 @@ import * as fromFeature from '../reducers';
 import * as fromTimeTables from '../reducers/timetables.reducer';
 import { createSelector } from '@ngrx/store';
 
-
-
 // timetables state
 export const getTimeTablesState = createSelector(
   fromFeature.getWorkTimeState,
@@ -24,7 +22,26 @@ export const getTimeTablesLoaded = createSelector(
   fromTimeTables.getTimeTablesLoaded
 );
 
-export const getTimeTablesCalendarId = createSelector(
+export const getTimeTablesSelectedId = createSelector(
   getTimeTablesState,
-  fromTimeTables.getTimeTablesCalendarId
+  fromTimeTables.getTimeTablesSelectdId
+);
+
+export const getTimeTablesSubCalendarId = createSelector(
+  getTimeTablesState,
+  fromTimeTables.getTimeTablesSubCalendarId
+);
+
+export const getTimeTablePopupVisibility = createSelector(
+  getTimeTablesState,
+  fromTimeTables.getTimeTablePopupVisibility
+);
+
+export const getTimeTableSelected = createSelector(
+  getTimeTablesEntities,
+  getTimeTablesSelectedId,
+  (entities, id) => {
+    console.log(id, entities[id]);
+    return entities[id];
+  }
 );

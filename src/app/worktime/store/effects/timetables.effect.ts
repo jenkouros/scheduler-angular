@@ -20,7 +20,10 @@ export class TimeTablesEffects {
       return this.timetablesService.getTimeTables(id).pipe(
         mergeMap(schedule => {
           console.log(schedule);
-          return [new fromActions.LoadTimeTablesSuccess(schedule.timeTables)];
+          return [
+            new fromActions.LoadTimeTablesSuccess(schedule.timeTables),
+            new fromActions.LoadContainersSuccess(schedule)
+          ];
         }),
         catchError(error => of(new fromActions.LoadTimeTablesFail(error)))
       );

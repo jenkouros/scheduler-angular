@@ -45,9 +45,9 @@ import { Calendar } from '../../../models/calendar.model';
           [isValid]="!timeStartControlInvalid"></dx-date-box>
         </app-field>
         <app-field label="Konec urnika">
-          <app-datebox type="datetime" formControlName="timeEnd"
+          <dx-date-box type="date" formControlName="timeEnd"
           [isValid]="!timeEndControlInvalid"
-          ></app-datebox>
+          ></dx-date-box>
         </app-field>
         <ng-content></ng-content>
 <!--

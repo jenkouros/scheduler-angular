@@ -1,9 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { TimeTable } from '../../models/timetable.model';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-timetable-event',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './timetable-event.component.html',
   styleUrls: ['./timetable-event.component.css']
 })

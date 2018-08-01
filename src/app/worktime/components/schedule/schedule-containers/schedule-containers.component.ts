@@ -1,17 +1,31 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { TimeTable } from '../../../models/timetable.model';
 import { Container } from '../../../../scheduler/models/container.dto';
+import {
+  SubCalendar,
+  SelectedContainers
+} from '../../../models/calendar.model';
 
 @Component({
   selector: 'app-schedule-containers',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './schedule-containers.component.html',
   styleUrls: ['./schedule-containers.component.css']
 })
 export class ScheduleContainersComponent implements OnInit {
-  @Input() dataSource: TimeTable[];
-  @Output() add = new EventEmitter<number>();
-  @Output() remove = new EventEmitter<number>();
+  @Input() selectedSubCalendar: SubCalendar;
+  @Input() avalableContainers: Container[];
+  @Input() selectedContainers: Container[];
+
+  @Output() add = new EventEmitter<SelectedContainers>();
+  @Output() remove = new EventEmitter<SelectedContainers>();
 
   leftArrowIcon = faArrowLeft;
   rightArrowIcon = faArrowRight;
@@ -39,9 +53,17 @@ export class ScheduleContainersComponent implements OnInit {
 
   onRemoveItems(item: Container) {
     console.log(this.toRemoveContainers);
+    this.remove.emit({
+      id: this.selectedSubCalendar.id,
+      containersIds: this.toAddContainers
+    });
   }
 
   onAddItems() {
-    console.log(this.toAddContainers);
+    console.log('add', this.toAddContainers);
+    this.add.emit({
+      id: this.selectedSubCalendar.id,
+      containersIds: this.toAddContainers
+    });
   }
 }

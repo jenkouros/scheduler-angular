@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 
-import { Store } from "@ngrx/store";
+import { Store } from '@ngrx/store';
 
-import { Observable, of } from "rxjs";
-import { tap, map, filter, take, switchMap, catchError } from "rxjs/operators";
+import { Observable, of } from 'rxjs';
+import { tap, map, filter, take, switchMap, catchError } from 'rxjs/operators';
 
-import * as fromStore from "../store";
-import { SubCalendar } from "../models/calendar.model";
+import * as fromStore from '../store';
+import { SubCalendar } from '../models/calendar.model';
 
 @Injectable()
 export class TimeTablesGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class TimeTablesGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = parseInt(route.params.id, 10);
-    console.log("id", route, id);
+    console.log('id', route, id);
     return this.checkStore(id).pipe(
       switchMap(() => {
         return this.hasSelectedSubCalendar(id);
@@ -35,7 +35,7 @@ export class TimeTablesGuard implements CanActivate {
     return this.store.select(fromStore.getSubCalendarsSelectedId).pipe(
       // gets loaded prop
       tap(subcalendarId => {
-        console.log(subcalendarId);
+        console.log('guard-> subcalendar id', id, subcalendarId);
         if (subcalendarId !== id) {
           this.store.dispatch(new fromStore.SelectSubCalendar(id));
           this.store.dispatch(new fromStore.LoadTimeTables(id));

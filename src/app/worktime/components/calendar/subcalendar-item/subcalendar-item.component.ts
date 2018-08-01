@@ -1,8 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { SubCalendar } from '../../../models/calendar.model';
 
 @Component({
   selector: 'app-subcalendar-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './subcalendar-item.component.html',
   styleUrls: ['./subcalendar-item.component.css']
 })
@@ -10,7 +18,7 @@ export class SubCalendarItemComponent implements OnInit {
   @Input() subCalendars: SubCalendar[];
   @Output() create = new EventEmitter<string>();
   @Output() remove = new EventEmitter<SubCalendar>();
-  @Output() select = new EventEmitter<SubCalendar>();
+
   constructor() {}
 
   ngOnInit() {}
@@ -20,10 +28,7 @@ export class SubCalendarItemComponent implements OnInit {
   }
 
   removeSubCalendar(subCalendar: SubCalendar) {
+    console.log(`remove->${subCalendar}`);
     this.remove.emit(subCalendar);
-  }
-
-  selectSubCalendar(subCalendar: SubCalendar) {
-    this.select.emit(subCalendar);
   }
 }

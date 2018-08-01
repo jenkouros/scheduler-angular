@@ -1,7 +1,16 @@
-<dx-data-grid [dataSource]="dataSource1" keyExpr="id" [hoverStateEnabled]="true" (onSelectionChanged)="onSelected($event)">
+<dx-data-grid class="grid" [dataSource]="containers" keyExpr="id" [hoverStateEnabled]="true" (onSelectionChanged)="onSelected($event)"
+  (onContentReady)="onContentReadyHandler($event)">
+  <dxo-scrolling mode="virtual">
+
+
+    <!-- or "virtual" | "infinite" -->
+  </dxo-scrolling>
+  <dxo-load-panel [enabled]="false"></dxo-load-panel>
   <dxo-selection mode="multiple"></dxo-selection>
-  <dxo-paging [pageSize]="3"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 15, 30]" [showInfo]="true" [showNavigationButtons]="true">
-  </dxo-pager>
-  <dxi-column [caption]="header" dataField="description" [width]="250" alignment="center"></dxi-column>
+  <!--<dxo-paging [pageSize]="5"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10]" [showInfo]="true" [showNavigationButtons]="true">
+  </dxo-pager>-->
+  <dxo-filter-row [visible]="true" [applyFilter]="true">
+  </dxo-filter-row>
+  <dxi-column [caption]="header" dataField="name" alignment="center"></dxi-column>
 </dx-data-grid>

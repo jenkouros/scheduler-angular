@@ -1,3 +1,21 @@
-<p>
-  schedule-event-popup works!
-</p>
+<app-popup height="auto" width="50%" [visible]="visible" (visibilityChanged)="popupVisibility($event)" [cancelCallback]="onCancel"
+  [confirmCallback]="onSubmit" [title]="header">
+  <p>{{timetable |json}}}p>
+    <form [formGroup]="form">
+      <div class="dx-fieldset">
+        <div class="dx-fieldset-header">{{header}}</div>
+        <app-field label="Naziv dogodka">
+          <dx-text-box placeholder="Naziv dogodka..." formControlName="name" [(isValid)]="!descriptionControlInvalid">
+          </dx-text-box>
+        </app-field>
+        <app-field label="Od">
+          <dx-date-box type="datetime" formControlName="timeStart" [isValid]="!timeStartControlInvalid"></dx-date-box>
+        </app-field>
+        <app-field label="Do">
+          <dx-date-box type="datetime" formControlName="timeEnd" [isValid]="!timeEndControlInvalid"></dx-date-box>
+        </app-field>
+
+        <ng-content></ng-content>
+      </div>
+    </form>
+</app-popup>
