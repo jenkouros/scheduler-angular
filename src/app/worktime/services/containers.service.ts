@@ -13,9 +13,9 @@ export class ContainersService {
   addToSelectedContainers(payload: SelectedContainers): Observable<Schedule> {
     return this.http
       .post<ScheduleServer>(
-        `${environment.apiUrl}/calendars/subcalendarcontainer?idSubCalendar=${
-          payload.id
-        }`,
+        `${
+          environment.apiUrl
+        }/calendars/subcalendarcontaineradd?idSubCalendar=${payload.id}`,
         payload.containersIds
       )
       .pipe(
@@ -24,33 +24,17 @@ export class ContainersService {
         }),
         catchError((error: any) => throwError(error.json()))
       );
-
-    /*
-    return this.http
-      .post<Schedule>(
-        `${environment.apiUrl}/calendars/subcalendarcontainer`,
-        {
-          idSubCalendar: payload.id,
-          containerIds: payload.containersIds
-        }
-      )
-      .pipe(
-        map(response => {
-          return response;
-        }),
-        catchError((error: any) => throwError(error.json()))
-      );
-      */
   }
 
   removeFromSelectedContainers(
     payload: SelectedContainers
   ): Observable<Schedule> {
     return this.http
-      .delete<ScheduleServer>(
-        `${environment.apiUrl}/calendars/subcalendarcontainer?idSubCalendar=${
-          payload.id
-        }&containerIds=${payload.containersIds.join(', ')}`
+      .post<ScheduleServer>(
+        `${
+          environment.apiUrl
+        }/calendars/subcalendarcontainerremove?idSubCalendar=${payload.id}`,
+        payload.containersIds
       )
       .pipe(
         map(response => {

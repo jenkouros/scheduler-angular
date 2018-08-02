@@ -7,8 +7,15 @@ import * as fromStore from '../../../store';
 
 @Component({
   selector: 'app-schedule-event',
-  templateUrl: './schedule-event.component.html',
-  styleUrls: ['./schedule-event.component.css']
+  template: `
+    <app-schedule-event-popup
+      [timetable]="(selectedTimetable$ | async)"
+      [visible]="(visible$ | async)"
+      (create)="onCreate($event)"
+      (update)="onUpdate($event)"
+      (cancel)="onCancel($event)">
+    </app-schedule-event-popup>
+  `
 })
 export class ScheduleEventComponent implements OnInit {
   selectedTimetable$: Observable<TimeTable>;
@@ -28,6 +35,7 @@ export class ScheduleEventComponent implements OnInit {
   onCreate(timetable: TimeTable) {}
   onUpdate(timetable: TimeTable) {}
   onRemove(timetable: TimeTable) {}
+
   onCancel(timetable: TimeTable) {
     this.store.dispatch(new fromStore.DeSelectTimeTable());
     this.store.dispatch(new fromStore.TimeTablePopupVisible(false));

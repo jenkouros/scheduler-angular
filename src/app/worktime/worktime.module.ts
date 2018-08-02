@@ -12,7 +12,9 @@ import {
   DxDataGridModule,
   DxTabsModule,
   DxTextBoxModule,
-  DxScrollViewModule
+  DxScrollViewModule,
+  DxSelectBoxModule,
+  DxNumberBoxModule
 } from 'devextreme-angular';
 
 // containers
@@ -32,8 +34,6 @@ import { reducers, effects } from './store';
 import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { ContainersListComponent } from './components/containers-list/containers-list.component';
-import { ScheduleEventComponent } from './containers/schedule-detail/schedule-event/schedule-event.component';
 
 const routes: Routes = [
   {
@@ -72,6 +72,8 @@ const routes: Routes = [
     DxTabsModule,
     DxTextBoxModule,
     DxScrollViewModule,
+    DxSelectBoxModule,
+    DxNumberBoxModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

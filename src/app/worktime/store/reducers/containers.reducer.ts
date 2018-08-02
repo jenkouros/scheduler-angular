@@ -30,7 +30,6 @@ export function reducer(
     case fromContainers.LOAD_CONTAINERS_SUCCESS: {
       const schedule = action.payload;
       const empty = {};
-      console.log(schedule);
       const selected = schedule.selectedContainers.reduce(
         (entities: { [id: number]: Container }, container: Container) => {
           return {

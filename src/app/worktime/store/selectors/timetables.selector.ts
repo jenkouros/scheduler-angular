@@ -41,7 +41,6 @@ export const getTimeTableSelected = createSelector(
   getTimeTablesEntities,
   getTimeTablesSelectedId,
   (entities, id) => {
-    console.log(id, entities[id]);
     return entities[id];
   }
 );

@@ -80,7 +80,6 @@ export function reducer(
     }
     case fromSubCalendars.SELECT_SUBCALENDAR: {
       const id = action.payload;
-      console.log(id);
       return {
         ...state,
         selectedId: id

@@ -21,16 +21,15 @@ import { Calendar } from '../../../models/calendar.model';
   selector: 'app-calendar-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <app-popup height="auto" width="70%"
+  <app-popup height="auto" width="600px"
   [visible]="visible"
   (visibilityChanged)="popupVisibility($event)"
   [cancelCallback]="onCancel"
   [confirmCallback]="onSubmit"
   [title] = "header"
   >
-  <form [formGroup]="form">
-  <div class="dx-fieldset">
-    <div class="dx-fieldset-header">{{header}}</div>
+    <form [formGroup]="form">
+      <div class="dx-fieldset">
         <app-field label="Naziv urnika">
           <dx-text-box placeholder="Naziv urnika..."
             formControlName="description"
@@ -49,38 +48,8 @@ import { Calendar } from '../../../models/calendar.model';
           [isValid]="!timeEndControlInvalid"
           ></dx-date-box>
         </app-field>
-        <ng-content></ng-content>
-<!--
-        <div class="actions">
-        <button disabled
-            type="button"
-            class="btn btn-danger"
-            *ngIf="exists"
-            (click)="removeTimeTable(form)">
-            Briši urnik
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-success"
-            *ngIf="!exists"
-            [disabled]="!isformValid()"
-            (click)="createTimeTable(form)">
-            Kreiraj urnik
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-success"
-            *ngIf="exists"
-            [disabled]="!canUpdate()"
-            (click)="updateTimeTable(form)">
-            Shrani urnik
-          </button>
-
-        </div>-->
       </div>
-  </form>
+    </form>
   </app-popup>
   `,
   styleUrls: ['./calendar-form.component.css']

@@ -19,11 +19,10 @@ export class ContainersEffects {
     .pipe(
       switchMap((action: fromActions.AddToSelectedContainers) => {
         const subCalendar = action.payload;
-        console.log('subCa', subCalendar);
         return this.containersService.addToSelectedContainers(subCalendar).pipe(
           map(schedule => {
             // TODO: mogoče vrne samo success in kličem akcijo AddToSelectedContainersSuccess
-            return [new fromActions.LoadContainersSuccess(schedule)];
+            return new fromActions.LoadContainersSuccess(schedule);
           }),
           catchError(error => of(new fromActions.LoadContainersFail(error)))
         );
@@ -34,15 +33,14 @@ export class ContainersEffects {
   removeSelectedContainers$ = this.actions$
     .ofType(fromActions.REMOVE_FROM_SELECTED_CONTAINERS)
     .pipe(
-      switchMap((action: fromActions.AddToSelectedContainers) => {
+      switchMap((action: fromActions.RemoveFromSelectedContainers) => {
         const subCalendar = action.payload;
-        console.log('subCa', subCalendar);
         return this.containersService
           .removeFromSelectedContainers(subCalendar)
           .pipe(
             map(schedule => {
               // TODO: mogoče vrne samo success in kličem akcijo AddToSelectedContainersSuccess
-              return [new fromActions.LoadContainersSuccess(schedule)];
+              return new fromActions.LoadContainersSuccess(schedule);
             }),
             catchError(error => of(new fromActions.LoadContainersFail(error)))
           );

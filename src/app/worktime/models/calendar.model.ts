@@ -17,3 +17,6 @@ export interface SelectedContainers {
   id: number;
   containersIds: number[];
 }
+
+export const DAILY = 'DAILY';
+export const WEEKLY = 'WEEKLY';
