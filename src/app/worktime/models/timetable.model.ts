@@ -30,7 +30,7 @@ export class Schedule {
 
 export interface TimeTable {
   id: number;
-  idCalendar: number;
+  idSubCalendar: number;
   idTimeTableType: number;
   name: string;
   description: string;

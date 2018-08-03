@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as fromServices from '../../services';
-import * as calendarActions from '../actions/calendars.actions';
-import * as subcalendarActions from '../actions/subcalendars.actions';
+import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -18,9 +17,9 @@ export class SubCalendarsEffects {
 
   @Effect()
   subCalendarSuccess$ = this.actions$
-    .ofType(calendarActions.LOAD_CALENDARS_SUCCESS)
+    .ofType(fromActions.LOAD_CALENDARS_SUCCESS)
     .pipe(
-      map((action: calendarActions.LoadCalendarsSuccess) => action.payload),
+      map((action: fromActions.LoadCalendarsSuccess) => action.payload),
       map(calendars => {
         const subCalendars = calendars.reduce(
           (prev: SubCalendar[], curr: Calendar) => {
@@ -28,27 +27,23 @@ export class SubCalendarsEffects {
           },
           []
         );
-        return new subcalendarActions.LoadSubCalendarsSuccess(subCalendars);
+        return new fromActions.LoadSubCalendarsSuccess(subCalendars);
       }),
-      catchError(error =>
-        of(new subcalendarActions.LoadSubCalendarsFail(error))
-      )
+      catchError(error => of(new fromActions.LoadSubCalendarsFail(error)))
     );
 
   @Effect()
   createSubCalendar$ = this.actions$
-    .ofType(subcalendarActions.CREATE_SUBCALENDAR)
+    .ofType(fromActions.CREATE_SUBCALENDAR)
     .pipe(
-      map((action: subcalendarActions.CreateSubCalendar) => action.payload),
+      map((action: fromActions.CreateSubCalendar) => action.payload),
       switchMap(subcalendar => {
         return this.calendarsService.createSubCalendar(subcalendar).pipe(
           map(
             newSubCalendar =>
-              new subcalendarActions.CreateSubCalendarSuccess(newSubCalendar)
+              new fromActions.CreateSubCalendarSuccess(newSubCalendar)
           ),
-          catchError(error =>
-            of(new subcalendarActions.CreateSubCalendarFail(error))
-          )
+          catchError(error => of(new fromActions.CreateSubCalendarFail(error)))
         );
       })
     );
@@ -56,35 +51,29 @@ export class SubCalendarsEffects {
   // update
   @Effect()
   updateSubCalendar$ = this.actions$
-    .ofType(subcalendarActions.UPDATE_SUBCALENDAR)
+    .ofType(fromActions.UPDATE_SUBCALENDAR)
     .pipe(
-      map((action: subcalendarActions.UpdateSubCalendar) => action.payload),
+      map((action: fromActions.UpdateSubCalendar) => action.payload),
       switchMap(subcalendar => {
         return this.calendarsService.updateSubCalendar(subcalendar).pipe(
           map(
             newSubCalendar =>
-              new subcalendarActions.UpdateSubCalendarSuccess(newSubCalendar)
+              new fromActions.UpdateSubCalendarSuccess(newSubCalendar)
           ),
-          catchError(error =>
-            of(new subcalendarActions.UpdateSubCalendarFail(error))
-          )
+          catchError(error => of(new fromActions.UpdateSubCalendarFail(error)))
         );
       })
     );
 
   @Effect()
   removeSubCalendar$ = this.actions$
-    .ofType(subcalendarActions.REMOVE_SUBCALENDAR)
+    .ofType(fromActions.REMOVE_SUBCALENDAR)
     .pipe(
-      map((action: subcalendarActions.RemoveSubCalendar) => action.payload),
+      map((action: fromActions.RemoveSubCalendar) => action.payload),
       switchMap(subCalendar => {
         return this.calendarsService.removeSubCalendar(subCalendar).pipe(
-          map(
-            () => new subcalendarActions.RemoveSubCalendarSuccess(subCalendar)
-          ),
-          catchError(error =>
-            of(new subcalendarActions.RemoveSubCalendarFail(error))
-          )
+          map(() => new fromActions.RemoveSubCalendarSuccess(subCalendar)),
+          catchError(error => of(new fromActions.RemoveSubCalendarFail(error)))
         );
       })
     );

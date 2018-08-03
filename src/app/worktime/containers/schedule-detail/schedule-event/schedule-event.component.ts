@@ -4,11 +4,13 @@ import { Store, select } from '@ngrx/store';
 import { TimeTable } from '../../../models/timetable.model';
 
 import * as fromStore from '../../../store';
+import { SubCalendar } from '../../../models/calendar.model';
 
 @Component({
   selector: 'app-schedule-event',
   template: `
     <app-schedule-event-popup
+      [subCalendar]="(selectedSubCalendar$ | async)"
       [timetable]="(selectedTimetable$ | async)"
       [visible]="(visible$ | async)"
       (create)="onCreate($event)"
@@ -20,6 +22,7 @@ import * as fromStore from '../../../store';
 export class ScheduleEventComponent implements OnInit {
   selectedTimetable$: Observable<TimeTable>;
   visible$: Observable<boolean>;
+  selectedSubCalendar$: Observable<SubCalendar>;
 
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
@@ -30,11 +33,17 @@ export class ScheduleEventComponent implements OnInit {
     this.selectedTimetable$ = this.store.pipe(
       select(fromStore.getTimeTableSelected)
     );
+    this.selectedSubCalendar$ = this.store.pipe(
+      select(fromStore.getSubCalendarsSelected)
+    );
   }
 
-  onCreate(timetable: TimeTable) {}
-  onUpdate(timetable: TimeTable) {}
-  onRemove(timetable: TimeTable) {}
+  onCreate(timetable: TimeTable) {
+    this.store.dispatch(new fromStore.CreateTimeTable(timetable));
+  }
+  onUpdate(timetable: TimeTable) {
+    this.store.dispatch(new fromStore.UpdateTimeTable(timetable));
+  }
 
   onCancel(timetable: TimeTable) {
     this.store.dispatch(new fromStore.DeSelectTimeTable());

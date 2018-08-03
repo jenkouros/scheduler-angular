@@ -62,6 +62,27 @@ export function reducer(
         loaded: false
       };
     }
+    case fromTimeTables.UPDATE_TIMETABLE_SUCCESS:
+    case fromTimeTables.CREATE_TIMETABLE_SUCCESS: {
+      const timetable = action.payload;
+      const entities = {
+        ...state.entities,
+        [timetable.id]: timetable
+      };
+      return {
+        ...state,
+        entities
+      };
+    }
+    case fromTimeTables.REMOVE_TIMETABLE: {
+      const timetable = action.payload;
+      const { [timetable.id]: removed, ...entities } = state.entities;
+
+      return {
+        ...state,
+        entities
+      };
+    }
     case fromTimeTables.TIMETABLE_POPUP_VISIBLE: {
       return {
         ...state,

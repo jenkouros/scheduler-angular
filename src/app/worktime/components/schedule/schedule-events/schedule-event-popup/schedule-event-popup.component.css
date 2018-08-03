@@ -1,7 +1,4 @@
-.row {
-  display: flex;
-}
-
-.column {
-  flex: 50%;
+.left {
+  float: left;
+  padding-left: 5px;
 }

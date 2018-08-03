@@ -34,6 +34,7 @@
     "@ngrx/router-store": "^6.0.1",
     "@ngrx/store": "^6.0.1",
     "@ngrx/store-devtools": "^6.0.1",
+    "@types/rrule": "^2.2.9",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.6",
     "devextreme": "^18.1.4-pre-18155",
@@ -41,6 +42,7 @@
     "devextreme-aspnet-data-nojquery": "^1.4.6",
     "moment": "^2.22.1",
     "npm": "^6.0.1",
+    "rrule": "^2.2.9",
     "rxjs": "^6.2.0",
     "zone.js": "^0.8.26"
   },

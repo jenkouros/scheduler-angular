@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { TimeTable } from '../../../models/timetable.model';
+import { SubCalendar } from '../../../models/calendar.model';
 
 @Component({
   selector: 'app-schedule-events',
@@ -16,8 +17,13 @@ import { TimeTable } from '../../../models/timetable.model';
 })
 export class ScheduleEventsComponent implements OnInit {
   @Input() timeTables: TimeTable[];
+  @Input() subCalendar: SubCalendar;
+
   @Output() add = new EventEmitter<boolean>();
   @Output() select = new EventEmitter<number>();
+  @Output() create = new EventEmitter<TimeTable>();
+  @Output() update = new EventEmitter<TimeTable>();
+  @Output() remove = new EventEmitter<TimeTable>();
 
   ngOnInit() {}
 
@@ -46,5 +52,21 @@ export class ScheduleEventsComponent implements OnInit {
         }
       }
     );
+  }
+
+  onCreate(timetable: TimeTable) {
+    this.create.emit(timetable);
+  }
+
+  onUpdate(timetable: TimeTable) {
+    this.update.emit(timetable);
+  }
+
+  onRemove(timetable: TimeTable) {
+    // TODO: vskladiti s podobo
+    const remove = window.confirm('Res želite brisati');
+    if (remove) {
+      this.remove.emit(timetable);
+    }
   }
 }

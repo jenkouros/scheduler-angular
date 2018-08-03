@@ -28,4 +28,53 @@ export class TimeTablesEffects {
       );
     })
   );
+
+  @Effect()
+  createTimeTable$ = this.actions$.ofType(fromActions.CREATE_TIMETABLE).pipe(
+    map((action: fromActions.CreateTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.createTimeTable(timetable).pipe(
+        map(
+          newTimeTable => new fromActions.CreateTimeTableSuccess(newTimeTable)
+        ),
+        catchError(error => of(new fromActions.CreateTimeTableFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  updateTimeTable$ = this.actions$.ofType(fromActions.UPDATE_TIMETABLE).pipe(
+    map((action: fromActions.UpdateTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.updateTimeTable(timetable).pipe(
+        map(
+          newTimeTable => new fromActions.UpdateTimeTableSuccess(newTimeTable)
+        ),
+        catchError(error => of(new fromActions.UpdateTimeTableFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  removeTimeTable$ = this.actions$.ofType(fromActions.REMOVE_TIMETABLE).pipe(
+    map((action: fromActions.RemoveTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.removeTimeTable(timetable).pipe(
+        map(() => new fromActions.RemoveTimeTableSuccess(timetable)),
+        catchError(error => of(new fromActions.RemoveTimeTableFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  timetableSuccess$ = this.actions$
+    .ofType(
+      fromActions.UPDATE_TIMETABLE_SUCCESS,
+      fromActions.CREATE_TIMETABLE_SUCCESS
+    )
+    .pipe(
+      map(() => {
+        return new fromActions.TimeTablePopupVisible(false);
+      })
+    );
 }

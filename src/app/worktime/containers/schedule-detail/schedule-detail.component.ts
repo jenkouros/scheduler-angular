@@ -25,6 +25,7 @@ import { Container } from '../../../scheduler/models/container.dto';
       <app-schedule-events
         [timeTables]="(timetables$ | async)"
         (add)=onAdd($event)
+        (remove)="onRemove($event)"
         (select)=onSelected($event)
       ></app-schedule-events>
     </div>
@@ -64,6 +65,11 @@ export class ScheduleDetailComponent implements OnInit {
   onAdd(openPopup: boolean) {
     console.log(openPopup);
     this.store.dispatch(new fromStore.TimeTablePopupVisible(openPopup));
+  }
+
+  onRemove(timetable: TimeTable) {
+    console.log('remove');
+    this.store.dispatch(new fromStore.RemoveTimeTable(timetable));
   }
 
   onSelected(id: number) {

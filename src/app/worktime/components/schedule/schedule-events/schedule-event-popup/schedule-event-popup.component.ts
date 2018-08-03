@@ -13,13 +13,18 @@ import {
   FormControl
 } from '../../../../../../../node_modules/@angular/forms';
 
-import { WEEKLY, DAILY } from '../../../../models/calendar.model';
+import { RRule } from 'rrule';
+import { RecurrenceRule } from '../../../../helpers/recurrenceRule.helper';
+import { SubCalendar } from '../../../../models/calendar.model';
+import { first } from '../../../../../../../node_modules/rxjs/operators';
+
 @Component({
   selector: 'app-schedule-event-popup',
   templateUrl: './schedule-event-popup.component.html',
   styleUrls: ['./schedule-event-popup.component.css']
 })
 export class ScheduleEventPopupComponent implements OnChanges {
+  @Input() subCalendar: SubCalendar;
   @Input() timetable: TimeTable;
   @Input() visible: boolean;
   @Output() create = new EventEmitter<TimeTable>();
@@ -29,47 +34,36 @@ export class ScheduleEventPopupComponent implements OnChanges {
   exists = false;
   header: string;
   repetition = 1;
-  selectedDays: string[] = [];
+  selectedDays: number[] = [];
   repetitionVisible = false;
+  repeatingVisible = true;
+
   form = this.fb.group({
-    name: ['zzz', Validators.required],
+    name: ['', Validators.required],
     timeStart: ['', Validators.required],
     timeEnd: ['', Validators.required],
-    repetition: ['1'],
-    frequency: [WEEKLY]
+    timetableType: ['', Validators.required],
+    repetitions: [{ value: '', disabled: true }],
+    repeating: [''],
+    frequency: ['']
   });
 
-  frequencyItems: { key: string; name: string }[] = [
-    { key: DAILY, name: 'dan' },
-    { key: WEEKLY, name: 'teden' }
-    // { key: 'MONTH', name: 'mesec' },
-    // { key: 'YEAR', name: 'leto' }
-  ];
-  dayNames: string[] = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'];
-
-  /*
-  byDay: StringKeyValue[] = [
-    { key: '1', name: 'MO' },
-    { key: '2', name: 'TU' },
-    { key: '3', name: 'WE' },
-    { key: '4', name: 'TH' },
-    { key: '5', name: 'FR' },
-    { key: '6', name: 'SA' },
-    { key: '0', name: 'SU' }
+  // code lists
+  timetableTypes: { key: number; name: string }[] = [
+    { key: 1, name: 'Delovni' },
+    { key: 2, name: 'Nedelovni' }
   ];
 
-  byDayEntities: { [key: string]: StringKeyValue } = this.byDay.reduce(
-    (entities: { [key: string]: StringKeyValue }, day: StringKeyValue) => {
-      return {
-        ...entities,
-        [day.key]: day
-      };
-    },
-    {}
-  );
+  repeatings: { key: boolean; name: string }[] = [
+    { key: false, name: 'Se ne ponavlja' },
+    { key: true, name: 'Se ponavlja' }
+  ];
+  frequencyItems: { key: number; name: string }[] = [
+    { key: 1, name: 'Dan' },
+    { key: 2, name: 'Teden' }
+  ];
+  days: string[] = ['P', 'T', 'S', 'Č', 'P', 'S', 'N'];
 
-  dayEntitiy: { [key: number]: StringKeyValue };
-*/
   constructor(private fb: FormBuilder) {
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -78,27 +72,90 @@ export class ScheduleEventPopupComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.exists = false;
     this.form.reset();
+
     if (this.timetable && this.timetable.id) {
       this.exists = true;
-      this.form.patchValue({ frequency: WEEKLY });
+
       this.form.patchValue(this.timetable);
-      this.selectedDays = ['MO'];
+      this.form.patchValue({ repetitions: 1 });
+      this.form.patchValue({
+        timetableType: this.timetableTypes[this.timetable.idTimeTableType - 1]
+          .key
+      });
+      // calendar rules
+      const rules = RecurrenceRule.Parse(this.timetable.recurrenceRule);
+      this.patchRules(rules);
     } else {
-      this.form.patchValue({ repetition: 1 });
-      this.form.patchValue({ frequency: WEEKLY });
+      this.selectedDays = [];
+      this.form.patchValue({ timetableType: this.timetableTypes[0].key });
+      this.form.patchValue({ repeating: false });
+      this.form.patchValue({ repetitions: 1 });
+      this.form.patchValue({ frequency: this.frequencyItems[0].key });
     }
     this.header = this.exists ? 'Urejanje dogodka' : 'Kreiranje dogodka';
   }
 
   onSubmit() {
     const rrule = this.getRecurrentString();
-    console.log(rrule);
+    const { value, valid, touched } = this.form;
+    console.log(this.exists);
+    if (!this.exists) {
+      console.log('create');
+      // create
+      if (valid) {
+        const event = {
+          id: 0,
+          idSubCalendar: this.subCalendar.id,
+          name: value.name,
+          description: '',
+          timeStart: value.timeStart,
+          timeEnd: value.timeEnd,
+          idTimeTableType: value.timetableType,
+          recurrenceRule: rrule
+        };
+        this.create.emit(event);
+      }
+    } else {
+      // update
+      if (touched && valid) {
+        const event = {
+          ...this.timetable,
+          name: value.name,
+          timeStart: value.timeStart,
+          timeEnd: value.timeEnd,
+          idTimeTableType: value.timetableType,
+          recurrenceRule: rrule
+        };
+        console.log('event', event);
+        this.update.emit(event);
+      }
+    }
   }
 
+  patchRules(rules: any) {
+    this.form.patchValue({ repeating: false });
+    if (rules) {
+      this.form.patchValue({ repeating: true });
+      if (rules.freq) {
+        this.form.patchValue({
+          frequency: this.frequencyItems[rules.freq - 1].key
+        });
+      }
+      if (rules.byweekday) {
+        this.selectedDays = rules.byweekday.map(d => d.weekday);
+        this.repetitionVisible = true;
+      }
+    }
+  }
   getRecurrentString() {
-    const freq = ''; // this.frequencyControl.value;
-    console.log(this.repetitionControl);
-    return `FREQ=${freq}`;
+    const freq = this.frequencyControl.value;
+    const byweekday = this.selectedDays.sort((a, b) => a - b);
+    const rule = new RRule({
+      freq,
+      byweekday
+    });
+
+    return rule.toString();
   }
 
   onCancel() {
@@ -110,9 +167,13 @@ export class ScheduleEventPopupComponent implements OnChanges {
   }
 
   frequencyChanged(event: any) {
-    this.repetitionVisible = event.value === WEEKLY;
+    this.repetitionVisible = event.value === this.frequencyItems[1].key;
   }
 
+  repeatingChanged(event: any) {
+    this.repeatingVisible = event.value;
+  }
+  /*
   repetitionChanged(event: any) {
     const rep = event.value;
     let name = 'teden';
@@ -124,10 +185,9 @@ export class ScheduleEventPopupComponent implements OnChanges {
     this.frequencyControl.patchValue({ frequency: WEEKLY });
     this.form.patchValue({ frequency: WEEKLY });
   }
-
-  selectDay(key: string) {
-    const isSelected = this.isSelected(key);
-    if (isSelected) {
+*/
+  selectDay(key: number) {
+    if (this.isSelected(key)) {
       // const { [key]: removed, ...days } = this.byDayEntities;
       const index = this.selectedDays.indexOf(key);
       if (index !== -1) {
@@ -136,25 +196,18 @@ export class ScheduleEventPopupComponent implements OnChanges {
     } else {
       this.selectedDays = [...this.selectedDays, key];
     }
-    /*
-    const day = this.byDayEntities[key];
-    this.dayEntitiy = {
-      ...this.dayEntitiy,
-      [day.key]: day
-    };
-    */
-    console.log(this.selectedDays);
+
+    // mark as touched
+    this.form.markAsTouched();
   }
 
-  isSelected(key: string): boolean {
-    if (!this.selectedDays) {
-      return false;
-    }
-    const isSelected = this.selectedDays.find(k => k === key);
-    return !!isSelected;
+  isSelected(key: number): boolean {
+    const isSelected = this.selectedDays.find((k: number) => k === key);
+
+    return isSelected !== undefined;
   }
 
-  get descriptionControl() {
+  get nameControl() {
     return this.form.get('name') as FormControl;
   }
   get timeStartControl() {
@@ -170,8 +223,8 @@ export class ScheduleEventPopupComponent implements OnChanges {
     return this.form.get('frequency') as FormControl;
   }
 
-  get descriptionControlInvalid() {
-    return this.descriptionControl.invalid; // && this.descriptionControl.touched;
+  get nameControlInvalid() {
+    return this.nameControl.invalid; // && this.descriptionControl.touched;
   }
   get timeStartControlInvalid() {
     return this.timeStartControl.hasError('required'); // && this.timeStartControl.touched
@@ -179,9 +232,4 @@ export class ScheduleEventPopupComponent implements OnChanges {
   get timeEndControlInvalid() {
     return this.timeEndControl.hasError('required'); // && this.timeEndControl.touched
   }
-}
-
-export interface StringKeyValue {
-  key: string;
-  name: string;
 }

@@ -9,26 +9,27 @@
   <dxi-column caption="Veljaven od" dataField="timeStart" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
   <dxi-column caption="Veljaven do" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
 
-
+  <dxi-column alignment="center" dataField="" cellTemplate="removeCelltemplate" [width]="100"></dxi-column>
   <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplate" [width]="100"></dxi-column>
+
   <!--<dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>-->
 
   <div *dxTemplate="let cell of 'dateCellTemplate'">
     {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
   </div>
+
   <div *dxTemplate="let cell of 'editCelltemplate'">
     <a class="span-link" (click)="onSelect(cell.data)">Uredi</a>
   </div>
 
-  <!-- 
-  <div *dxTemplate="let cell of 'selectCellTemplate'">
-    <a class="span-link" (click)="onSelect(cell.data)">Preglej</a>
+  <div *dxTemplate="let cell of 'removeCelltemplate'">
+    <a class="span-link" (click)="onRemove(cell.data)">Briši</a>
   </div>
--->
+
   <div *dxTemplate="let data of 'header'">
     <div class="informer">
       <h5 class="name">Pregled dogodkov</h5>
     </div>
   </div>
 </dx-data-grid>
-<app-schedule-event></app-schedule-event>
+<app-schedule-event (create)="onCreate($event)" (update)="onUpdate($event)"></app-schedule-event>

@@ -69,7 +69,7 @@ export function reducer(
         entities
       };
     }
-    case fromSubCalendars.REMOVE_SUBCALENDAR: {
+    case fromSubCalendars.REMOVE_SUBCALENDAR_SUCCESS: {
       const subCalendar = action.payload;
       const { [subCalendar.id]: removed, ...entities } = state.entities;
 
