@@ -34,24 +34,24 @@ a.nav-link.active {
   list-style: none;
 }
 
-.schedule-list li {
-  position: relative;
-  font-size: 14px;
-  border-bottom: 1px solid #ededed;
-}
-
 .schedule-list li:last-child {
   border-bottom: none;
 }
 
 .schedule-list li .destroy:hover {
-  color: #af5b5e;
+  color: black;
 }
 
+.schedule-list li {
+  position: relative;
+  font-size: 14px;
+  border-bottom: 1px solid #ededed;
+}
+/*
 .schedule-list li .destroy:after {
-  content: "×";
+  content: '×';
 }
-
+*/
 .schedule-list li:hover .destroy {
   display: block;
 }
@@ -59,16 +59,13 @@ a.nav-link.active {
 .schedule-list li .destroy {
   display: none;
   position: absolute;
-  top: 0;
   right: 10px;
   bottom: 0;
-  width: 30px;
-  height: 30px;
   margin: auto 0;
-  font-size: 30px;
-  color: #cc9a9a;
-  margin-bottom: 11px;
+  vertical-align: middle;
+  color: #858484;
   transition: color 0.2s ease-out;
+  cursor: pointer;
 }
 
 button {

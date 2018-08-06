@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import * as fromServices from '../../services';
 import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+
+import { NotifyService } from '../../../shared/services/notify.service';
 
 @Injectable()
 export class CalendarsEffects {
   constructor(
     private actions$: Actions,
-    private calendarsService: fromServices.CalendarsService
+    private calendarsService: fromServices.CalendarsService,
+    private notify: NotifyService
   ) {}
 
   @Effect()
@@ -65,6 +68,8 @@ export class CalendarsEffects {
       fromActions.CREATE_CALENDAR_SUCCESS
     )
     .pipe(
+      // HttpInterceptor takes care of it
+      // tap(() => this.notify.notifySuccess('Koledar je bil uspešno ažuriran.')),
       map(() => {
         return new fromActions.CalendarPopupVisible(false);
       })
@@ -75,8 +80,9 @@ export class CalendarsEffects {
     map((action: fromActions.RemoveCalendar) => action.payload),
     switchMap(calendar => {
       return this.calendarsService.removeCalendar(calendar).pipe(
-        map(newCalendar => new fromActions.UpdateCalendarSuccess(newCalendar)),
-        catchError(error => of(new fromActions.UpdateCalendarFail(error)))
+        // tap(() => this.notify.notifySuccess('Koledar je bil uspešno brisan.')),
+        map(newCalendar => new fromActions.RemoveCalendarSuccess(newCalendar)),
+        catchError(error => of(new fromActions.RemoveCalendarFail(error)))
       );
     })
   );
@@ -85,6 +91,7 @@ export class CalendarsEffects {
   calendarSubCalendarSuccess$ = this.actions$
     .ofType(fromActions.CREATE_SUBCALENDAR_SUCCESS)
     .pipe(
+      // tap(() => this.notify.notifySuccess('Urnik je bil uspešno kreiran.')),
       map((action: fromActions.CreateSubCalendarSuccess) => {
         return new fromActions.UpdateCalendarSubCalendar(action.payload);
       })
@@ -94,6 +101,7 @@ export class CalendarsEffects {
   calendarSubCalendarRemoveSuccess$ = this.actions$
     .ofType(fromActions.REMOVE_SUBCALENDAR_SUCCESS)
     .pipe(
+      // tap(() => this.notify.notifySuccess('Urnik je bil uspešno brisan.')),
       map((action: fromActions.RemoveSubCalendarSuccess) => {
         return new fromActions.RemoveCalendarSubCalendar(action.payload);
       })

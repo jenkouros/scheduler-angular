@@ -34,6 +34,7 @@ import { reducers, effects } from './store';
 import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { RRulePipe } from './pipes/rrule.pipe';
 
 const routes: Routes = [
   {
@@ -59,7 +60,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [...fromContainers.containers, ...fromComponents.components],
+  declarations: [
+    ...fromContainers.containers,
+    ...fromComponents.components,
+    RRulePipe
+  ],
   imports: [
     CoreModule,
     CommonModule,

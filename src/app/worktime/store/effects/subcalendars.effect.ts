@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import * as fromServices from '../../services';
 import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as fromRoot from '../../../store';
 import { Calendar, SubCalendar } from '../../models/calendar.model';
 
+import { NotifyService } from '../../../shared/services/notify.service';
+
 @Injectable()
 export class SubCalendarsEffects {
   constructor(
     private actions$: Actions,
-    private calendarsService: fromServices.CalendarsService
+    private calendarsService: fromServices.CalendarsService,
+    private notify: NotifyService
   ) {}
 
   @Effect()

@@ -4,6 +4,8 @@
     <a class="nav-link" [routerLink]="['./schedule', item.id]" routerLinkActive='active'>
       <span class="badge badge-secondary">{{i+1}}</span> {{item.name}}
     </a>
-    <button class="destroy" (click)="removeSubCalendar(item)"></button>
+    <button class="destroy" (click)="removeSubCalendar(item)">
+      <fa-icon [icon]="iconDelete"></fa-icon>
+    </button>
   </li>
 </ul>

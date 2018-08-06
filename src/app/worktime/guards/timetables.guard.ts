@@ -24,7 +24,9 @@ export class TimeTablesGuard implements CanActivate {
   }
 
   hasSelectedSubCalendar(id: number): Observable<boolean> {
-    console.log(id);
+    if (id === 0) {
+      return of(false);
+    }
     return this.store.select(fromStore.getSubCalendarsEntities).pipe(
       map((entities: { [key: number]: SubCalendar }) => !!entities[id]),
       take(1)

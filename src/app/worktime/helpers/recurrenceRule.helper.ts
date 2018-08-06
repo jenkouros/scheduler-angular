@@ -83,3 +83,54 @@ export class RecurrenceRule {
     return options;
   }
 }
+
+export function getTextById(id: string) {
+  // Return pt. string, default to english.
+  console.log(id, slovenianStrings[id]);
+  return slovenianStrings[id] || id;
+}
+
+export const slovenian = {
+  dayNames: [
+    'nedeljo',
+    'ponedeljek',
+    'torek',
+    'sreda',
+    'četrtek',
+    'petek',
+    'soboto'
+  ],
+  monthNames: [
+    'januar',
+    'februar'
+    // …
+  ]
+  // `tokens` are only needed for `RRule.fromText`
+};
+
+// Strings
+const slovenianStrings = {
+  every: 'vsak',
+  day: 'dan',
+  days: 'dnevi',
+  week: 'teden',
+  weeks: 'tedni',
+  on: 'v',
+  weekday: 'dan v tednu',
+  at: 'ob',
+  first: 'prvi',
+  second: 'drugi',
+  third: 'tretji',
+  last: 'zadnji',
+  for: 'za',
+  'time(s)': 'čas',
+  until: 'dokler',
+  monday: 'ponedeljek',
+  tuesday: 'torek',
+  wednesday: 'sreda',
+  thursday: 'èetrtek',
+  friday: 'petek',
+  saturday: 'sobota',
+  sunday: 'nedelja'
+  // …
+};

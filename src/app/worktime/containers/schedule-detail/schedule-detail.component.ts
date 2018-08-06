@@ -11,7 +11,7 @@ import { Container } from '../../../scheduler/models/container.dto';
 @Component({
   selector: 'app-schedule-detail',
   template: `
-  <div>
+  <div *ngIf="isSubCalendarSelected">
     <div>
       <app-schedule-containers
       [selectedSubCalendar]="(selectedSubCalendar$ |async)"
@@ -29,7 +29,8 @@ import { Container } from '../../../scheduler/models/container.dto';
         (select)=onSelected($event)
       ></app-schedule-events>
     </div>
-</div>
+  </div>
+  <div *ngIf="!isSubCalendarSelected">TODO: komponenta za obvestilo, da je treba izbrati urnik</div>
   `
 })
 export class ScheduleDetailComponent implements OnInit {
@@ -37,6 +38,7 @@ export class ScheduleDetailComponent implements OnInit {
   avalableContainers$: Observable<Container[]>;
   selectedContainers$: Observable<Container[]>;
   selectedSubCalendar$: Observable<SubCalendar>;
+  isSubCalendarSelected = false;
 
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
@@ -51,6 +53,10 @@ export class ScheduleDetailComponent implements OnInit {
     this.avalableContainers$ = this.store.pipe(
       select(fromStore.getAvalableContainers)
     );
+
+    this.selectedSubCalendar$.subscribe(item => {
+      this.isSubCalendarSelected = item ? item.id > 0 : false;
+    });
   }
 
   addToSelected(selected: SelectedContainers) {
