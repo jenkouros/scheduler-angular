@@ -2,53 +2,84 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { Calendar } from '../../models/calendar.model';
+import { SubCalendar, SelectedContainers } from '../../models/calendar.model';
 import { TimeTable, TimeTableType } from '../../models/timetable.model';
 
 import * as fromStore from '../../store';
+import { Container } from '../../../scheduler/models/container.dto';
 
 @Component({
   selector: 'app-schedule-detail',
   template: `
-    <app-schedule-tab
-    [timeTablesTypes]="timeTablesTypes"
-    [timeTables]="(timetables$ | async)">
-  </app-schedule-tab>
+  <div *ngIf="isSubCalendarSelected">
+    <div>
+      <app-schedule-containers
+      [selectedSubCalendar]="(selectedSubCalendar$ |async)"
+      [avalableContainers]="(avalableContainers$ | async)"
+      [selectedContainers]="(selectedContainers$ | async)"
+      (add)="addToSelected($event)"
+      (remove)="removeFromSelected($event)"
+      ></app-schedule-containers>
+    </div>
+    <div>
+      <app-schedule-events
+        [timeTables]="(timetables$ | async)"
+        (add)=onAdd($event)
+        (remove)="onRemove($event)"
+        (select)=onSelected($event)
+      ></app-schedule-events>
+    </div>
+  </div>
+  <div *ngIf="!isSubCalendarSelected">TODO: komponenta za obvestilo, da je treba izbrati urnik</div>
   `
 })
 export class ScheduleDetailComponent implements OnInit {
-  calendar: Calendar;
   timetables$: Observable<TimeTable[]>;
-  timeTablesTypes: TimeTableType[] = [
-    {
-      id: 0,
-      name: 'Urnik',
-      template: 'customTemplate'
-    },
-    {
-      id: 1,
-      name: 'Osnovni urnik'
-    },
-    {
-      id: 2,
-      name: 'Dodatni delovni čas'
-    },
-    {
-      id: 3,
-      name: 'Nedelovni čas'
-    } /*, {
-      id: 5,
-      name: 'Urnik izjem',
-      template: 'customTemplate'
-    }*/
-  ];
-  constructor(
-    private store: Store<fromStore.WorkTimeState>,
-    private router: Router
-  ) {}
+  avalableContainers$: Observable<Container[]>;
+  selectedContainers$: Observable<Container[]>;
+  selectedSubCalendar$: Observable<SubCalendar>;
+  isSubCalendarSelected = false;
+
+  constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   ngOnInit() {
-    // this.store.dispatch(new fromStore.LoadTimeTables(this.calendar.id));
+    this.selectedSubCalendar$ = this.store.pipe(
+      select(fromStore.getSubCalendarsSelected)
+    );
     this.timetables$ = this.store.pipe(select(fromStore.getTimeTables));
+    this.selectedContainers$ = this.store.pipe(
+      select(fromStore.getSelectedContainers)
+    );
+    this.avalableContainers$ = this.store.pipe(
+      select(fromStore.getAvalableContainers)
+    );
+
+    this.selectedSubCalendar$.subscribe(item => {
+      this.isSubCalendarSelected = item ? item.id > 0 : false;
+    });
+  }
+
+  addToSelected(selected: SelectedContainers) {
+    this.store.dispatch(new fromStore.AddToSelectedContainers(selected));
+  }
+
+  removeFromSelected(selected: SelectedContainers) {
+    console.log(selected);
+    this.store.dispatch(new fromStore.RemoveFromSelectedContainers(selected));
+  }
+
+  onAdd(openPopup: boolean) {
+    console.log(openPopup);
+    this.store.dispatch(new fromStore.TimeTablePopupVisible(openPopup));
+  }
+
+  onRemove(timetable: TimeTable) {
+    console.log('remove');
+    this.store.dispatch(new fromStore.RemoveTimeTable(timetable));
+  }
+
+  onSelected(id: number) {
+    this.store.dispatch(new fromStore.SelectTimeTable(id));
+    this.store.dispatch(new fromStore.TimeTablePopupVisible(true));
   }
 }

@@ -1,9 +1,10 @@
 import * as fromCalendars from '../actions/calendars.actions';
-import { Calendar } from '../../models/calendar.model';
+import { Calendar, SubCalendar } from '../../models/calendar.model';
 
 export interface CalendarsState {
   entities: { [id: number]: Calendar };
   selectedId: number;
+  popupVisible: boolean;
   loading: boolean;
   loaded: boolean;
 }
@@ -11,6 +12,7 @@ export interface CalendarsState {
 export const initialState: CalendarsState = {
   entities: {},
   selectedId: 0,
+  popupVisible: false,
   loading: false,
   loaded: false
 };
@@ -64,13 +66,62 @@ export function reducer(
         selectedId: id
       };
     }
+
+    case fromCalendars.DESELECT_CALENDAR: {
+      return {
+        ...state,
+        selectedId: 0
+      };
+    }
+
     case fromCalendars.UPDATE_CALENDAR_SUCCESS:
     case fromCalendars.CREATE_CALENDAR_SUCCESS: {
       const calendar = action.payload;
+      console.log(calendar);
       const entities = {
         ...state.entities,
         [calendar.id]: calendar
       };
+      return {
+        ...state,
+        entities
+      };
+    }
+    case fromCalendars.CALENDAR_POPUP_VISIBLE: {
+      const popupVisible = action.payload;
+      return {
+        ...state,
+        popupVisible
+      };
+    }
+    case fromCalendars.UPDATE_CALENDAR_SUBCALENDAR: {
+      const item = action.payload;
+      const subcalendars = [
+        ...state.entities[item.idCalendar].subCalendars,
+        item
+      ];
+      console.log(subcalendars);
+      const calendar = {
+        ...state.entities[item.idCalendar],
+        subCalendars: subcalendars
+      };
+      const entities = {
+        ...state.entities,
+        [calendar.id]: calendar
+      };
+      return {
+        ...state,
+        entities
+      };
+    }
+    case fromCalendars.REMOVE_CALENDAR_SUBCALENDAR: {
+      const entities = { ...state.entities };
+      entities[action.payload.idCalendar].subCalendars = [
+        ...entities[action.payload.idCalendar].subCalendars.filter(
+          subcalendar => subcalendar.id !== action.payload.id
+        )
+      ];
+
       return {
         ...state,
         entities
@@ -84,5 +135,7 @@ export function reducer(
 export const getCalendarsEntities = (state: CalendarsState) => state.entities;
 export const getCalendarsLoading = (state: CalendarsState) => state.loading;
 export const getCalendarsLoaded = (state: CalendarsState) => state.loaded;
+export const getCalendarPopupVisibility = (state: CalendarsState) =>
+  state.popupVisible;
 export const getCalendarsSelectedId = (state: CalendarsState) =>
   state.selectedId;

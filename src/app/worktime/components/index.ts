@@ -1,25 +1,28 @@
-import { ScheduleTabComponent } from './schedule-tab/schedule-tab.component';
-import { ScheduleToolbarComponent } from './schedule-toolbar/schedule-toolbar.component';
-import { CalendarComponent } from './calendar/calendar.component';
+import {
+  CalendarItemComponent,
+  CalendarFormComponent,
+  SubCalendarItemComponent
+} from './calendar';
 import { WorktimeComponent } from './worktime.component';
-import { CalendarFormComponent } from './calendar-form/calendar-form.component';
-import { TimetableEventComponent } from './timetable-event/timetable-event.component';
-import { CalendarItemsComponent } from './calendar-items/calendar-items.component';
+import { ScheduleContainersComponent } from './schedule/schedule-containers/schedule-containers.component';
+import { ScheduleEventsComponent } from './schedule/schedule-events/schedule-events.component';
+import { ScheduleEventPopupComponent } from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
+import { ContainersListComponent } from './containers-list/containers-list.component';
 
 export const components: any[] = [
-  ScheduleTabComponent,
-  ScheduleToolbarComponent,
-  CalendarComponent,
+  CalendarItemComponent,
   WorktimeComponent,
   CalendarFormComponent,
-  TimetableEventComponent,
-  CalendarItemsComponent
+  SubCalendarItemComponent,
+  ScheduleContainersComponent,
+  ScheduleEventsComponent,
+  ScheduleEventPopupComponent,
+  ContainersListComponent
 ];
 
-export * from './schedule-tab/schedule-tab.component';
-export * from './schedule-toolbar/schedule-toolbar.component';
-export * from './calendar/calendar.component';
+export * from './calendar';
 export * from './worktime.component';
-export * from './calendar-form/calendar-form.component';
-export * from './timetable-event/timetable-event.component';
-export * from './calendar-items/calendar-items.component';
+export * from './schedule/schedule-containers/schedule-containers.component';
+export * from './schedule/schedule-events/schedule-events.component';
+export * from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
+export * from './containers-list/containers-list.component';

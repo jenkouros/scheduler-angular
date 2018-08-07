@@ -1,0 +1,61 @@
+<app-popup height="auto" width="50%" [visible]="visible" (visibilityChanged)="popupVisibility($event)" [cancelCallback]="onCancel"
+  [confirmCallback]="onSubmit" [title]="header">
+  <!--  <p>{{timetable |json}}</p>-->
+  <form [formGroup]="form">
+    <div class="dx-fieldset">
+      <div class="dx-field">
+        <div class="dx-field-label">Naziv</div>
+        <div class="dx-field-value">
+          <dx-text-box placeholder="Naziv dogodka..." formControlName="name" [(isValid)]="!nameControlInvalid">
+          </dx-text-box>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">Obdobje</div>
+        <div class="dx-field-value">
+          <div style="float:left">
+            <dx-date-box type="datetime" formControlName="timeStart" [isValid]="!timeStartControlInvalid"></dx-date-box>
+          </div>
+          <div style="float:left">&nbsp;</div>
+          <div style="float:left">
+            <dx-date-box style="float:left" type="datetime" formControlName="timeEnd" [isValid]="!timeEndControlInvalid"></dx-date-box>
+          </div>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">Vrsta delovnega časa</div>
+        <div class="dx-field-value">
+          <dx-select-box formControlName="timetableType" [items]="timetableTypes" displayExpr="name" valueExpr="key"></dx-select-box>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">Ponovitve</div>
+        <div class="dx-field-value">
+          <dx-select-box formControlName="repeating" [items]="repeatings" displayExpr="name" valueExpr="key" (onValueChanged)="repeatingChanged($event)"></dx-select-box>
+        </div>
+      </div>
+      <div *ngIf="repeatingVisible">
+        <div class="dx-field">
+          <div class="dx-field-label">Ponovi na</div>
+          <div class="dx-field-value">
+            <div style="float:left">
+              <dx-number-box formControlName="repetitions" [showSpinButtons]="true"></dx-number-box>
+            </div>
+            <div style="float:left">&nbsp;</div>
+            <div style="float:left">
+              <dx-select-box formControlName="frequency" [items]="frequencyItems" displayExpr="name" valueExpr="key" (onValueChanged)="frequencyChanged($event)"></dx-select-box>
+            </div>
+          </div>
+        </div>
+        <div class="dx-field" *ngIf="repetitionVisible">
+          <div class="dx-field-label">Ponovi na določen dan</div>
+          <div class="dx-field-value">
+            <div class="left" *ngFor="let day of days; let i=index">
+              <button type="button" class="btn" (click)="selectDay(i)" [ngClass]="isSelected(i) ? 'btn-primary': 'btn-light'">{{day}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-popup>

@@ -3,7 +3,7 @@ import * as fromServices from '../../services';
 
 import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -16,36 +16,65 @@ export class TimeTablesEffects {
   @Effect()
   loadTimeTables$ = this.actions$.ofType(fromActions.LOAD_TIMETABLES).pipe(
     switchMap((action: fromActions.LoadTimeTables) => {
-      const calendarId = action.payload;
-      // console.log('calendarId', calendarId);
-      return this.timetablesService.getTimeTables(calendarId).pipe(
-        map(timetables => new fromActions.LoadTimeTablesSuccess(timetables)),
-        catchError(error => of(new fromActions.LoadTimeTablesFail(error)))
-      );
-    })
-  );
-}
-
-/*
-@Effect()
-  loadTimeTables$ = this.actions$.ofType(fromActions.SELECT_CALENDAR).pipe(
-    switchMap((action: fromActions.SelectCalendar) => {
-      const calendarId = action.payload;
-      console.log('calendarId', calendarId);
-      return this.timetablesService.getTimeTables(calendarId).pipe(
-        map(timetables => new fromActions.LoadTimeTablesSuccess(timetables)),
+      const id = action.payload;
+      return this.timetablesService.getTimeTables(id).pipe(
+        mergeMap(schedule => {
+          return [
+            new fromActions.LoadTimeTablesSuccess(schedule.timeTables),
+            new fromActions.LoadContainersSuccess(schedule)
+          ];
+        }),
         catchError(error => of(new fromActions.LoadTimeTablesFail(error)))
       );
     })
   );
 
   @Effect()
-  loadCalendars$ = this.actions$.ofType(calendarActions.LOAD_CALENDARS).pipe(
-    switchMap(() => {
-      return this.calendarsService.getCalendars().pipe(
-        map(calendars => new calendarActions.LoadCalendarsSuccess(calendars)),
-        catchError(error => of(new calendarActions.LoadCalendarsFail(error)))
+  createTimeTable$ = this.actions$.ofType(fromActions.CREATE_TIMETABLE).pipe(
+    map((action: fromActions.CreateTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.createTimeTable(timetable).pipe(
+        map(
+          newTimeTable => new fromActions.CreateTimeTableSuccess(newTimeTable)
+        ),
+        catchError(error => of(new fromActions.CreateTimeTableFail(error)))
       );
     })
   );
-*/
+
+  @Effect()
+  updateTimeTable$ = this.actions$.ofType(fromActions.UPDATE_TIMETABLE).pipe(
+    map((action: fromActions.UpdateTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.updateTimeTable(timetable).pipe(
+        map(
+          newTimeTable => new fromActions.UpdateTimeTableSuccess(newTimeTable)
+        ),
+        catchError(error => of(new fromActions.UpdateTimeTableFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  removeTimeTable$ = this.actions$.ofType(fromActions.REMOVE_TIMETABLE).pipe(
+    map((action: fromActions.RemoveTimeTable) => action.payload),
+    switchMap(timetable => {
+      return this.timetablesService.removeTimeTable(timetable).pipe(
+        map(() => new fromActions.RemoveTimeTableSuccess(timetable)),
+        catchError(error => of(new fromActions.RemoveTimeTableFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  timetableSuccess$ = this.actions$
+    .ofType(
+      fromActions.UPDATE_TIMETABLE_SUCCESS,
+      fromActions.CREATE_TIMETABLE_SUCCESS
+    )
+    .pipe(
+      map(() => {
+        return new fromActions.TimeTablePopupVisible(false);
+      })
+    );
+}

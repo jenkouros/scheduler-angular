@@ -1,28 +1,62 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Calendar } from '../models/calendar.model';
-import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import date_box from 'devextreme/ui/date_box';
-import { TimeTable } from '../models/timetable.model';
+import { Schedule, ScheduleServer, TimeTable } from '../models/timetable.model';
 import { HttpParams } from '@angular/common/http';
+import { SubCalendar, SelectedContainers } from '../models/calendar.model';
 
 @Injectable()
 export class TimeTablesService {
   constructor(private http: HttpClient) {}
 
-  getTimeTables(calendarId: number): Observable<TimeTable[]> {
+  getTimeTables(subCalendarId: number): Observable<Schedule> {
     const httpParams = new HttpParams().set(
-      'idCalendar',
-      calendarId.toString()
+      'idSubCalendar',
+      subCalendarId.toString()
     );
 
     return this.http
-      .get<TimeTable[]>(`${environment.apiUrl}/timetables`, {
+      .get<ScheduleServer>(`${environment.apiUrl}/calendars/subcalendar`, {
         params: httpParams
       })
+      .pipe(
+        map(response => {
+          return Schedule.fromServer(response);
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
+  }
+
+  createTimeTable(payload: TimeTable): Observable<TimeTable> {
+    console.log(payload);
+    return this.http
+      .post<TimeTable>(`${environment.apiUrl}/calendars/timetable`, payload)
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
+  }
+
+  updateTimeTable(payload: TimeTable): Observable<TimeTable> {
+    return this.http
+      .put<TimeTable>(`${environment.apiUrl}/calendars/timetable`, payload)
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
+  }
+
+  removeTimeTable(payload: TimeTable): Observable<TimeTable> {
+    return this.http
+      .delete<TimeTable>(
+        `${environment.apiUrl}/calendars/timetable?id=${payload.id}`
+      )
       .pipe(
         map(response => {
           return response;
@@ -31,32 +65,3 @@ export class TimeTablesService {
       );
   }
 }
-
-/*
-getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
-        let httpParams = new HttpParams()
-            .set('IdPlan', '1')
-            .set('timeStart', moment(fromDate).toISOString())
-            .set('timeEnd', moment(toDate).toISOString()); // .format());
-
-        containerIds.forEach(id => {
-            httpParams = httpParams.append('containers', id.toString());
-        });
-
-        const serachParams = {
-            params: httpParams
-
-        };
-
-        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return response.result.map(PlannedEvent.fromServer);
-            }),
-            catchError((error: any) => observableThrowError(error.json))
-        );
-    }
-
-*/

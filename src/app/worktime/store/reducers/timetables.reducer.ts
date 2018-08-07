@@ -3,16 +3,20 @@ import * as fromTimeTables from '../actions/timetables.actions';
 
 export interface TimeTablesState {
   entities: { [id: number]: TimeTable };
-  calendarId: number;
+  subcalendarId: number;
+  selectedId: number;
   loading: boolean;
   loaded: boolean;
+  popupVisible: boolean;
 }
 
 export const initialState: TimeTablesState = {
   entities: {},
-  calendarId: 0,
+  subcalendarId: 0,
+  selectedId: 0,
   loading: false,
-  loaded: false
+  loaded: false,
+  popupVisible: false
 };
 
 export function reducer(
@@ -23,7 +27,7 @@ export function reducer(
     case fromTimeTables.LOAD_TIMETABLES: {
       return {
         ...state,
-        calendarId: action.payload,
+        subcalendarId: action.payload,
         loading: true,
         loaded: false
       };
@@ -58,6 +62,46 @@ export function reducer(
         loaded: false
       };
     }
+    case fromTimeTables.UPDATE_TIMETABLE_SUCCESS:
+    case fromTimeTables.CREATE_TIMETABLE_SUCCESS: {
+      const timetable = action.payload;
+      const entities = {
+        ...state.entities,
+        [timetable.id]: timetable
+      };
+      return {
+        ...state,
+        entities
+      };
+    }
+    case fromTimeTables.REMOVE_TIMETABLE: {
+      const timetable = action.payload;
+      const { [timetable.id]: removed, ...entities } = state.entities;
+
+      return {
+        ...state,
+        entities
+      };
+    }
+    case fromTimeTables.TIMETABLE_POPUP_VISIBLE: {
+      return {
+        ...state,
+        popupVisible: action.payload
+      };
+    }
+    case fromTimeTables.SELECT_TIMETABLE: {
+      console.log('selected', action.payload);
+      return {
+        ...state,
+        selectedId: action.payload
+      };
+    }
+    case fromTimeTables.DESELECT_TIMETABLE: {
+      return {
+        ...state,
+        selectedId: 0
+      };
+    }
   }
 
   return state;
@@ -66,6 +110,10 @@ export function reducer(
 // export level of state
 export const getTimeTablesEntities = (state: TimeTablesState) => state.entities;
 export const getTimeTablesLoading = (state: TimeTablesState) => state.loading;
+export const getTimeTablesSelectdId = (state: TimeTablesState) =>
+  state.selectedId;
 export const getTimeTablesLoaded = (state: TimeTablesState) => state.loaded;
-export const getTimeTablesCalendarId = (state: TimeTablesState) =>
-  state.calendarId;
+export const getTimeTablesSubCalendarId = (state: TimeTablesState) =>
+  state.subcalendarId;
+export const getTimeTablePopupVisibility = (state: TimeTablesState) =>
+  state.popupVisible;

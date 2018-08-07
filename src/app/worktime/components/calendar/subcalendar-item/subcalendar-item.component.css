@@ -1,0 +1,89 @@
+a.nav-link {
+  color: #000000;
+  padding: 0.25rem 0.5rem;
+}
+a.nav-link:not(.active) fa-icon {
+  color: gray;
+}
+
+a.nav-link.active {
+  color: rgba(8, 69, 120, 1) !important;
+  font-weight: 500;
+  background-color: #ccd9e9 !important;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.new-schedule {
+  font-size: 14px;
+  padding: 5px 5px 5px 5px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #757575;
+}
+
+.new-schedule:focus {
+  top: -20px;
+  font-size: 14px;
+  color: #5264ae;
+  outline: none;
+}
+.schedule-list {
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}
+
+.schedule-list li:last-child {
+  border-bottom: none;
+}
+
+.schedule-list li .destroy:hover {
+  color: black;
+}
+
+.schedule-list li {
+  position: relative;
+  font-size: 14px;
+  border-bottom: 1px solid #ededed;
+}
+/*
+.schedule-list li .destroy:after {
+  content: '×';
+}
+*/
+.schedule-list li:hover .destroy {
+  display: block;
+}
+
+.schedule-list li .destroy {
+  display: none;
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  margin: auto 0;
+  vertical-align: middle;
+  color: #858484;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: inherit;
+  font-weight: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus {
+  outline: 0;
+}

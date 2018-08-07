@@ -1,0 +1,23 @@
+<div class="card mb-1">
+  <div class="card-body pt-2 pl-2 pr-2 pb-1" style="font-size: 14px;">
+    <h5 class="card-title">{{calendar.description}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{calendar.timeStart | date}} - {{calendar.timeEnd | date}}</h6>
+    <!--
+    <hr class="hrline mt-1 mb-1">
+    <h6 class="card-subtitle mb-2 text-muted">Urniki</h6>
+    -->
+
+    <app-sub-calendar [calendar]="calendar" (create)="onCreateSchedule($event)">
+    </app-sub-calendar>
+
+    <hr class="mt-1 mb-1">
+    <div class="float-right">
+      <button (click)="onRemove(calendar)" type="button" class="btn btn-sm btn-light mr-1 mb-1" [disabled]="true">
+        <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> Briši koledar
+      </button>
+      <button (click)="onSelect()" type="button" class="btn btn-sm btn-light mr-1 mb-1">
+        <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Uredi koledar
+      </button>
+    </div>
+  </div>
+</div>

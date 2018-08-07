@@ -7,41 +7,39 @@ import { Observable, of } from 'rxjs';
 import { tap, map, filter, take, switchMap, catchError } from 'rxjs/operators';
 
 import * as fromStore from '../store';
-import { Calendar } from '../models/calendar.model';
-import { pipe } from '../../../../node_modules/@angular/core/src/render3/pipe';
+import { SubCalendar } from '../models/calendar.model';
 
 @Injectable()
 export class TimeTablesGuard implements CanActivate {
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    console.log('id', route);
-    if (!route.parent) {
-      return of(false);
-    }
-
-    const id = parseInt(route.parent.params.calendarId, 10);
+    const id = parseInt(route.params.id, 10);
     console.log('id', route, id);
     return this.checkStore(id).pipe(
       switchMap(() => {
-        return this.hasSelectedCalendar(id);
+        return this.hasSelectedSubCalendar(id);
       })
     );
   }
 
-  hasSelectedCalendar(id: number): Observable<boolean> {
-    return this.store.select(fromStore.getCalendarsEntities).pipe(
-      map((entities: { [key: number]: Calendar }) => !!entities[id]),
+  hasSelectedSubCalendar(id: number): Observable<boolean> {
+    if (id === 0) {
+      return of(false);
+    }
+    return this.store.select(fromStore.getSubCalendarsEntities).pipe(
+      map((entities: { [key: number]: SubCalendar }) => !!entities[id]),
       take(1)
     );
   }
 
   checkStore(id: number): Observable<boolean> {
-    return this.store.select(fromStore.getTimeTablesCalendarId).pipe(
+    return this.store.select(fromStore.getSubCalendarsSelectedId).pipe(
       // gets loaded prop
-      tap(calendarId => {
-        if (calendarId !== id) {
-          this.store.dispatch(new fromStore.SelectCalendar(id));
+      tap(subcalendarId => {
+        console.log('guard-> subcalendar id', id, subcalendarId);
+        if (subcalendarId !== id) {
+          this.store.dispatch(new fromStore.SelectSubCalendar(id));
           this.store.dispatch(new fromStore.LoadTimeTables(id));
         }
       }),

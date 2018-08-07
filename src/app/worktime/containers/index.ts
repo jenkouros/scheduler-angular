@@ -1,16 +1,16 @@
-import { CalendarDetailComponent } from './calendar-detail/calendar-detail.component';
 import { CalendarsComponent } from './calendars/calendars.component';
-import { CalendarItemComponent } from './calendar-item/calendar-item.component';
+import { SubCalendarComponent } from './sub-calendar/sub-calendar.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
+import { ScheduleEventComponent } from './schedule-detail/schedule-event/schedule-event.component';
 
 export const containers: any[] = [
-  CalendarDetailComponent,
+  SubCalendarComponent,
   CalendarsComponent,
-  CalendarItemComponent,
-  ScheduleDetailComponent
+  ScheduleDetailComponent,
+  ScheduleEventComponent
 ];
 
 export * from './calendars/calendars.component';
-export * from './calendar-detail/calendar-detail.component';
-export * from './calendar-item/calendar-item.component';
+export * from './sub-calendar/sub-calendar.component';
 export * from './schedule-detail/schedule-detail.component';
+export * from './schedule-detail/schedule-event/schedule-event.component';

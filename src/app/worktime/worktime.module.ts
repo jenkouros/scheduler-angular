@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,7 +11,10 @@ import {
   DxTabPanelModule,
   DxDataGridModule,
   DxTabsModule,
-  DxTextBoxModule
+  DxTextBoxModule,
+  DxScrollViewModule,
+  DxSelectBoxModule,
+  DxNumberBoxModule
 } from 'devextreme-angular';
 
 // containers
@@ -32,48 +34,37 @@ import { reducers, effects } from './store';
 import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { RRulePipe } from './pipes/rrule.pipe';
 
 const routes: Routes = [
   {
     path: '',
     canActivate: [fromGuards.CalendarsGuard],
-    component:
-      fromContainers.CalendarsComponent /*, children: [
-       { path: 'schedule', component: ScheduleComponent},
-     { path: 'calendar', component: CalendarComponent }
-    ],*/
-  },
-  {
-    path: 'new',
-    canActivate: [fromGuards.CalendarsGuard],
-    component: fromContainers.CalendarItemComponent
-  },
-  {
-    path: 'edit/:calendarId',
-    canActivate: [fromGuards.CalendarExistsGuard],
-    component: fromContainers.CalendarItemComponent
-  },
-  {
-    path: ':calendarId',
-    canActivate: [fromGuards.CalendarsGuard],
-    component: fromContainers.CalendarDetailComponent,
+    component: fromComponents.WorktimeComponent,
     children: [
-      { path: '', redirectTo: 'calendar' },
       {
-        path: 'calendar',
-        component: fromComponents.CalendarComponent
+        path: '',
+        component: fromContainers.ScheduleDetailComponent
       },
       {
-        path: 'schedule',
+        path: 'schedule/:id',
         canActivate: [fromGuards.TimeTablesGuard],
-        component: fromContainers.ScheduleDetailComponent
+        component:
+          fromContainers.ScheduleDetailComponent /*, children: [
+             { path: 'schedule', component: ScheduleComponent},
+           { path: 'calendar', component: CalendarComponent }
+          ],*/
       }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [...fromContainers.containers, ...fromComponents.components],
+  declarations: [
+    ...fromContainers.containers,
+    ...fromComponents.components,
+    RRulePipe
+  ],
   imports: [
     CoreModule,
     CommonModule,
@@ -85,6 +76,9 @@ const routes: Routes = [
     DxDataGridModule,
     DxTabsModule,
     DxTextBoxModule,
+    DxScrollViewModule,
+    DxSelectBoxModule,
+    DxNumberBoxModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
