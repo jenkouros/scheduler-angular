@@ -6,6 +6,7 @@ import {
     ItemProgressServer} from './server/item.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
 import { SubItemContainer } from './subitem.dto';
+import { Container } from './container.dto';
 
 
 export class Item {
@@ -89,6 +90,7 @@ export class SubItem {
     sequence: number;
     plannable: boolean;
     quantity: number;
+    containers: Container[] | null;
 
     static fromServer(planSubItemServer: SubItemServer) {
         const result = new SubItem();
@@ -101,6 +103,7 @@ export class SubItem {
         result.sequence = planSubItemServer.sequenceNumber;
         result.plannable = planSubItemServer.isPlanable;
         result.quantity = planSubItemServer.defaultQuantity;
+        result.containers = planSubItemServer.containers ? planSubItemServer.containers.map(Container.fromServer) : null;
         return result;
     }
 }

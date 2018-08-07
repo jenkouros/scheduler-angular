@@ -10,7 +10,7 @@ import { ItemListComponent } from './item/item-list/item-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FilterCheckboxComponent } from './filters/filter-checkbox/filter-checkbox.component';
 import { FilterAutocompleteComponent } from './filters/filter-autocomplete/filter-autocomplete.component';
-import { ContainerItemComponent } from './container-item/container-item.component';
+import { ContainerItemComponent } from './containers/container-item/container-item.component';
 import { ItemAlternativeComponent } from './item/item-alternative/item-alternative.component';
 import { SubItemComponent } from './item/subitem/subitem.component';
 import { PlanViewerItemComponent} from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
@@ -22,6 +22,8 @@ import { PreplanitemDeletePopupComponent } from './preplanitem/preplanitem-delet
 import { SearchComponent } from './search/search.component';
 import { ItemsSearchComponent } from './search/items/items-search.component';
 import { PlanItemsSearchComponent } from './search/planitems/planitems-search.component';
+import { ContainerGroupComponent } from './containers/container-group/container-group.component';
+
 
 
 export const components: any[] = [
@@ -38,6 +40,7 @@ export const components: any[] = [
     FilterCheckboxComponent,
     FilterAutocompleteComponent,
     ContainerItemComponent,
+    ContainerGroupComponent,
     ItemAlternativeComponent,
     SubItemComponent,
     PlanViewerItemComponent,
@@ -69,7 +72,8 @@ export * from './planner/plan-viewer/plan-viewer-item/plan-viewer-item.component
 export * from './preplanitem/preplanitem-item/preplanitem-item.component';
 export * from './item/item-popup/item-popup.component';
 export * from './planner/mass-lock-popup/mass-lock-popup.component';
-export * from './container-item/container-item.component';
+export * from './containers/container-item/container-item.component';
+export * from './containers/container-group/container-group.component';
 export * from './planner/plan-viewer/plan-viewer-item-edit/plan-viewer-item-edit.component';
 export * from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.component';
 export * from './search/search.component';

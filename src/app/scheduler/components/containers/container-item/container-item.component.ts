@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromStore from '../../store';
-import { ContainerSelect } from '../../models/container.viewModel';
+import * as fromStore from '../../../store';
+import { ContainerSelect } from '../../../models/container.viewModel';
 
 @Component({
   selector: 'app-container-item',

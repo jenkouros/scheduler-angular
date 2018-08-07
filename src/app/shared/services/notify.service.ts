@@ -2,7 +2,7 @@ import notify from 'devextreme/ui/notify';
 
 export class NotifyService {
     notifyError(message) {
-        this._notify(message, 'error');
+        this._notify(message, 'error', 8000);
     }
 
     notifySuccess(message) {
@@ -17,7 +17,7 @@ export class NotifyService {
         this._notify(message, 'info');
     }
 
-    private _notify(message, type) {
-        notify({ message, closeOnClick: true, closeOnOutsideClick: true }, type, 10000);
+    private _notify(message, type, displayTime = 3000) {
+        notify({ message, closeOnClick: true, closeOnOutsideClick: true }, type, displayTime);
     }
 }

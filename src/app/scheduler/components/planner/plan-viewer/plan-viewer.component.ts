@@ -30,7 +30,8 @@ import {
   PlannedEventMove,
   PlanItemMoveStatusEnum,
   PlannedEventNotWorkingHoursMove,
-  PlanItemStatusEnum
+  PlanItemStatusEnum,
+  PlanItemProgressEnum
 } from '../../../models/event.model';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
@@ -225,15 +226,29 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   onAppointmentRedered(e) {
-    if (e.appointmentData.idPlanItemStatus === PlanItemStatusEnum.Running) {
+    const planItem = <PlannedEvent>e.appointmentData;
+
+    if (planItem.idPlanItemStatus < PlanItemStatusEnum.Finished) {
+      switch (planItem.progressEnum) {
+        case PlanItemProgressEnum.Late:
+          e.appointmentElement.classList.add('planitem-late');
+          break;
+        case PlanItemProgressEnum.NotFinished:
+          e.appointmentElement.classList.add('planitem-notfinished');
+          break;
+      }
+    }
+
+    // quantity manufactured background
+    if (planItem.idPlanItemStatus === PlanItemStatusEnum.Running) {
       e.appointmentElement.style.background = ColorHelper.getGradient(
-        [{startMarginProcent: 0, durationMarginProcent: e.appointmentData.manufacturedQuantity * 100 / e.appointmentData.quantity }],
-        false, e.appointmentData.color, ColorHelper.shadeColor(e.appointmentData.color, 10)
+        [{startMarginProcent: 0, durationMarginProcent: planItem.manufacturedQuantity * 100 / planItem.quantity }],
+        false, planItem.color, ColorHelper.shadeColor(planItem.color, 10)
       );
       e.appointmentElement.style.backgroundPosition = 'center center';
       e.appointmentElement.style.backgroundRepeat = 'no-repeat';
     } else {
-      e.appointmentElement.style.backgroundColor = e.appointmentData.color;
+      e.appointmentElement.style.backgroundColor = planItem.color;
     }
   }
 

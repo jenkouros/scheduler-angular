@@ -14,6 +14,12 @@ import { ContainerSelect } from '../../models/container.viewModel';
             (selectContainer)="onSelectContainer($event)"
             (deselectContainer)="onDeselectContainer($event)">
         </app-container-item>
+        <app-container-group
+            [containers]="containers$ | async"
+            (groupSelect)="onSelectContainers($event)"
+            (groupDeselect)="onDeselectContainers($event)">
+        </app-container-group>
+
     `
 })
 export class ContainersComponent implements OnInit {
@@ -25,11 +31,18 @@ export class ContainersComponent implements OnInit {
         this.containers$ = this.store.pipe(select(fromStore.getContainerSelectList));
     }
 
-    onSelectContainer(containerId) {
+    onSelectContainer(containerId: number) {
         this.store.dispatch(new fromStore.SelectContainers([containerId]));
     }
 
-    onDeselectContainer(containerId) {
+    onDeselectContainer(containerId: number) {
         this.store.dispatch(new fromStore.DeselectContainers([containerId]));
+    }
+    onSelectContainers(containerIds: number[]) {
+        this.store.dispatch(new fromStore.SelectContainers(containerIds));
+    }
+
+    onDeselectContainers(containerIds: number[]) {
+        this.store.dispatch(new fromStore.DeselectContainers(containerIds));
     }
 }

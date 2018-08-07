@@ -18,6 +18,7 @@ export interface PlannedEventServer {
     quantity: number;
     unitQuantity: string;
     manufacturedQuantity: number;
+    manufactureStartTime: Date;
     comment: string;
     itemCode: string;
     itemName: string;
@@ -33,6 +34,7 @@ export interface PlannedEventServer {
     isInNotWorkingHours: boolean;
     allowedContainers: SubItemContainerServer[];
     sequencePlanItems: PlannedEventSimpleServer[];
+    itemTypeShortName: string | null;
 }
 
 export interface PlannedEventSimpleServer {

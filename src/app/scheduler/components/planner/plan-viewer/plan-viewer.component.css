@@ -57,8 +57,23 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     width: 100px;
 }
 
+::ng-deep .dx-scheduler-work-space-month .dx-scheduler-appointment-content {
+    padding: 0; 
+}
+
 ::ng-deep .weekend {
     background-color: rgba(86, 202, 133, 0.1);
     background-position: center center;
     background-repeat: no-repeat;
+}
+
+::ng-deep .planitem-notfinished {
+    box-shadow: inset 5px 0px 0px 0px rgb(255, 0, 0) !important;
+    /* border-left: none; */
+    border-right: 2px solid transparent;
+}
+::ng-deep .planitem-late {
+    box-shadow: inset 5px 0px 0px 0px rgb(255, 155, 0) !important;
+    /* border-left: none; */
+    border-right: 2px solid transparent;
 }

@@ -40,7 +40,8 @@ export class EventsService {
             idContainer: event.containerId,
             timePreparationStart: moment(event.timeStartPreparation).format(),
             timeExecutionStart: moment(event.timeStartExecution).format(),
-            timeExecutionEnd: moment(event.timeEndExecution).format()
+            timeExecutionEnd: moment(event.timeEndExecution).format(),
+            comment: event.description
         };
         return this.http.post<PlannedEventServer>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -63,7 +64,8 @@ export class EventsService {
             timePreparationStart: moment(new Date(event.timeStartPreparation)).format(),
             timeExecutionStart: moment(new Date(event.timeStartExecution)).format(),
             timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
-            planItemMoveStatus: PlanItemMoveStatusEnum.Moved
+            planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
+            comment: event.description
         };
         return this.http.put(environment.apiUrl + '/planitems', planningItem);
     }

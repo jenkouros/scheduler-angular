@@ -1,5 +1,6 @@
 import { ProductServer, MeasurementUnitServer } from './shared.servermodel';
 import { SubItemContainerServer } from './preplanitem.servermodel';
+import { ContainerServer } from './container.servermodel';
 
 export interface ItemServer {
     idItem: number;
@@ -43,6 +44,7 @@ export interface SubItemServer {
     sequenceNumber: number;
     isPlanable: boolean;
     defaultQuantity: number;
+    containers: ContainerServer[];
 }
 
 export interface PlanItemFilterServer {

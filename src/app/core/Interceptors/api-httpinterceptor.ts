@@ -63,12 +63,16 @@ export class ApiHttpInterceptor implements HttpInterceptor {
             : response.code === ApiResponseResult.success
     });
     if (response.code !== ApiResponseResult.success) {
-        this.notifyService.notifyError('Napaka pri procesiranju zahteve.');
+        this.notifyService.notifyError(response.messages && response.messages.length
+          ? response.messages[0]
+          : 'Napaka pri procesiranju zahteve.');
         // TODO handle unauth...
+    } else {
+      // TODO handle redirect
+      if (response.messages && response.messages.length) {
+        this.notifyService.notifyInfo(response.messages);
+      }
     }
-    // else {
-    // TODO handle redirect
-    // }
     return newResponse;
   }
 }

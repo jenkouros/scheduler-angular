@@ -3,6 +3,7 @@ import { PreplanItem } from './preplanitem.dto';
 import { SubItemContainerServer } from './server/preplanitem.servermodel';
 import { SubItemContainer } from './subitem.dto';
 import { PlanSchedule } from './planschedule.dto';
+import * as moment from 'moment';
 
 export interface ContainerEvents {
     events: PlannedEvent[];
@@ -73,6 +74,7 @@ export class PlannedEvent {
     idPlanItemStatus: number;
     quantity: number;
     manufacturedQuantity: number;
+    manufactureStartTime: Date | null;
     unitQuantity: string;
     description: string;
     itemCode: string;
@@ -93,7 +95,7 @@ export class PlannedEvent {
     preplanItem: PreplanItem | null;
     startDate: Date;
     endDate: Date;
-
+    itemTypeShortName: string | null;
 
     color: string;
 
@@ -110,6 +112,8 @@ export class PlannedEvent {
         this.startDate = newValue;
     }
 
+
+    // SETTINGS !!!! planItem.timeStartPreparation or planItem.timeEnd
     get sequenceWarning(): boolean {
         if (!this.sequencePlanItems) {
             return false;
@@ -136,6 +140,46 @@ export class PlannedEvent {
             case PlanItemStatusEnum.Scheduled: return 'Planiran';
         }
         return '-';
+    }
+
+    get progressEnum() {
+        const currentDate = new Date();
+
+        if (new Date(this.timeEndExecution).getTime() < currentDate.getTime() &&
+            this.idPlanItemStatus < PlanItemStatusEnum.Finished) {
+                return PlanItemProgressEnum.NotFinished;
+            }
+
+        if (this.manufacturedQuantity !== null) { // if(kosovna)
+            if (this.idPlanItemStatus === PlanItemStatusEnum.Running) {
+                const selectedSubItemContainer = this.selectedSubItemContainer;
+                if (!selectedSubItemContainer) {
+                    return PlanItemProgressEnum.Unknown;
+                }
+                let duration = moment(new Date()).diff(moment(new Date(this.timeStartExecution)), 'm');
+                duration = Math.max(duration, 0);
+                const normativeTimeForPiece = selectedSubItemContainer.executionNormative / selectedSubItemContainer.quantity;
+
+                if ( (duration / normativeTimeForPiece) > this.manufacturedQuantity )  {
+                    return PlanItemProgressEnum.Late;
+                } else {
+                    return PlanItemProgressEnum.OnTime;
+                }
+            }
+        }
+
+        if (new Date(this.timeStartPreparation).getTime() < currentDate.getTime() &&
+            this.idPlanItemStatus !== PlanItemStatusEnum.Running) {
+            return PlanItemProgressEnum.Late;
+        }
+
+        return PlanItemProgressEnum.Unknown;
+    }
+
+    get selectedSubItemContainer() {
+        return this.idSubItemContainer
+            ? this.containers.find(i => i.idSubItemContainer === this.idSubItemContainer)
+            : undefined;
     }
 
     static createFromPreplanitem(idPrePlanItem: number,
@@ -198,7 +242,9 @@ export class PlannedEvent {
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
         result.isInNotWorkingHours = event.isInNotWorkingHours;
         result.color = colorMapper(event.idPlanItemStatus);
-        result.manufacturedQuantity = event.quantity / 2;
+        result.manufacturedQuantity = event.manufacturedQuantity;
+        result.manufactureStartTime = event.manufactureStartTime;
+        result.itemTypeShortName = event.itemTypeShortName;
         return result;
 
 
@@ -252,6 +298,13 @@ export enum PlanItemStatusEnum {
     Canceled = 8
 }
 
+export enum PlanItemProgressEnum {
+    Unknown = 1,
+    OnTime = 2,
+    Late = 3,
+    NotFinished = 4
+}
+
 export interface PlanItemSearch {
     planItemName: string;
     planItemCode: string;
@@ -272,6 +325,10 @@ function colorMapper(planItemStatus: PlanItemStatusEnum) {
     switch (planItemStatus) {
         case PlanItemStatusEnum.Running:
             return '#6cb56c';
+        case PlanItemStatusEnum.Finished:
+            return '#8b8c8c';
+        case PlanItemStatusEnum.Canceled:
+            return '#d41140';
     }
     return '#337ab7';
 }

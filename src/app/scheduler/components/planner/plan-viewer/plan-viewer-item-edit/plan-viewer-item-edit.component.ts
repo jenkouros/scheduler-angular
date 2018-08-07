@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { PlannedEvent } from '../../../../models/event.model';
 import { SubItemContainer } from '../../../../models/subitem.dto';
@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { TimeHelper } from '../../../../helpers/time.helper';
 import * as moment from 'moment';
 import { DateValidators } from '../../../../../shared/validators/date.validators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plan-viewer-item-edit',
@@ -15,12 +16,15 @@ import { DateValidators } from '../../../../../shared/validators/date.validators
   styleUrls: ['./plan-viewer-item-edit.component.css']
 })
 
-export class PlanViewerItemEditComponent implements OnInit, OnChanges {
+export class PlanViewerItemEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() planItem: PlannedEvent | null;
   @Input() visible: false;
   @Output() planItemUpdate = new EventEmitter<PlannedEvent>();
   @Output() planItemCreate = new EventEmitter<PlannedEvent>();
   @Output() popupClose = new EventEmitter();
+  preparationStartSubscription: Subscription;
+  executionStartSubscribtion: Subscription;
+  executionEndSubscribtion: Subscription;
 
   planItemEditForm: FormGroup;
   get containers(): SubItemContainer[] {
@@ -60,7 +64,8 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
         isPreparationTimeLocked: [''],
         isExecutionTimeLocked: [''],
         preparationDuration: [''],
-        executionDuration: ['']
+        executionDuration: [''],
+        comment: ['']
       },
       {
         validator: [
@@ -68,10 +73,10 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
           DateValidators.maxDate('executionStartTime', 'executionEndTime')
         ]
       });
-    this.onFormChanges();
   }
 
   setForm(planItem: PlannedEvent | null) {
+    this.unsubscribe();
     this.planItemEditForm.reset();
     this.planItemEditForm.setValue({
       'idContainer': planItem ? planItem.containerId : '',
@@ -87,22 +92,36 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
       'executionDuration': TimeHelper.convertMinutesIntoString(TimeHelper.getDateDiffInMinutes(
         new Date(planItem ? planItem.timeStartExecution : new Date()),
         new Date(planItem ? planItem.timeEndExecution : new Date())
-      ))
+      )),
+      'comment': planItem ? planItem.description : ''
     });
+    this.onFormChanges();
   }
 
   onFormChanges() {
-    this.preparationStartTimeControl.valueChanges.subscribe(val => {
+    this.preparationStartSubscription = this.preparationStartTimeControl.valueChanges.subscribe(val => {
       this.updatePreparationStartTime(val);
     });
 
-    this.executionStartTimeControl.valueChanges.subscribe(val => {
+    this.executionStartSubscribtion = this.executionStartTimeControl.valueChanges.subscribe(val => {
       this.updateExecutionStartTime(val);
     });
 
-    this.executionEndTimeControl.valueChanges.subscribe(val => {
+    this.executionEndSubscribtion = this.executionEndTimeControl.valueChanges.subscribe(val => {
       this.updateExecutionEndTime(val);
     });
+  }
+
+  unsubscribe() {
+    if (this.executionEndSubscribtion) {
+      this.executionEndSubscribtion.unsubscribe();
+    }
+    if (this.executionStartSubscribtion) {
+      this.executionStartSubscribtion.unsubscribe();
+    }
+    if (this.preparationStartSubscription) {
+      this.preparationStartSubscription.unsubscribe();
+    }
   }
 
   onFormSubmit() {
@@ -116,6 +135,7 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
     this.planItem.timeStartPreparation = value.preparationStartTime;
     this.planItem.timeStartExecution = value.executionStartTime;
     this.planItem.timeEndExecution = value.executionEndTime;
+    this.planItem.description = value.comment;
     if (this.planItem.isPlanned) {
       this.planItemUpdate.emit(this.planItem);
     } else {
@@ -230,5 +250,9 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges {
   }
   get isPreparationTimeLockedControl() {
     return this.planItemEditForm.get('isPreparationTimeLocked') as FormControl;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe();
   }
 }

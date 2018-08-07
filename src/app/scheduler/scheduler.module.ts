@@ -25,7 +25,8 @@ import {
     DxNumberBoxModule,
     DxValidatorModule,
     DxValidationSummaryModule,
-    DxProgressBarModule
+    DxProgressBarModule,
+    DxTextAreaModule
 } from 'devextreme-angular';
 
 import { CommonModule } from '@angular/common';
@@ -75,6 +76,7 @@ import { SearchService } from './services/search.service';
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
+        DxTextAreaModule,
         DxNumberBoxModule,
         DxFormModule,
         DxCheckBoxModule,

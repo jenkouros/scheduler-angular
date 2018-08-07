@@ -74,7 +74,12 @@
                         <table class="table table-sm">
                             <tr>
                                 <td>DN</td>
-                                <th>{{ plannedEvent.itemName }}</th>
+                                <th>
+                                    <div>
+                                        {{ plannedEvent.itemName }}
+                                        <span *ngIf="plannedEvent.itemTypeShortName" class="badge badge-secondary">{{ plannedEvent.itemTypeShortName }}</span>
+                                    </div>
+                                </th>
                                 <td>Priprava</td>
                                 <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
                             </tr>
@@ -92,12 +97,18 @@
                             </tr>
                             <tr>
                                 <td>Izdelano</td>
-                                <th>{{ plannedEvent.manufacturedQuantity }}  {{ plannedEvent.unitQuantity }} 
+                                <th>{{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }} 
                                     ({{ plannedEvent.manufacturedQuantity * 100 / 
                                         (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)
                                 </th>
                                 <td>Status</td>
                                 <th><span class="p-1 text-white" [ngStyle]="{'background-color': plannedEvent.color}">{{ plannedEvent.statusDescription }}</span></th>
+                            </tr>
+                            <tr *ngIf="plannedEvent.description">
+                                <td>Komentar</td>
+                                <th colspan="3">
+                                    <div style="white-space: normal;">{{plannedEvent.description}}</div>
+                                </th>
                             </tr>
                         </table>
 

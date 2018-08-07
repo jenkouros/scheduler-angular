@@ -6,12 +6,16 @@
   (visibilityChanged)="onPopupVisibilityChanged($event)"
   [visible]="visible" 
   [width]="'550px'" 
-  [height]="'650px'">
+  [height]="'680px'">
   <div *ngIf="planItem">
     <form [formGroup]="planItemEditForm">
       <app-field label="Operacija" [isStatic]="true">
-        {{ planItem!.subItemName }}
+        #{{ planItem!.subItemCode }} {{ planItem!.subItemName }}
       </app-field>
+      <app-field label="Komentar">
+        <dx-text-area formControlName="comment"></dx-text-area>
+      </app-field>
+
       <app-field label="Količina" [isStatic]="true">
         {{ planItem!.quantity }} {{ planItem!.unitQuantity }}
       </app-field>
