@@ -36,9 +36,27 @@ export const getSubCalendarsSelectedId = createSelector(
   fromSubCalendars.getSubCalendarsSelectedId
 );
 
+export const getSubCalendarsEditingId = createSelector(
+  getSubCalendarsState,
+  fromSubCalendars.getSubCalendarsEditingId
+);
+
 export const getSubCalendarsSelected = createSelector(
   getSubCalendarsEntities,
   getSubCalendarsSelectedId,
+  (entities, id) => {
+    return entities[id];
+  }
+);
+
+export const getSubCalendarPopupVisibility = createSelector(
+  getSubCalendarsState,
+  fromSubCalendars.getSubCalendarPopupVisibility
+);
+
+export const getSubCalendarsEditSelected = createSelector(
+  getSubCalendarsEntities,
+  getSubCalendarsEditingId,
   (entities, id) => {
     return entities[id];
   }

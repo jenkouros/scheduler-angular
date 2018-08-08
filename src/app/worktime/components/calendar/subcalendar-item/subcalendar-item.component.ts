@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { SubCalendar } from '../../../models/calendar.model';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-subcalendar-item',
@@ -18,15 +18,22 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 export class SubCalendarItemComponent implements OnInit {
   @Input() subCalendars: SubCalendar[];
   @Output() create = new EventEmitter<string>();
+  @Output() editing = new EventEmitter<SubCalendar>();
   @Output() remove = new EventEmitter<SubCalendar>();
 
   iconDelete = faTrash;
+  iconEdit = faEdit;
+
   constructor() {}
 
   ngOnInit() {}
 
   addSubCalendar(event: any) {
     this.create.emit(event.target.value);
+  }
+
+  editSubCalendar(subCalendar: SubCalendar) {
+    this.editing.emit(subCalendar);
   }
 
   removeSubCalendar(subCalendar: SubCalendar) {

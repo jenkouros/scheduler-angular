@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from '../../../../../node_modules/rxjs';
+import { Observable, observable } from '../../../../../node_modules/rxjs';
 import { SubCalendar, Calendar } from '../../models/calendar.model';
 
 import * as fromStore from '../../store';
@@ -10,13 +10,17 @@ import { Store } from '@ngrx/store';
   template: `
   <app-subcalendar-item [subCalendars]="(subCalendars$ | async)"
   (create)="onCreate($event)"
+  (editing)="onEditing($event)"
   (remove)="onRemove($event)">
   </app-subcalendar-item>
+  <app-sub-calendar-item></app-sub-calendar-item>
   `
 })
 export class SubCalendarComponent implements OnInit {
   @Input() calendar: Calendar;
+
   subCalendars$: Observable<SubCalendar[]>;
+
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   ngOnInit() {
@@ -37,5 +41,19 @@ export class SubCalendarComponent implements OnInit {
       name
     };
     this.store.dispatch(new fromStore.CreateSubCalendar(sCalendar));
+  }
+
+  onEditing(subCalendar: SubCalendar) {
+    this.store.dispatch(new fromStore.SelectEditSubCalendar(subCalendar.id));
+    this.store.dispatch(new fromStore.SubCalendarPopupVisible(true));
+  }
+
+  onCancel(timetable: SubCalendar) {
+    this.store.dispatch(new fromStore.DeSelectEditSubCalendar());
+    this.store.dispatch(new fromStore.SubCalendarPopupVisible(false));
+  }
+
+  onUpdate(subCalendar: SubCalendar) {
+    this.store.dispatch(new fromStore.UpdateSubCalendar(subCalendar));
   }
 }

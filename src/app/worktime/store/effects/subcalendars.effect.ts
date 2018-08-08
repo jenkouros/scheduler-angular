@@ -80,4 +80,13 @@ export class SubCalendarsEffects {
         );
       })
     );
+
+  @Effect()
+  updateSubCalendarSuccess$ = this.actions$
+    .ofType(fromActions.UPDATE_SUBCALENDAR_SUCCESS)
+    .pipe(
+      map(() => {
+        return new fromActions.SubCalendarPopupVisible(false);
+      })
+    );
 }
