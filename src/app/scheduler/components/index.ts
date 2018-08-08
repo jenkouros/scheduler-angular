@@ -23,6 +23,7 @@ import { SearchComponent } from './search/search.component';
 import { ItemsSearchComponent } from './search/items/items-search.component';
 import { PlanItemsSearchComponent } from './search/planitems/planitems-search.component';
 import { ContainerGroupComponent } from './containers/container-group/container-group.component';
+import { RealizationTimeUpdateComponent } from './planner/realization-timeupdate-popup/realization-timeupdate.component';
 
 
 
@@ -51,7 +52,8 @@ export const components: any[] = [
     PlanViewerItemEditComponent,
     SearchComponent,
     ItemsSearchComponent,
-    PlanItemsSearchComponent
+    PlanItemsSearchComponent,
+    RealizationTimeUpdateComponent
 ];
 
 export * from './filters/filters.component';
@@ -79,3 +81,4 @@ export * from './preplanitem/preplanitem-delete-popup/preplanitem-delete-popup.c
 export * from './search/search.component';
 export * from './search/items/items-search.component';
 export * from './search/planitems/planitems-search.component';
+export * from './planner/realization-timeupdate-popup/realization-timeupdate.component';

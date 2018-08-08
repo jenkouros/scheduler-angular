@@ -109,7 +109,7 @@ export class UpdateEventFail implements Action {
 
 export class UpdateEvents implements Action {
     readonly type = UPDATE_EVENTS;
-    constructor(public payload: { planItemMoves: PlannedEventMove[], fixPlanItems: boolean }) {}
+    constructor(public payload: { planItemMoves: PlannedEventMove[], fixPlanItems: boolean, ignoreStatusLimitation: boolean }) {}
 }
 
 export class UpdateEventsSuccess implements Action {
@@ -146,6 +146,22 @@ export class GetItemBatchTimeUpdateSuggestionSuccess implements Action {
 }
 export class ClearItemBatchTimeUpdateSuggestion implements Action {
     readonly type = CLEAR_ITEMBATCH_TIMEUPDATE_SUGGESTION;
+}
+
+export const GET_REALIZATION_TIMEUPDATE_SUGGESTION = '[Event] Get realization time update suggestion';
+export const GET_REALIZATION_TIMEUPDATE_SUGGESTION_SUCCESS = '[Event] Get realization time update suggestion SUCCESS';
+export const CLEAR_REALIZATION_TIMEUPDATE_SUGGESTION = '[Event] Clear realization time update suggestion';
+
+export class GetRealizationTimeUpdateSuggestion implements Action {
+    readonly type = GET_REALIZATION_TIMEUPDATE_SUGGESTION;
+    constructor(public payload: { containerIds: number[], fromDate: Date, toDate: Date }) {}
+}
+export class GetRealizationTimeUpdateSuggestionSuccess implements Action {
+    readonly type = GET_REALIZATION_TIMEUPDATE_SUGGESTION_SUCCESS;
+    constructor(public payload: PlannedEventMove[]) {}
+}
+export class ClearRealizationTimeUpdateSuggestion implements Action {
+    readonly type = CLEAR_REALIZATION_TIMEUPDATE_SUGGESTION;
 }
 
 export const GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION = '[Event] Get PlanItem notworkingHours update suggestion';
@@ -201,4 +217,7 @@ export type EventsAction =
     | UpdateEventsFail
     | UpdateEventsSuccess
     | SetSchedulerCurrentDate
+    | ClearRealizationTimeUpdateSuggestion
+    | GetRealizationTimeUpdateSuggestion
+    | GetRealizationTimeUpdateSuggestionSuccess
     ;

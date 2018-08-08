@@ -7,6 +7,7 @@ export interface EventsState {
     loading: boolean;
     loaded: boolean;
     timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
+    timeUpdateByRealizationSuggestion: {[idPlanItem: number]: PlannedEventMove} | null;
     notWorkingHoursTimeUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
     uiState: {
         massLockPopup: {
@@ -24,6 +25,7 @@ export const initialState: EventsState = {
     loaded: false,
     loading: false,
     timeUpdateSuggestion: null,
+    timeUpdateByRealizationSuggestion: null,
     notWorkingHoursTimeUpdateSuggestion: null,
     uiState: {
         massLockPopup: {
@@ -203,6 +205,20 @@ export function eventsReducer(
                     idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
                 },
                 notWorkingHoursTimeUpdateSuggestion: null
+            };
+        }
+        case fromAction.CLEAR_REALIZATION_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                timeUpdateByRealizationSuggestion: null
+            };
+        }
+        case fromAction.GET_REALIZATION_TIMEUPDATE_SUGGESTION_SUCCESS: {
+            const suggestion: { [idPlanItem: number]: PlannedEventMove } = {};
+            action.payload.forEach(move => suggestion[move.idPlanItem] = move);
+            return {
+                ...state,
+                timeUpdateByRealizationSuggestion: suggestion
             };
         }
 

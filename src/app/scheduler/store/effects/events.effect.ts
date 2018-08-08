@@ -125,7 +125,11 @@ export class EventsEffects {
   @Effect()
   updateEvents$ = this.actions$.ofType(fromAction.UPDATE_EVENTS).pipe(
     switchMap((action: fromAction.UpdateEvents) =>
-      this.eventsService.updateEvents(action.payload.planItemMoves, action.payload.fixPlanItems).pipe(
+      this.eventsService.updateEvents(
+        action.payload.planItemMoves,
+        action.payload.fixPlanItems,
+        action.payload.ignoreStatusLimitation
+      ).pipe(
         map(event => new fromAction.UpdateEventsSuccess()),
         catchError(error => of(new fromAction.UpdateEventsFail()))
       )
@@ -137,7 +141,12 @@ export class EventsEffects {
   deleteEvent$ = this.actions$.ofType(fromAction.DELETE_EVENT).pipe(
     switchMap((action: fromAction.DeleteEvent) =>
       this.eventsService.deleteEvent(action.payload).pipe(
-        map(result => new fromAction.DeleteEventSuccess(action.payload)),
+        map(result => {
+          if (result) {
+            return new fromAction.DeleteEventSuccess(action.payload);
+          }
+          return new fromAction.CreateEventFail();
+        }),
         catchError(error => of(new fromAction.CreateEventFail()))
       )
     )
@@ -200,6 +209,20 @@ export class EventsEffects {
             .pipe(
                 map(result => new fromAction.GetItemBatchTimeUpdateSuggestionSuccess(result)),
                 catchError(error => of(new fromAction.ClearItemBatchTimeUpdateSuggestion()))
+            )
+        )
+    );
+
+  @Effect()
+  timeUpdateRealizationSuggestion$ = this.actions$
+    .ofType(fromAction.GET_REALIZATION_TIMEUPDATE_SUGGESTION)
+    .pipe(
+        map((action: fromAction.GetRealizationTimeUpdateSuggestion) => action.payload),
+        switchMap(request =>
+            this.eventsService.getTimeUpdateByRealizationSuggestion(request.containerIds, request.fromDate, request.toDate)
+            .pipe(
+                map(result => new fromAction.GetRealizationTimeUpdateSuggestionSuccess(result)),
+                catchError(error => of(new fromAction.ClearRealizationTimeUpdateSuggestion()))
             )
         )
     );

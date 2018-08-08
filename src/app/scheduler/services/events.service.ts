@@ -70,7 +70,7 @@ export class EventsService {
         return this.http.put(environment.apiUrl + '/planitems', planningItem);
     }
 
-    updateEvents(changedEvents: PlannedEventMove[], fixPlanItem: boolean = false) {
+    updateEvents(changedEvents: PlannedEventMove[], fixPlanItem: boolean = false, ignoreStatusLimitation = false) {
         const request = changedEvents
             .filter(i => i.planItemMoveStatus !== PlanItemMoveStatusEnum.Unchanged)
             .map(i => <PlanItemPutRequest>{
@@ -78,7 +78,11 @@ export class EventsService {
                 idPlanItem: i.idPlanItem,
                 timeExecutionEnd: moment(i.timeEnd).format(),
                 timePreparationStart: moment(i.timeStart).format(),
-                fixPlanItem: fixPlanItem,
+                // fixPlanItem: fixPlanItem,
+                options: {
+                    fixPlanItem: fixPlanItem,
+                    ignoreStatusLimitation: ignoreStatusLimitation
+                },
                 planItemMoveStatus: i.planItemMoveStatus
             });
         return this.http.put(environment.apiUrl + '/planitems/planitemslist', request);
@@ -107,6 +111,15 @@ export class EventsService {
     getTimeUpdateSuggestion(idItemBatch) {
         return this.http.post<PlannedEventMove[]>(environment.apiUrl +
             '/planitems/requestTimeUpdateByItemBatch', idItemBatch);
+    }
+
+    getTimeUpdateByRealizationSuggestion(containers: number[], timeStart: Date, timeEnd: Date) {
+        return this.http.post<PlannedEventMove[]>(environment.apiUrl +
+            '/planitems/requestTimeUpdateByRealization', {
+                containers: containers,
+                timeStart: moment(new Date(timeStart)).format(),
+                timeEnd: moment(new Date(timeEnd)).format()
+            });
     }
 
     getTimeSuggestionForNotWorkingHours(idPlanItem) {

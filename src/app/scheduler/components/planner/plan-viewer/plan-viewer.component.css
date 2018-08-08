@@ -53,6 +53,10 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     border-color: rgba(221, 221, 221, 0.6)
 }
 
+::ng-deep .dx-scheduler-header {
+    border-top: none;
+}
+
 ::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
     width: 100px;
 }

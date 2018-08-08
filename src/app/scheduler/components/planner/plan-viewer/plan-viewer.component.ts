@@ -41,7 +41,7 @@ import { ToggleMassLockPopup } from '../../../store';
 import * as fromSchedulerModel from '../../../models/planner.model';
 import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
 
-import { faLock, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faExclamationTriangle, faExclamationCircle, faSync, faAlignCenter, faTh } from '@fortawesome/free-solid-svg-icons';
 import { PlanViewerFormHelper } from './plan-viewer.form.helper';
 import { SubItemContainer } from '../../../models/subitem.dto';
 import { TimeHelper } from '../../../helpers/time.helper';
@@ -81,6 +81,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Output() getResolveNotWorkingHoursSuggestion = new EventEmitter<number>();
   @Output() clearNotWorkingHoursSuggestion = new EventEmitter();
 
+  @Output() loadTimeRealizationSuggestion = new EventEmitter<PlanItemsLoadRequest>();
+  @Output() planItemReload = new EventEmitter<number[]>();
+
   // notWorkingHours: { startDate: Date, endDate: Date }[] = [
   //   { startDate: new Date(2018, 6, 7, 0, 0), endDate: new Date(2018, 6, 7, 23, 59) },
   //   { startDate: new Date(2018, 6, 8, 14, 30), endDate: new Date(2018, 6, 8, 15, 15) }
@@ -106,6 +109,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   faLock = faLock;
   faWarning = faExclamationTriangle;
   faExclamation = faExclamationCircle;
+  faRefresh = faSync;
+  faAlign = faAlignCenter;
+  faGroup = faTh;
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
@@ -218,9 +224,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     const preparationDurationInMinutes = moment(new Date(event.timeStartExecution)).diff(
       moment(new Date(event.timeStartPreparation)), 'm');
 
-    event.timeStartPreparation = event.startDate;
-    event.timeEndExecution = event.endDate;
-    event.timeStartExecution = moment(event.startDate).add(preparationDurationInMinutes, 'm').toDate();
+    const startDate = new Date(event.startDate);
+    event.timeStartPreparation = startDate;
+    event.timeEndExecution = new Date(event.endDate);
+    event.timeStartExecution = moment(startDate).add(preparationDurationInMinutes, 'm').toDate();
 
     this.planItemUpdate.emit(event);
   }
@@ -475,6 +482,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
   /** END DEVEXTREME EVENT HANDLERS */
 
+  onPlanItemReload() {
+    this.planItemReload.emit(this.selectedContainerIds);
+  }
+
   deleteAppointment(appointment: PlannedEvent) {
     this.scheduler.instance.hideAppointmentTooltip();
     this.scheduler.instance.deleteAppointment(appointment);
@@ -548,6 +559,13 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     this.clearNotWorkingHoursSuggestion.emit();
   }
 
+  onLoadTimeRealizationSuggestion() {
+    this.loadTimeRealizationSuggestion.emit({
+      containerIds: this.selectedContainerIds,
+      fromDate: this.selectedStartDate,
+      toDate: this.selectedEndDate
+    });
+  }
 
   private getCalculatedStartTimeInCell(idContainer: number, cellStartTime: Date, cellEndTime: Date) {
     let calculatedStartDate = cellStartTime;

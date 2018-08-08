@@ -19,6 +19,7 @@ import { PreplanitemUiState } from '../../models/preplanItem.store';
             [planItemGetReponse]="planItems$ | async"
             [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
             [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
+            (planItemReload)="onPlanItemReload($event)"
             (removeBlankSpace)="onRemoveBlankSpace($event)"
             (toggleLock)="onToggleLock($event)"
             (showMassLockPopup)="onShowMassLockPopup($event)"
@@ -32,8 +33,15 @@ import { PreplanitemUiState } from '../../models/preplanItem.store';
             (getResolveNotWorkingHoursSuggestion)="onGetResolveNotWorkingHoursSuggestion($event)"
             (resolveNotWorkingHours)="onResolveNotWorkingHours($event)"
             (clearNotWorkingHoursSuggestion)="onClearNotWorkingHoursSuggestion()"
+            (loadTimeRealizationSuggestion)="onLoadTimeRealizationSuggestion($event)"
             >
         </app-plan-viewer>
+        <app-realization-timeupdate-popup
+            [planItems]="(planItems$ | async).planItems"
+            [suggestion]="timeUpdateRealizationSuggestion$ | async"
+            (clearTimeRealizationSuggestion)="onClearTimeRealizationSuggestion()"
+            (resolveTimeRealization)="onResolveRealization($event)">
+        </app-realization-timeupdate-popup>
     `
 })
 export class PlanitemsComponent implements OnInit {
@@ -42,6 +50,7 @@ export class PlanitemsComponent implements OnInit {
     planItems$: Observable<{planItems: PlannedEvent[], notWorkingHoursEvents: {[idContainer: number]: PlanSchedule[]}}>;
     prePlanItemUiState$: Observable<PreplanitemUiState>;
     timeUpdateSuggestion$: Observable<{[idPrePlanItem: number]: PlannedEventMove } | null>;
+    timeUpdateRealizationSuggestion$: Observable<{[idPlanItem: number]: PlannedEventMove } | null>;
     notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
     currentDate = new Date();
 
@@ -72,6 +81,7 @@ export class PlanitemsComponent implements OnInit {
         //     }
         // });
         this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
+        this.timeUpdateRealizationSuggestion$ = this.store.select(fromStore.getRealizationTimeUpdateSuggestion);
         this.notWorkingHoursUpdateSuggestion$ = this.store.select(fromStore.getNotWorkingHoursUpdateSuggestion);
         this.store.select(fromStore.getEventsUiState).subscribe(i => {
             if (i.schedulerCurrentDate && i.schedulerCurrentDate !== this.currentDate) {
@@ -79,6 +89,12 @@ export class PlanitemsComponent implements OnInit {
             }
         });
         // this.prePlanItemUiState$ = this.store.select(fromStore.getPrePlanItemUiState);
+    }
+
+    onPlanItemReload(containerIds: number[]) {
+        this.store.dispatch(
+            new fromStore.ReloadEvents({ containerIds: containerIds })
+          );
     }
 
     onPlanItemLoad(loadRequest: PlanItemsLoadRequest) {
@@ -118,7 +134,11 @@ export class PlanitemsComponent implements OnInit {
     }
 
     onResolveSequence(eventMoveList: PlannedEventMove[]) {
-        this.store.dispatch(new fromStore.UpdateEvents({planItemMoves: eventMoveList, fixPlanItems: false}));
+        this.store.dispatch(new fromStore.UpdateEvents({
+            planItemMoves: eventMoveList,
+            fixPlanItems: false,
+            ignoreStatusLimitation: false
+        }));
     }
 
     onGetResolveSequenceSuggestion(idItemBatch: number) {
@@ -130,7 +150,11 @@ export class PlanitemsComponent implements OnInit {
     }
 
     onResolveNotWorkingHours(eventMove: PlannedEventMove) {
-        this.store.dispatch(new fromStore.UpdateEvents({planItemMoves: [eventMove], fixPlanItems: true}));
+        this.store.dispatch(new fromStore.UpdateEvents({
+            planItemMoves: [eventMove],
+            fixPlanItems: true,
+            ignoreStatusLimitation: false
+        }));
     }
 
     onGetResolveNotWorkingHoursSuggestion(idPlanItem: number) {
@@ -139,5 +163,21 @@ export class PlanitemsComponent implements OnInit {
 
     onClearNotWorkingHoursSuggestion() {
         this.store.dispatch(new fromStore.ClearNotWorkingHoursPlanItemUpdateSuggestion());
+    }
+
+    onClearTimeRealizationSuggestion() {
+        this.store.dispatch(new fromStore.ClearRealizationTimeUpdateSuggestion());
+    }
+
+    onLoadTimeRealizationSuggestion(request: PlanItemsLoadRequest) {
+        this.store.dispatch(new fromStore.GetRealizationTimeUpdateSuggestion(request));
+    }
+
+    onResolveRealization(eventMoveList: PlannedEventMove[]) {
+        this.store.dispatch(new fromStore.UpdateEvents({
+            planItemMoves: eventMoveList,
+            fixPlanItems: true,
+            ignoreStatusLimitation: true
+        }));
     }
 }

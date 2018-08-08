@@ -1,0 +1,38 @@
+<app-popup
+    title="Predlagane spremembe uskladitve z realizacijo"
+    [visible]="suggestion !== null"
+
+    [confirmCallback]="onResolveRealization"
+    [validToConfirm]="!isEmptySuggestion()"
+    (visibilityChanged)="popupVisibilityChanged($event)"
+>
+    <table *ngIf="planItems && suggestion" class="table">
+        <thead>
+            <tr>
+                <th>Operacija</th>
+                <th>Izvirni podatki</th>
+                <th>Predlagane spremembe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let planItem of planItems">
+                <tr *ngIf="suggestion[planItem.id]">
+                    <td>
+                        <strong>#{{ planItem.subItemCode }} {{ planItem.subItemName }}</strong>
+                        @{{ planItem.itemName }} {{ planItem.articleName }}
+                        
+                    </td>
+                    <td>
+                        {{ planItem.timeStartPreparation | date:"mediumDate" }} {{ planItem.timeStartPreparation | date:"shortTime" }} - 
+                        {{ planItem.endDate | date:"mediumDate" }} {{ planItem.endDate | date:"shortTime" }}
+                    </td>
+                    <td>
+                        {{ suggestion[planItem.id].timeStart | date:"mediumDate" }} {{ suggestion[planItem.id].timeStart | date:"shortTime" }} - 
+                        {{ suggestion[planItem.id].timeEnd | date:"mediumDate" }} {{ suggestion[planItem.id].timeEnd | date:"shortTime" }}
+                    </td>
+                </tr>
+            </ng-container>
+            
+        </tbody>
+    </table>
+</app-popup>

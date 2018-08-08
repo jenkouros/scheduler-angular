@@ -25,8 +25,13 @@ export interface PlanItemPutRequest {
     timeExecutionStart?: Date | string;
     timeExecutionEnd: Date | string;
     comment?: string;
-    fixPlanItem?: boolean;
+    options?: PlanItemPutRequestOptions;
     planItemMoveStatus: PlanItemMoveStatusEnum;
+}
+
+export interface PlanItemPutRequestOptions {
+    fixPlanItem?: boolean;
+    ignoreStatusLimitation?: boolean;
 }
 
 export interface PlanItemCreateRequest {
