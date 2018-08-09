@@ -27,9 +27,6 @@ export class PopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.cancelCallback) {
-      this.cancelCallback = this.onHidding;
-    }
   }
 
   // hide() {
@@ -41,8 +38,9 @@ export class PopupComponent implements OnInit {
   }
 
   onHidding() {
-    this.cancelCallback();
-    // this.visibilityChanged.emit(false);
+    if (this.cancelCallback) {
+      this.cancelCallback();
+    }
   }
 
 }
