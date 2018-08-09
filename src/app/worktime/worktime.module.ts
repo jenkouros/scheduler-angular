@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
+
 // Dx Component
 import {
   DxToolbarModule,
@@ -70,6 +72,7 @@ const routes: Routes = [
     CoreModule,
     CommonModule,
     SharedModule,
+    HttpClientModule,
     DxToolbarModule,
     DxButtonModule,
     DxDateBoxModule,

@@ -11,6 +11,7 @@ export class RRulePipe implements PipeTransform {
     if (!rruleString) {
       return;
     }
+    // return rruleString;
     const rule = RRule.fromString(rruleString);
     return rule.toText(getTextById, slovenian);
   }

@@ -8,16 +8,16 @@ import { Store } from '@ngrx/store';
   template: `
   <app-sub-calendar-popup
   [subCalendar]="(editingSubCalendar$ | async)"
-  [visible]="(visible$ | async)"
+  [visible]="(visible$)"
   (update)="onUpdate($event)"
-  (cancel)="onCancel($event)"
+  (cancel1)="onCancel($event)"
   >
   </app-sub-calendar-popup>
   `
 })
 export class SubCalendarItemComponent implements OnInit {
   editingSubCalendar$: Observable<SubCalendar>;
-  visible$: Observable<boolean>;
+  visible$: boolean;
 
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
@@ -26,7 +26,11 @@ export class SubCalendarItemComponent implements OnInit {
       fromStore.getSubCalendarsEditSelected
     );
 
-    this.visible$ = this.store.select(fromStore.getSubCalendarPopupVisibility);
+    this.store
+      .select(fromStore.getSubCalendarPopupVisibility)
+      .subscribe(visibility => {
+        this.visible$ = visibility;
+      });
   }
 
   onEditing(subCalendar: SubCalendar) {
@@ -35,6 +39,7 @@ export class SubCalendarItemComponent implements OnInit {
   }
 
   onCancel(timetable: SubCalendar) {
+    console.log('onCalcel event');
     this.store.dispatch(new fromStore.DeSelectEditSubCalendar());
     this.store.dispatch(new fromStore.SubCalendarPopupVisible(false));
   }

@@ -1,4 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Observable, observable } from '../../../../../node_modules/rxjs';
 import { SubCalendar, Calendar } from '../../models/calendar.model';
 
@@ -7,6 +12,7 @@ import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-sub-calendar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
   <app-subcalendar-item [subCalendars]="(subCalendars$ | async)"
   (create)="onCreate($event)"
@@ -17,7 +23,8 @@ import { Store } from '@ngrx/store';
   `
 })
 export class SubCalendarComponent implements OnInit {
-  @Input() calendar: Calendar;
+  @Input()
+  calendar: Calendar;
 
   subCalendars$: Observable<SubCalendar[]>;
 

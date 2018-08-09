@@ -1,4 +1,5 @@
 import { RRule, Weekday, Frequency, Options } from 'rrule';
+import { Language } from '../../../../node_modules/rrule/dist/es6/nlp/i18n';
 
 export class RecurrenceRule {
   static Parse(rfcString): any {
@@ -90,7 +91,7 @@ export function getTextById(id: string) {
   return slovenianStrings[id] || id;
 }
 
-export const slovenian = {
+export const slovenian: Language = {
   dayNames: [
     'nedeljo',
     'ponedeljek',
@@ -104,7 +105,8 @@ export const slovenian = {
     'januar',
     'februar'
     // …
-  ]
+  ],
+  tokens: {}
   // `tokens` are only needed for `RRule.fromText`
 };
 

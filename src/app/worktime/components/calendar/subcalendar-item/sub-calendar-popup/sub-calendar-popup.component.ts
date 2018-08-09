@@ -8,12 +8,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { SubCalendar } from '../../../../models/calendar.model';
-import {
-  FormControl,
-  FormGroup,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sub-calendar-popup',
@@ -22,10 +17,14 @@ import {
   styleUrls: ['./sub-calendar-popup.component.css']
 })
 export class SubCalendarPopupComponent implements OnChanges {
-  @Input() subCalendar: SubCalendar;
-  @Input() visible: boolean;
-  @Output() update = new EventEmitter<SubCalendar>();
-  @Output() cancel = new EventEmitter<boolean>();
+  @Input()
+  subCalendar: SubCalendar;
+  @Input()
+  visible: boolean;
+  @Output()
+  update = new EventEmitter<SubCalendar>();
+  @Output()
+  cancel1 = new EventEmitter<boolean>();
 
   exists = false;
   header: string;
@@ -46,7 +45,7 @@ export class SubCalendarPopupComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.exists = false;
     this.form.reset();
-
+    console.log('onchanfes', changes);
     if (this.subCalendar && this.subCalendar.id) {
       this.exists = true;
 
@@ -68,10 +67,11 @@ export class SubCalendarPopupComponent implements OnChanges {
   }
 
   onCancel() {
-    this.cancel.emit(false);
+    console.log('onCancel');
+    this.cancel1.emit(false);
   }
 
   popupVisibility(popupVisible: boolean) {
-    this.cancel.emit(popupVisible);
+    // this.onCancel();
   }
 }
