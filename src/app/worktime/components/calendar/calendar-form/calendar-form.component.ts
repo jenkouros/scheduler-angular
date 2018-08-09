@@ -33,7 +33,7 @@ import { Calendar } from '../../../models/calendar.model';
         <app-field label="Naziv urnika">
           <dx-text-box placeholder="Naziv urnika..."
             formControlName="description"
-            [(isValid)]="!descriptionControlInvalid">
+            [isValid]="!descriptionControlInvalid">
           </dx-text-box>
           <p class="help-block" *ngIf="descriptionControlInvalid">
             Vnesite naziv urnika.
@@ -59,12 +59,17 @@ export class CalendarFormComponent implements OnChanges {
   header: string;
   date = new Date();
 
-  @Input() calendar: Calendar;
-  @Input() visible: boolean;
-  @Output() create = new EventEmitter<Calendar>();
-  @Output() update = new EventEmitter<Calendar>();
+  @Input()
+  calendar: Calendar;
+  @Input()
+  visible: boolean;
+  @Output()
+  create = new EventEmitter<Calendar>();
+  @Output()
+  update = new EventEmitter<Calendar>();
   // @Output() remove = new EventEmitter<Calendar>();
-  @Output() cancel = new EventEmitter<boolean>();
+  @Output()
+  cancel = new EventEmitter<boolean>();
 
   form = this.fb.group({
     description: ['', Validators.required],
