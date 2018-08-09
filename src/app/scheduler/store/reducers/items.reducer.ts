@@ -29,9 +29,10 @@ export const initialState: ItemState = {
 export function itemsReducer(state = initialState, action: fromActions.ItemActions): ItemState {
     switch (action.type) {
         case fromActions.REGISTER_ITEMS_STORE: {
+            const customStore = Object.assign(action.payload);
             return {
                 ...state,
-                itemsStore: action.payload
+                itemsStore: customStore
             };
         }
         case fromActions.LOAD_ITEMS_SUCCESS: {

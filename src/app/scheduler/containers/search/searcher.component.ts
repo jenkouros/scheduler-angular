@@ -4,6 +4,7 @@ import CustomStore from 'devextreme/data/custom_store';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SearchService } from '../../services/search.service';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,16 +13,18 @@ import { Router, ActivatedRoute } from '@angular/router';
         <app-search
             (search)="onSearch($event)"
             (openPlanItemInScheduler)="onOpenInScheduler($event)"
-            [searchItemStore]="searchItemStore$ | async"
-            [searchPlanItemStore]="searchPlanItemStore$ | async">
+            [searchItemStore]="searchItemStore"
+            [searchPlanItemStore]="searchPlanItemStore">
         </app-search>
     `
 })
 export class SearcherComponent implements OnInit {
-    searchItemStore$: Observable<CustomStore | null>;
-    searchPlanItemStore$: Observable<CustomStore | null>;
-
+    // searchItemStore$: Observable<CustomStore | null>;
+    // searchPlanItemStore$: Observable<CustomStore | null>;
+    searchItemStore: CustomStore | null;
+    searchPlanItemStore: CustomStore | null;
     constructor(private store: Store<fromStore.SchedulerState>,
+        private searchService: SearchService,
         private router: Router,
         private route: ActivatedRoute) {}
 
@@ -29,13 +32,17 @@ export class SearcherComponent implements OnInit {
         this.store.dispatch(new fromStore.GetSearchItemsStore(''));
         this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
 
-        this.searchItemStore$ = this.store.pipe(select(fromStore.selectSearchItemStore));
-        this.searchPlanItemStore$ = this.store.pipe(select(fromStore.selectSearchPlanItemStore));
+        this.searchItemStore = this.searchService.getSearchItemsStore('');
+        this.searchPlanItemStore = this.searchService.getSearchPlanItemsStore('');
+        // this.searchItemStore$ = this.store.pipe(select(fromStore.selectSearchItemStore));
+        // this.searchPlanItemStore$ = this.store.pipe(select(fromStore.selectSearchPlanItemStore));
     }
 
     onSearch(search: string) {
-        this.store.dispatch(new fromStore.SearchItemsStore(search));
-        this.store.dispatch(new fromStore.SearchPlanItemsStore(search));
+        this.searchItemStore = this.searchService.getSearchItemsStore(search);
+        this.searchPlanItemStore = this.searchService.getSearchPlanItemsStore(search);
+        // this.store.dispatch(new fromStore.SearchItemsStore(search));
+        // this.store.dispatch(new fromStore.SearchPlanItemsStore(search));
     }
 
     onOpenInScheduler(data: { dateStart: Date, idContainer: number}) {
