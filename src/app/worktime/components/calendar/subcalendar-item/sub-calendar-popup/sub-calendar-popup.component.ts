@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { SubCalendar } from '../../../../models/calendar.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sub-calendar-popup',
@@ -73,5 +73,13 @@ export class SubCalendarPopupComponent implements OnChanges {
 
   popupVisibility(popupVisible: boolean) {
     // this.onCancel();
+  }
+
+  get nameControl() {
+    return this.form.get('name') as FormControl;
+  }
+
+  get nameControlInvalid() {
+    return this.nameControl.invalid; // && this.descriptionControl.touched;
   }
 }

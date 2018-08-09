@@ -4,7 +4,6 @@
 
     [confirmCallback]="onResolveRealization"
     [validToConfirm]="!isEmptySuggestion()"
-    (visibilityChanged)="popupVisibilityChanged($event)"
 >
     <table *ngIf="planItems && suggestion" class="table">
         <thead>

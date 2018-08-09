@@ -23,7 +23,6 @@ import { Calendar } from '../../../models/calendar.model';
   template: `
   <app-popup height="auto" width="600px"
   [visible]="visible"
-  (visibilityChanged)="popupVisibility($event)"
   [cancelCallback]="onCancel"
   [confirmCallback]="onSubmit"
   [title] = "header"

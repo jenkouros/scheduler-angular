@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { DxPopupComponent } from '../../../../../node_modules/devextreme-angular';
 
 @Component({
   selector: 'app-popup',
@@ -6,8 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent implements OnInit {
-
-  @Output() visibilityChanged = new EventEmitter<boolean>();
+  @ViewChild(DxPopupComponent) popup: DxPopupComponent;
   @Input() title: string;
   @Input() visible = false;
 
@@ -23,6 +23,7 @@ export class PopupComponent implements OnInit {
   constructor() {
     // this.hide = this.hide.bind(this);
     this.onHidding = this.onHidding.bind(this);
+    this.hidePopup = this.hidePopup.bind(this);
   }
 
   ngOnInit() {
@@ -34,9 +35,14 @@ export class PopupComponent implements OnInit {
   // hide() {
   //   this.visible = false;
   // }
+  hidePopup() {
+    this.visible = false;
+    this.popup.instance.hide();
+  }
 
   onHidding() {
-    this.visibilityChanged.emit(false);
+    this.cancelCallback();
+    // this.visibilityChanged.emit(false);
   }
 
 }

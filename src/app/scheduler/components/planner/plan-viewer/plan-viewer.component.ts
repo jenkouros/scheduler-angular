@@ -19,7 +19,8 @@ import {
 } from 'devextreme-angular';
 // import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
 import Query from 'devextreme/data/query';
-import * as events from 'devextreme/events';
+// import * as events from 'devextreme/events';
+import { off, on } from 'devextreme/events';
 import { Container } from '../../../models/container.dto';
 import { Store, ActionsSubject } from '@ngrx/store';
 import * as fromStore from '../../../store';
@@ -132,10 +133,13 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
+  constructor() {
+    this.drop = this.drop.bind(this);
+    this.dragEnd = this.dragEnd.bind(this);
+    this.scroll = this.scroll.bind(this);
+  }
+
   ngOnChanges(changes): void {
-    // if (changes.planItems) {
-    //   this.planItems = [...changes.planItems.currentValue];
-    // }
     if (changes.selectedPreplanItem) {
       this.showAvailableContainers(this.selectedPreplanItem, 'allowed');
     }
@@ -206,8 +210,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     if (!collapsingObject.isCollapsing || collapsingObject.data.length === 0) {
       return styleObject;
     }
-    // styleObject['left-margin'] = `${collapsingObject.startMarginProcent}%`;
-    // styleObject['width'] = `${collapsingObject.durationMarginProcent}%`;
     styleObject['background'] = ColorHelper.getGradient(
       collapsingObject.data,
       this.isViewHorizontal((<any>this.scheduler.instance)._currentView),
@@ -216,7 +218,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     );
     styleObject['height'] = '100%';
     styleObject['margin'] = '-1px';
-    // styleObject['background-color'] = 'rgba(86, 202, 133, 0.1)';
     styleObject['background-position'] = 'center center';
     styleObject['background-repeat'] = 'no-repeat';
     return styleObject;
@@ -305,6 +306,113 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     }
   }
 
+
+  dragEnd(e) {
+    this.removeAppointmentCss(e.target, 'dx-scheduler-appointment-move');
+  }
+
+  dragEnter(e) {
+    e.target.classList.add('dx-scheduler-appointment-move');
+  }
+
+  dragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.add('dx-scheduler-date-table-droppable-cell');
+  }
+
+  dragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.remove('dx-scheduler-date-table-droppable-cell');
+  }
+
+  drop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (e.type === 'drop') {
+      const el = e.target;
+      if (el.classList.contains('dx-scheduler-date-table-cell')) {
+        if (el.classList.contains('dx-scheduler-date-table-droppable-cell')) {
+          el.classList.remove('dx-scheduler-date-table-droppable-cell');
+        }
+        const cellData = (<any>this.scheduler.instance)
+          .getWorkSpace()
+          .getCellData([el]);
+        if (cellData.groups === undefined) {
+          return false;
+        }
+
+        const draggedData: PreplanItem = JSON.parse(
+          e.dataTransfer.getData('prePlanItem')
+        );
+
+        const containers: SubItemContainer[] = draggedData.containers.map(c =>
+          Object.assign(new SubItemContainer(), c, {
+            container: Object.assign(new Container(), c.container)
+          })
+        );
+
+        const preplanItem: PreplanItem = {
+          ...new PreplanItem(),
+          ...draggedData,
+          containers: containers
+        };
+
+        if (draggedData !== undefined) {
+          const selectedContainer = draggedData.containers.find(
+            item => cellData.groups.containerId === item.container.id
+          );
+
+          if (selectedContainer === undefined) {
+            this.showToast(
+              'Info',
+              'Na delovno mesto ni možno planirati operacije!',
+              'info'
+            );
+            return false;
+          }
+          const calculatedStartTime = this.getCalculatedStartTimeInCell(
+            cellData.groups.containerId,
+            cellData.startDate,
+            cellData.endDate
+          );
+          const duration =
+            selectedContainer.preparationNormative +
+            selectedContainer.executionNormative * draggedData.quantity;
+          const plannedEvent = PlannedEvent.createFromPreplanitem(
+            draggedData.id,
+            cellData.groups.containerId,
+            draggedData.subItem.code,
+            '',
+            draggedData.subItem.name,
+            calculatedStartTime,
+            moment(calculatedStartTime)
+              .add(selectedContainer.preparationNormative, 'm')
+              .toDate(),
+            moment(calculatedStartTime)
+              .add(duration, 'm')
+              .toDate(),
+            containers,
+            draggedData.quantity,
+            draggedData.unit.code,
+            false
+          );
+          this.planItemEditing = plannedEvent;
+          this.planItemEditMode = true;
+        }
+      }
+    }
+  }
+
+  scroll(e) {
+    this.offset = {
+      top: e.scrollOffset.top || 0,
+      left: e.scrollOffset.left || 0
+    };
+  }
+
   onContentReady(event) {
     if (this.currentView === 'agenda') {
       (<any>this.scheduler).instance.getWorkSpace().option('rowHeight', 75);
@@ -314,156 +422,26 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     const scrollable = Scrollable.getInstance(
       (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
     );
-    scrollable.on('scroll', e => {
-      this.offset = {
-        top: e.scrollOffset.top || 0,
-        left: e.scrollOffset.left || 0
-      };
-      // console.log(this.offset);
-    });
+    scrollable.off('scroll', scroll);
+    scrollable.on('scroll', scroll);
 
-    const plannedItemsEl = (<any>(
-      this.scheduler
-    )).element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
+    const plannedItemsEl = (<any>(this.scheduler)).element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
     for (let i = 0; i < plannedItemsEl.length; i++) {
-      events.off(plannedItemsEl[i], 'dxdragenter', e => {
-        this.removeAppointmentCss(e.target, 'dx-scheduler-appointment-move');
-      });
-      /*
-      events.off(plannedItemsEl[i], 'dxdragleave');
-      events.on(plannedItemsEl[i], 'dxdragleave', (e) => {
-        setTimeout(() => {
-          this.removeAppointmentCss(
-                    e.target,
-                    'dx-scheduler-appointment-move'
-                  );
-        });
-      });
-      */
-      events.on(plannedItemsEl[i], 'dxdragend', e => {
-        this.removeAppointmentCss(e.target, 'dx-scheduler-appointment-move');
-      });
-
-      events.on(plannedItemsEl[i], 'dxdragenter', e => {
-        e.target.classList.add('dx-scheduler-appointment-move');
-
-        /*
-        const f = this.findParentBySelector(
-          e.target,
-          '.dx-scheduler-appointment'
-        );
-
-        if (f) {
-          f.classList.add('dx-scheduler-appointment-move');
-        }
-        */
-      });
+      off(plannedItemsEl[i], 'dxdragenter', this.dragEnter);
+      off(plannedItemsEl[i], 'dxdragend', this.dragEnd);
+      on(plannedItemsEl[i], 'dxdragend', this.dragEnd);
+      on(plannedItemsEl[i], 'dxdragenter', this.dragEnter);
     }
-    const elements = (<any>(
-      this.scheduler
-    )).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
+
+    const elements = (<any>(this.scheduler)).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
     for (let i = 0; i < elements.length; i++) {
-      // events.off(elements[i], 'drop');
-      // events.off(elements[i], 'dragover');
-      // events.off(elements[i], 'dragleave');
+      off(elements[i], 'drop', this.drop);
+      off(elements[i], 'dragover', this.dragOver);
+      off(elements[i], 'dragleave', this.dragLeave);
 
-      events.on(elements[i], 'dragover', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.target.classList.add('dx-scheduler-date-table-droppable-cell');
-      });
-
-      events.on(elements[i], 'dragleave', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.target.classList.remove('dx-scheduler-date-table-droppable-cell');
-      });
-
-      events.on(elements[i], 'drop', e => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (e.type === 'drop') {
-          const el = e.target;
-          if (el.classList.contains('dx-scheduler-date-table-cell')) {
-            if (
-              el.classList.contains('dx-scheduler-date-table-droppable-cell')
-            ) {
-              el.classList.remove('dx-scheduler-date-table-droppable-cell');
-            }
-
-            const cellData = (<any>this.scheduler.instance)
-              .getWorkSpace()
-              .getCellData([el]);
-            if (cellData.groups === undefined) {
-              return false;
-            }
-
-            const draggedData: PreplanItem = JSON.parse(
-              e.dataTransfer.getData('prePlanItem')
-            );
-
-            const containers: SubItemContainer[] = draggedData.containers.map(
-              c =>
-                Object.assign(new SubItemContainer(), c, {
-                  container: Object.assign(new Container(), c.container)
-                })
-            );
-
-            const preplanItem: PreplanItem = {
-              ...new PreplanItem(),
-              ...draggedData,
-              containers: containers
-            };
-
-            if (draggedData !== undefined) {
-              const selectedContainer = draggedData.containers.find(
-                item => cellData.groups.containerId === item.container.id
-              );
-
-              if (selectedContainer === undefined) {
-                this.showToast(
-                  'Info',
-                  'Na delovno mesto ni možno planirati operacije!',
-                  'info'
-                );
-                return false;
-              }
-              const calculatedStartTime = this.getCalculatedStartTimeInCell(
-                cellData.groups.containerId,
-                cellData.startDate,
-                cellData.endDate
-              );
-              console.log(calculatedStartTime);
-              console.log(cellData.startDate);
-              const duration =
-                selectedContainer.preparationNormative +
-                selectedContainer.executionNormative * draggedData.quantity;
-              const plannedEvent = PlannedEvent.createFromPreplanitem(
-                draggedData.id,
-                cellData.groups.containerId,
-                draggedData.subItem.code,
-                '',
-                draggedData.subItem.name,
-                calculatedStartTime,
-                moment(calculatedStartTime)
-                  .add(selectedContainer.preparationNormative, 'm')
-                  .toDate(),
-                moment(calculatedStartTime)
-                  .add(duration, 'm')
-                  .toDate(),
-                containers,
-                draggedData.quantity,
-                draggedData.unit.code,
-                false
-              );
-              this.planItemEditing = plannedEvent;
-              this.planItemEditMode = true;
-              // this.scheduler.instance.showAppointmentPopup(plannedEvent, false);
-            }
-          }
-        }
-      });
+      on(elements[i], 'dragover', this.dragOver);
+      on(elements[i], 'dragleave', this.dragLeave);
+      on(elements[i], 'drop', this.drop);
     }
   }
 

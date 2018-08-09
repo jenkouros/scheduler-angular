@@ -7,6 +7,7 @@ import {
 import * as fromScheduler from '../scheduler/store';
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
+import * as fromWorktime from '../worktime/store';
 
 export interface RouterStateUrl {
   url: string;
@@ -15,30 +16,15 @@ export interface RouterStateUrl {
 }
 
 export interface AppState {
+  router: fromRouter.RouterReducerState<RouterStateUrl>;
   scheduler: fromScheduler.SchedulerState;
-  routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
-export function defaultReducer<T>(state: T) {
-  return state;
-}
-/*
-export const initialReducerMap = {
-    scheduler: defaultReducer
-} as ActionReducerMap<AppState>;
-*/
-export function getInitialState() {
-  return {
-    scheduler: fromScheduler.getInitialState()
-  };
-}
-export const getRouterState = createFeatureSelector<
-  fromRouter.RouterReducerState<RouterStateUrl>
->('routerReducer');
+export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
 
 export const initialReducerMap: ActionReducerMap<AppState> = {
-  scheduler: fromScheduler.getInitialState,
-  routerReducer: fromRouter.routerReducer
+  router: fromRouter.routerReducer,
+  scheduler: fromScheduler.getInitialState
 };
 
 export class CustomSerializer

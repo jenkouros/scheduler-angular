@@ -51,7 +51,7 @@ export class ScheduleContainersComponent implements OnInit {
     this.isRemovingEnabled = keys.length > 0;
   }
 
-  onRemoveItems(item: Container) {
+  onRemoveItems() {
     this.remove.emit({
       id: this.selectedSubCalendar.id,
       containersIds: this.toRemoveContainers
