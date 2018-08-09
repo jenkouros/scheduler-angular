@@ -25,7 +25,7 @@ import 'devextreme-intl';
 import * as messagesSl from './shared/localization/sl.json';
 import { SignalRService } from './scheduler/services/signalr.service';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
-import { storeFreeze } from 'ngrx-store-freeze';
+
 
 loadMessages(messagesSl);
 // Set locale according the browser language
@@ -46,12 +46,15 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     HttpClientModule,
     AppRouterModule,
-    StoreModule.forRoot(initialReducerMap, { metaReducers }),
+    StoreModule.forRoot(initialReducerMap),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router'
     }),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    /*!environment.production ? */ StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }) /*: []*/,
     FontAwesomeModule
   ],
   providers: [
