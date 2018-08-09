@@ -1,6 +1,6 @@
 <app-popup height="auto" width="70%" 
   [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
-  [visible]="visible" 
+  [visible]="visible && itemHierarchy" 
   [cancelCallback]="hideItemInfo" 
   [confirmCallback]="onSubmit"
   [validToConfirm]="createPreplanItemsForm.valid">
