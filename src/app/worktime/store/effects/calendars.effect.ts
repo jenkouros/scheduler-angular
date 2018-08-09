@@ -89,7 +89,10 @@ export class CalendarsEffects {
 
   @Effect()
   calendarSubCalendarSuccess$ = this.actions$
-    .ofType(fromActions.CREATE_SUBCALENDAR_SUCCESS)
+    .ofType(
+      fromActions.CREATE_SUBCALENDAR_SUCCESS,
+      fromActions.UPDATE_SUBCALENDAR_SUCCESS
+    )
     .pipe(
       // tap(() => this.notify.notifySuccess('Urnik je bil uspešno kreiran.')),
       map((action: fromActions.CreateSubCalendarSuccess) => {

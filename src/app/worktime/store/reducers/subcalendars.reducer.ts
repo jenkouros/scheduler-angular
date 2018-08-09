@@ -4,6 +4,8 @@ import { Calendar, SubCalendar } from '../../models/calendar.model';
 export interface SubCalendarsState {
   entities: { [id: number]: SubCalendar };
   selectedId: number;
+  editingId: number;
+  popupVisible: boolean;
   loading: boolean;
   loaded: boolean;
 }
@@ -11,8 +13,10 @@ export interface SubCalendarsState {
 export const initialState: SubCalendarsState = {
   entities: {},
   selectedId: 0,
+  editingId: 0,
   loading: false,
-  loaded: false
+  loaded: false,
+  popupVisible: false
 };
 
 // create reducer
@@ -85,6 +89,26 @@ export function reducer(
         selectedId: id
       };
     }
+    case fromSubCalendars.SELECT_EDIT_SUBCALENDAR: {
+      return {
+        ...state,
+        editingId: action.payload
+      };
+    }
+    case fromSubCalendars.DESELECT_EDIT_SUBCALENDAR: {
+      return {
+        ...state,
+        editingId: 0
+      };
+    }
+    case fromSubCalendars.SUBCALENDAR_POPUP_VISIBLE: {
+      const popupVisible = action.payload;
+
+      return {
+        ...state,
+        popupVisible
+      };
+    }
   }
   return state;
 }
@@ -97,3 +121,7 @@ export const getSubCalendarsLoading = (state: SubCalendarsState) =>
 export const getSubCalendarsLoaded = (state: SubCalendarsState) => state.loaded;
 export const getSubCalendarsSelectedId = (state: SubCalendarsState) =>
   state.selectedId;
+export const getSubCalendarsEditingId = (state: SubCalendarsState) =>
+  state.editingId;
+export const getSubCalendarPopupVisibility = (state: SubCalendarsState) =>
+  state.popupVisible;

@@ -15,10 +15,9 @@ import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-an
 @Component({
   selector: 'app-calendars',
   template: `
-  <div class="container">
-    <dx-toolbar [items]="items">
+  <div class="mx-2">
+    <dx-toolbar [items]="items" class="mb-2 active">
     </dx-toolbar>
-
     <dx-scroll-view #scrollElement [height]="height">
 
         <app-calendar-item *ngFor="let calendar of  (calendars$ | async)"
@@ -38,7 +37,7 @@ import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-an
         </app-calendar-form>
 
      </dx-scroll-view>
-
+  </div>
   `,
   styleUrls: ['./calendars.component.css']
 })
@@ -50,7 +49,8 @@ export class CalendarsComponent implements OnInit, AfterContentInit {
   visible$: Observable<boolean>;
   height: number;
 
-  @ViewChild(DxScrollViewComponent) scrollbar: DxScrollViewComponent;
+  @ViewChild(DxScrollViewComponent)
+  scrollbar: DxScrollViewComponent;
 
   constructor(
     private store: Store<fromStore.WorkTimeState>,

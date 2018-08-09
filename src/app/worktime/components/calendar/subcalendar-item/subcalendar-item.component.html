@@ -1,11 +1,19 @@
 <input class="new-schedule" placeholder="Nov urnik?" autofocus="" (keyup.enter)="addSubCalendar($event)">
 <ul class="schedule-list">
+
   <li class="nav-item" *ngFor="let item of subCalendars, let i=index">
+
     <a class="nav-link" [routerLink]="['./schedule', item.id]" routerLinkActive='active'>
       <span class="badge badge-secondary">{{i+1}}</span> {{item.name}}
     </a>
-    <button class="destroy" (click)="removeSubCalendar(item)">
-      <fa-icon [icon]="iconDelete"></fa-icon>
-    </button>
+    <div class="toolbar">
+      <button class="toolbar-button" (click)="editSubCalendar(item)">
+        <fa-icon [icon]="iconEdit"></fa-icon>
+      </button>
+      <button class="toolbar-button" (click)="removeSubCalendar(item)">
+        <fa-icon [icon]="iconDelete"></fa-icon>
+      </button>
+    </div>
+
   </li>
 </ul>

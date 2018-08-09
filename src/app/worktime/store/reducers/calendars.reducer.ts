@@ -96,14 +96,23 @@ export function reducer(
     }
     case fromCalendars.UPDATE_CALENDAR_SUBCALENDAR: {
       const item = action.payload;
+      const sc = [...state.entities[item.idCalendar].subCalendars];
+      const indexSubCalendar = sc.findIndex(s => s.id === item.id);
+
+      if (indexSubCalendar > -1) {
+        sc[indexSubCalendar] = { ...item };
+      } else {
+        sc.push(item);
+      }
+
       const subcalendars = [
         ...state.entities[item.idCalendar].subCalendars,
         item
       ];
-      console.log(subcalendars);
+      console.log(sc);
       const calendar = {
         ...state.entities[item.idCalendar],
-        subCalendars: subcalendars
+        subCalendars: sc
       };
       const entities = {
         ...state.entities,

@@ -37,11 +37,15 @@ a.nav-link.active {
 .schedule-list li:last-child {
   border-bottom: none;
 }
-
+/*
 .schedule-list li .destroy:hover {
   color: black;
 }
+*/
 
+.schedule-list li .toolbar-button:hover {
+  color: black;
+}
 .schedule-list li {
   position: relative;
   font-size: 14px;
@@ -56,16 +60,43 @@ a.nav-link.active {
   display: block;
 }
 
+.schedule-list li:hover .toolbar-button {
+  display: block;
+}
+
+.edit {
+  margin: 0px;
+}
+/*
 .schedule-list li .destroy {
   display: none;
   position: absolute;
-  right: 10px;
+  right: 5px;
   bottom: 0;
   margin: auto 0;
   vertical-align: middle;
   color: #858484;
   transition: color 0.2s ease-out;
   cursor: pointer;
+  padding: 5px;
+}
+*/
+
+.schedule-list li .toolbar-button {
+  display: none;
+  float: left;
+  color: #858484;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
+  padding-left: 5px;
+}
+.schedule-list li .toolbar {
+  display: block;
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  margin: auto 0;
+  padding: 5px;
 }
 
 button {

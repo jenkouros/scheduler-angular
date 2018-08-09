@@ -1,7 +1,8 @@
 import {
   CalendarItemComponent,
   CalendarFormComponent,
-  SubCalendarItemComponent
+  SubCalendarItemComponent,
+  SubCalendarPopupComponent
 } from './calendar';
 import { WorktimeComponent } from './worktime.component';
 import { ScheduleContainersComponent } from './schedule/schedule-containers/schedule-containers.component';
@@ -17,7 +18,8 @@ export const components: any[] = [
   ScheduleContainersComponent,
   ScheduleEventsComponent,
   ScheduleEventPopupComponent,
-  ContainersListComponent
+  ContainersListComponent,
+  SubCalendarPopupComponent
 ];
 
 export * from './calendar';

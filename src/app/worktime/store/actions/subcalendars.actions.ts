@@ -84,6 +84,27 @@ export class SelectSubCalendar implements Action {
   constructor(public payload: number) {}
 }
 
+// editing: select, deselect
+export const SELECT_EDIT_SUBCALENDAR = '[WorkTime] Select Edit SubCalendar';
+export const DESELECT_EDIT_SUBCALENDAR = '[WorkTime] DeSelect Edit SubCalendar';
+
+export class SelectEditSubCalendar implements Action {
+  readonly type = SELECT_EDIT_SUBCALENDAR;
+  constructor(public payload: number) {}
+}
+
+export class DeSelectEditSubCalendar implements Action {
+  readonly type = DESELECT_EDIT_SUBCALENDAR;
+}
+
+// popup subcalendar
+export const SUBCALENDAR_POPUP_VISIBLE = '[WorkTime] Show subcalendar popup';
+
+export class SubCalendarPopupVisible implements Action {
+  readonly type = SUBCALENDAR_POPUP_VISIBLE;
+  constructor(public payload: boolean) {}
+}
+
 // calendars types
 export type SubCalendarsActions =
   | LoadSubCalendars
@@ -98,4 +119,7 @@ export type SubCalendarsActions =
   | RemoveSubCalendar
   | RemoveSubCalendarSuccess
   | RemoveSubCalendarFail
-  | SelectSubCalendar;
+  | SelectSubCalendar
+  | SubCalendarPopupVisible
+  | SelectEditSubCalendar
+  | DeSelectEditSubCalendar;

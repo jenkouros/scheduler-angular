@@ -90,7 +90,6 @@ export function reducer(
       };
     }
     case fromTimeTables.SELECT_TIMETABLE: {
-      console.log('selected', action.payload);
       return {
         ...state,
         selectedId: action.payload

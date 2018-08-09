@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
+
 // Dx Component
 import {
   DxToolbarModule,
@@ -29,12 +31,12 @@ import * as fromServices from './services';
 import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
-import * as fromCalendars from './store/reducers/calendars.reducer';
 import { reducers, effects } from './store';
 import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { RRulePipe } from './pipes/rrule.pipe';
+import { SubCalendarItemComponent } from './containers/sub-calendar/sub-calendar-item/sub-calendar-item.component';
 
 const routes: Routes = [
   {
@@ -63,12 +65,14 @@ const routes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
-    RRulePipe
+    RRulePipe,
+    SubCalendarItemComponent
   ],
   imports: [
     CoreModule,
     CommonModule,
     SharedModule,
+    HttpClientModule,
     DxToolbarModule,
     DxButtonModule,
     DxDateBoxModule,
