@@ -24,7 +24,7 @@ export class SubCalendarPopupComponent implements OnChanges {
   @Output()
   update = new EventEmitter<SubCalendar>();
   @Output()
-  cancel1 = new EventEmitter<boolean>();
+  cancel = new EventEmitter<boolean>();
 
   exists = false;
   header: string;
@@ -68,7 +68,7 @@ export class SubCalendarPopupComponent implements OnChanges {
 
   onCancel() {
     console.log('onCancel');
-    this.cancel1.emit(false);
+    this.cancel.emit(false);
   }
 
   popupVisibility(popupVisible: boolean) {

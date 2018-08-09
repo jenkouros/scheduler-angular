@@ -3,6 +3,7 @@ import { SubCalendar } from '../../../models/calendar.model';
 import { Observable } from 'rxjs';
 import * as fromStore from '../../../store';
 import { Store } from '@ngrx/store';
+
 @Component({
   selector: 'app-sub-calendar-item',
   template: `
@@ -10,7 +11,7 @@ import { Store } from '@ngrx/store';
   [subCalendar]="(editingSubCalendar$ | async)"
   [visible]="(visible$)"
   (update)="onUpdate($event)"
-  (cancel1)="onCancel($event)"
+  (cancel)="onCancel($event)"
   >
   </app-sub-calendar-popup>
   `

@@ -20,6 +20,8 @@ import { Store } from '@ngrx/store';
   (remove)="onRemove($event)">
   </app-subcalendar-item>
   <app-sub-calendar-item></app-sub-calendar-item>
+
+
   `
 })
 export class SubCalendarComponent implements OnInit {

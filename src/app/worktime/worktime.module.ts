@@ -36,8 +36,6 @@ import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { RRulePipe } from './pipes/rrule.pipe';
-import { SubCalendarItemComponent } from './containers/sub-calendar/sub-calendar-item/sub-calendar-item.component';
-import { SubCalendarDeletePopupComponent } from './components/calendar/subcalendar-item/sub-calendar-delete-popup/sub-calendar-delete-popup.component';
 
 const routes: Routes = [
   {
@@ -66,9 +64,7 @@ const routes: Routes = [
   declarations: [
     ...fromContainers.containers,
     ...fromComponents.components,
-    RRulePipe,
-    SubCalendarItemComponent,
-    SubCalendarDeletePopupComponent
+    RRulePipe
   ],
   imports: [
     CoreModule,
