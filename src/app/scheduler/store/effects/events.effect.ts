@@ -17,6 +17,8 @@ import { EventsService } from '../../services/events.service';
 import { ContainersService } from '../../services/containers.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
+import { SchedulerState } from '../reducers';
+
 // import { ContainersService, EventsService } from '../../services';
 
 @Injectable()

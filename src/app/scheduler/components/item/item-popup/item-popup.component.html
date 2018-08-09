@@ -3,8 +3,7 @@
   [visible]="visible" 
   [cancelCallback]="hideItemInfo" 
   [confirmCallback]="onSubmit"
-  [validToConfirm]="createPreplanItemsForm.valid"
-  (visibilityChanged)="popupVisibilityChanged($event)" >
+  [validToConfirm]="createPreplanItemsForm.valid">
 
   <div *ngIf="itemHierarchy && itemHierarchy?.item">
     <div class="row">

@@ -23,7 +23,6 @@ import { Calendar } from '../../../models/calendar.model';
   template: `
   <app-popup height="auto" width="600px"
   [visible]="visible"
-  (visibilityChanged)="popupVisibility($event)"
   [cancelCallback]="onCancel"
   [confirmCallback]="onSubmit"
   [title] = "header"
@@ -33,7 +32,7 @@ import { Calendar } from '../../../models/calendar.model';
         <app-field label="Naziv urnika">
           <dx-text-box placeholder="Naziv urnika..."
             formControlName="description"
-            [(isValid)]="!descriptionControlInvalid">
+            [isValid]="!descriptionControlInvalid">
           </dx-text-box>
           <p class="help-block" *ngIf="descriptionControlInvalid">
             Vnesite naziv urnika.
