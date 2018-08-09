@@ -10,7 +10,7 @@ import * as fromStore from '../store';
 import { Calendar } from '../models/calendar.model';
 
 @Injectable()
-export class CalendarsGuard implements CanActivate, CanActivateChild {
+export class CalendarsGuard implements CanActivate {
   constructor(
     private store: Store<fromStore.WorkTimeState>,
     private router: Router
@@ -23,10 +23,6 @@ export class CalendarsGuard implements CanActivate, CanActivateChild {
     );
   }
 
-  canActivateChild(): Observable<boolean> {
-    return this.isCalenderSelected();
-  }
-
   checkStore(): Observable<boolean> {
     return this.store.select(fromStore.getCalendarsLoaded).pipe(
       // gets loaded prop
@@ -37,27 +33,6 @@ export class CalendarsGuard implements CanActivate, CanActivateChild {
       }),
       // continue stream (tap is ignored), ko je loaded==true se stream nadaljuje
       filter(loaded => loaded),
-      // take loaded prop an call observable compete!, izvede se unsubscribe
-      take(1)
-    );
-  }
-
-  isCalenderSelected(): Observable<boolean> {
-    return this.store.select(fromStore.getSubCalendarsSelectedId).pipe(
-      // gets loaded prop
-      tap(selectedId => {
-        console.log('selectedId', `schedule/${selectedId}`);
-        if (selectedId > 0) {
-          console.log('selectedId', `schedule/${selectedId}`);
-          this.router.navigate([`timetables/schedule/${selectedId}`]);
-        } else {
-          this.router.navigate([`timetables`]);
-        }
-      }),
-      // continue stream (tap is ignored), ko je loaded==true se stream nadaljuje
-      switchMap(selectedId => {
-        return of(true);
-      }),
       // take loaded prop an call observable compete!, izvede se unsubscribe
       take(1)
     );
