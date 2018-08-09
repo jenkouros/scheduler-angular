@@ -30,7 +30,11 @@ import { Container } from '../../../scheduler/models/container.dto';
       ></app-schedule-events>
     </div>
   </div>
-  <div *ngIf="!isSubCalendarSelected">TODO: komponenta za obvestilo, da je treba izbrati urnik</div>
+  <div *ngIf="!isSubCalendarSelected">
+    <div class="alert alert-primary" role="alert">
+      Za prikaz je treba je izbrati urnik v levem meniju.
+    </div>
+  </div>
   `
 })
 export class ScheduleDetailComponent implements OnInit {

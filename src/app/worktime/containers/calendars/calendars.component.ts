@@ -15,11 +15,13 @@ import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-an
 @Component({
   selector: 'app-calendars',
   template: `
-  <div class="mx-2">
-    <dx-toolbar [items]="items" class="mb-2 active">
+  <div class="mx-2 mb-2">
+    <dx-toolbar [items]="items" class="dx-toolbar">
     </dx-toolbar>
+    <hr class="mb-1 mt-3">
+    </div>
     <dx-scroll-view #scrollElement [height]="height">
-
+      <div class="mx-2">
         <app-calendar-item *ngFor="let calendar of  (calendars$ | async)"
         [calendar]="calendar"
         (remove)="onRemove($event)"
@@ -35,9 +37,8 @@ import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-an
         (cancel)="onCancel($event)"
         >
         </app-calendar-form>
-
+      </div>
      </dx-scroll-view>
-  </div>
   `,
   styleUrls: ['./calendars.component.css']
 })
