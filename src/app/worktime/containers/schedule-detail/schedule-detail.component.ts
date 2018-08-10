@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { SubCalendar, SelectedContainers } from '../../models/calendar.model';
-import { TimeTable, TimeTableType } from '../../models/timetable.model';
+import { TimeTable } from '../../models/timetable.model';
 
 import * as fromStore from '../../store';
 import { Container } from '../../../scheduler/models/container.dto';
@@ -25,7 +25,7 @@ import { Container } from '../../../scheduler/models/container.dto';
       <app-schedule-events
         [timeTables]="(timetables$ | async)"
         (add)=onAdd($event)
-        (remove)="onRemove($event)"
+        (remove)="onConfirmBeforeRemove($event)"
         (select)=onSelected($event)
       ></app-schedule-events>
     </div>
@@ -35,6 +35,13 @@ import { Container } from '../../../scheduler/models/container.dto';
       Za prikaz je treba je izbrati urnik v levem meniju.
     </div>
   </div>
+
+  <app-schedule-delete-popup
+  [timetable]="timetable"
+  [visible]="(isDeletePopupVisible$ |async)"
+  (confirm)="onConfirmRemove($event)"
+  (cancel)="onCancelRemove()">
+  </app-schedule-delete-popup>
   `
 })
 export class ScheduleDetailComponent implements OnInit {
@@ -42,7 +49,9 @@ export class ScheduleDetailComponent implements OnInit {
   avalableContainers$: Observable<Container[]>;
   selectedContainers$: Observable<Container[]>;
   selectedSubCalendar$: Observable<SubCalendar>;
+  isDeletePopupVisible$: Observable<boolean>;
   isSubCalendarSelected = false;
+  timetable: TimeTable | null;
 
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
@@ -61,6 +70,9 @@ export class ScheduleDetailComponent implements OnInit {
     this.selectedSubCalendar$.subscribe(item => {
       this.isSubCalendarSelected = item ? item.id > 0 : false;
     });
+    this.isDeletePopupVisible$ = this.store.select(
+      fromStore.getDeleteTimeTablePopupVisibility
+    );
   }
 
   addToSelected(selected: SelectedContainers) {
@@ -76,10 +88,19 @@ export class ScheduleDetailComponent implements OnInit {
     console.log(openPopup);
     this.store.dispatch(new fromStore.TimeTablePopupVisible(openPopup));
   }
-
-  onRemove(timetable: TimeTable) {
-    console.log('remove');
-    this.store.dispatch(new fromStore.RemoveTimeTable(timetable));
+  onConfirmBeforeRemove(timetable: TimeTable) {
+    this.timetable = timetable;
+    this.store.dispatch(new fromStore.TimeTableDeletePopupVisible(true));
+  }
+  onCancelRemove() {
+    this.timetable = null;
+    this.store.dispatch(new fromStore.TimeTableDeletePopupVisible(false));
+  }
+  onConfirmRemove(timetable: TimeTable) {
+    if (timetable) {
+      this.store.dispatch(new fromStore.RemoveTimeTable(timetable));
+      this.timetable = null;
+    }
   }
 
   onSelected(id: number) {

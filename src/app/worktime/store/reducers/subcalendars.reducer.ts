@@ -8,6 +8,7 @@ export interface SubCalendarsState {
   popupVisible: boolean;
   loading: boolean;
   loaded: boolean;
+  isDeletePopupVisible: boolean;
 }
 
 export const initialState: SubCalendarsState = {
@@ -16,7 +17,8 @@ export const initialState: SubCalendarsState = {
   editingId: 0,
   loading: false,
   loaded: false,
-  popupVisible: false
+  popupVisible: false,
+  isDeletePopupVisible: false
 };
 
 // create reducer
@@ -109,6 +111,13 @@ export function reducer(
         popupVisible
       };
     }
+    case fromSubCalendars.SUBCALENDAR_DELETE_POPUP_VISIBLE: {
+      console.log(action.payload);
+      return {
+        ...state,
+        isDeletePopupVisible: action.payload
+      };
+    }
   }
   return state;
 }
@@ -125,3 +134,5 @@ export const getSubCalendarsEditingId = (state: SubCalendarsState) =>
   state.editingId;
 export const getSubCalendarPopupVisibility = (state: SubCalendarsState) =>
   state.popupVisible;
+export const getSubCalendarDeletePopupVisibility = (state: SubCalendarsState) =>
+  state.isDeletePopupVisible;

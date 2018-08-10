@@ -17,30 +17,51 @@ import { Store } from '@ngrx/store';
   <app-subcalendar-item [subCalendars]="(subCalendars$ | async)"
   (create)="onCreate($event)"
   (editing)="onEditing($event)"
-  (remove)="onRemove($event)">
+  (remove)="confirmDelete($event)">
   </app-subcalendar-item>
+
   <app-sub-calendar-item></app-sub-calendar-item>
 
+  <app-sub-calendar-delete-popup
+  [subCalendar]="subCalendar"
+  [visible]="(isDeletePopupVisible$ |async)"
+  (confirm)="onConfirmRemove($event)"
+  (cancel)="onCancelRemove()">
+  </app-sub-calendar-delete-popup>
 
   `
 })
 export class SubCalendarComponent implements OnInit {
   @Input()
   calendar: Calendar;
-
   subCalendars$: Observable<SubCalendar[]>;
-
+  isDeletePopupVisible$: Observable<boolean>;
+  subCalendar: SubCalendar | null;
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   ngOnInit() {
     this.subCalendars$ = this.store.select(
       fromStore.getSubCalendars(this.calendar.id)
     );
+    this.isDeletePopupVisible$ = this.store.select(
+      fromStore.getDeleteSubCalendarPopupVisibility
+    );
+  }
+  confirmDelete(subCalendar: SubCalendar) {
+    this.subCalendar = subCalendar;
+    this.store.dispatch(new fromStore.SubCalendarDeletePopupVisible(true));
   }
 
-  onRemove(subCalendar: SubCalendar) {
-    this.store.dispatch(new fromStore.RemoveSubCalendar(subCalendar));
-    console.log('remove subcalnedar');
+  onConfirmRemove(subCalendar: SubCalendar) {
+    if (subCalendar) {
+      this.store.dispatch(new fromStore.RemoveSubCalendar(subCalendar));
+      this.subCalendar = null;
+    }
+  }
+
+  onCancelRemove() {
+    this.subCalendar = null;
+    this.store.dispatch(new fromStore.SubCalendarDeletePopupVisible(false));
   }
 
   onCreate(name: string) {

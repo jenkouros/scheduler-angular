@@ -1,5 +1,5 @@
-<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel"
-  [confirmCallback]="onSubmit" [title]="header">
+<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel" [confirmCallback]="onSubmit" [title]="header"
+  [validToConfirm]="validToConfirm()">
   <!--  <p>{{timetable |json}}</p>-->
   <form [formGroup]="form">
     <div class="dx-fieldset">

@@ -77,4 +77,13 @@ export class TimeTablesEffects {
         return new fromActions.TimeTablePopupVisible(false);
       })
     );
+
+  @Effect()
+  removeTimeTableSuccess$ = this.actions$
+    .ofType(fromActions.REMOVE_TIMETABLE_SUCCESS)
+    .pipe(
+      map(() => {
+        return new fromActions.TimeTableDeletePopupVisible(false);
+      })
+    );
 }

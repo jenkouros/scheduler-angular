@@ -42,6 +42,7 @@ export class ScheduleEventComponent implements OnInit {
     this.store.dispatch(new fromStore.CreateTimeTable(timetable));
   }
   onUpdate(timetable: TimeTable) {
+    console.log('update');
     this.store.dispatch(new fromStore.UpdateTimeTable(timetable));
   }
 

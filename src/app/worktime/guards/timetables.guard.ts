@@ -15,7 +15,6 @@ export class TimeTablesGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = parseInt(route.params.id, 10);
-    console.log('id', route, id);
     return this.checkStore(id).pipe(
       switchMap(() => {
         return this.hasSelectedSubCalendar(id);
@@ -37,7 +36,6 @@ export class TimeTablesGuard implements CanActivate {
     return this.store.select(fromStore.getSubCalendarsSelectedId).pipe(
       // gets loaded prop
       tap(subcalendarId => {
-        console.log('guard-> subcalendar id', id, subcalendarId);
         if (subcalendarId !== id) {
           this.store.dispatch(new fromStore.SelectSubCalendar(id));
           this.store.dispatch(new fromStore.LoadTimeTables(id));

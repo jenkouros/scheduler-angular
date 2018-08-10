@@ -105,6 +105,15 @@ export class SubCalendarPopupVisible implements Action {
   constructor(public payload: boolean) {}
 }
 
+// popup delete subcalendar
+export const SUBCALENDAR_DELETE_POPUP_VISIBLE =
+  '[WorkTime] Show subcalendar delete popup';
+
+export class SubCalendarDeletePopupVisible implements Action {
+  readonly type = SUBCALENDAR_DELETE_POPUP_VISIBLE;
+  constructor(public payload: boolean) {}
+}
+
 // calendars types
 export type SubCalendarsActions =
   | LoadSubCalendars
@@ -122,4 +131,5 @@ export type SubCalendarsActions =
   | SelectSubCalendar
   | SubCalendarPopupVisible
   | SelectEditSubCalendar
-  | DeSelectEditSubCalendar;
+  | DeSelectEditSubCalendar
+  | SubCalendarDeletePopupVisible;

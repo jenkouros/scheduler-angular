@@ -61,3 +61,8 @@ export const getSubCalendarsEditSelected = createSelector(
     return entities[id];
   }
 );
+
+export const getDeleteSubCalendarPopupVisibility = createSelector(
+  getSubCalendarsState,
+  fromSubCalendars.getSubCalendarDeletePopupVisibility
+);

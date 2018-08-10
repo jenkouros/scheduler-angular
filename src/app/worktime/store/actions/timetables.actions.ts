@@ -96,6 +96,15 @@ export class TimeTablePopupVisible implements Action {
   constructor(public payload: boolean) {}
 }
 
+// popup delete timetable
+export const TIMETABLE_DELETE_POPUP_VISIBLE =
+  '[WorkTime] Show timetable delete popup';
+
+export class TimeTableDeletePopupVisible implements Action {
+  readonly type = TIMETABLE_DELETE_POPUP_VISIBLE;
+  constructor(public payload: boolean) {}
+}
+
 export type TimeTablesActions =
   | LoadTimeTables
   | LoadTimeTablesFail
@@ -111,4 +120,5 @@ export type TimeTablesActions =
   | UpdateTimeTableFail
   | RemoveTimeTable
   | RemoveTimeTableSuccess
-  | RemoveTimeTableFail;
+  | RemoveTimeTableFail
+  | TimeTableDeletePopupVisible;

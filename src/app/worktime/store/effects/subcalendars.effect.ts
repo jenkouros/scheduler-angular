@@ -89,4 +89,13 @@ export class SubCalendarsEffects {
         return new fromActions.SubCalendarPopupVisible(false);
       })
     );
+
+  @Effect()
+  removeSubCalendarSuccess$ = this.actions$
+    .ofType(fromActions.REMOVE_SUBCALENDAR_SUCCESS)
+    .pipe(
+      map(() => {
+        return new fromActions.SubCalendarDeletePopupVisible(false);
+      })
+    );
 }

@@ -6,23 +6,23 @@ import {
 } from '@angular/core';
 import { Output } from '@angular/core';
 import { Input } from '@angular/core';
-import { SubCalendar } from '../../../../models/calendar.model';
+import { TimeTable } from '../../../../models/timetable.model';
 
 @Component({
-  selector: 'app-sub-calendar-delete-popup',
+  selector: 'app-schedule-delete-popup',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './sub-calendar-delete-popup.component.html',
-  styleUrls: ['./sub-calendar-delete-popup.component.css']
+  templateUrl: './schedule-delete-popup.component.html',
+  styleUrls: ['./schedule-delete-popup.component.css']
 })
-export class SubCalendarDeletePopupComponent implements OnInit {
+export class ScheduleDeletePopupComponent implements OnInit {
   @Output()
-  confirm = new EventEmitter<SubCalendar>();
+  confirm = new EventEmitter<TimeTable>();
   @Output()
   cancel = new EventEmitter<boolean>();
   @Input()
   visible: boolean;
   @Input()
-  subCalendar: SubCalendar | null;
+  timetable: TimeTable | null;
 
   constructor() {
     this.onConfirm = this.onConfirm.bind(this);
@@ -31,8 +31,8 @@ export class SubCalendarDeletePopupComponent implements OnInit {
 
   ngOnInit() {}
   onConfirm() {
-    if (this.subCalendar) {
-      this.confirm.emit(this.subCalendar);
+    if (this.timetable) {
+      this.confirm.emit(this.timetable);
     }
   }
 

@@ -105,11 +105,6 @@ export function reducer(
         sc.push(item);
       }
 
-      const subcalendars = [
-        ...state.entities[item.idCalendar].subCalendars,
-        item
-      ];
-      console.log(sc);
       const calendar = {
         ...state.entities[item.idCalendar],
         subCalendars: sc
@@ -124,12 +119,20 @@ export function reducer(
       };
     }
     case fromCalendars.REMOVE_CALENDAR_SUBCALENDAR: {
-      const entities = { ...state.entities };
-      entities[action.payload.idCalendar].subCalendars = [
-        ...entities[action.payload.idCalendar].subCalendars.filter(
-          subcalendar => subcalendar.id !== action.payload.id
-        )
-      ];
+      const item = action.payload;
+
+      const sc = [...state.entities[item.idCalendar].subCalendars].filter(
+        subcalendar => subcalendar.id !== action.payload.id
+      );
+
+      const calendar = {
+        ...state.entities[item.idCalendar],
+        subCalendars: sc
+      };
+      const entities = {
+        ...state.entities,
+        [calendar.id]: calendar
+      };
 
       return {
         ...state,
