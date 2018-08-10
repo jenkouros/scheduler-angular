@@ -44,3 +44,8 @@ export const getTimeTableSelected = createSelector(
     return entities[id];
   }
 );
+
+export const getDeleteTimeTablePopupVisibility = createSelector(
+  getTimeTablesState,
+  fromTimeTables.getTimeTableDeletePopupVisibility
+);

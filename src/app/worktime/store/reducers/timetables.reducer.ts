@@ -8,6 +8,7 @@ export interface TimeTablesState {
   loading: boolean;
   loaded: boolean;
   popupVisible: boolean;
+  isDeletePopupVisible: boolean;
 }
 
 export const initialState: TimeTablesState = {
@@ -16,7 +17,8 @@ export const initialState: TimeTablesState = {
   selectedId: 0,
   loading: false,
   loaded: false,
-  popupVisible: false
+  popupVisible: false,
+  isDeletePopupVisible: false
 };
 
 export function reducer(
@@ -101,6 +103,12 @@ export function reducer(
         selectedId: 0
       };
     }
+    case fromTimeTables.TIMETABLE_DELETE_POPUP_VISIBLE: {
+      return {
+        ...state,
+        isDeletePopupVisible: action.payload
+      };
+    }
   }
 
   return state;
@@ -116,3 +124,5 @@ export const getTimeTablesSubCalendarId = (state: TimeTablesState) =>
   state.subcalendarId;
 export const getTimeTablePopupVisibility = (state: TimeTablesState) =>
   state.popupVisible;
+export const getTimeTableDeletePopupVisibility = (state: TimeTablesState) =>
+  state.isDeletePopupVisible;

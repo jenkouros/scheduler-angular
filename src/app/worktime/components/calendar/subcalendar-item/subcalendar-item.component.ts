@@ -16,10 +16,14 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./subcalendar-item.component.css']
 })
 export class SubCalendarItemComponent implements OnInit {
-  @Input() subCalendars: SubCalendar[];
-  @Output() create = new EventEmitter<string>();
-  @Output() editing = new EventEmitter<SubCalendar>();
-  @Output() remove = new EventEmitter<SubCalendar>();
+  @Input()
+  subCalendars: SubCalendar[];
+  @Output()
+  create = new EventEmitter<string>();
+  @Output()
+  editing = new EventEmitter<SubCalendar>();
+  @Output()
+  remove = new EventEmitter<SubCalendar>();
 
   iconDelete = faTrash;
   iconEdit = faEdit;
@@ -37,7 +41,6 @@ export class SubCalendarItemComponent implements OnInit {
   }
 
   removeSubCalendar(subCalendar: SubCalendar) {
-    console.log(`remove->${subCalendar}`);
     this.remove.emit(subCalendar);
   }
 }

@@ -24,12 +24,18 @@ import { first } from '../../../../../../../node_modules/rxjs/operators';
   styleUrls: ['./schedule-event-popup.component.css']
 })
 export class ScheduleEventPopupComponent implements OnChanges {
-  @Input() subCalendar: SubCalendar;
-  @Input() timetable: TimeTable;
-  @Input() visible: boolean;
-  @Output() create = new EventEmitter<TimeTable>();
-  @Output() update = new EventEmitter<TimeTable>();
-  @Output() cancel = new EventEmitter<boolean>();
+  @Input()
+  subCalendar: SubCalendar;
+  @Input()
+  timetable: TimeTable;
+  @Input()
+  visible: boolean;
+  @Output()
+  create = new EventEmitter<TimeTable>();
+  @Output()
+  update = new EventEmitter<TimeTable>();
+  @Output()
+  cancel = new EventEmitter<boolean>();
 
   exists = false;
   header: string;
@@ -95,14 +101,21 @@ export class ScheduleEventPopupComponent implements OnChanges {
     this.header = this.exists ? 'Urejanje dogodka' : 'Kreiranje dogodka';
   }
 
+  validToConfirm() {
+    const { valid, touched } = this.form;
+    if (!this.exists) {
+      return valid;
+    } else {
+      return touched && valid;
+    }
+  }
   onSubmit() {
     const rrule = this.getRecurrentString();
-    const { value, valid, touched } = this.form;
-    console.log(this.exists);
-    if (!this.exists) {
-      console.log('create');
-      // create
-      if (valid) {
+    const { value } = this.form;
+
+    if (this.validToConfirm()) {
+      if (!this.exists) {
+        // create
         const event = {
           id: 0,
           idSubCalendar: this.subCalendar.id,
@@ -114,10 +127,8 @@ export class ScheduleEventPopupComponent implements OnChanges {
           recurrenceRule: rrule
         };
         this.create.emit(event);
-      }
-    } else {
-      // update
-      if (touched && valid) {
+      } else {
+        // update
         const event = {
           ...this.timetable,
           name: value.name,
@@ -126,7 +137,6 @@ export class ScheduleEventPopupComponent implements OnChanges {
           idTimeTableType: value.timetableType,
           recurrenceRule: rrule
         };
-        console.log('event', event);
         this.update.emit(event);
       }
     }
@@ -148,13 +158,18 @@ export class ScheduleEventPopupComponent implements OnChanges {
     }
   }
   getRecurrentString() {
+    const repeating = this.repeatingControl.value;
+
+    // se ene ponavlja
+    if (!repeating) {
+      return null;
+    }
     const freq = this.frequencyControl.value;
     const byweekday = this.selectedDays.sort((a, b) => a - b);
     const rule = new RRule({
       freq,
       byweekday
     });
-
     return rule.toString();
   }
 
@@ -173,19 +188,7 @@ export class ScheduleEventPopupComponent implements OnChanges {
   repeatingChanged(event: any) {
     this.repeatingVisible = event.value;
   }
-  /*
-  repetitionChanged(event: any) {
-    const rep = event.value;
-    let name = 'teden';
-    if (rep >= 2) {
-      name = rep > 2 ? 'tedni' : 'tedna';
-    }
-    const index = this.frequencyItems.findIndex(i => i.key === WEEKLY);
-    this.frequencyItems[index].name = name;
-    this.frequencyControl.patchValue({ frequency: WEEKLY });
-    this.form.patchValue({ frequency: WEEKLY });
-  }
-*/
+
   selectDay(key: number) {
     if (this.isSelected(key)) {
       // const { [key]: removed, ...days } = this.byDayEntities;
@@ -221,6 +224,10 @@ export class ScheduleEventPopupComponent implements OnChanges {
   }
   get frequencyControl() {
     return this.form.get('frequency') as FormControl;
+  }
+
+  get repeatingControl() {
+    return this.form.get('repeating') as FormControl;
   }
 
   get nameControlInvalid() {

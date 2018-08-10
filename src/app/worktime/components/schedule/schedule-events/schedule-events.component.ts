@@ -16,14 +16,21 @@ import { SubCalendar } from '../../../models/calendar.model';
   styleUrls: ['./schedule-events.component.css']
 })
 export class ScheduleEventsComponent implements OnInit {
-  @Input() timeTables: TimeTable[];
-  @Input() subCalendar: SubCalendar;
+  @Input()
+  timeTables: TimeTable[];
+  @Input()
+  subCalendar: SubCalendar;
 
-  @Output() add = new EventEmitter<boolean>();
-  @Output() select = new EventEmitter<number>();
-  @Output() create = new EventEmitter<TimeTable>();
-  @Output() update = new EventEmitter<TimeTable>();
-  @Output() remove = new EventEmitter<TimeTable>();
+  @Output()
+  add = new EventEmitter<boolean>();
+  @Output()
+  select = new EventEmitter<number>();
+  @Output()
+  create = new EventEmitter<TimeTable>();
+  @Output()
+  update = new EventEmitter<TimeTable>();
+  @Output()
+  remove = new EventEmitter<TimeTable>();
 
   ngOnInit() {}
 
@@ -63,10 +70,6 @@ export class ScheduleEventsComponent implements OnInit {
   }
 
   onRemove(timetable: TimeTable) {
-    // TODO: vskladiti s podobo
-    const remove = window.confirm('Res želite brisati');
-    if (remove) {
-      this.remove.emit(timetable);
-    }
+    this.remove.emit(timetable);
   }
 }

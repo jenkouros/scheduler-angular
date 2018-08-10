@@ -36,7 +36,7 @@ export interface TimeTable {
   description: string;
   timeStart: Date;
   timeEnd: Date;
-  recurrenceRule: string;
+  recurrenceRule: string | null;
 }
 
 export interface TimeTableType {

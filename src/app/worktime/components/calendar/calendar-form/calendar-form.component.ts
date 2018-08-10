@@ -58,12 +58,17 @@ export class CalendarFormComponent implements OnChanges {
   header: string;
   date = new Date();
 
-  @Input() calendar: Calendar;
-  @Input() visible: boolean;
-  @Output() create = new EventEmitter<Calendar>();
-  @Output() update = new EventEmitter<Calendar>();
+  @Input()
+  calendar: Calendar;
+  @Input()
+  visible: boolean;
+  @Output()
+  create = new EventEmitter<Calendar>();
+  @Output()
+  update = new EventEmitter<Calendar>();
   // @Output() remove = new EventEmitter<Calendar>();
-  @Output() cancel = new EventEmitter<boolean>();
+  @Output()
+  cancel = new EventEmitter<boolean>();
 
   form = this.fb.group({
     description: ['', Validators.required],
@@ -107,16 +112,23 @@ export class CalendarFormComponent implements OnChanges {
     this.header = this.exists ? 'Urejanje koledarja' : 'Kreiranje koledarja';
   }
 
-  onSubmit() {
-    const { value, valid, touched } = this.form;
+  validToConfirm() {
+    const { valid, touched } = this.form;
     if (!this.exists) {
-      // create
-      if (valid) {
-        this.create.emit(value);
-      }
+      return valid;
     } else {
-      // update
-      if (touched && valid) {
+      return touched && valid;
+    }
+  }
+
+  onSubmit() {
+    const { value } = this.form;
+    if (this.validToConfirm()) {
+      if (!this.exists) {
+        // create
+        this.create.emit(value);
+      } else {
+        // update
         this.update.emit({ ...this.calendar, ...value });
       }
     }

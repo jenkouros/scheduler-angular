@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router, CanActivateChild } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 
@@ -11,32 +11,30 @@ import { Calendar } from '../models/calendar.model';
 
 @Injectable()
 export class CalendarsGuard implements CanActivate {
+  constructor(
+    private store: Store<fromStore.WorkTimeState>,
+    private router: Router
+  ) {}
 
-    constructor(private store: Store<fromStore.WorkTimeState>) { }
+  canActivate(): Observable<boolean> {
+    return this.checkStore().pipe(
+      switchMap(() => of(true)),
+      catchError(() => of(false))
+    );
+  }
 
-    canActivate(): Observable<boolean> {
-        return this.checkStore().pipe(
-            switchMap(() => of(true)),
-            catchError(() => of(false))
-        );
-    }
-
-    checkStore(): Observable<boolean> {
-        return this.store.select(fromStore.getCalendarsLoaded)
-            .pipe(
-                // gets loaded prop
-                tap(loaded => {
-                    if (!loaded) {
-                        this.store.dispatch(new fromStore.LoadCalendars());
-                    }
-                }),
-                // continue stream (tap is ignored), ko je loaded==true se stream nadaljuje
-                filter(loaded => loaded),
-                // take loaded prop an call observable compete!, izvede se unsubscribe
-                take(1)
-            );
-    }
-
+  checkStore(): Observable<boolean> {
+    return this.store.select(fromStore.getCalendarsLoaded).pipe(
+      // gets loaded prop
+      tap(loaded => {
+        if (!loaded) {
+          this.store.dispatch(new fromStore.LoadCalendars());
+        }
+      }),
+      // continue stream (tap is ignored), ko je loaded==true se stream nadaljuje
+      filter(loaded => loaded),
+      // take loaded prop an call observable compete!, izvede se unsubscribe
+      take(1)
+    );
+  }
 }
-
-

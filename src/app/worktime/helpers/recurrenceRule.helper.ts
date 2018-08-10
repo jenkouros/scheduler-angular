@@ -87,7 +87,6 @@ export class RecurrenceRule {
 
 export function getTextById(id: string) {
   // Return pt. string, default to english.
-  console.log(id, slovenianStrings[id]);
   return slovenianStrings[id] || id;
 }
 

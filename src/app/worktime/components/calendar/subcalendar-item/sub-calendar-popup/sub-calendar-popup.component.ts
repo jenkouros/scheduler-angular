@@ -24,7 +24,7 @@ export class SubCalendarPopupComponent implements OnChanges {
   @Output()
   update = new EventEmitter<SubCalendar>();
   @Output()
-  cancel1 = new EventEmitter<boolean>();
+  cancel = new EventEmitter<boolean>();
 
   exists = false;
   header: string;
@@ -45,7 +45,6 @@ export class SubCalendarPopupComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.exists = false;
     this.form.reset();
-    console.log('onchanfes', changes);
     if (this.subCalendar && this.subCalendar.id) {
       this.exists = true;
 
@@ -54,25 +53,27 @@ export class SubCalendarPopupComponent implements OnChanges {
     this.header = this.exists ? 'Urejanje urnika' : 'Kreiranje urnika';
   }
 
-  onSubmit() {
-    const { value, valid, touched } = this.form;
-    console.log(this.exists);
+  validToConfirm() {
+    const { valid, touched } = this.form;
+    if (!this.exists) {
+      return valid;
+    } else {
+      return touched && valid;
+    }
+  }
 
-    if (this.exists) {
-      // update
-      if (touched && valid) {
+  onSubmit() {
+    const { value } = this.form;
+    if (this.validToConfirm()) {
+      if (this.exists) {
+        // update
         this.update.emit({ ...this.subCalendar, ...value });
       }
     }
   }
 
   onCancel() {
-    console.log('onCancel');
-    this.cancel1.emit(false);
-  }
-
-  popupVisibility(popupVisible: boolean) {
-    // this.onCancel();
+    this.cancel.emit(false);
   }
 
   get nameControl() {
