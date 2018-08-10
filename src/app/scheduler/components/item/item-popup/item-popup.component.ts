@@ -74,7 +74,6 @@ export class ItemPopupComponent implements OnChanges {
   }
 
   hideItemInfo() {
-    console.log('opa');
     this.close.emit();
     this.createPreplanItemsForm.reset();
   }

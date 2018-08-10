@@ -9,8 +9,6 @@ import * as fromActions from '../actions';
 import { ItemServer } from '../../models/server/item.servermodel';
 import { Item } from '../../models/item.dto';
 
-
-
 @Injectable()
 export class ItemsEffects {
     constructor(
@@ -23,11 +21,8 @@ export class ItemsEffects {
     loadItemsStore$ = this.actions$.ofType(fromActions.LOAD_ITEMS)
     .pipe(
        map(action => {
-            const store = this.itemService.getItemsStore();
-            store.on('loaded', (data: ItemServer[]) =>
-                this.store.dispatch(new fromActions.LoadItemsSuccess( data.map(i => Item.fromServer(i)) ))
-            );
-            return new fromActions.RegisterItemStore(store);
+            const storeConfiguration = this.itemService.getItemsStoreConfiguration();
+            return new fromActions.RegisterItemStore(storeConfiguration);
        })
     );
 

@@ -6,11 +6,11 @@ export const getSearchState = createSelector(
     (state: fromFeature.SchedulerState) => state.search
 );
 
-export const selectSearchItemStore = createSelector(
+export const selectSearchItemStoreConfiguration = createSelector(
     getSearchState,
-    state => state.searchItemsStore
+    state => state.searchItemsStoreConfiguration
 );
-export const selectSearchPlanItemStore = createSelector(
+export const selectSearchPlanItemStoreConfiguration = createSelector(
     getSearchState,
-    state => state.searchPlanItemsStore
+    state => state.searchPlanItemsStoreConfiguration
 );

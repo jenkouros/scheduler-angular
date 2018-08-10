@@ -2,8 +2,8 @@ import { SearchState } from '../../models/search.store';
 import * as fromAction from '../actions/search.action';
 
 export const initialState: SearchState = {
-    searchItemsStore: null,
-    searchPlanItemsStore: null
+    searchItemsStoreConfiguration: null,
+    searchPlanItemsStoreConfiguration: null
 };
 
 export function search(state = initialState, action: fromAction.SearchActions): SearchState {
@@ -11,13 +11,13 @@ export function search(state = initialState, action: fromAction.SearchActions): 
         case fromAction.GET_SEARCHITEMS_STORE_SUCCESS: {
             return {
                 ...state,
-                searchItemsStore: action.payload
+                searchItemsStoreConfiguration: action.payload
             };
         }
         case fromAction.GET_SEARCHPLANITEMS_STORE_SUCCESS: {
             return {
                 ...state,
-                searchPlanItemsStore: action.payload
+                searchPlanItemsStoreConfiguration: action.payload
             };
         }
         default:

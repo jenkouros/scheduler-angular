@@ -70,6 +70,7 @@ export class PlanItemsGetResponse {
 }
 
 export class PlannedEvent {
+    PARALLEL_SEQUENCE_ALLOWED = true;
     id: number;
     idPrePlanItem: number;
     idPlan: number;
@@ -130,7 +131,9 @@ export class PlannedEvent {
                 return true;
             }
             if (planItem.timeEnd) { // if planned
-                lastEnd = planItem.timeEnd;
+                lastEnd = this.PARALLEL_SEQUENCE_ALLOWED
+                    ? planItem.timeStartPreparation
+                    : planItem.timeEnd;
             }
         }
         return false;

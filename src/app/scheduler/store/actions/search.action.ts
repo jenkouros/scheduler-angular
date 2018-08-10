@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import CustomStore from 'devextreme/data/custom_store';
+import { GridStoreConfiguration } from '../../models/shared.dto';
 
 export const GET_SEARCHITEMS_STORE = '[Search] GET search items store';
 export const GET_SEARCHITEMS_STORE_SUCCESS = '[Search] GET search items store success';
@@ -16,7 +16,7 @@ export class GetSearchItemsStore implements Action {
 }
 export class GetSearchItemsStoreSuccess implements Action {
     readonly type = GET_SEARCHITEMS_STORE_SUCCESS;
-    constructor(public payload: CustomStore | null) {}
+    constructor(public payload: GridStoreConfiguration | null) {}
 }
 
 export class SearchItemsStore implements Action {
@@ -30,7 +30,7 @@ export class GetSearchPlanItemsStore implements Action {
 }
 export class GetSearchPlanItemsStoreSuccess implements Action {
     readonly type = GET_SEARCHPLANITEMS_STORE_SUCCESS;
-    constructor(public payload: CustomStore | null) {}
+    constructor(public payload: GridStoreConfiguration | null) {}
 }
 
 export class SearchPlanItemsStore implements Action {

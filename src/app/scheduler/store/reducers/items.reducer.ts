@@ -1,6 +1,7 @@
 import * as fromActions from '../actions/items.action';
 import CustomStore from 'devextreme/data/custom_store';
 import { Item, ItemHierarchy } from '../../models/item.dto';
+import { GridStoreConfiguration } from '../../models/shared.dto';
 
 export interface ItemUIState {
     popupOpened: boolean;
@@ -8,7 +9,7 @@ export interface ItemUIState {
 
 export interface ItemState {
     items: Item[];
-    itemsStore: CustomStore | null;
+    itemsStoreConfiguration: GridStoreConfiguration | null;
     selectedItemHierarchy: ItemHierarchy | null;
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
@@ -17,7 +18,7 @@ export interface ItemState {
 
 export const initialState: ItemState = {
     items: [],
-    itemsStore: null,
+    itemsStoreConfiguration: null,
     selectedItemHierarchy: null,
     selectedItemHierarchyLoaded: false,
     selectedItemHierarchyLoading: false,
@@ -29,10 +30,12 @@ export const initialState: ItemState = {
 export function itemsReducer(state = initialState, action: fromActions.ItemActions): ItemState {
     switch (action.type) {
         case fromActions.REGISTER_ITEMS_STORE: {
-            const customStore = Object.assign(action.payload);
             return {
                 ...state,
-                itemsStore: customStore
+                itemsStoreConfiguration: {
+                    ...action.payload,
+                    reloadDate: new Date()
+                }
             };
         }
         case fromActions.LOAD_ITEMS_SUCCESS: {

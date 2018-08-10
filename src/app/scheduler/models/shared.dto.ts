@@ -25,3 +25,10 @@ export class MeasurementUnit implements MeasurementUnitServer {
         return result;
     }
 }
+
+export interface GridStoreConfiguration {
+    loadUrl: string;
+    loadParams?: Object;
+    key?: string;
+    reloadDate?: Date;
+}

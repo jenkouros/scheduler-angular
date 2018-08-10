@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { PaginationResponse } from '../../../shared/shared.model';
-import CustomStore from 'devextreme/data/custom_store';
 import { Item, ItemHierarchy } from '../../models/item.dto';
+import { GridStoreConfiguration } from '../../models/shared.dto';
 
 export const LOAD_ITEMS = '[Item] Load workorders';
 export const LOAD_ITEMS_FAIL = '[Item] Load workorders Fail';
@@ -28,7 +28,7 @@ export class HideItem implements Action {
 
 export class RegisterItemStore implements Action {
     readonly type = REGISTER_ITEMS_STORE;
-    constructor(public payload: CustomStore) {}
+    constructor(public payload: GridStoreConfiguration) {}
 }
 
 export class LoadItemsFail implements Action {

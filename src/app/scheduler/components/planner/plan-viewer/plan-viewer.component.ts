@@ -10,24 +10,9 @@ import {
   Input,
   ChangeDetectionStrategy
 } from '@angular/core';
-import {
-  DxSchedulerModule,
-  DxSchedulerComponent,
-  DxButtonModule,
-  DxTemplateModule,
-  DxLinearGaugeModule
-} from 'devextreme-angular';
-// import { Service, MovieData, WorkPlaceData, Data } from '../../../services/app.service';
-import Query from 'devextreme/data/query';
-// import * as events from 'devextreme/events';
+import { DxSchedulerComponent } from 'devextreme-angular';
 import { off, on } from 'devextreme/events';
 import { Container } from '../../../models/container.dto';
-import { Store, ActionsSubject } from '@ngrx/store';
-import * as fromStore from '../../../store';
-import {
-  PlanViewerItemComponent,
-  SubItemComponent
-} from '../../../components/index';
 import {
   PlannedEvent,
   PlanItemsLoadRequest,
@@ -37,14 +22,10 @@ import {
   PlanItemStatusEnum,
   PlanItemProgressEnum
 } from '../../../models/event.model';
-import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
 import { ContainerSelect } from '../../../models/container.viewModel';
 import { PreplanItem } from '../../../models/preplanitem.dto';
-import { ToggleMassLockPopup } from '../../../store';
 import * as fromSchedulerModel from '../../../models/planner.model';
-import Scrollable from 'devextreme/ui/scroll_view/ui.scrollable';
-
 import {
   faLock,
   faExclamationTriangle,
@@ -53,11 +34,11 @@ import {
   faAlignCenter,
   faTh
 } from '@fortawesome/free-solid-svg-icons';
-import { PlanViewerFormHelper } from './plan-viewer.form.helper';
 import { SubItemContainer } from '../../../models/subitem.dto';
 import { TimeHelper } from '../../../helpers/time.helper';
 import { PlanSchedule } from '../../../models/planschedule.dto';
 import { ColorHelper } from '../../../helpers/color.helper';
+import { NotifyService } from '../../../../worktime/services';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -76,11 +57,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     planItems: [],
     notWorkingHoursEvents: {}
   };
-  // @Input() preplanItemDragEnd: boolean;
-  @Input()
-  timeUpdateSuggestion: { [idPrePlanItem: number]: PlannedEventMove } | null;
-  @Input()
-  notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
+  @Input() timeUpdateSuggestion: { [idPrePlanItem: number]: PlannedEventMove } | null;
+  @Input() notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
   @Input() currentDate: Date = new Date();
   @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
   @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
@@ -98,14 +76,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   @Output() getResolveNotWorkingHoursSuggestion = new EventEmitter<number>();
   @Output() clearNotWorkingHoursSuggestion = new EventEmitter();
 
-  @Output()
-  loadTimeRealizationSuggestion = new EventEmitter<PlanItemsLoadRequest>();
+  @Output() loadTimeRealizationSuggestion = new EventEmitter<PlanItemsLoadRequest>();
   @Output() planItemReload = new EventEmitter<number[]>();
-
-  // notWorkingHours: { startDate: Date, endDate: Date }[] = [
-  //   { startDate: new Date(2018, 6, 7, 0, 0), endDate: new Date(2018, 6, 7, 23, 59) },
-  //   { startDate: new Date(2018, 6, 8, 14, 30), endDate: new Date(2018, 6, 8, 15, 15) }
-  // ];
 
   notWorkingHoursResolveMode = 'movePlanItem';
   schedulerResources: any = [];
@@ -133,7 +105,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
-  constructor() {
+  constructor(private notifyService: NotifyService) {
     this.drop = this.drop.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.scroll = this.scroll.bind(this);
@@ -366,11 +338,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
           );
 
           if (selectedContainer === undefined) {
-            this.showToast(
-              'Info',
-              'Na delovno mesto ni možno planirati operacije!',
-              'info'
-            );
+            this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
             return false;
           }
           const calculatedStartTime = this.getCalculatedStartTimeInCell(
@@ -417,13 +385,18 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     if (this.currentView === 'agenda') {
       (<any>this.scheduler).instance.getWorkSpace().option('rowHeight', 75);
     }
+    const scroll = event.component.getWorkSpaceScrollable();
+    const scrollInstance = scroll.instance();
+    scrollInstance.off('scroll', this.scroll);
+    scrollInstance.on('scroll', this.scroll);
 
     // ref to scrollable
-    const scrollable = Scrollable.getInstance(
-      (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
-    );
-    scrollable.off('scroll', scroll);
-    scrollable.on('scroll', scroll);
+
+    // const scrollable = Scrollable.getInstance(
+    //   (<any>this.scheduler).instance.element().querySelector('.dx-scrollable')
+    // );
+    // scrollable.off('scroll', scroll);
+    // scrollable.on('scroll', scroll);
 
     const plannedItemsEl = (<any>(this.scheduler)).element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
     for (let i = 0; i < plannedItemsEl.length; i++) {
@@ -446,24 +419,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   optionChanged(e: fromSchedulerModel.OptionChangedModel) {
-    // console.log(e.fullName);
     this.offset = this.getScrollPosition();
-    // console.log(this.offset);
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_VISIBLE) {
-      // this.scrollScheduler();
       e.component.repaint();
-      Scrollable.getInstance(
-        e.component.element().querySelector('.dx-scrollable')
-      ).scrollTo(this.offset);
-      console.log(this.offset);
+      this.scrollScheduler();
     }
     if (e.fullName === fromSchedulerModel.OPTIONCHANGED_DATASOURCE) {
-      // e.component.repaint();
       setTimeout(() => {
-        Scrollable.getInstance(
-          e.component.element().querySelector('.dx-scrollable')
-        ).scrollTo(this.offset);
-        console.log(this.offset);
+        this.scrollScheduler();
       });
     }
     if (
@@ -475,23 +438,16 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       if (e.fullName === fromSchedulerModel.OPTIONCHANGED_CELLDURATION) {
         e.component.repaint();
       }
-      // this.scrollScheduler();
-      // e.component.repaint();
 
       setTimeout(() => {
-        Scrollable.getInstance(
-          e.component.element().querySelector('.dx-scrollable')
-        ).scrollTo(this.offset);
+        this.scrollScheduler();
       });
 
       const resourceUpdated = this.isResourceUpdated(e);
       const timeBoundsChanged =
         e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
         e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE;
-      // this.selectedStartDate.getTime() !== e.component.getStartViewDate().getTime() ||
-      // this.selectedEndDate.getTime() !== e.component.getEndViewDate().getTime();
       if (resourceUpdated || timeBoundsChanged) {
-        // console.log('change');
         setTimeout(() => {
           this.selectedStartDate = e.component.getStartViewDate();
           this.selectedEndDate = e.component.getEndViewDate();
@@ -624,10 +580,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     return calculatedStartDate;
   }
 
-  private showToast(event, value, type) {
-    notify(event + ' \'' + value + '\'', type, 1500);
-  }
-
   private showAvailableContainers(item: PreplanItem | null, className: string) {
     const elements = (<any>(
       this.scheduler
@@ -723,18 +675,12 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   private scrollScheduler() {
     this.isScrollInProgress = true;
-    this.scheduler.instance.repaint();
-    // console.log(this.offset);
-    Scrollable.getInstance(
-      this.scheduler.instance.element().querySelector('.dx-scrollable')
-    ).scrollTo(this.offset);
+    (<any>this.scheduler).instance.getWorkSpaceScrollable().instance().scrollTo(this.offset);
     this.isScrollInProgress = false;
   }
 
   private getScrollPosition() {
-    const offset = Scrollable.getInstance(
-      this.scheduler.instance.element().querySelector('.dx-scrollable')
-    ).scrollOffset();
+    const offset = (<any>this.scheduler).instance.getWorkSpaceScrollable().instance().scrollOffset();
     if (
       this.isScrollInProgress ||
       !offset.left ||
@@ -749,7 +695,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   private getPosition(el) {
     let xPos = 0;
     let yPos = 0;
-    console.log(el);
     while (el) {
       if (el.tagName === 'BODY') {
         // deal with browser quirks with body/window/document and page scroll
