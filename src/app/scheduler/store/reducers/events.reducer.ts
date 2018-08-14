@@ -112,13 +112,19 @@ export function eventsReducer(
             };
         }
         case fromAction.DELETE_EVENT_SUCCESS: {
-            const events =  { ...state.entities };
-            events[action.payload.containerId].events = events[action.payload.containerId].events.filter((item) =>
-                item.id !== action.payload.id);
+            const containerEvents =  { ...state.entities };
+            containerEvents[action.payload.containerId] = {
+                ...containerEvents[action.payload.containerId],
+                events: containerEvents[action.payload.containerId].events.filter((item) =>
+                    item.id !== action.payload.id)
+            };
+
+            // containerEvents[action.payload.containerId].events = containerEvents[action.payload.containerId].events.filter((item) =>
+            //     item.id !== action.payload.id);
 
             return {
                 ...state,
-                entities: events,
+                entities: containerEvents,
                 loaded: false,
                 loading: false
             };

@@ -12,7 +12,6 @@ export class DateValidators extends Validators {
 
     static maxDate(refDateKey: string, maxDateKey: string) {
         return (group: FormGroup) => {
-            console.log('here');
             const refDate = group.controls[refDateKey];
             const maxDate = group.controls[maxDateKey];
 
@@ -35,7 +34,6 @@ export class DateValidators extends Validators {
 
     static minDate(refDateKey: string, minDateKey: string) {
         return (group: FormGroup) => {
-            console.log('here');
             const refDate = group.controls[refDateKey];
             const minDate = group.controls[minDateKey];
 

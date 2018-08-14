@@ -1,6 +1,6 @@
-import CustomStore from 'devextreme/data/custom_store';
+import { GridStoreConfiguration } from './shared.dto';
 
 export interface SearchState {
-    searchItemsStore: CustomStore | null;
-    searchPlanItemsStore: CustomStore | null;
+    searchItemsStoreConfiguration: GridStoreConfiguration | null;
+    searchPlanItemsStoreConfiguration: GridStoreConfiguration | null;
 }

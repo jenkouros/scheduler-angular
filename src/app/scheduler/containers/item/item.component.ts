@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ItemHierarchyViewModel } from '../../models/item.viewmodel';
 import { PreplanItemRequest } from '../../models/preplanitem.dto';
 
@@ -16,19 +16,26 @@ import { PreplanItemRequest } from '../../models/preplanitem.dto';
             (createPreplanItems)="onCreatePreplanItems($event)">
         </app-item-popup>`
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent implements OnInit, OnDestroy {
     visible = false;
     hierarchy$: Observable<ItemHierarchyViewModel | null>;
+    uiStateSubscription: Subscription;
 
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
     ngOnInit(): void {
-        this.store.select(fromStore.getItemUiState).subscribe(state => {
-            if (state) {
-                this.visible = state.popupOpened;
-            }
-        });
+        this.uiStateSubscription = this.store
+            .select(fromStore.getItemUiState)
+            .subscribe(state => {
+                if (state) {
+                    this.visible = state.popupOpened;
+                }
+            });
         this.hierarchy$ = this.store.select(fromStore.getSelectedItemHierarchy);
+    }
+
+    ngOnDestroy(): void {
+        this.uiStateSubscription.unsubscribe();
     }
 
     onCreatePreplanItems(createPreplanItemRequest: PreplanItemRequest) {

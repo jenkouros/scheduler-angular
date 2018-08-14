@@ -8,9 +8,9 @@ export const getItemsState = createSelector(
     (state: fromFeature.SchedulerState) => state.items
 );
 
-export const getItemsStore = createSelector(
+export const getItemsStoreConfiguration = createSelector(
     getItemsState,
-    state => state.itemsStore
+    state => state.itemsStoreConfiguration
 );
 
 export const getSelectedItemHierarchy = createSelector(

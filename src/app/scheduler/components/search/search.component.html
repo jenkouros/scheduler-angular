@@ -4,8 +4,8 @@
 </div>
 
 <h5>Nalogi</h5>
-<app-items-search *ngIf="searchItemStore !== null" [store]="searchItemStore"></app-items-search>
+<app-items-search *ngIf="searchItemStoreConfiguration !== null" [searchItemStoreConfiguration]="searchItemStoreConfiguration"></app-items-search>
 <h5 class="mt-2">Operacije</h5>
-<app-planitems-search *ngIf="searchPlanItemStore !== null" 
+<app-planitems-search *ngIf="searchPlanItemStoreConfiguration !== null" 
     (openInScheduler)="onOpenInScheduler($event)"
-    [store]="searchPlanItemStore"></app-planitems-search>
+    [searchPlanItemStoreConfiguration]="searchPlanItemStoreConfiguration"></app-planitems-search>

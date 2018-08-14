@@ -1,15 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import CustomStore from 'devextreme/data/custom_store';
-import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { environment } from '../../../environments/environment';
+import { GridStoreConfiguration } from '../models/shared.dto';
 
-@Injectable()
 export class SearchService {
-    constructor(private http: HttpClient) {}
 
-    getSearchItemsStore(search: string): CustomStore {
-        const store = createStore({
+    getSearchItemsStoreConfiguration(search: string): GridStoreConfiguration {
+        return {
             loadUrl: environment.apiUrl + '/items/searchgrid',
             loadParams: search === ''
                 ? undefined
@@ -17,21 +12,17 @@ export class SearchService {
                     search: search
                 },
             key: 'idItem'
-        });
-
-        return store;
+        };
     }
 
-    getSearchPlanItemsStore(search: string): CustomStore {
-        const store = createStore({
+    getSearchPlanItemsStoreConfiguration(search: string): GridStoreConfiguration {
+        return {
             loadUrl: environment.apiUrl + '/planitems/searchgrid',
             loadParams: search === ''
                 ? undefined
                 : {
                     search: search
                 }
-        });
-
-        return store;
+        };
     }
 }

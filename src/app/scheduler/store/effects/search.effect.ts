@@ -15,7 +15,7 @@ export class SearchEffects {
             map((action: fromAction.GetSearchItemsStore) => action.payload),
             map(search => {
                 return new fromAction.GetSearchItemsStoreSuccess(
-                    this.searchService.getSearchItemsStore(search)
+                    this.searchService.getSearchItemsStoreConfiguration(search)
                 );
             })
         );
@@ -33,7 +33,7 @@ export class SearchEffects {
             map((action: fromAction.GetSearchPlanItemsStore) => action.payload),
             map(search => {
                 return new fromAction.GetSearchPlanItemsStoreSuccess(
-                    this.searchService.getSearchPlanItemsStore(search)
+                    this.searchService.getSearchPlanItemsStoreConfiguration(search)
                 );
             })
         );
