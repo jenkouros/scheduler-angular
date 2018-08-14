@@ -5,6 +5,7 @@
 
 
   <dxi-column caption="Naziv urnika" dataField="name"></dxi-column>
+  <dxi-column caption="Vrsta časa" dataField="idTimeTableType" cellTemplate="timeTableType"></dxi-column>
   <dxi-column caption="Pravilo" dataField="recurrenceRule" cellTemplate="rruleTemplate"></dxi-column>
   <dxi-column caption="Veljaven od" dataField="timeStart" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
   <dxi-column caption="Veljaven do" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
@@ -13,6 +14,10 @@
   <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplate" [width]="100"></dxi-column>
 
   <!--<dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>-->
+
+  <div *dxTemplate="let cell of 'timeTableType'">
+    {{ cell.displayValue === 1 ? "delovni" : "nedelovni" }}
+  </div>
 
   <div *dxTemplate="let cell of 'rruleTemplate'">
     {{ cell.displayValue | rruletotext }}
