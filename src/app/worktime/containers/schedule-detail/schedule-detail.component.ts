@@ -56,23 +56,15 @@ export class ScheduleDetailComponent implements OnInit {
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   ngOnInit() {
-    this.selectedSubCalendar$ = this.store.pipe(
-      select(fromStore.getSubCalendarsSelected)
-    );
+    this.selectedSubCalendar$ = this.store.pipe(select(fromStore.getSubCalendarsSelected));
     this.timetables$ = this.store.pipe(select(fromStore.getTimeTables));
-    this.selectedContainers$ = this.store.pipe(
-      select(fromStore.getSelectedContainers)
-    );
-    this.avalableContainers$ = this.store.pipe(
-      select(fromStore.getAvalableContainers)
-    );
+    this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainers));
+    this.avalableContainers$ = this.store.pipe(select(fromStore.getAvalableContainers));
 
     this.selectedSubCalendar$.subscribe(item => {
       this.isSubCalendarSelected = item ? item.id > 0 : false;
     });
-    this.isDeletePopupVisible$ = this.store.select(
-      fromStore.getDeleteTimeTablePopupVisibility
-    );
+    this.isDeletePopupVisible$ = this.store.select(fromStore.getDeleteTimeTablePopupVisibility);
   }
 
   addToSelected(selected: SelectedContainers) {
@@ -80,12 +72,12 @@ export class ScheduleDetailComponent implements OnInit {
   }
 
   removeFromSelected(selected: SelectedContainers) {
-    console.log(selected);
+    //console.log(selected);
     this.store.dispatch(new fromStore.RemoveFromSelectedContainers(selected));
   }
 
   onAdd(openPopup: boolean) {
-    console.log(openPopup);
+    //console.log(openPopup);
     this.store.dispatch(new fromStore.TimeTablePopupVisible(openPopup));
   }
   onConfirmBeforeRemove(timetable: TimeTable) {

@@ -23,15 +23,11 @@ export class SubCalendarItemComponent implements OnInit {
   constructor(private store: Store<fromStore.WorkTimeState>) {}
 
   ngOnInit() {
-    this.editingSubCalendar$ = this.store.select(
-      fromStore.getSubCalendarsEditSelected
-    );
+    this.editingSubCalendar$ = this.store.select(fromStore.getSubCalendarsEditSelected);
 
-    this.store
-      .select(fromStore.getSubCalendarPopupVisibility)
-      .subscribe(visibility => {
-        this.visible$ = visibility;
-      });
+    this.store.select(fromStore.getSubCalendarPopupVisibility).subscribe(visibility => {
+      this.visible$ = visibility;
+    });
   }
 
   onEditing(subCalendar: SubCalendar) {
@@ -40,7 +36,7 @@ export class SubCalendarItemComponent implements OnInit {
   }
 
   onCancel(timetable: SubCalendar) {
-    console.log('onCalcel event');
+    //console.log('onCalcel event');
     this.store.dispatch(new fromStore.DeSelectEditSubCalendar());
     this.store.dispatch(new fromStore.SubCalendarPopupVisible(false));
   }
