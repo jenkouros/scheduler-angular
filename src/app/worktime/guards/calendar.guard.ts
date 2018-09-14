@@ -11,10 +11,7 @@ import { Calendar } from '../models/calendar.model';
 
 @Injectable()
 export class CalendarsGuard implements CanActivate {
-  constructor(
-    private store: Store<fromStore.WorkTimeState>,
-    private router: Router
-  ) {}
+  constructor(private store: Store<fromStore.WorkTimeState>, private router: Router) {}
 
   canActivate(): Observable<boolean> {
     return this.checkStore().pipe(
@@ -27,6 +24,7 @@ export class CalendarsGuard implements CanActivate {
     return this.store.select(fromStore.getCalendarsLoaded).pipe(
       // gets loaded prop
       tap(loaded => {
+        this.store.dispatch(new fromStore.DeSelectSubCalendar());
         if (!loaded) {
           this.store.dispatch(new fromStore.LoadCalendars());
         }

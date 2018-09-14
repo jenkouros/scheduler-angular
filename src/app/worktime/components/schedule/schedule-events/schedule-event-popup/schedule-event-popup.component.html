@@ -1,5 +1,5 @@
-<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel" [confirmCallback]="onSubmit" [title]="header"
-  [validToConfirm]="validToConfirm()">
+<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel" [confirmCallback]="onSubmit"
+  [title]="header" [validToConfirm]="validToConfirm()">
   <!--  <p>{{timetable |json}}</p>-->
   <form [formGroup]="form">
     <div class="dx-fieldset">
@@ -14,11 +14,13 @@
         <div class="dx-field-label">Dogodek od-do</div>
         <div class="dx-field-value">
           <div style="float:left">
-            <dx-date-box type="datetime" formControlName="timeStart" [isValid]="!timeStartControlInvalid"></dx-date-box>
+            <dx-date-box type="datetime" formControlName="timeStart" [isValid]="!timeStartControlInvalid"
+              dateSerializationFormat="yyyy-MM-ddTHH:mm:ss"></dx-date-box>
           </div>
           <div style="float:left">&nbsp;</div>
           <div style="float:left">
-            <dx-date-box style="float:left" type="datetime" formControlName="timeEnd" [isValid]="!timeEndControlInvalid"></dx-date-box>
+            <dx-date-box style="float:left" type="datetime" formControlName="timeEnd" [isValid]="!timeEndControlInvalid"
+              dateSerializationFormat="yyyy-MM-ddTHH:mm:ss"></dx-date-box>
           </div>
         </div>
       </div>
@@ -31,7 +33,8 @@
       <div class="dx-field">
         <div class="dx-field-label">Ponovitve</div>
         <div class="dx-field-value">
-          <dx-select-box formControlName="repeating" [items]="repeatings" displayExpr="name" valueExpr="key" (onValueChanged)="repeatingChanged($event)"></dx-select-box>
+          <dx-select-box formControlName="repeating" [items]="repeatings" displayExpr="name" valueExpr="key"
+            (onValueChanged)="repeatingChanged($event)"></dx-select-box>
         </div>
       </div>
       <div *ngIf="repeatingVisible">
@@ -43,7 +46,8 @@
             </div>
             <div style="float:left">&nbsp;</div>
             <div style="float:left">
-              <dx-select-box formControlName="frequency" [items]="frequencyItems" displayExpr="name" valueExpr="key" (onValueChanged)="frequencyChanged($event)"></dx-select-box>
+              <dx-select-box formControlName="frequency" [items]="frequencyItems" displayExpr="name" valueExpr="key"
+                (onValueChanged)="frequencyChanged($event)"></dx-select-box>
             </div>
           </div>
         </div>

@@ -21,8 +21,7 @@ export class LoadSubCalendarsFail implements Action {
 
 // create subcalendar
 export const CREATE_SUBCALENDAR = '[WorkTime] Create SubCalendar';
-export const CREATE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Create SubCalendar Success';
+export const CREATE_SUBCALENDAR_SUCCESS = '[WorkTime] Create SubCalendar Success';
 export const CREATE_SUBCALENDAR_FAIL = '[WorkTime] Create SubCalendar Fail';
 
 export class CreateSubCalendar implements Action {
@@ -40,8 +39,7 @@ export class CreateSubCalendarFail implements Action {
 
 // update subcalendar
 export const UPDATE_SUBCALENDAR = '[WorkTime] Update SubCalendar';
-export const UPDATE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Update SubCalendar Success';
+export const UPDATE_SUBCALENDAR_SUCCESS = '[WorkTime] Update SubCalendar Success';
 export const UPDATE_SUBCALENDAR_FAIL = '[WorkTime] Update SubCalendar Fail';
 
 export class UpdateSubCalendar implements Action {
@@ -59,8 +57,7 @@ export class UpdateSubCalendarFail implements Action {
 
 // delete calendar
 export const REMOVE_SUBCALENDAR = '[WorkTime] Remove SubCalendar';
-export const REMOVE_SUBCALENDAR_SUCCESS =
-  '[WorkTime] Remove SubCalendar Success';
+export const REMOVE_SUBCALENDAR_SUCCESS = '[WorkTime] Remove SubCalendar Success';
 export const REMOVE_SUBCALENDAR_FAIL = '[WorkTime] Remove SubCalendar Fail';
 
 export class RemoveSubCalendar implements Action {
@@ -76,12 +73,16 @@ export class RemoveSubCalendarFail implements Action {
   constructor(public payload: any) {}
 }
 
-// select subcalendar
+// select, deselect subcalendar
 export const SELECT_SUBCALENDAR = '[WorkTime] Select SubCalendar';
+export const DESELECT_SUBCALENDAR = '[WorkTime] DeSelect SubCalendar';
 
 export class SelectSubCalendar implements Action {
   readonly type = SELECT_SUBCALENDAR;
   constructor(public payload: number) {}
+}
+export class DeSelectSubCalendar implements Action {
+  readonly type = DESELECT_SUBCALENDAR;
 }
 
 // editing: select, deselect
@@ -106,8 +107,7 @@ export class SubCalendarPopupVisible implements Action {
 }
 
 // popup delete subcalendar
-export const SUBCALENDAR_DELETE_POPUP_VISIBLE =
-  '[WorkTime] Show subcalendar delete popup';
+export const SUBCALENDAR_DELETE_POPUP_VISIBLE = '[WorkTime] Show subcalendar delete popup';
 
 export class SubCalendarDeletePopupVisible implements Action {
   readonly type = SUBCALENDAR_DELETE_POPUP_VISIBLE;
@@ -129,6 +129,7 @@ export type SubCalendarsActions =
   | RemoveSubCalendarSuccess
   | RemoveSubCalendarFail
   | SelectSubCalendar
+  | DeSelectSubCalendar
   | SubCalendarPopupVisible
   | SelectEditSubCalendar
   | DeSelectEditSubCalendar

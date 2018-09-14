@@ -91,6 +91,12 @@ export function reducer(
         selectedId: id
       };
     }
+    case fromSubCalendars.DESELECT_SUBCALENDAR: {
+      return {
+        ...state,
+        selectedId: 0
+      };
+    }
     case fromSubCalendars.SELECT_EDIT_SUBCALENDAR: {
       return {
         ...state,
@@ -123,16 +129,11 @@ export function reducer(
 }
 
 // export level of state
-export const getSubCalendarsEntities = (state: SubCalendarsState) =>
-  state.entities;
-export const getSubCalendarsLoading = (state: SubCalendarsState) =>
-  state.loading;
+export const getSubCalendarsEntities = (state: SubCalendarsState) => state.entities;
+export const getSubCalendarsLoading = (state: SubCalendarsState) => state.loading;
 export const getSubCalendarsLoaded = (state: SubCalendarsState) => state.loaded;
-export const getSubCalendarsSelectedId = (state: SubCalendarsState) =>
-  state.selectedId;
-export const getSubCalendarsEditingId = (state: SubCalendarsState) =>
-  state.editingId;
-export const getSubCalendarPopupVisibility = (state: SubCalendarsState) =>
-  state.popupVisible;
+export const getSubCalendarsSelectedId = (state: SubCalendarsState) => state.selectedId;
+export const getSubCalendarsEditingId = (state: SubCalendarsState) => state.editingId;
+export const getSubCalendarPopupVisibility = (state: SubCalendarsState) => state.popupVisible;
 export const getSubCalendarDeletePopupVisibility = (state: SubCalendarsState) =>
   state.isDeletePopupVisible;
