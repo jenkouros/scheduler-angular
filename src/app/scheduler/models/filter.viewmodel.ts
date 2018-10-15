@@ -1,15 +1,20 @@
 import { Filter, FilterValue } from './filter.dto';
+import { Select } from './select.model';
 
 export class FilterSelect extends Filter {
     valuesSelect: FilterValueSelect[];
-    constructor(filter: Filter) {
-        super();
-        this.id = filter.id;
-        this.name = filter.name;
-        this.sequence = filter.sequence;
-        this.type = filter.type;
-        this.values = filter.values;
-        this.valuesSelect = filter.values.map(f => new FilterValueSelect(f, false));
+    get selectedValues() {
+        return this.valuesSelect.filter(i => i.selected);
+    }
+    static create(filter: Filter) {
+        const result = new FilterSelect();
+        result.id = filter.id;
+        result.name = filter.name;
+        result.sequence = filter.sequence;
+        result.type = filter.type;
+        result.values = filter.values;
+        result.valuesSelect = filter.values.map(f => FilterValueSelect.createSelect(f, false));
+        return result;
     }
 
     selectValues(values: number[]) {
@@ -21,10 +26,13 @@ export class FilterSelect extends Filter {
     }
 }
 
-export class FilterValueSelect extends FilterValue {
+export class FilterValueSelect extends FilterValue implements Select {
     selected: boolean;
-    constructor(filterValue: FilterValue, selected: boolean) {
-        super(filterValue.id, filterValue.name);
-        this.selected = selected;
+    static createSelect (filterValue: FilterValue, selected: boolean) {
+        const result = new FilterValueSelect();
+        result.id = filterValue.id;
+        result.name = filterValue.name;
+        result.selected = selected;
+        return result;
     }
 }

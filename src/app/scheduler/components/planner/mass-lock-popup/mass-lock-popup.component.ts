@@ -17,6 +17,7 @@ export class MassLockPopupComponent implements OnInit {
 
   constructor(private store: Store<fromStore.SchedulerState>, private fb: FormBuilder) {
     this.confirmMassLock = this.confirmMassLock.bind(this);
+    this.cancelMassLock = this.cancelMassLock.bind(this);
     this.initForm();
   }
 
@@ -41,10 +42,14 @@ export class MassLockPopupComponent implements OnInit {
     });
   }
 
-  visibilityChanged(popupShow: boolean) {
-    if (!popupShow) {
-      this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
-    }
+  // visibilityChanged(popupShow: boolean) {
+  //   if (!popupShow) {
+  //     this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
+  //   }
+  // }
+
+  cancelMassLock() {
+    this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
   }
 
   confirmMassLock() {
@@ -56,8 +61,8 @@ export class MassLockPopupComponent implements OnInit {
 
     this.store.dispatch(new fromStore.MassToggleEventsLock({
       containerIds: this.containerIds,
-      fromDate: value.dateFrom,
-      toDate: value.dateTo
+      fromDate: value.fromDate,
+      toDate: value.toDate
     }));
 
     this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));

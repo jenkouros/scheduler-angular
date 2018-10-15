@@ -5,6 +5,7 @@ import { EventsEffects } from './events.effect';
 import { PreplanitemEffects } from './preplanitem.effect';
 import { ItemsEffects } from './items.effect';
 import { SearchEffects } from './search.effect';
+import { GroupsEffects } from './groups.effect';
 
 export const effects: any[] = [
     ItemsEffects,
@@ -12,7 +13,8 @@ export const effects: any[] = [
     // ContainersEffects,
     EventsEffects,
     PreplanitemEffects,
-    SearchEffects
+    SearchEffects,
+    GroupsEffects
 ];
 
 
@@ -23,3 +25,4 @@ export * from './events.effect';
 export * from './preplanitem.effect';
 export * from './search.effect';
 export * from './items.effect';
+export * from './groups.effect';

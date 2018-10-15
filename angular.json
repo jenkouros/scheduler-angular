@@ -32,6 +32,15 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -47,11 +56,62 @@
                 }
               ]
             },
+            "livarproduction": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.livarproduction.ts"
+                }
+              ]
+            },
             "livartest": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.livartest.ts"
+                }
+              ]
+            },
+            "heliostest": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.heliostest.ts"
+                }
+              ]
+            },
+            "heliosproduction": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.heliosproduction.ts"
                 }
               ]
             }
@@ -63,11 +123,23 @@
             "browserTarget": "sinapro-scheduler:build"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "sinapro-scheduler:build:prod"
+            "production": {
+              "browserTarget": "sinapro-scheduler:build:production"
             },
             "localhost": {
               "browserTarget": "sinapro-scheduler:build:localhost"
+            },
+            "livartest": {
+              "browserTarget": "sinapro-scheduler:build:livartest"
+            },
+            "livarproduction": {
+              "browserTarget": "sinapro-scheduler:build:livarproduction"
+            },
+            "heliostest": {
+              "browserTarget": "sinapro-scheduler:build:heliostest"
+            },
+            "heliosproduction": {
+              "browserTarget": "sinapro-scheduler:build:heliosproduction"
             }
           }
         },

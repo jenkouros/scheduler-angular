@@ -1,6 +1,4 @@
 import { FiltersComponent } from './filters/filters.component';
-import { GroupsComponent } from './groups/groups.component';
-import { GroupDetailComponent } from './groups/group-detail/group-detail.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupListComponent } from './groups/group-list/group-list.component';
 import { PlannerComponent } from './planner/planner.component';
@@ -24,13 +22,12 @@ import { ItemsSearchComponent } from './search/items/items-search.component';
 import { PlanItemsSearchComponent } from './search/planitems/planitems-search.component';
 import { ContainerGroupComponent } from './containers/container-group/container-group.component';
 import { RealizationTimeUpdateComponent } from './planner/realization-timeupdate-popup/realization-timeupdate.component';
+import { FilterContainerComponent } from './filters/filter-container/filter-container.component';
 
 
 
 export const components: any[] = [
     FiltersComponent,
-    GroupsComponent,
-    GroupDetailComponent,
     GroupEditComponent,
     GroupListComponent,
     PlannerComponent,
@@ -53,12 +50,11 @@ export const components: any[] = [
     SearchComponent,
     ItemsSearchComponent,
     PlanItemsSearchComponent,
-    RealizationTimeUpdateComponent
+    RealizationTimeUpdateComponent,
+    FilterContainerComponent
 ];
 
 export * from './filters/filters.component';
-export * from './groups/groups.component';
-export * from './groups/group-detail/group-detail.component';
 export * from './groups/group-edit/group-edit.component';
 export * from './groups/group-list/group-list.component';
 export * from './planner/planner.component';
@@ -82,3 +78,4 @@ export * from './search/search.component';
 export * from './search/items/items-search.component';
 export * from './search/planitems/planitems-search.component';
 export * from './planner/realization-timeupdate-popup/realization-timeupdate.component';
+export * from './filters/filter-container/filter-container.component';

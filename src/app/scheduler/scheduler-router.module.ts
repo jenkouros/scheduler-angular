@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SchedulerComponent, FiltersComponent, GroupsComponent, PlannerComponent } from './components';
-import { ItemsComponent, SearcherComponent } from './containers';
+import { SchedulerComponent, FiltersComponent, PlannerComponent } from './components';
+import { ItemsComponent, SearcherComponent, GroupIndexComponent } from './containers';
 
 const schedulerRoutes: Routes = [
     { path: '', component: SchedulerComponent, children: [
         { path: 'filters', component: FiltersComponent },
-        { path: 'groups', component: GroupsComponent },
+        { path: 'groups', component: GroupIndexComponent },
         { path: 'planitems', component: ItemsComponent },
         { path: 'planner', component: PlannerComponent },
         { path: 'search', component: SearcherComponent },

@@ -18,7 +18,8 @@ export class PlanViewerFormHelper {
   }
   static getExecutionNormative() {
     return PlanViewerFormHelper.selectedContainer
-      ? PlanViewerFormHelper.selectedContainer.executionNormative * PlanViewerFormHelper.quantity
+      ? (PlanViewerFormHelper.selectedContainer.executionNormative /
+        Math.max(PlanViewerFormHelper.selectedContainer.quantity, 1)) * PlanViewerFormHelper.quantity
       : 0;
   }
   private static updatePreparationDurationField(form) {

@@ -36,11 +36,16 @@ export const getFilterSelectList = createSelector(
             return undefined;
         }
         return filters.map(f => {
-            const filterSelect = new FilterSelect(f);
+            const filterSelect = FilterSelect.create(f);
             if (selectedFilters[filterSelect.id]) {
                 filterSelect.selectValues(selectedFilters[filterSelect.id]);
             }
             return filterSelect;
         });
     }
+);
+
+export const selectFilterContainers = createSelector(
+    getFiltersState,
+    state => state.selectedContainers
 );

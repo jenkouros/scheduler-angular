@@ -3,10 +3,10 @@ import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { PlannedEvent, PlannedEventMove, PlanItemPutRequest,
-    PlanItemMoveStatusEnum, PlanItemCreateRequest, PlanItemsGetResponse, PlannedEventNotWorkingHoursMove } from '../models/event.model';
+    PlanItemMoveStatusEnum, PlanItemCreateRequest, PlanItemsGetResponse, PlannedEventNotWorkingHoursMove, PlanItemGetRequest } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment, appSettings } from '../../../environments/environment';
 import { PlannedEventServer, PlanItemResponseServer } from '../models/server/plannedevent.servermodel';
 import * as moment from 'moment';
 import { PlanSchedule } from '../models/planschedule.dto';
@@ -18,20 +18,33 @@ export class EventsService {
     constructor(private http: HttpClient) { }
 
     getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlanItemsGetResponse> {
-        let httpParams = new HttpParams()
-            .set('IdPlan', '1')
-            .set('timeStart', moment(fromDate).toISOString())
-            .set('timeEnd', moment(toDate).toISOString()); // .format());
+        // let httpParams = new HttpParams()
+        //     .set('IdPlan', '1')
+        //     .set('timeStart', moment(fromDate).toISOString())
+        //     .set('timeEnd', moment(toDate).toISOString());
 
-        containerIds.forEach(id => {
-            httpParams = httpParams.append('containers', id.toString());
-        });
+        const request = <PlanItemGetRequest> {
+            timeStart: moment(fromDate).format(),
+            timeEnd: moment(toDate).format(),
+            idPlan: 1,
+            containers: containerIds
+        };
 
-        return this.http.get<PlanItemResponseServer>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
+        return this.http.post<PlanItemResponseServer>(environment.apiUrl + '/planitems/GetPlanItems', request).pipe(
             map((response) => {
                 return PlanItemsGetResponse.fromServer(response);
             })
         );
+
+        // containerIds.forEach(id => {
+        //     httpParams = httpParams.append('containers', id.toString());
+        // });
+
+        // return this.http.get<PlanItemResponseServer>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
+        //     map((response) => {
+        //         return PlanItemsGetResponse.fromServer(response);
+        //     })
+        // );
     }
 
     createEvent(event: PlannedEvent): Observable<PlannedEvent> {
@@ -41,7 +54,10 @@ export class EventsService {
             timePreparationStart: moment(event.timeStartPreparation).format(),
             timeExecutionStart: moment(event.timeStartExecution).format(),
             timeExecutionEnd: moment(event.timeEndExecution).format(),
-            comment: event.description
+            comment: event.description,
+            options: {
+                enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+            }
         };
         return this.http.post<PlannedEventServer>(environment.apiUrl + '/planitems', planningItem,
             {
@@ -65,7 +81,10 @@ export class EventsService {
             timeExecutionStart: moment(new Date(event.timeStartExecution)).format(),
             timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
             planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
-            comment: event.description
+            comment: event.description,
+            options: {
+                enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+            }
         };
         return this.http.put(environment.apiUrl + '/planitems', planningItem);
     }

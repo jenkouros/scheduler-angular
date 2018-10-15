@@ -31,10 +31,12 @@ export class ContainersEffects {
   }
 
   @Effect()
-  loadContainers$ = this.actions$.ofType(fromActions.LOAD_CONTAINERS).pipe(
-    switchMap(action => {
+  loadContainers$ = this.actions$.ofType(fromActions.LOAD_CONTAINERS)
+  .pipe(
+    withLatestFrom(this.store.select(state => state.scheduler.filters)),
+    switchMap(([action, filters]) => {
       return this.containersService
-        .getContainers()
+        .getContainers(filters.selectedEntities, filters.selectedContainers)
         .pipe(
           map(containers => new fromActions.LoadContainersSuccess(containers)),
           catchError(error => of(new fromActions.LoadContainersFail()))

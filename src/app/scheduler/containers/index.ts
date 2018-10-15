@@ -4,6 +4,7 @@ import { PreplanItemsComponent } from './preplanitems/preplanitems.component';
 import { ContainersComponent } from './planitem/containers.component';
 import { PlanitemsComponent } from './planitem/planitems.component';
 import { SearcherComponent } from './search/searcher.component';
+import { GroupIndexComponent } from './groups/group.index.component';
 
 export const containers: any[] = [
     ItemsComponent,
@@ -11,7 +12,8 @@ export const containers: any[] = [
     PreplanItemsComponent,
     ContainersComponent,
     PlanitemsComponent,
-    SearcherComponent
+    SearcherComponent,
+    GroupIndexComponent
 ];
 
 export * from './item/items.component';
@@ -20,3 +22,4 @@ export * from './preplanitems/preplanitems.component';
 export * from './planitem/containers.component';
 export * from './planitem/planitems.component';
 export * from './search/searcher.component';
+export * from './groups/group.index.component';

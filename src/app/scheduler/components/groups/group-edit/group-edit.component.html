@@ -1,3 +1,34 @@
-<p>
-  group-edit works!
-</p>
+<app-popup [visible]="groupFilter !== null" [cancelCallback]="onCancel" [confirmCallback]="onSubmit" [title]="groupFilter && groupFilter!.name ? groupFilter!.name : 'Nova skupina'">
+
+  <div *ngIf="groupFilter" class="px-3">
+    <dx-text-box [(value)]="groupName" placeholder="Naziv skupine"></dx-text-box>
+
+    <div *ngFor="let filterElement of groupFilter!.filterSelects">
+
+      <h5 class="mt-2">{{ filterElement.name }}</h5>
+
+      <app-filter-checkbox *ngIf="filterElement.type === FilterTypeEnum.checkbox" 
+        [filterValues]="filterElement.valuesSelect"
+        (changeSelection)="onFilterChange(filterElement.id, $event)">
+      </app-filter-checkbox>
+
+      <app-filter-autocomplete *ngIf="filterElement.type === FilterTypeEnum.autocomplete" 
+        [filterValues]="filterElement.valuesSelect"
+        [placeholder]="filterElement.name"
+        (changeSelection)="onFilterChange(filterElement.id, $event)">
+      </app-filter-autocomplete>
+    </div>
+
+    <h5 class="mt-2">Delovna mesta</h5>
+    <app-filter-autocomplete [filterValues]="groupFilter!.containerSelects"
+        placeholder="Delovna mesta" (changeSelection)="onContainerFilterChange($event)">
+      </app-filter-autocomplete>
+  </div>
+
+
+  <!-- <ng-container *ngIf="selectedContainers !== null && selectedContainers.length">
+      <h5 class="mt-1">Delovna mesta</h5>
+      <dx-list height="150px" selectionMode="none" [items]="selectedContainers">
+      </dx-list>
+  </ng-container> -->
+</app-popup>

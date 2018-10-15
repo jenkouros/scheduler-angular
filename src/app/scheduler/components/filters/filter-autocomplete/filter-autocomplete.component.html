@@ -9,3 +9,29 @@
   (add)="onChange($event.id, false)"
   (remove)="onChange($event.value.id, true)">
 </ng-select> -->
+
+<dx-drop-down-box
+  [dataSource]="filterValues"
+  [(value)]="selectedValues"
+  [showClearButton]="false"
+  valueExpr="id"
+  displayExpr="name"
+  (onValueChanged)="syncListSelection()"
+  (onClosed)="onClose($event)"
+  >
+  <div *dxTemplate="let contentData of 'content'">
+    <dx-list
+      [dataSource]="filterValues"
+      [selectedItemKeys]="selectedValues"
+      keyExpr="id"
+      selectionMode="multiple"
+      [showSelectionControls]="true"
+      itemTemplate="listItem"
+      (onContentReady)="syncListSelection()"
+      (onSelectionChanged)="onChange($event)">
+        <div *dxTemplate="let item of 'listItem'">
+            {{item.name}}
+        </div>
+    </dx-list>
+</div>
+</dx-drop-down-box>

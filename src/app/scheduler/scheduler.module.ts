@@ -27,7 +27,12 @@ import {
     DxValidatorModule,
     DxValidationSummaryModule,
     DxProgressBarModule,
-    DxTextAreaModule
+    DxTextAreaModule,
+    DxRadioGroupModule,
+    DxDropDownBoxModule,
+    DxListModule,
+    DxTreeViewModule,
+    DxTagBoxModule
 } from 'devextreme-angular';
 
 import { ContainersEffects } from './store/effects/containers.effect';
@@ -60,7 +65,13 @@ import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemsta
         DxScrollViewModule,
         DxValidatorModule,
         DxValidationSummaryModule,
-        DxProgressBarModule
+        DxProgressBarModule,
+        DxRadioGroupModule,
+        DxCheckBoxModule,
+        DxDropDownBoxModule,
+        DxListModule,
+        DxTreeViewModule,
+        DxTagBoxModule
     ],
     declarations: [
         ...fromContainers.containers,

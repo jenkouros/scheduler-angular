@@ -26,4 +26,12 @@ export class SubItemContainer {
 
         return result;
     }
+
+    static createSubItemContainer(container: Container) {
+        const result = new SubItemContainer();
+        result.idSubItemContainer = -1;
+        result.container = container;
+        result.isDefault = false;
+        return result;
+    }
 }

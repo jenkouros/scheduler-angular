@@ -2,22 +2,26 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import * as fromActions from '../actions';
 import { PreplanitemsService } from '../../services/preplanitems.service';
-import { map, catchError, switchMap ,  mergeMap } from 'rxjs/operators';
+import { map, catchError, switchMap ,  mergeMap, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { AppState } from '../../../store/app.reducers';
+import { Store, select } from '@ngrx/store';
 
 @Injectable()
 export class PreplanitemEffects {
     constructor(
         private actions$: Actions,
-        private preplanitemService: PreplanitemsService
+        private preplanitemService: PreplanitemsService,
+        private store: Store<AppState>
     ) {}
 
     @Effect()
     loadPreplanitems$ = this.actions$
         .ofType(fromActions.LOAD_PREPLANITEMS)
         .pipe(
-            switchMap(action => {
-                return this.preplanitemService.getPreplanitems()
+            withLatestFrom(this.store.select(state => state.scheduler.filters)),
+            switchMap(([action, filters]) => {
+                return this.preplanitemService.getPreplanitems(filters.selectedEntities)
                     .pipe(
                         map(preplanitems => new fromActions.LoadPreplanItemsSuccess(preplanitems)),
                         catchError((error) => {

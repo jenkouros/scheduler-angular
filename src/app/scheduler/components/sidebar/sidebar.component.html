@@ -1,44 +1,50 @@
 <ul class="nav nav-pills flex-column">
-  <!-- <li class="nav-item">
-    <a href="#" class="nav-link" (click)="selected = 'filters'; false">Filter
+  <li *ngIf="settings.Menu_Scheduler_Filters" class="nav-item">
+    
+    <a href="#" class="nav-link" (click)="selected = selected === 'filters' ? '' : 'filters'; false;">
+        <fa-icon [ngStyle]="(filterActive || containerFilterActive) && { 'color': 'orange' }" class="mr-3" size="lg" [icon]="faFilter"></fa-icon>
+      Filter
       <i class="oi" [ngClass]="{'oi-caret-right': selected !== 'filters', 'oi-caret-bottom': selected === 'filters' }" style="font-size: small;"></i>
     </a>
     <div *ngIf="selected === 'filters'" class="mx-3 mb-3">
+      <button *ngIf="filterActive || containerFilterActive" class="btn w-100" (click)="onFilterClear()">Počisti filter</button>
+        
       <app-filters></app-filters>
+      
     </div>
-
   </li>
-  <li class="nav-item">
-    <a class="nav-link" (click)="selected = 'groups'" routerLink='groups' routerLinkActive='active'>Skupine</a>
-  </li> -->
-  <li class="nav-item">
+
+  <li *ngIf="settings.Menu_Scheduler_Groups" class="nav-item">
+    <a class="nav-link" (click)="selected = 'groups'" routerLink='groups' routerLinkActive='active'>
+        <fa-icon class="mr-3" size="lg" [icon]="faGroup"></fa-icon> Skupine
+    </a>
+  </li>
+  
+  <li *ngIf="settings.Menu_Scheduler_Items" class="nav-item">
     <a class="nav-link" (click)="selected = 'workorders'" routerLink='planitems' routerLinkActive='active'>
       <fa-icon class="mr-3" style="padding-left:1px" size="lg" [icon]="faItems"></fa-icon> Delovni nalogi
     </a>
   </li>
-  <li class="nav-item">
-    
+
+  <li *ngIf="settings.Menu_Scheduler_Planner" class="nav-item"> 
     <a class="nav-link" (click)="selected = 'planner'" routerLink='planner' routerLinkActive='active'>
         <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razporejanje
     </a>
   </li>
 
-  <li class="nav-item">
-    
+  <li *ngIf="settings.Menu_Scheduler_Searcher" class="nav-item">
     <a class="nav-link" (click)="selected = 'searcher'" routerLink='search' routerLinkActive='active'>
         <fa-icon class="mr-3" size="lg" [icon]="faSearch"></fa-icon> Iskalnik
     </a>
   </li>
+
   <li><hr class="mb-1 mt-3"></li>
-  <li>
+  <li *ngIf="settings.Menu_Scheduler_Planner">
     
         <dx-scroll-view #scrollElement [height]="getScrollHeight(scrollElement.element)">
             <div class="mx-2">
               <app-preplanitems></app-preplanitems>
           </div>
         </dx-scroll-view>
-        
-    
-    
   </li>
 </ul>

@@ -50,6 +50,7 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.planItem && this.planItem) {
+      this.planItem = Object.assign(new PlannedEvent(), this.planItem);
       this.setForm(this.planItem);
     }
   }
@@ -226,8 +227,10 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges, OnDestroy
     });
   }
   getExecutionNormative() {
+    const normativeQuantity = this.selectedContainer ? Math.max(this.selectedContainer.quantity, 1) : 1;
+
     return (this.planItem ? this.planItem.quantity : 0) *
-      (this.selectedContainer ? this.selectedContainer.executionNormative : 0);
+      (this.selectedContainer ? this.selectedContainer.executionNormative / normativeQuantity : 0);
   }
 
   get preparationStartTimeControl() {

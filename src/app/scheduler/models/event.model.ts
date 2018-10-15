@@ -4,6 +4,7 @@ import { SubItemContainerServer } from './server/preplanitem.servermodel';
 import { SubItemContainer } from './subitem.dto';
 import { PlanSchedule } from './planschedule.dto';
 import * as moment from 'moment';
+import { environment } from '../../../environments/environment';
 
 export interface ContainerEvents {
     events: PlannedEvent[];
@@ -32,6 +33,7 @@ export interface PlanItemPutRequest {
 export interface PlanItemPutRequestOptions {
     fixPlanItem?: boolean;
     ignoreStatusLimitation?: boolean;
+    enablePlanningOnAllWorkplaces?: boolean;
 }
 
 export interface PlanItemCreateRequest {
@@ -41,6 +43,11 @@ export interface PlanItemCreateRequest {
     timeExecutionStart: Date | string;
     timeExecutionEnd: Date | string;
     comment?: string;
+    options?: PlanItemCreateRequestOptions;
+}
+
+export interface PlanItemCreateRequestOptions {
+    enablePlanningOnAllWorkplaces?: boolean;
 }
 
 export interface PlannedEventMove {
@@ -57,6 +64,13 @@ export interface PlannedEventNotWorkingHoursMove {
     movePlanItem: PlannedEventMove;
 }
 
+export class PlanItemGetRequest {
+    timeStart: Date | string;
+    timeEnd: Date | string;
+    idPlan: number;
+    containers: number[];
+}
+
 export class PlanItemsGetResponse {
     planItems: PlannedEvent[];
     notWorkingHoursEvents: PlanSchedule[];
@@ -70,7 +84,7 @@ export class PlanItemsGetResponse {
 }
 
 export class PlannedEvent {
-    PARALLEL_SEQUENCE_ALLOWED = true;
+    PARALLEL_SEQUENCE_ALLOWED = environment.parallelOperations;
     id: number;
     idPrePlanItem: number;
     idPlan: number;

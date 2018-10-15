@@ -32,7 +32,7 @@ export const getSelectedItemHierarchy = createSelector(
             state.items[idx],
             state.selectedItemHierarchy,
             state.selectedItemHierarchy.alternatives.map(a =>
-                new FilterValue(a.id, a.name))
+                FilterValue.create(a.id, a.name))
         );
     }
 );

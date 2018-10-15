@@ -1,6 +1,7 @@
 <app-popup 
   [visible]="visible"
   [validToConfirm]="massLockForm.valid"
+  [cancelCallback]="cancelMassLock"
   [confirmCallback]="confirmMassLock"
   width="400px"
   height="auto" 

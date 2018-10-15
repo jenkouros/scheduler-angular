@@ -26,13 +26,13 @@ export class ItemListComponent implements OnChanges {
         return;
       }
 
-      if (!this.dataSource) {
+      // if (!this.dataSource) {
         const customStore = createStore(this.storeConfiguration);
         customStore.on('loaded', (data) => this.loadedItems.emit(data));
         this.dataSource = new DataSource(customStore);
-      } else {
-        this.dataSource.reload();
-      }
+      // } else {
+      //   this.dataSource.reload();
+      // }
     }
   }
 

@@ -39,6 +39,7 @@ import { TimeHelper } from '../../../helpers/time.helper';
 import { PlanSchedule } from '../../../models/planschedule.dto';
 import { ColorHelper } from '../../../helpers/color.helper';
 import { NotifyService } from '../../../../worktime/services';
+import { appSettings } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -221,7 +222,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     if ($event.component.__tooltipTimeout) {
       clearTimeout($event.component.__tooltipTimeout);
     }
-    this.planItemEditing = $event.appointmentData;
+    this.planItemEditing = Object.assign(new PlannedEvent(), $event.appointmentData);
     this.planItemEditMode = true;
   }
 
@@ -333,22 +334,42 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         };
 
         if (draggedData !== undefined) {
-          const selectedContainer = draggedData.containers.find(
+          let selectedContainer = draggedData.containers.find(
             item => cellData.groups.containerId === item.container.id
           );
 
           if (selectedContainer === undefined) {
-            this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
-            return false;
+            // TODO check settings - add
+            if (appSettings.PlanItem_EnablePlanningOnAllWorkplaces) {
+              const container = this.selectedContainers.find(i => i.id === cellData.groups.containerId);
+              if (!container) {
+                this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
+                return false;
+              }
+              selectedContainer = SubItemContainer.createSubItemContainer(container);
+              if (draggedData.containers && draggedData.containers.length) {
+                selectedContainer.quantity = draggedData.containers[0].quantity;
+                selectedContainer.unitQuantity = draggedData.containers[0].unitQuantity;
+                selectedContainer.preparationNormative = draggedData.containers[0].preparationNormative;
+                selectedContainer.executionNormative = draggedData.containers[0].executionNormative;
+              }
+              preplanItem.containers.push(selectedContainer);
+            } else {
+              this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
+              return false;
+            }
           }
           const calculatedStartTime = this.getCalculatedStartTimeInCell(
             cellData.groups.containerId,
             cellData.startDate,
             cellData.endDate
           );
+
+          const normativeQuantity = Math.max(selectedContainer.quantity, 1);
+
           const duration =
             selectedContainer.preparationNormative +
-            selectedContainer.executionNormative * draggedData.quantity;
+            selectedContainer.executionNormative / normativeQuantity * draggedData.quantity;
           const plannedEvent = PlannedEvent.createFromPreplanitem(
             draggedData.id,
             cellData.groups.containerId,
@@ -480,7 +501,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   showUpdateAppointmentPopup(appointment: PlannedEvent) {
     this.scheduler.instance.hideAppointmentTooltip();
-    this.planItemEditing = appointment;
+    this.planItemEditing = Object.assign(new PlannedEvent(), appointment);
     this.planItemEditMode = true;
     // this.scheduler.instance.showAppointmentPopup(appointment, false);
   }

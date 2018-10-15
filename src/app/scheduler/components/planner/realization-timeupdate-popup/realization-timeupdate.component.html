@@ -1,7 +1,7 @@
 <app-popup
     title="Predlagane spremembe uskladitve z realizacijo"
     [visible]="suggestion !== null"
-
+    [cancelCallback]="onClearTimeRealizationSuggestion"
     [confirmCallback]="onResolveRealization"
     [validToConfirm]="!isEmptySuggestion()"
 >

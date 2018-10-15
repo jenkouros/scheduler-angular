@@ -10,6 +10,12 @@ import { ItemHierarchyServer } from '../models/server/item.servermodel';
 import { ItemHierarchy } from '../models/item.dto';
 import { map, catchError } from 'rxjs/operators';
 import { GridStoreConfiguration } from '../models/shared.dto';
+import { DictionaryHelper } from '../helpers/dictionary.helper';
+
+
+export class Test {
+    constructor(private id: string, private value: number) {}
+}
 
 @Injectable()
 export class ItemsService {
@@ -27,10 +33,15 @@ export class ItemsService {
     //     return store;
     // }
 
-    getItemsStoreConfiguration(): GridStoreConfiguration {
+    getItemsStoreConfiguration(filterDictionary: {[id: string]: number[]}): GridStoreConfiguration {
+        const dict = DictionaryHelper.stringify(filterDictionary);
         return {
-            loadUrl: environment.apiUrl + '/items/grid',
-            key: 'idItem'
+            loadUrl: environment.apiUrl + `/items/grid`,
+            key: 'idItem',
+            loadParams: {
+                ids : dict.ids,
+                values: dict.values
+            }
         };
     }
 

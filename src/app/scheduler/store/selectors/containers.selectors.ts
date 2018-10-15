@@ -19,7 +19,7 @@ export const getContainerSelectList = createSelector(
     getContainersState,
     (state: fromFeature.ContainerState) => {
         return state.containers.map(container => {
-            const containerSelect = new ContainerSelect(container);
+            const containerSelect = ContainerSelect.create(container);
             if (state.selectedContainers.indexOf(containerSelect.id) > -1) {
                 containerSelect.selected = true;
             }

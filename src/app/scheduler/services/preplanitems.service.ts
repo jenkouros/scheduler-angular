@@ -1,20 +1,26 @@
 
 import {throwError as observableThrowError,  Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { PreplanitemServer } from '../models/server/preplanitem.servermodel';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { PreplanItem, PreplanItemRequest } from '../models/preplanitem.dto';
+import { DictionaryHelper } from '../helpers/dictionary.helper';
 
 @Injectable()
 export class PreplanitemsService {
     constructor(private http: HttpClient) {}
 
-    getPreplanitems() {
+    getPreplanitems(filterDictionary: {[id: string]: number[]} = {}) {
+        const dict = DictionaryHelper.stringify(filterDictionary);
+        const params = new HttpParams()
+        .set('ids', dict.ids)
+        .set('values', dict.values);
+
         return this.http.get<PreplanitemServer[]>
-            (environment.apiUrl + '/preplanitems')
+            (environment.apiUrl + '/preplanitems', { params: params })
             .pipe(
                 map(response => {
                     return response.map(f => PreplanItem.fromServer(f));
