@@ -5,6 +5,8 @@ import DataSource from 'devextreme/data/data_source';
 import { Item } from '../../../models/item.dto';
 import { GridStoreConfiguration } from '../../../models/shared.dto';
 import { ItemServer } from '../../../models/server/item.servermodel';
+import { appSettings } from '../../../../../environments/environment';
+// import { appSettings } from ''
 
 @Component({
   selector: 'app-item-list',
@@ -17,6 +19,7 @@ export class ItemListComponent implements OnChanges {
   @Output() hideItem = new EventEmitter<Item>();
   @Output() loadedItems = new EventEmitter<ItemServer[]>();
 
+  settings = appSettings;
   dataSource: DataSource | null;
 
   ngOnChanges(changes: SimpleChanges) {

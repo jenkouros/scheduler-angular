@@ -8,7 +8,8 @@ import {
   OnChanges,
   SimpleChanges,
   Input,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ElementRef
 } from '@angular/core';
 import { DxSchedulerComponent } from 'devextreme-angular';
 import { off, on } from 'devextreme/events';
@@ -572,6 +573,23 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       fromDate: this.selectedStartDate,
       toDate: this.selectedEndDate
     });
+  }
+
+  getScrollHeight(containerElement: HTMLElement) {
+    return window.innerHeight * 0.8;
+
+    const calc = !this.isViewHorizontal(this.currentView)
+      ? 'auto' // Math.min(100 + this.selectedContainerIds.length * 100, 700)
+      : Math.max(window.innerHeight - containerElement.getBoundingClientRect().top, 700) + 'px';
+    console.log(calc);
+    return calc;
+    // const calc = window.innerHeight - containerElement.getBoundingClientRect().top;
+    // console.log(Math.max(calc, 600));
+    // return Math.max(calc, 600);
+  }
+
+  getScrollWidth() {
+    const calc = !this.isViewHorizontal(this.currentView) ? '100%' : 'auto';
   }
 
   private getCalculatedStartTimeInCell(

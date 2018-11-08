@@ -6,8 +6,20 @@
 /*
 https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
 */
-::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
-    height: 100px;
+/* ::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
+    height: 30px !important;
+}
+
+::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
+    width: 80px !important;
+} */
+
+/* ::ng-deep #scheduler .dx-scheduler-timeline .dx-scheduler-group-header-content {
+    margin: 0;
+} */
+
+::ng-deep .dx-scheduler-work-space-month .dx-scheduler-appointment-content {
+    padding: 0; 
 }
 
 
@@ -53,17 +65,9 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     border-color: rgba(221, 221, 221, 0.6)
 }
 
-::ng-deep .dx-scheduler-header {
+/* ::ng-deep .dx-scheduler-header {
     border-top: none;
-}
-
-::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
-    width: 100px;
-}
-
-::ng-deep .dx-scheduler-work-space-month .dx-scheduler-appointment-content {
-    padding: 0; 
-}
+} */
 
 ::ng-deep .weekend {
     background-color: rgba(86, 202, 133, 0.1);
@@ -80,4 +84,8 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     box-shadow: inset 5px 0px 0px 0px rgb(255, 155, 0) !important;
     /* border-left: none; */
     border-right: 2px solid transparent;
+}
+
+::ng-deep .dx-scheduler-group-header {
+    overflow: hidden;
 }

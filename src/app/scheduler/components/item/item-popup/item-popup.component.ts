@@ -4,6 +4,7 @@ import { NgForm, FormGroup, Validators, FormControl, FormBuilder } from '@angula
 import { ItemHierarchyAlternative } from '../../../models/item.dto';
 import { PreplanItemRequest } from '../../../models/preplanitem.dto';
 import { FormValidators } from '../../../../shared/validators/form.validators';
+import { appSettings } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-item-popup',
@@ -16,6 +17,7 @@ export class ItemPopupComponent implements OnChanges {
   @Output() close = new EventEmitter();
   @Output() createPreplanItems = new EventEmitter<PreplanItemRequest>();
 
+  settings = appSettings;
   createPreplanItemsForm: FormGroup;
   alternatives: ItemHierarchyAlternative[] = [];
 

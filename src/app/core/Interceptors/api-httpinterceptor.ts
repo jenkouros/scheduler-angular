@@ -26,7 +26,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   }
 
   handleErrorResponse(error, interceptObservable) {
-    //console.log('error ' + error);
+    // console.log('error ' + error);
     return of({});
   }
   protected handleSuccessResponse(

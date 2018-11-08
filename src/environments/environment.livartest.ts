@@ -15,6 +15,8 @@ export const appSettings = {
     Menu_Scheduler_Filters: false,
     Menu_Scheduler_Groups: false,
     Menu_TimeTables: true,
-    PlanItem_EnablePlanningOnAllWorkplaces: false
+    PlanItem_EnablePlanningOnAllWorkplaces: false,
+    Item_EnableHiddingItems: true,
+    Item_EnableBatchPlanning: true
 };
 

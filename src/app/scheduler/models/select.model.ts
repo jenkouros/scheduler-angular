@@ -1,5 +1,5 @@
 export interface Select {
     id: number;
-    name: string;
+    displayName: string;
     selected: boolean;
 }

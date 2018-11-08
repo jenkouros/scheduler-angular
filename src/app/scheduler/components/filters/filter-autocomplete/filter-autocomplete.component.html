@@ -15,7 +15,7 @@
   [(value)]="selectedValues"
   [showClearButton]="false"
   valueExpr="id"
-  displayExpr="name"
+  displayExpr="displayName"
   (onValueChanged)="syncListSelection()"
   (onClosed)="onClose($event)"
   >
@@ -30,7 +30,7 @@
       (onContentReady)="syncListSelection()"
       (onSelectionChanged)="onChange($event)">
         <div *dxTemplate="let item of 'listItem'">
-            {{item.name}}
+            {{item.displayName}}
         </div>
     </dx-list>
 </div>

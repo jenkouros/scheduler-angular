@@ -41,7 +41,7 @@
     <dxi-column dataField="limitDateTo" dataType="date" caption="Datum do" cellTemplate="dateCellTemplate"></dxi-column>
   </dxi-column>
 
-    <dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
+    <dxi-column *ngIf="settings.Item_EnableHiddingItems" alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
     <dxi-column alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
 
 

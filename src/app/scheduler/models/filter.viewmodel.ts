@@ -28,9 +28,11 @@ export class FilterSelect extends Filter {
 
 export class FilterValueSelect extends FilterValue implements Select {
     selected: boolean;
+    displayName;
     static createSelect (filterValue: FilterValue, selected: boolean) {
         const result = new FilterValueSelect();
         result.id = filterValue.id;
+        result.name = filterValue.name;
         result.name = filterValue.name;
         result.selected = selected;
         return result;

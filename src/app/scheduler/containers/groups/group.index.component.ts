@@ -65,6 +65,7 @@ export class GroupIndexComponent implements OnInit, OnDestroy {
 
         this.store.dispatch(new fromStore.ChangeContainersFilter(data.selectedContainers));
         this.store.dispatch(new fromStore.ChangeFilter(dict));
+        this.store.dispatch(new fromStore.LoadPreplanItems());
     }
 
     onEditGroupFilter(data: GroupFilterViewModel | null) {
