@@ -6,8 +6,22 @@
     <div class="py-1 pl-2 pr-1 d-flex appointment" [ngClass]="viewName">
       <div class="flex-grow-1" style="min-width: 0; overflow: hidden;">
         <div class="d-flex flex-column">
-          <div class="white-text font-weight-bold">#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
-          <div>{{ plannerItemData.itemName }} | {{ plannerItemData.articleCode }} </div>
+          <div *ngIf="!settings.PlanItem_DisplayOperationFirst">
+            <div class="white-text font-weight-bold">
+              {{ plannerItemData.itemName }} | 
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }}
+            </div>
+            <div>#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
+          </div>
+          <div *ngIf="settings.PlanItem_DisplayOperationFirst">
+            <div class="white-text font-weight-bold">
+              #{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}
+            </div>
+            <div>
+              {{ plannerItemData.itemName }} | 
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} 
+            </div>  
+          </div>        
           <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
         </div>
       </div> 

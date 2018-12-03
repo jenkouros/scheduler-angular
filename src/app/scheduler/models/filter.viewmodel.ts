@@ -33,7 +33,7 @@ export class FilterValueSelect extends FilterValue implements Select {
         const result = new FilterValueSelect();
         result.id = filterValue.id;
         result.name = filterValue.name;
-        result.name = filterValue.name;
+        result.displayName = filterValue.name;
         result.selected = selected;
         return result;
     }

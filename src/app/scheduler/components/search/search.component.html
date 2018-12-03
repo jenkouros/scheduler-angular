@@ -1,6 +1,24 @@
 <div class="mb-3">
-    <input class="form-control w-50 mr-2 d-inline-block" [(ngModel)]="searchValue" type="text" placeholder="Išči nalog, artikel, delovno mesto, status operacij ...">
-    <button type="button" class="btn bg-kolektor-light text-kolektor d-inline-block" (click)="onSearch()">Išči</button>
+    <div class="row">
+        <div class="col-4">
+            <dx-text-box
+                placeholder="Išči nalog, artikel, delovno mesto, status operacij ..."
+                [(value)]="searchValue" 
+                (onEnterKey)="onSearch()">
+            </dx-text-box>
+        </div>
+        <div class="col">
+            <dx-button text="Išči" (click)="onSearch()" type="default">Išči></dx-button>
+        </div>
+    </div>
+
+    
+    <!-- <input class="form-control w-50 mr-2 d-inline-block" 
+        (enter)
+        
+        type="text" 
+        placeholder=""> -->
+    <!-- <button type="button" class="btn bg-kolektor-light text-kolektor d-inline-block" (click)="onSearch()">Išči</button> -->
 </div>
 
 <h5>Nalogi</h5>

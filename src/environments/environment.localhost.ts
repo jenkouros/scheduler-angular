@@ -17,5 +17,7 @@ export const appSettings = {
     Menu_TimeTables: true,
     PlanItem_EnablePlanningOnAllWorkplaces: true,
     Item_EnableHiddingItems: true,
-    Item_EnableBatchPlanning: true
+    Item_EnableBatchPlanning: true,
+    PlanItem_DisplayOperationFirst: true, // workorder otherwise
+    PlanItem_DisplayArticleCode: true  // article name otherwise
 };
