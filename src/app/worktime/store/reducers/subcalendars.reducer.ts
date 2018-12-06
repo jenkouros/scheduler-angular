@@ -118,7 +118,6 @@ export function reducer(
       };
     }
     case fromSubCalendars.SUBCALENDAR_DELETE_POPUP_VISIBLE: {
-      //console.log(action.payload);
       return {
         ...state,
         isDeletePopupVisible: action.payload

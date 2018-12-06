@@ -1,5 +1,5 @@
 import { RRule, Weekday, Frequency, Options } from 'rrule';
-import { Language } from '../../../../node_modules/rrule/dist/es6/nlp/i18n';
+import { Language } from '../../../../node_modules/rrule/dist/esm/nlp/i18n';
 
 export class RecurrenceRule {
   static Parse(rfcString): any {

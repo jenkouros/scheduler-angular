@@ -1,0 +1,37 @@
+<div class="toolbar">
+  <div class="planLabel">Plan</div>
+  <div>
+    <dx-select-box
+      class=""
+      #selectBox
+      [items]="planItems"
+      displayExpr="name"
+      valueExpr="idPlan"
+      [value]="selectedId"
+    >
+      <div *dxTemplate="let data of 'item'">
+        <div class="select-item">
+          <div class="select-item--txt" (click)="onChange(data)">
+            {{ data.name }} {{ data.idPlan }}
+          </div>
+          <div class="select-item--right">
+            <button
+              (click)="onRemove(data)"
+              type="button"
+              class="btn btn-sm btn-light"
+              [disabled]="data.idPlan === 1"
+            >
+              <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon>Briši
+            </button>
+          </div>
+        </div>
+      </div>
+    </dx-select-box>
+  </div>
+
+  <div>
+    <button (click)="onAdd()" type="button" class="btn btn-sm btn-light">
+      <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Dodaj
+    </button>
+  </div>
+</div>

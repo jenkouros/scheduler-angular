@@ -12,47 +12,43 @@ import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
 export class ItemsEffects {
-    constructor(
-        private actions$: Actions,
-        private itemService: ItemsService,
-        private store: Store<AppState>
-    ) {}
+  constructor(
+    private actions$: Actions,
+    private itemService: ItemsService,
+    private store: Store<AppState>
+  ) {}
 
-    @Effect()
-    loadItemsStore$ = this.actions$.ofType(fromActions.LOAD_ITEMS)
-    .pipe(
-        withLatestFrom(this.store.select(state => state.scheduler.filters.selectedEntities)),
-        map(([action, state]) => {
-                const storeConfiguration = this.itemService.getItemsStoreConfiguration(state);
-                return new fromActions.RegisterItemStore(storeConfiguration);
-        })
-    );
+  @Effect()
+  loadItemsStore$ = this.actions$.ofType(fromActions.LOAD_ITEMS).pipe(
+    withLatestFrom(
+      this.store.select(state => state.scheduler.filters.selectedEntities),
+      this.store.select(state => state.plan.items.selectedId)
+    ),
+    map(([action, state, idPlan]) => {
+      const storeConfiguration = this.itemService.getItemsStoreConfiguration(idPlan, state);
+      return new fromActions.RegisterItemStore(storeConfiguration);
+    })
+  );
 
-    @Effect()
-    loadItemHierarchy$ = this.actions$
-        .ofType(fromActions.LOAD_ITEMHIERARCHY)
-        .pipe(
-            switchMap((action: fromActions.LoadItemHierarchy) => {
-                return this.itemService.getItemHierarchy(action.payload.itemId)
-                    .pipe(
-                        map(itemHierarchy =>
-                            new fromActions.LoadItemHierarchySuccess(itemHierarchy)
-                        ),
-                        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
-                    );
-            })
-        );
+  @Effect()
+  loadItemHierarchy$ = this.actions$.ofType(fromActions.LOAD_ITEMHIERARCHY).pipe(
+    switchMap((action: fromActions.LoadItemHierarchy) => {
+      return this.itemService.getItemHierarchy(action.payload.itemId).pipe(
+        map(itemHierarchy => new fromActions.LoadItemHierarchySuccess(itemHierarchy)),
+        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
+      );
+    })
+  );
 
-    @Effect()
-    hideItem$ = this.actions$
-        .ofType(fromActions.HIDE_ITEM)
-        .pipe(
-            switchMap((action: fromActions.HideItem) => {
-                return this.itemService.hideItem(action.payload)
-                    .pipe(
-                        map(_ => new fromActions.LoadItems()),
-                        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
-                    );
-            })
-        );
+  @Effect()
+  hideItem$ = this.actions$.ofType(fromActions.HIDE_ITEM).pipe(
+    map((action: fromActions.HideItem) => action.payload),
+    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
+    switchMap(([itemId, idPlan]) => {
+      return this.itemService.hideItem(idPlan, itemId).pipe(
+        map(_ => new fromActions.LoadItems()),
+        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
+      );
+    })
+  );
 }

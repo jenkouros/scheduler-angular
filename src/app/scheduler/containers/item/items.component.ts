@@ -6,43 +6,54 @@ import { Item } from '../../models/item.dto';
 import { ItemServer } from '../../models/server/item.servermodel';
 import { GridStoreConfiguration } from '../../models/shared.dto';
 
+import * as fromPlanStore from '../../../plan/store';
+
 @Component({
-    selector: 'app-items',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
+  selector: 'app-items',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
     <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <app-item-list
-                    [storeConfiguration]="itemsStoreConfiguration$ | async"
-                    (loadedItems)="onLoadedItems($event)"
-                    (selectItem)="onSelectItem($event)"
-                    (hideItem)="onHideItem($event)">
-                </app-item-list>
-            </div>
+      <div class="row">
+        <div class="col">
+          <app-item-list
+            [storeConfiguration]="itemsStoreConfiguration$ | async"
+            (loadedItems)="onLoadedItems($event)"
+            (selectItem)="onSelectItem($event)"
+            (hideItem)="onHideItem($event)"
+          >
+          </app-item-list>
         </div>
-    <div>
-    <app-item></app-item>`
+      </div>
+      <div><app-item></app-item></div>
+    </div>
+  `
 })
 export class ItemsComponent implements OnInit {
-    itemsStoreConfiguration$: Observable<GridStoreConfiguration | null>;
+  itemsStoreConfiguration$: Observable<GridStoreConfiguration | null>;
 
-    constructor(private store: Store<fromStore.SchedulerState>) {}
+  constructor(
+    private store: Store<fromStore.SchedulerState>,
+    private planStore: Store<fromPlanStore.SchedulerPlansState>
+  ) {}
 
-    ngOnInit(): void {
-        this.store.dispatch(new fromStore.LoadItems());
-        this.itemsStoreConfiguration$ = this.store.select(fromStore.getItemsStoreConfiguration);
-    }
+  ngOnInit(): void {
+    this.planStore.select(fromPlanStore.getSelectedPlanId).subscribe(id => {
+      this.store.dispatch(new fromStore.LoadItems());
+      console.log('sdfsdfsd', id);
+    });
 
-    onLoadedItems(items: ItemServer[]) {
-        this.store.dispatch(new fromStore.LoadItemsSuccess( items.map(i => Item.fromServer(i)) ));
-    }
+    this.itemsStoreConfiguration$ = this.store.select(fromStore.getItemsStoreConfiguration);
+  }
 
-    onSelectItem(item: Item) {
-        this.store.dispatch(new fromStore.LoadItemHierarchy({itemId: item.idItem}));
-        this.store.dispatch(new fromStore.ShowItemPopup());
-    }
-    onHideItem(item: Item) {
-        this.store.dispatch(new fromStore.HideItem(item.idItem));
-    }
+  onLoadedItems(items: ItemServer[]) {
+    this.store.dispatch(new fromStore.LoadItemsSuccess(items.map(i => Item.fromServer(i))));
+  }
+
+  onSelectItem(item: Item) {
+    this.store.dispatch(new fromStore.LoadItemHierarchy({ itemId: item.idItem }));
+    this.store.dispatch(new fromStore.ShowItemPopup());
+  }
+  onHideItem(item: Item) {
+    this.store.dispatch(new fromStore.HideItem(item.idItem));
+  }
 }

@@ -1,0 +1,13 @@
+<app-plan-list
+  [planItems]="plans$ | async"
+  (selected)="onSelect($event)"
+  (remove)="confirmDelete($event)"
+>
+</app-plan-list>
+<app-plan-delete-popup
+  [plan]="plan"
+  [visible]="isDeletePopupVisible$ | async"
+  (confirm)="onConfirmRemove($event)"
+  (cancel)="onCancelRemove()"
+>
+</app-plan-delete-popup>

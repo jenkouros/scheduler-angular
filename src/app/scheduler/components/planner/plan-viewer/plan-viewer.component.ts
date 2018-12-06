@@ -148,10 +148,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   isViewHorizontal(viewName: string) {
-    if (
-      viewName.toLowerCase().includes('timeline') ||
-      viewName.toLowerCase() === 'agenda'
-    ) {
+    if (viewName.toLowerCase().includes('timeline') || viewName.toLowerCase() === 'agenda') {
       return false;
     }
     return true;
@@ -168,16 +165,12 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     const styleObject = {};
     if (
       !cellData.groups ||
-      !this.planItemGetReponse.notWorkingHoursEvents[
-        cellData.groups.containerId
-      ]
+      !this.planItemGetReponse.notWorkingHoursEvents[cellData.groups.containerId]
     ) {
       return styleObject;
     }
     const collapsingObject = TimeHelper.getCollapsingMarginProcent(
-      this.planItemGetReponse.notWorkingHoursEvents[
-        cellData.groups.containerId
-      ],
+      this.planItemGetReponse.notWorkingHoursEvents[cellData.groups.containerId],
       cellData.startDate,
       cellData.endDate
     );
@@ -209,10 +202,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       clearTimeout($event.component.__tooltipTimeout);
     }
     $event.component.__tooltipTimeout = setTimeout(() => {
-      $event.component.showAppointmentTooltip(
-        $event.appointmentData,
-        $event.appointmentElement
-      );
+      $event.component.showAppointmentTooltip($event.appointmentData, $event.appointmentElement);
     }, 500);
     this.onClearTimeSuggestion();
     this.onClearNotWorkingHoursSuggestion();
@@ -231,9 +221,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     e.cancel = true;
     const event: PlannedEvent = e.newData;
 
-    const preparationDurationInMinutes = moment(
-      new Date(event.timeStartExecution)
-    ).diff(moment(new Date(event.timeStartPreparation)), 'm');
+    const preparationDurationInMinutes = moment(new Date(event.timeStartExecution)).diff(
+      moment(new Date(event.timeStartPreparation)),
+      'm'
+    );
 
     const startDate = new Date(event.startDate);
     event.timeStartPreparation = startDate;
@@ -265,8 +256,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         [
           {
             startMarginProcent: 0,
-            durationMarginProcent:
-              (planItem.manufacturedQuantity * 100) / planItem.quantity
+            durationMarginProcent: (planItem.manufacturedQuantity * 100) / planItem.quantity
           }
         ],
         false,
@@ -279,7 +269,6 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       e.appointmentElement.style.backgroundColor = planItem.color;
     }
   }
-
 
   dragEnd(e) {
     this.removeAppointmentCss(e.target, 'dx-scheduler-appointment-move');
@@ -311,16 +300,12 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         if (el.classList.contains('dx-scheduler-date-table-droppable-cell')) {
           el.classList.remove('dx-scheduler-date-table-droppable-cell');
         }
-        const cellData = (<any>this.scheduler.instance)
-          .getWorkSpace()
-          .getCellData([el]);
+        const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
         if (cellData.groups === undefined) {
           return false;
         }
 
-        const draggedData: PreplanItem = JSON.parse(
-          e.dataTransfer.getData('prePlanItem')
-        );
+        const draggedData: PreplanItem = JSON.parse(e.dataTransfer.getData('prePlanItem'));
 
         const containers: SubItemContainer[] = draggedData.containers.map(c =>
           Object.assign(new SubItemContainer(), c, {
@@ -342,7 +327,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
           if (selectedContainer === undefined) {
             // TODO check settings - add
             if (appSettings.PlanItem_EnablePlanningOnAllWorkplaces) {
-              const container = this.selectedContainers.find(i => i.id === cellData.groups.containerId);
+              const container = this.selectedContainers.find(
+                i => i.id === cellData.groups.containerId
+              );
               if (!container) {
                 this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
                 return false;
@@ -351,7 +338,8 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
               if (draggedData.containers && draggedData.containers.length) {
                 selectedContainer.quantity = draggedData.containers[0].quantity;
                 selectedContainer.unitQuantity = draggedData.containers[0].unitQuantity;
-                selectedContainer.preparationNormative = draggedData.containers[0].preparationNormative;
+                selectedContainer.preparationNormative =
+                  draggedData.containers[0].preparationNormative;
                 selectedContainer.executionNormative = draggedData.containers[0].executionNormative;
               }
               preplanItem.containers.push(selectedContainer);
@@ -370,7 +358,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
           const duration =
             selectedContainer.preparationNormative +
-            selectedContainer.executionNormative / normativeQuantity * draggedData.quantity;
+            (selectedContainer.executionNormative / normativeQuantity) * draggedData.quantity;
           const plannedEvent = PlannedEvent.createFromPreplanitem(
             draggedData.id,
             cellData.groups.containerId,
@@ -420,7 +408,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     // scrollable.off('scroll', scroll);
     // scrollable.on('scroll', scroll);
 
-    const plannedItemsEl = (<any>(this.scheduler)).element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
+    const plannedItemsEl = (<any>this.scheduler).element.nativeElement.querySelectorAll(
+      '.dx-scheduler-appointment'
+    );
     for (let i = 0; i < plannedItemsEl.length; i++) {
       off(plannedItemsEl[i], 'dxdragenter', this.dragEnter);
       off(plannedItemsEl[i], 'dxdragend', this.dragEnd);
@@ -428,7 +418,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
       on(plannedItemsEl[i], 'dxdragenter', this.dragEnter);
     }
 
-    const elements = (<any>(this.scheduler)).element.nativeElement.querySelectorAll('.dx-scheduler-date-table-cell');
+    const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll(
+      '.dx-scheduler-date-table-cell'
+    );
     for (let i = 0; i < elements.length; i++) {
       off(elements[i], 'drop', this.drop);
       off(elements[i], 'dragover', this.dragOver);
@@ -552,9 +544,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     if (!this.notWorkingHoursUpdateSuggestion) {
       return;
     }
-    const plannedEventMove = this.notWorkingHoursUpdateSuggestion[
-      this.notWorkingHoursResolveMode
-    ];
+    const plannedEventMove = this.notWorkingHoursUpdateSuggestion[this.notWorkingHoursResolveMode];
     if (!plannedEventMove) {
       return;
     }
@@ -620,20 +610,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   private showAvailableContainers(item: PreplanItem | null, className: string) {
-    const elements = (<any>(
-      this.scheduler
-    )).element.nativeElement.querySelectorAll('th.dx-scheduler-group-header');
+    const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll(
+      'th.dx-scheduler-group-header'
+    );
 
     for (let i = 0; i < elements.length; i++) {
-      const div = elements[i].querySelector(
-        '.dx-scheduler-group-header-content > div'
-      );
+      const div = elements[i].querySelector('.dx-scheduler-group-header-content > div');
       if (item !== null) {
-        if (
-          item.containers.find(
-            c => c.container.displayExpression === div.innerHTML
-          )
-        ) {
+        if (item.containers.find(c => c.container.displayExpression === div.innerHTML)) {
           elements[i].classList.add(className);
         }
       } else {
@@ -643,9 +627,9 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   }
 
   private removeAppointmentCss(remove: boolean, className: string) {
-    const plannedItemsEl = (<any>(
-      this.scheduler
-    )).element.nativeElement.querySelectorAll('.dx-scheduler-appointment');
+    const plannedItemsEl = (<any>this.scheduler).element.nativeElement.querySelectorAll(
+      '.dx-scheduler-appointment'
+    );
     for (let i = 0; i < plannedItemsEl.length; i++) {
       plannedItemsEl[i].classList.remove(className);
     }
@@ -672,21 +656,14 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   private isResourceUpdated(model: fromSchedulerModel.OptionChangedModel) {
     if (model.fullName === fromSchedulerModel.OPTIONCHANGED_RESOURCES) {
-      const resourceChangedModel = (<
-        fromSchedulerModel.ResourceOptionChangedModel[]
-      >model.value).filter(
-        i => i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD
-      );
-      const resourcePreviousValueModel = (<
-        fromSchedulerModel.ResourceOptionChangedModel[]
-      >model.previousValue).filter(
-        i => i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD
-      );
+      const resourceChangedModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>(
+        model.value
+      )).filter(i => i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
+      const resourcePreviousValueModel = (<fromSchedulerModel.ResourceOptionChangedModel[]>(
+        model.previousValue
+      )).filter(i => i.fieldExpr === fromSchedulerModel.RESOURCES_FIELD);
       if (resourceChangedModel && resourceChangedModel.length === 1) {
-        if (
-          !resourcePreviousValueModel ||
-          resourcePreviousValueModel.length !== 1
-        ) {
+        if (!resourcePreviousValueModel || resourcePreviousValueModel.length !== 1) {
           return false;
         }
 
@@ -700,8 +677,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         for (let i = 0; i < resourceChangedModel[0].dataSource.length; i++) {
           if (
             !resourcePreviousValueModel[0].dataSource.find(
-              previous =>
-                previous.id === resourceChangedModel[0].dataSource[i].id
+              previous => previous.id === resourceChangedModel[0].dataSource[i].id
             )
           ) {
             return true;
@@ -714,12 +690,18 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
 
   private scrollScheduler() {
     this.isScrollInProgress = true;
-    (<any>this.scheduler).instance.getWorkSpaceScrollable().instance().scrollTo(this.offset);
+    (<any>this.scheduler).instance
+      .getWorkSpaceScrollable()
+      .instance()
+      .scrollTo(this.offset);
     this.isScrollInProgress = false;
   }
 
   private getScrollPosition() {
-    const offset = (<any>this.scheduler).instance.getWorkSpaceScrollable().instance().scrollOffset();
+    const offset = (<any>this.scheduler).instance
+      .getWorkSpaceScrollable()
+      .instance()
+      .scrollOffset();
     if (
       this.isScrollInProgress ||
       !offset.left ||

@@ -1,0 +1,12 @@
+<app-popup
+  [visible]="visible"
+  title="Potrdi brisanje"
+  [cancelCallback]="onCancel"
+  [confirmCallback]="onConfirm"
+  width="300px"
+  height="auto"
+>
+  <p>
+    Brišem plan <strong>{{ plan?.name }}</strong> in vse podrejene zapise?
+  </p>
+</app-popup>

@@ -1,10 +1,7 @@
-import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  Params
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Params } from '@angular/router';
 
 import * as fromScheduler from '../scheduler/store';
+import * as fromPlan from '../plan/store';
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 import * as fromWorktime from '../worktime/store';
@@ -18,17 +15,20 @@ export interface RouterStateUrl {
 export interface AppState {
   router: fromRouter.RouterReducerState<RouterStateUrl>;
   scheduler: fromScheduler.SchedulerState;
+  plan: fromPlan.SchedulerPlansState;
 }
 
-export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
+export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>(
+  'router'
+);
 
 export const initialReducerMap: ActionReducerMap<AppState> = {
   router: fromRouter.routerReducer,
-  scheduler: fromScheduler.getInitialState
+  scheduler: fromScheduler.getInitialState,
+  plan: fromPlan.getInitialState
 };
 
-export class CustomSerializer
-  implements fromRouter.RouterStateSerializer<RouterStateUrl> {
+export class CustomSerializer implements fromRouter.RouterStateSerializer<RouterStateUrl> {
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     let route = routerState.root;
 
@@ -38,7 +38,7 @@ export class CustomSerializer
 
     const {
       url,
-      root: { queryParams },
+      root: { queryParams }
     } = routerState;
     const { params } = route;
 

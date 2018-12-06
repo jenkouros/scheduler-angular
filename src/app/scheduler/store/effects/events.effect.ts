@@ -8,7 +8,9 @@ import {
   mergeMap,
   filter,
   withLatestFrom,
-  flatMap
+  flatMap,
+  tap,
+  sample
 } from 'rxjs/operators';
 
 import { of } from 'rxjs';
@@ -32,9 +34,12 @@ export class EventsEffects {
 
   @Effect()
   loadEvents$ = this.actions$.ofType(fromAction.LOAD_EVENTS).pipe(
-    flatMap((action: fromAction.LoadEvents) =>
+    map((action: fromAction.LoadEvents) => action),
+    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
+    mergeMap(([action, idPlan]) =>
       this.eventsService
         .getEvents(
+          idPlan,
           action.payload.containerIds,
           action.payload.dateFrom,
           action.payload.dateTo
@@ -60,13 +65,20 @@ export class EventsEffects {
 
   @Effect()
   reloadEvents$ = this.actions$.ofType(fromAction.RELOAD_EVENTS).pipe(
+    tap(action => console.log(action)),
     map((action: fromAction.ReloadEvents) => action.payload.containerIds),
     withLatestFrom(this.store.select(state => state.scheduler.events)),
     map(([containerIds, state]) => {
       return new fromAction.LoadEvents({
         containerIds: containerIds,
-        dateTo: state.entities[containerIds[0]].dateTo,
-        dateFrom: state.entities[containerIds[0]].dateFrom
+        dateTo:
+          containerIds.length > 0 && state.entities[containerIds[0]]
+            ? state.entities[containerIds[0]].dateTo
+            : new Date(), // state.entities[containerIds[0]].dateTo,
+        dateFrom:
+          containerIds.length > 0 && state.entities[containerIds[0]]
+            ? state.entities[containerIds[0]].dateFrom
+            : new Date() // state.entities[containerIds[0]].dateFrom
       });
 
       // return containerIds.map(c => new fromAction.LoadEvents({
@@ -81,7 +93,6 @@ export class EventsEffects {
     })
   );
 
-
   /** CREATE EVENTS */
   @Effect()
   createEvent$ = this.actions$.ofType(fromAction.CREATE_EVENT).pipe(
@@ -94,7 +105,7 @@ export class EventsEffects {
     )
   );
 
-  @Effect({dispatch: false})
+  @Effect({ dispatch: false })
   createEventSuccessCheckNotPlannable$ = this.actions$
     .ofType(fromAction.CREATE_EVENT_SUCCESS)
     .pipe(
@@ -127,14 +138,16 @@ export class EventsEffects {
   @Effect()
   updateEvents$ = this.actions$.ofType(fromAction.UPDATE_EVENTS).pipe(
     switchMap((action: fromAction.UpdateEvents) =>
-      this.eventsService.updateEvents(
-        action.payload.planItemMoves,
-        action.payload.fixPlanItems,
-        action.payload.ignoreStatusLimitation
-      ).pipe(
-        map(event => new fromAction.UpdateEventsSuccess()),
-        catchError(error => of(new fromAction.UpdateEventsFail()))
-      )
+      this.eventsService
+        .updateEvents(
+          action.payload.planItemMoves,
+          action.payload.fixPlanItems,
+          action.payload.ignoreStatusLimitation
+        )
+        .pipe(
+          map(event => new fromAction.UpdateEventsSuccess()),
+          catchError(error => of(new fromAction.UpdateEventsFail()))
+        )
     )
   );
 
@@ -157,13 +170,7 @@ export class EventsEffects {
   @Effect()
   deleteEventSuccess$ = this.actions$
     .ofType(fromAction.DELETE_EVENT_SUCCESS)
-    .pipe(
-      map(
-        (action: fromAction.CreateEventSuccess) =>
-          new fromAction.LoadPreplanItems()
-      )
-    );
-
+    .pipe(map((action: fromAction.CreateEventSuccess) => new fromAction.LoadPreplanItems()));
 
   /** LOCK */
   @Effect({ dispatch: false })
@@ -177,69 +184,67 @@ export class EventsEffects {
   );
 
   @Effect()
-  massToggleLock$ = this.actions$
-    .ofType(fromAction.MASS_TOGGLE_EVENTS_LOCK)
-    .pipe(
-      switchMap((action: fromAction.MassToggleEventsLock) => {
-        return this.eventsService
-          .toggleMassLocks(
-            action.payload.containerIds,
-            action.payload.fromDate,
-            action.payload.toDate,
-            true
-          )
-          .pipe(
-            map(
-              events =>
-                new fromAction.ReloadEvents({
-                  containerIds: action.payload.containerIds
-                })
-            ),
-            catchError(error => of(new fromAction.LoadEventsFail()))
-          );
-      })
-    );
-
+  massToggleLock$ = this.actions$.ofType(fromAction.MASS_TOGGLE_EVENTS_LOCK).pipe(
+    switchMap((action: fromAction.MassToggleEventsLock) => {
+      return this.eventsService
+        .toggleMassLocks(
+          action.payload.containerIds,
+          action.payload.fromDate,
+          action.payload.toDate,
+          true
+        )
+        .pipe(
+          map(
+            events =>
+              new fromAction.ReloadEvents({
+                containerIds: action.payload.containerIds
+              })
+          ),
+          catchError(error => of(new fromAction.LoadEventsFail()))
+        );
+    })
+  );
 
   @Effect()
-  timeUpdateSuggestion$ = this.actions$
-    .ofType(fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION)
-    .pipe(
-        map((action: fromAction.GetItemBatchTimeUpdateSuggestion) => action.payload),
-        switchMap(idItemBatch =>
-            this.eventsService.getTimeUpdateSuggestion(idItemBatch)
-            .pipe(
-                map(result => new fromAction.GetItemBatchTimeUpdateSuggestionSuccess(result)),
-                catchError(error => of(new fromAction.ClearItemBatchTimeUpdateSuggestion()))
-            )
-        )
-    );
+  timeUpdateSuggestion$ = this.actions$.ofType(fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION).pipe(
+    map((action: fromAction.GetItemBatchTimeUpdateSuggestion) => action.payload),
+    switchMap(idItemBatch =>
+      this.eventsService.getTimeUpdateSuggestion(idItemBatch).pipe(
+        map(result => new fromAction.GetItemBatchTimeUpdateSuggestionSuccess(result)),
+        catchError(error => of(new fromAction.ClearItemBatchTimeUpdateSuggestion()))
+      )
+    )
+  );
 
   @Effect()
   timeUpdateRealizationSuggestion$ = this.actions$
     .ofType(fromAction.GET_REALIZATION_TIMEUPDATE_SUGGESTION)
     .pipe(
-        map((action: fromAction.GetRealizationTimeUpdateSuggestion) => action.payload),
-        switchMap(request =>
-            this.eventsService.getTimeUpdateByRealizationSuggestion(request.containerIds, request.fromDate, request.toDate)
-            .pipe(
-                map(result => new fromAction.GetRealizationTimeUpdateSuggestionSuccess(result)),
-                catchError(error => of(new fromAction.ClearRealizationTimeUpdateSuggestion()))
-            )
-        )
+      map((action: fromAction.GetRealizationTimeUpdateSuggestion) => action.payload),
+      switchMap(request =>
+        this.eventsService
+          .getTimeUpdateByRealizationSuggestion(
+            request.containerIds,
+            request.fromDate,
+            request.toDate
+          )
+          .pipe(
+            map(result => new fromAction.GetRealizationTimeUpdateSuggestionSuccess(result)),
+            catchError(error => of(new fromAction.ClearRealizationTimeUpdateSuggestion()))
+          )
+      )
     );
 
   @Effect()
   notWorkingHoursTimeSuggestion$ = this.actions$
     .ofType(fromAction.GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION)
     .pipe(
-        map((action: fromAction.GetNotWorkingHoursPlanItemUpdateSuggestion) => action.payload),
-        switchMap(idPlanItem =>
-            this.eventsService.getTimeSuggestionForNotWorkingHours(idPlanItem)
-            .pipe(
-                map(result => new fromAction.GetNotWorkingHoursPlanItemUpdateSuggestionSuccess(result)),
-                catchError(error => of(new fromAction.ClearNotWorkingHoursPlanItemUpdateSuggestion()))
-            )
+      map((action: fromAction.GetNotWorkingHoursPlanItemUpdateSuggestion) => action.payload),
+      switchMap(idPlanItem =>
+        this.eventsService.getTimeSuggestionForNotWorkingHours(idPlanItem).pipe(
+          map(result => new fromAction.GetNotWorkingHoursPlanItemUpdateSuggestionSuccess(result)),
+          catchError(error => of(new fromAction.ClearNotWorkingHoursPlanItemUpdateSuggestion()))
         )
+      )
     );
 }

@@ -5,10 +5,7 @@ import localeSl from '@angular/common/locales/sl';
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule, MetaReducer } from '@ngrx/store';
-import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer
-} from '@ngrx/router-store';
+import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { environment } from '../environments/environment';
@@ -26,18 +23,18 @@ import * as messagesSl from './shared/localization/sl.json';
 import { SignalRService } from './scheduler/services/signalr.service';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 import { storeFreeze } from 'ngrx-store-freeze';
+import { PlanModule } from './plan/plan.module';
+import { PlansComponent } from './plan/containers/plans/plans.component';
 
 loadMessages(messagesSl);
 // Set locale according the browser language
 locale('sl');
 registerLocaleData(localeSl, 'sl');
 
-
 export function init_signalR(signalRService: SignalRService): () => Promise<any> {
   return () => signalRService.init();
 }
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [storeFreeze] : [];
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,6 +43,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     HttpClientModule,
     AppRouterModule,
+    PlanModule,
     StoreModule.forRoot(initialReducerMap, { metaReducers }),
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule.forRoot({
