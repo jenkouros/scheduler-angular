@@ -1,9 +1,17 @@
 <app-plan-list
   [planItems]="plans$ | async"
   (selected)="onSelect($event)"
+  (add)="onAdd($event)"
   (remove)="confirmDelete($event)"
 >
 </app-plan-list>
+<app-plan-popup
+  [plan]="plan"
+  [visible]="isPopupVisible$ | async"
+  (cancel)="onCancel()"
+  (update)="onUpdate($event)"
+>
+</app-plan-popup>
 <app-plan-delete-popup
   [plan]="plan"
   [visible]="isDeletePopupVisible$ | async"

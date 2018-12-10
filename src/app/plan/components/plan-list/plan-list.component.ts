@@ -6,11 +6,13 @@ import {
   OnChanges,
   SimpleChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Plan } from '../../models';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { DxSelectBoxComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-plan-list',
@@ -21,16 +23,20 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 export class PlanListComponent implements OnChanges {
   @Input()
   planItems: Plan[];
+  @Input() selectedId = 1;
 
   @Output()
   selected = new EventEmitter<number>();
-
+  @Output()
+  add = new EventEmitter<boolean>();
   @Output()
   remove = new EventEmitter<Plan>();
 
+  @ViewChild(DxSelectBoxComponent) selectBox: DxSelectBoxComponent;
+
   editIcon = faPlus;
   deleteIcon = faTrash;
-  selectedId: number;
+
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,9 +53,14 @@ export class PlanListComponent implements OnChanges {
     this.selected.emit(this.selectedId);
   }
 
-  onAdd() {}
+  onAdd() {
+    this.add.emit(true);
+  }
 
-  onRemove(item: Plan) {
+  onRemove(e: any, item: Plan) {
+    e.event.preventDefault();
+    e.event.stopPropagation();
+    this.selectBox.instance.close();
     this.remove.emit(item);
   }
 }

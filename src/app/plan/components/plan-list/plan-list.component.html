@@ -15,14 +15,14 @@
             {{ data.name }} {{ data.idPlan }}
           </div>
           <div class="select-item--right">
-            <button
-              (click)="onRemove(data)"
+            <dx-button
+              (onClick)="onRemove($event, data)"
               type="button"
               class="btn btn-sm btn-light"
               [disabled]="data.idPlan === 1"
             >
               <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon>Briši
-            </button>
+            </dx-button>
           </div>
         </div>
       </div>

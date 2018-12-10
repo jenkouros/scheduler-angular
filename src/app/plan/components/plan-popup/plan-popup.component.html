@@ -1,0 +1,37 @@
+<app-popup
+  height="auto"
+  width="50%"
+  [visible]="visible"
+  [cancelCallback]="onCancel"
+  [validToConfirm]="validToConfirm()"
+  [confirmCallback]="onSubmit"
+  [title]="header"
+>
+  <form [formGroup]="form">
+    <div class="dx-fieldset">
+      <div class="dx-field">
+        <div class="dx-field-label">Naziv plana</div>
+        <div class="dx-field-value">
+          <dx-text-box
+            placeholder="Naziv plana..."
+            formControlName="name"
+            [isValid]="!nameControlInvalid"
+          >
+          </dx-text-box>
+        </div>
+      </div>
+
+      <div class="dx-field">
+        <div class="dx-field-label">Opis plana</div>
+        <div class="dx-field-value">
+          <dx-text-box
+            placeholder="Opis..."
+            formControlName="description"
+            [isValid]="!descriptionControlInvalid"
+          >
+          </dx-text-box>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-popup>

@@ -14,6 +14,8 @@ export class PlansComponent implements OnInit {
   plan: Plan | null;
   plans$: Observable<Plan[]>;
   isDeletePopupVisible$: Observable<boolean>;
+  isPopupVisible$: Observable<boolean>;
+
   constructor(private store: Store<fromStore.SchedulerPlansState>, private router: Router) {}
 
   ngOnInit() {
@@ -21,11 +23,24 @@ export class PlansComponent implements OnInit {
 
     this.plans$ = this.store.select(fromStore.getPlans);
     this.isDeletePopupVisible$ = this.store.select(fromStore.getDeletePlanPopupVisibility);
+    this.isPopupVisible$ = this.store.select(fromStore.getPlanPopupVisibility);
   }
 
   onSelect(id: number) {
     console.log(id);
     this.store.dispatch(new fromStore.SelectPlan(id));
+  }
+
+  onAdd(ading: boolean) {
+    this.store.dispatch(new fromStore.PlanPopupVisible(true));
+  }
+
+  onUpdate(plan: Plan) {
+    this.store.dispatch(new fromStore.CreatePlan(plan));
+  }
+
+  onCancel(plan: Plan) {
+    this.store.dispatch(new fromStore.PlanPopupVisible(false));
   }
 
   confirmDelete(plan: Plan) {

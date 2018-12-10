@@ -2,12 +2,20 @@ import { Injectable } from '@angular/core';
 import * as fromServices from '../../services';
 import * as fromActions from '../actions';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError, map, tap } from 'rxjs/operators';
+import { switchMap, catchError, map, tap, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { SchedulerPlansState } from '../reducers';
+import * as fromStore from '../../store';
+import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
 export class PlansEffects {
-  constructor(private actions$: Actions, private plansService: fromServices.PlansService) {}
+  constructor(
+    private actions$: Actions,
+    private plansService: fromServices.PlansService,
+    private store: Store<AppState>
+  ) {}
 
   @Effect()
   loadPlans$ = this.actions$.ofType(fromActions.LOAD_PLANS).pipe(
@@ -16,6 +24,24 @@ export class PlansEffects {
         map(plans => new fromActions.LoadPlansSuccess(plans)),
         catchError(error => of(new fromActions.LoadPlansFail(error)))
       );
+    })
+  );
+
+  @Effect()
+  createPlan$ = this.actions$.ofType(fromActions.CREATE_PLAN).pipe(
+    map((action: fromActions.CreatePlan) => action.payload),
+    switchMap(plan => {
+      return this.plansService.createPlan(plan).pipe(
+        map(newPlan => new fromActions.CreatePlanSuccess(newPlan)),
+        catchError(error => of(new fromActions.CreatePlanFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  updatePlanSuccess$ = this.actions$.ofType(fromActions.CREATE_PLAN_SUCCESS).pipe(
+    map(() => {
+      return new fromActions.PlanPopupVisible(false);
     })
   );
 
@@ -37,42 +63,16 @@ export class PlansEffects {
     })
   );
 
-  /*
-@Effect()
-  createCalendar$ = this.actions$.ofType(fromActions.).pipe(
-    map((action: fromActions.CreateCalendar) => action.payload),
-    switchMap(calendar => {
-      return this.plansService.createCalendar(calendar).pipe(
-        map(newCalendar => new fromActions.CreateCalendarSuccess(newCalendar)),
-        catchError(error => of(new fromActions.CreateCalendarFail(error)))
-      );
+  @Effect()
+  chnageSelectedPlan$ = this.actions$.ofType(fromActions.REMOVE_PLAN_SUCCESS).pipe(
+    map((action: fromActions.RemovePlanSuccess) => action.payload),
+    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
+
+    map(([plan, selectedId]) => {
+      if (selectedId === plan.idPlan) {
+        // select default planId
+        return new fromActions.SelectPlan(1);
+      }
     })
   );
-
-  @Effect()
-  calendarSuccess$ = this.actions$
-    .ofType(
-      fromActions.UPDATE_CALENDAR_SUCCESS,
-      fromActions.CREATE_CALENDAR_SUCCESS
-    )
-    .pipe(
-      // HttpInterceptor takes care of it
-      // tap(() => this.notify.notifySuccess('Koledar je bil uspešno ažuriran.')),
-      map(() => {
-        return new fromActions.CalendarPopupVisible(false);
-      })
-    );
-
-  @Effect()
-  removeCalendar$ = this.actions$.ofType(fromActions.REMOVE_CALENDAR).pipe(
-    map((action: fromActions.RemoveCalendar) => action.payload),
-    switchMap(calendar => {
-      return this.calendarsService.removeCalendar(calendar).pipe(
-        // tap(() => this.notify.notifySuccess('Koledar je bil uspešno brisan.')),
-        map(newCalendar => new fromActions.RemoveCalendarSuccess(newCalendar)),
-        catchError(error => of(new fromActions.RemoveCalendarFail(error)))
-      );
-    })
-  );
-*/
 }

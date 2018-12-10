@@ -30,3 +30,8 @@ export const getDeletePlanPopupVisibility = createSelector(
   getPlansState,
   fromPlans.getDeletePlanPopupVisibility
 );
+
+export const getPlanPopupVisibility = createSelector(
+  getPlansState,
+  fromPlans.getPopupVisibility
+);

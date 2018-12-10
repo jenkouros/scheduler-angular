@@ -25,7 +25,15 @@ export class SelectPlan implements Action {
   constructor(public payload: number) {}
 }
 
-// popup delete subcalendar
+// popup edit plan
+export const PLAN_POPUP_VISIBLE = '[Plan] Show plan edit popup';
+
+export class PlanPopupVisible implements Action {
+  readonly type = PLAN_POPUP_VISIBLE;
+  constructor(public payload: boolean) {}
+}
+
+// popup delete plan
 export const PLAN_DELETE_POPUP_VISIBLE = '[Plan] Show plan delete popup';
 
 export class PlanDeletePopupVisible implements Action {
@@ -33,7 +41,47 @@ export class PlanDeletePopupVisible implements Action {
   constructor(public payload: boolean) {}
 }
 
-// delete calendar
+// create plan
+export const CREATE_PLAN = '[Plan] Create Plan';
+export const CREATE_PLAN_SUCCESS = '[Plan] Create Plan Success';
+export const CREATE_PLAN_FAIL = '[Plan] Create Plan Fail';
+
+export class CreatePlan implements Action {
+  readonly type = CREATE_PLAN;
+  constructor(public payload: Plan) {}
+}
+
+export class CreatePlanSuccess implements Action {
+  readonly type = CREATE_PLAN_SUCCESS;
+  constructor(public payload: Plan) {}
+}
+export class CreatePlanFail implements Action {
+  readonly type = CREATE_PLAN_FAIL;
+  constructor(public payload: any) {}
+}
+
+// update plan
+
+/*
+export const UPDATE_PLAN = '[Plan] Update Plan';
+export const UPDATE_PLAN_SUCCESS = '[Plan] Update Plan Success';
+export const UPDATE_PLAN_FAIL = '[Plan] Update Plan Fail';
+
+export class UpdatePlan implements Action {
+  readonly type = UPDATE_PLAN;
+  constructor(public payload: Plan) {}
+}
+
+export class UpdatePlanSuccess implements Action {
+  readonly type = UPDATE_PLAN_SUCCESS;
+  constructor(public payload: Plan) {}
+}
+export class UpdatePlanFail implements Action {
+  readonly type = UPDATE_PLAN_FAIL;
+  constructor(public payload: any) {}
+}
+*/
+// delete plan
 export const REMOVE_PLAN = '[Plan] Remove Plan';
 export const REMOVE_PLAN_SUCCESS = '[Plan] Remove Plan Success';
 export const REMOVE_PLAN_FAIL = '[Plan] Remove Plan Fail';
@@ -61,4 +109,8 @@ export type PlansActions =
   | PlanDeletePopupVisible
   | RemovePlan
   | RemovePlanSuccess
-  | RemovePlanFail;
+  | RemovePlanFail
+  | PlanPopupVisible
+  | CreatePlan
+  | CreatePlanSuccess
+  | CreatePlanFail;

@@ -34,10 +34,10 @@ export function reducer(state = initialState, action: fromPlans.PlansActions): P
 
       const entities = plans.reduce(
         // tslint:disable-next-line:no-shadowed-variable
-        (entities: { [id: number]: Plan }, calendar: Plan) => {
+        (entities: { [id: number]: Plan }, plan: Plan) => {
           return {
             ...entities,
-            [calendar.idPlan]: calendar
+            [plan.idPlan]: plan
           };
         },
         {
@@ -65,6 +65,25 @@ export function reducer(state = initialState, action: fromPlans.PlansActions): P
         selectedId
       };
     }
+    case fromPlans.PLAN_POPUP_VISIBLE: {
+      return {
+        ...state,
+        popupVisible: action.payload
+      };
+    }
+    case fromPlans.CREATE_PLAN_SUCCESS: {
+      const plan = action.payload;
+
+      const entities = {
+        ...state.entities,
+        [plan.idPlan]: plan
+      };
+
+      return {
+        ...state,
+        entities
+      };
+    }
     case fromPlans.PLAN_DELETE_POPUP_VISIBLE: {
       return {
         ...state,
@@ -76,8 +95,8 @@ export function reducer(state = initialState, action: fromPlans.PlansActions): P
       const { [plan.idPlan]: removed, ...entities } = state.entities;
 
       return {
-        ...state
-        // entities
+        ...state,
+        entities
       };
     }
   }

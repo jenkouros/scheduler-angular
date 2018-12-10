@@ -19,12 +19,17 @@ export class PlansService {
   }
 
   createPlan(payload: Plan): Observable<Plan> {
-    return this.http.post<Plan>(`${environment.apiUrl}/plans`, payload).pipe(
-      map(response => {
-        return response;
-      }),
-      catchError((error: any) => throwError(error.json()))
-    );
+    return this.http
+      .post<Plan>(
+        `${environment.apiUrl}/plans?name=${payload.name}&description=${payload.description}`,
+        null
+      )
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
   }
 
   removePlan(payload: Plan): Observable<Plan> {
