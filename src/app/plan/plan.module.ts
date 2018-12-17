@@ -10,15 +10,27 @@ import { reducers, effects } from './store';
 import * as fromServices from './services';
 import { CoreModule } from '../core/core.module';
 import { PlanListComponent } from './components/plan-list/plan-list.component';
-import { DxSelectBoxModule, DxTextBoxModule, DxButtonModule } from 'devextreme-angular';
+import {
+  DxSelectBoxModule,
+  DxTextBoxModule,
+  DxButtonModule,
+  DxDataGridModule
+} from 'devextreme-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PlanDeletePopupComponent } from './components/plan-delete-popup/plan-delete-popup.component';
 import { SharedModule } from '../shared/shared.module';
 import { PlanPopupComponent } from './components/plan-popup/plan-popup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PlanSimulationPopupComponent } from './components/plan-simulation-popup/plan-simulation-popup.component';
 
 @NgModule({
-  declarations: [PlansComponent, PlanListComponent, PlanDeletePopupComponent, PlanPopupComponent],
+  declarations: [
+    PlansComponent,
+    PlanListComponent,
+    PlanDeletePopupComponent,
+    PlanPopupComponent,
+    PlanSimulationPopupComponent
+  ],
   imports: [
     CommonModule,
     CoreModule,
@@ -26,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DxTextBoxModule,
     DxSelectBoxModule,
     DxButtonModule,
+    DxDataGridModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

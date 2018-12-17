@@ -14,7 +14,7 @@
           <div class="select-item--txt" (click)="onChange(data)">
             {{ data.name }} {{ data.idPlan }}
           </div>
-          <div class="select-item--right">
+          <div class="select-item--right" *ngIf="data.idPlan !== 1">
             <dx-button
               (onClick)="onRemove($event, data)"
               type="button"
@@ -31,7 +31,15 @@
 
   <div>
     <button (click)="onAdd()" type="button" class="btn btn-sm btn-light">
-      <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Dodaj
+      <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Dodaj</button
+    >&nbsp;
+    <button
+      (click)="onShowSimulation()"
+      type="button"
+      class="btn btn-sm btn-primary"
+      *ngIf="selectedId !== 1"
+    >
+      <fa-icon class="cursor-pointer" [icon]="simulationIcon"></fa-icon> Simulacija
     </button>
   </div>
 </div>

@@ -4,6 +4,7 @@ import * as fromStore from '../../store';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Plan } from '../../models/plan.model';
+import { Simulation } from '../../models/change.model';
 
 @Component({
   selector: 'app-plans',
@@ -16,6 +17,9 @@ export class PlansComponent implements OnInit {
   isDeletePopupVisible$: Observable<boolean>;
   isPopupVisible$: Observable<boolean>;
 
+  simulations$: Observable<Simulation[]>;
+  isSimulationPopupVisible$: Observable<boolean>;
+
   constructor(private store: Store<fromStore.SchedulerPlansState>, private router: Router) {}
 
   ngOnInit() {
@@ -24,6 +28,10 @@ export class PlansComponent implements OnInit {
     this.plans$ = this.store.select(fromStore.getPlans);
     this.isDeletePopupVisible$ = this.store.select(fromStore.getDeletePlanPopupVisibility);
     this.isPopupVisible$ = this.store.select(fromStore.getPlanPopupVisibility);
+
+    // simulation
+    this.simulations$ = this.store.select(fromStore.getSimulationsList);
+    this.isSimulationPopupVisible$ = this.store.select(fromStore.getSimulationPopupVisibility);
   }
 
   onSelect(id: number) {
@@ -31,8 +39,8 @@ export class PlansComponent implements OnInit {
     this.store.dispatch(new fromStore.SelectPlan(id));
   }
 
-  onAdd(ading: boolean) {
-    this.store.dispatch(new fromStore.PlanPopupVisible(true));
+  onAdd(adding: boolean) {
+    this.store.dispatch(new fromStore.PlanPopupVisible(adding));
   }
 
   onUpdate(plan: Plan) {
@@ -57,5 +65,18 @@ export class PlansComponent implements OnInit {
 
   onCancelRemove() {
     this.store.dispatch(new fromStore.PlanDeletePopupVisible(false));
+  }
+
+  showSimulation(id) {
+    this.store.dispatch(new fromStore.LoadPlansSimulation(id));
+    this.store.select(fromStore.getSimulationLoaded).subscribe(loaded => {
+      if (loaded) {
+        this.store.dispatch(new fromStore.PlanSimulationPopupVisible(true));
+      }
+    });
+  }
+
+  onCancelSimulation() {
+    this.store.dispatch(new fromStore.PlanSimulationPopupVisible(false));
   }
 }

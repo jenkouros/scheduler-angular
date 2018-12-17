@@ -43,11 +43,12 @@ export class PlanPopupComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.exists = false;
     this.form.reset();
+    /* ni urejanje zaenkrat
     if (this.plan && this.plan.idPlan) {
       this.exists = true;
 
       this.form.patchValue(this.plan);
-    }
+    }*/
     this.header = this.exists ? 'Urejanje plana' : 'Kreiranje plana';
   }
 

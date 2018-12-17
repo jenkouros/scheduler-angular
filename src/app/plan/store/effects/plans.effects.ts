@@ -75,4 +75,15 @@ export class PlansEffects {
       }
     })
   );
+
+  @Effect()
+  loadPlanSimulation$ = this.actions$.ofType(fromActions.LOAD_PLANS_SIMULATION).pipe(
+    map((action: fromActions.LoadPlansSimulation) => action.payload),
+    switchMap(planId => {
+      return this.plansService.getPlanSiumulation(planId).pipe(
+        map(changes => new fromActions.LoadPlansSimulationSuccess(changes)),
+        catchError(error => of(new fromActions.LoadPlansSimulationFail(error)))
+      );
+    })
+  );
 }

@@ -3,6 +3,7 @@
   (selected)="onSelect($event)"
   (add)="onAdd($event)"
   (remove)="confirmDelete($event)"
+  (showSimulation)="showSimulation($event)"
 >
 </app-plan-list>
 <app-plan-popup
@@ -19,3 +20,10 @@
   (cancel)="onCancelRemove()"
 >
 </app-plan-delete-popup>
+
+<app-plan-simulation-popup
+  [changes]="simulations$ | async"
+  [visible]="isSimulationPopupVisible$ | async"
+  (cancel)="onCancelSimulation()"
+>
+</app-plan-simulation-popup>

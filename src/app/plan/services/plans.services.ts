@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Plan } from '../models/plan.model';
+import { Simulation } from '../models/change.model';
 
 @Injectable()
 export class PlansService {
@@ -16,6 +17,17 @@ export class PlansService {
       }),
       catchError((error: any) => throwError(error.json()))
     );
+  }
+
+  getPlanSiumulation(planId: number): Observable<Simulation[]> {
+    return this.http
+      .get<Simulation[]>(`${environment.apiUrl}/plans/getPlanDifferencess?idPlan=${planId}`)
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError((error: any) => throwError(error.json()))
+      );
   }
 
   createPlan(payload: Plan): Observable<Plan> {

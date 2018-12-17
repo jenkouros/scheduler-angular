@@ -60,27 +60,6 @@ export class CreatePlanFail implements Action {
   constructor(public payload: any) {}
 }
 
-// update plan
-
-/*
-export const UPDATE_PLAN = '[Plan] Update Plan';
-export const UPDATE_PLAN_SUCCESS = '[Plan] Update Plan Success';
-export const UPDATE_PLAN_FAIL = '[Plan] Update Plan Fail';
-
-export class UpdatePlan implements Action {
-  readonly type = UPDATE_PLAN;
-  constructor(public payload: Plan) {}
-}
-
-export class UpdatePlanSuccess implements Action {
-  readonly type = UPDATE_PLAN_SUCCESS;
-  constructor(public payload: Plan) {}
-}
-export class UpdatePlanFail implements Action {
-  readonly type = UPDATE_PLAN_FAIL;
-  constructor(public payload: any) {}
-}
-*/
 // delete plan
 export const REMOVE_PLAN = '[Plan] Remove Plan';
 export const REMOVE_PLAN_SUCCESS = '[Plan] Remove Plan Success';

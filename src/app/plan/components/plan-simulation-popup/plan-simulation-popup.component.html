@@ -1,0 +1,61 @@
+<app-popup
+  height="auto"
+  width="80%"
+  [visible]="visible"
+  [cancelCallback]="onCancel"
+  [hasConfirmBtn]="false"
+  [title]="header"
+>
+  <dx-data-grid [dataSource]="changes" [showBorders]="true">
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 20]" [showInfo]="true">
+    </dxo-pager>
+
+    <dxi-column caption="Izvirni" alignment="center">
+      <dxi-column caption="Datum" cellTemplate="dateStartTemplate" [width]="100"></dxi-column>
+      <dxi-column caption="Čas" cellTemplate="timeStartTemplate" [width]="60"></dxi-column>
+      <dxi-column caption="Operacija" cellTemplate="operationTemplate"></dxi-column>
+      <dxi-column caption="Stroj" cellTemplate="containerTemplate"></dxi-column>
+    </dxi-column>
+
+    <div *dxTemplate="let d of 'dateStartTemplate'">
+      <div class="chart-cell">{{ d.data.original?.timeStart | date: 'mediumDate' }}</div>
+    </div>
+    <div *dxTemplate="let d of 'timeStartTemplate'">
+      <div class="chart-cell">{{ d.data.original?.timeStart | date: 'shortTime' }}</div>
+    </div>
+    <div *dxTemplate="let d of 'operationTemplate'">
+      <div class="chart-cell">{{ getCodeName(d.data.original) }}</div>
+    </div>
+    <div *dxTemplate="let d of 'containerTemplate'">
+      <div class="chart-cell">{{ getContainerName(d.data.original) }}</div>
+    </div>
+
+    <dxi-column caption="Sprememba" cellTemplate="changeStatusTemplate" [width]="100"></dxi-column>
+    <div *dxTemplate="let d of 'changeStatusTemplate'">
+      <div class="chart-cell">
+        <span [ngClass]="getChangeClass(d.data)">{{ getChangeDescription(d.data) }}</span>
+      </div>
+    </div>
+
+    <dxi-column caption="Simulacija" alignment="center">
+      <dxi-column caption="Datum" cellTemplate="dateStartTemplateChange" [width]="100"></dxi-column>
+      <dxi-column caption="Čas" cellTemplate="timeStartTemplateChange" [width]="60"></dxi-column>
+      <dxi-column caption="Operacija" cellTemplate="operationTemplateChange"></dxi-column>
+      <dxi-column caption="Stroj" cellTemplate="containerTemplateChange"></dxi-column>
+    </dxi-column>
+
+    <div *dxTemplate="let d of 'dateStartTemplateChange'">
+      <div class="chart-cell">{{ d.data.simulation?.timeStart | date: 'mediumDate' }}</div>
+    </div>
+    <div *dxTemplate="let d of 'timeStartTemplateChange'">
+      <div class="chart-cell">{{ d.data.simulation?.timeStart | date: 'shortTime' }}</div>
+    </div>
+    <div *dxTemplate="let d of 'operationTemplateChange'">
+      <div class="chart-cell">{{ getCodeName(d.data.simulation) }}</div>
+    </div>
+    <div *dxTemplate="let d of 'containerTemplateChange'">
+      <div class="chart-cell">{{ getContainerName(d.data.simulation) }}</div>
+    </div>
+  </dx-data-grid>
+</app-popup>

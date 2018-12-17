@@ -2,27 +2,26 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
-const serverUrl = 'http://10.99.1.54:21000';
+const serverUrl = 'http://localhost:55501'; // 'http://10.99.1.54:21000';
 
 export const environment = {
-    production: false,
-    apiUrl: `${serverUrl}/api`,
-    signalRUrl: `${serverUrl}/containershub`,
-    parallelOperations: false
+  production: false,
+  apiUrl: `${serverUrl}/api`,
+  signalRUrl: `${serverUrl}/containershub`,
+  parallelOperations: false
 };
 
-
 export const appSettings = {
-    Menu_Scheduler: true,
-    Menu_Scheduler_Items: true,
-    Menu_Scheduler_Planner: true,
-    Menu_Scheduler_Searcher: true,
-    Menu_Scheduler_Filters: true,
-    Menu_Scheduler_Groups: true,
-    Menu_TimeTables: true,
-    PlanItem_EnablePlanningOnAllWorkplaces: true,
-    Item_EnableHiddingItems: true,
-    Item_EnableBatchPlanning: true,
-    PlanItem_DisplayOperationFirst: true, // workorder otherwise
-    PlanItem_DisplayArticleCode: true  // article name otherwise
+  Menu_Scheduler: true,
+  Menu_Scheduler_Items: true,
+  Menu_Scheduler_Planner: true,
+  Menu_Scheduler_Searcher: true,
+  Menu_Scheduler_Filters: true,
+  Menu_Scheduler_Groups: true,
+  Menu_TimeTables: true,
+  PlanItem_EnablePlanningOnAllWorkplaces: true,
+  Item_EnableHiddingItems: true,
+  Item_EnableBatchPlanning: true,
+  PlanItem_DisplayOperationFirst: true, // workorder otherwise
+  PlanItem_DisplayArticleCode: true // article name otherwise
 };

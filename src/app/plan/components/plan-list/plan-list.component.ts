@@ -9,9 +9,8 @@ import {
   EventEmitter,
   ViewChild
 } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Plan } from '../../models';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import { DxSelectBoxComponent } from 'devextreme-angular';
 
 @Component({
@@ -31,11 +30,14 @@ export class PlanListComponent implements OnChanges {
   add = new EventEmitter<boolean>();
   @Output()
   remove = new EventEmitter<Plan>();
+  @Output()
+  showSimulation = new EventEmitter<number>();
 
   @ViewChild(DxSelectBoxComponent) selectBox: DxSelectBoxComponent;
 
   editIcon = faPlus;
   deleteIcon = faTrash;
+  simulationIcon = faChartBar;
 
   constructor() {}
 
@@ -47,7 +49,6 @@ export class PlanListComponent implements OnChanges {
   }
 
   onChange(e) {
-    // this.selectedId = e.value;
     this.selectedId = e.idPlan;
     console.log(e);
     this.selected.emit(this.selectedId);
@@ -62,5 +63,9 @@ export class PlanListComponent implements OnChanges {
     e.event.stopPropagation();
     this.selectBox.instance.close();
     this.remove.emit(item);
+  }
+
+  onShowSimulation() {
+    this.showSimulation.emit(this.selectedId);
   }
 }

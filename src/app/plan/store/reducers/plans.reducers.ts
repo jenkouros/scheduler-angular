@@ -1,9 +1,12 @@
 import * as fromPlans from '../actions/plans.actions';
 import { Plan } from '../../models/plan.model';
+import { Simulation } from '../../models/change.model';
 
 export interface PlansState {
   entities: { [id: number]: Plan };
   selectedId: number;
+  simulations: Simulation[];
+  simulationPopupVisible: boolean;
   popupVisible: boolean;
   isDeletePopupVisible: boolean;
   loading: boolean;
@@ -13,6 +16,8 @@ export interface PlansState {
 export const initialState: PlansState = {
   entities: {},
   selectedId: 0,
+  simulations: [],
+  simulationPopupVisible: false,
   popupVisible: false,
   isDeletePopupVisible: false,
   loading: false,
@@ -26,7 +31,8 @@ export function reducer(state = initialState, action: fromPlans.PlansActions): P
       return {
         ...state,
         selectedId: 0,
-        loading: true
+        loading: true,
+        loaded: false
       };
     }
     case fromPlans.LOAD_PLANS_SUCCESS: {
