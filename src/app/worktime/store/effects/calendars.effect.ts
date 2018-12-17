@@ -35,20 +35,6 @@ export class CalendarsEffects {
       );
     })
   );
-  /*
-  @Effect()
-  createCalendarSuccess$ = this.actions$
-    .ofType(calendarActions.CREATE_CALENDAR_SUCCESS)
-    .pipe(
-      map((action: calendarActions.CreateCalendarSuccess) => action.payload)
-         map(calendar => {
-        console.log(calendar);
-        return new fromRoot.Go({
-          path: ['/timetables', calendar.id]
-        });
-      })
-    );
-*/
 
   @Effect()
   updateCalendar$ = this.actions$.ofType(fromActions.UPDATE_CALENDAR).pipe(
@@ -63,10 +49,7 @@ export class CalendarsEffects {
 
   @Effect()
   calendarSuccess$ = this.actions$
-    .ofType(
-      fromActions.UPDATE_CALENDAR_SUCCESS,
-      fromActions.CREATE_CALENDAR_SUCCESS
-    )
+    .ofType(fromActions.UPDATE_CALENDAR_SUCCESS, fromActions.CREATE_CALENDAR_SUCCESS)
     .pipe(
       // HttpInterceptor takes care of it
       // tap(() => this.notify.notifySuccess('Koledar je bil uspešno ažuriran.')),
@@ -89,10 +72,7 @@ export class CalendarsEffects {
 
   @Effect()
   calendarSubCalendarSuccess$ = this.actions$
-    .ofType(
-      fromActions.CREATE_SUBCALENDAR_SUCCESS,
-      fromActions.UPDATE_SUBCALENDAR_SUCCESS
-    )
+    .ofType(fromActions.CREATE_SUBCALENDAR_SUCCESS, fromActions.UPDATE_SUBCALENDAR_SUCCESS)
     .pipe(
       // tap(() => this.notify.notifySuccess('Urnik je bil uspešno kreiran.')),
       map((action: fromActions.CreateSubCalendarSuccess) => {
@@ -109,4 +89,27 @@ export class CalendarsEffects {
         return new fromActions.RemoveCalendarSubCalendar(action.payload);
       })
     );
+
+  @Effect()
+  generateCalendar$ = this.actions$.ofType(fromActions.GENERATE_CALENDAR).pipe(
+    map((action: fromActions.GenerateCalendar) => action.payload),
+    switchMap(fromDate => {
+      return this.calendarsService.generateCalendar(fromDate).pipe(
+        map(status => new fromActions.GenerateCalendarSuccess(status)),
+        catchError(error => of(new fromActions.CreateCalendarFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  generateCalendarSuccess$ = this.actions$.ofType(fromActions.GENERATE_CALENDAR_SUCCESS).pipe(
+    tap((action: fromActions.GenerateCalendarSuccess) => {
+      if (action.payload) {
+        this.notify.notifySuccess('Koledar je bil uspešno generiran.');
+      }
+    }),
+    map(() => {
+      return new fromActions.CalendarGeneratePopupVisible(false);
+    })
+  );
 }

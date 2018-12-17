@@ -21,7 +21,7 @@ export class LoadPlansSimulationFail implements Action {
   constructor(public payload: any) {}
 }
 
-// popup edit plan
+// popup edit siumaltion
 export const PLAN_SIMULATION_POPUP_VISIBLE = '[Plan] Show plan simulation popup';
 
 export class PlanSimulationPopupVisible implements Action {
