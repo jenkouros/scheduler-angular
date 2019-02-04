@@ -32,7 +32,8 @@ import {
     DxDropDownBoxModule,
     DxListModule,
     DxTreeViewModule,
-    DxTagBoxModule
+    DxTagBoxModule,
+    DxAutocompleteModule
 } from 'devextreme-angular';
 
 import { ContainersEffects } from './store/effects/containers.effect';
@@ -71,7 +72,8 @@ import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemsta
         DxDropDownBoxModule,
         DxListModule,
         DxTreeViewModule,
-        DxTagBoxModule
+        DxTagBoxModule,
+        DxAutocompleteModule
     ],
     declarations: [
         ...fromContainers.containers,

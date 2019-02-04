@@ -32,6 +32,7 @@
             <span *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></span>
             <span *ngIf="(plannerItemData.itemTypeShortName || plannerItemData.isLocked) && plannerItemData.sequenceWarning" class="ml-1"></span>
             <span *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></span>
+            <span *ngIf="plannerItemData.linkedItemSequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></span>
             <span *ngIf="(plannerItemData.itemTypeShortName || plannerItemData.isLocked || plannerItemData.sequenceWarning) && plannerItemData.isInNotWorkingHours" class="ml-1"></span>
             <span *ngIf="plannerItemData.isInNotWorkingHours"><fa-icon [icon]="faExclamation"></fa-icon></span>
           </div>

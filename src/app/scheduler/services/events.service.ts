@@ -3,7 +3,8 @@ import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { PlannedEvent, PlannedEventMove, PlanItemPutRequest,
-    PlanItemMoveStatusEnum, PlanItemCreateRequest, PlanItemsGetResponse, PlannedEventNotWorkingHoursMove, PlanItemGetRequest } from '../models/event.model';
+    PlanItemMoveStatusEnum, PlanItemCreateRequest,
+    PlanItemsGetResponse, PlannedEventNotWorkingHoursMove, PlanItemGetRequest } from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
 import { environment, appSettings } from '../../../environments/environment';

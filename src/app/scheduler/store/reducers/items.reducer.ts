@@ -2,22 +2,13 @@ import * as fromActions from '../actions/items.action';
 import CustomStore from 'devextreme/data/custom_store';
 import { Item, ItemHierarchy } from '../../models/item.dto';
 import { GridStoreConfiguration } from '../../models/shared.dto';
-
-export interface ItemUIState {
-    popupOpened: boolean;
-}
-
-export interface ItemState {
-    items: Item[];
-    itemsStoreConfiguration: GridStoreConfiguration | null;
-    selectedItemHierarchy: ItemHierarchy | null;
-    selectedItemHierarchyLoading: boolean;
-    selectedItemHierarchyLoaded: boolean;
-    uiState: ItemUIState;
-}
+import { ItemState } from '../../models/item.store';
+export { ItemState } from '../../models/item.store';
+export { ItemUIState } from '../../models/item.store';
 
 export const initialState: ItemState = {
     items: [],
+    loadingItem: null,
     itemsStoreConfiguration: null,
     selectedItemHierarchy: null,
     selectedItemHierarchyLoaded: false,
@@ -49,7 +40,10 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
                 ...state,
                 selectedItemHierarchyLoaded: false,
                 selectedItemHierarchyLoading: true,
-                selectedItemHierarchy: null
+                selectedItemHierarchy: null,
+                loadingItem: {
+                    ...action.payload.item
+                }
             };
         }
         case fromActions.LOAD_ITEMHIERARCHY_FAIL: {
@@ -83,7 +77,8 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
                 uiState: {
                     ...state.uiState,
                     popupOpened: false
-                }
+                },
+                loadingItem: null
             };
         }
         default:

@@ -21,12 +21,10 @@ import { GridStoreConfiguration } from '../../models/shared.dto';
                 </app-item-list>
             </div>
         </div>
-    <div>
-    <app-item></app-item>`
+    <div>`
 })
 export class ItemsComponent implements OnInit {
     itemsStoreConfiguration$: Observable<GridStoreConfiguration | null>;
-
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
     ngOnInit(): void {
@@ -39,7 +37,7 @@ export class ItemsComponent implements OnInit {
     }
 
     onSelectItem(item: Item) {
-        this.store.dispatch(new fromStore.LoadItemHierarchy({itemId: item.idItem}));
+        this.store.dispatch(new fromStore.LoadItemHierarchy({item: item, addToList: false}));
         this.store.dispatch(new fromStore.ShowItemPopup());
     }
     onHideItem(item: Item) {

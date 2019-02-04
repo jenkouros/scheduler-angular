@@ -104,6 +104,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   faRefresh = faSync;
   faAlign = faAlignCenter;
   faGroup = faTh;
+  firstDayOfWeek = 1;
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
@@ -451,6 +452,10 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         this.scrollScheduler();
       });
     }
+
+    if (e.fullName === fromSchedulerModel.OPTIONCHANGED_FIRSTDAYOFWEEK) {
+      e.component.repaint();
+    }
     if (
       e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTVIEW ||
       e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE ||
@@ -471,8 +476,25 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
         e.fullName === fromSchedulerModel.OPTIONCHANGED_CURRENTDATE;
       if (resourceUpdated || timeBoundsChanged) {
         setTimeout(() => {
-          this.selectedStartDate = e.component.getStartViewDate();
-          this.selectedEndDate = e.component.getEndViewDate();
+          let setTime = true;
+          if (timeBoundsChanged && (typeof e.value === 'object')) {
+            if (e.component._currentView === 'week') {
+              // console.log(e.value.getDay());
+              this.firstDayOfWeek = e.value.getDay();
+              const selectedDate = new Date(e.value);
+              const selectedSecond =  new Date(e.value);
+              selectedSecond.setDate(e.value.getDate() + 7);
+              this.selectedStartDate = selectedDate;
+              this.selectedEndDate = selectedSecond;
+              setTime = false;
+            } else {
+              this.firstDayOfWeek = 1;
+            }
+          }
+          if (setTime) {
+            this.selectedStartDate = e.component.getStartViewDate();
+            this.selectedEndDate = e.component.getEndViewDate();
+          }
           this.planItemLoad.emit({
             containerIds: this.selectedContainerIds,
             fromDate: this.selectedStartDate,

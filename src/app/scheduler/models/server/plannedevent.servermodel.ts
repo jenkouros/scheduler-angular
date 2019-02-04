@@ -34,6 +34,7 @@ export interface PlannedEventServer {
     isInNotWorkingHours: boolean;
     allowedContainers: SubItemContainerServer[];
     sequencePlanItems: PlannedEventSimpleServer[];
+    linkedPlanItems: PlannedEventSimpleServer[];
     itemTypeShortName: string | null;
 }
 

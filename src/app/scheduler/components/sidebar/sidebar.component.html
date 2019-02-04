@@ -1,3 +1,4 @@
+
 <ul class="nav nav-pills flex-column">
   <li *ngIf="settings.Menu_Scheduler_Filters" class="nav-item">
     
@@ -37,8 +38,8 @@
         <fa-icon class="mr-3" size="lg" [icon]="faSearch"></fa-icon> Iskalnik
     </a>
   </li>
-
-  <li><hr class="mb-1 mt-3"></li>
+  <li><div class="mx-3 mt-2"><container-item-quick-plan></container-item-quick-plan></div></li>
+  <li><hr class="mb-1 mt-2"></li>
   <li *ngIf="settings.Menu_Scheduler_Planner">
     
         <dx-scroll-view #scrollElement [height]="getScrollHeight(scrollElement.element)">

@@ -5,6 +5,7 @@ import { ItemHierarchyAlternative } from '../../../models/item.dto';
 import { PreplanItemRequest } from '../../../models/preplanitem.dto';
 import { FormValidators } from '../../../../shared/validators/form.validators';
 import { appSettings } from '../../../../../environments/environment';
+import { ItemUIState } from '../../../models/item.store';
 
 @Component({
   selector: 'app-item-popup',
@@ -12,7 +13,8 @@ import { appSettings } from '../../../../../environments/environment';
   styleUrls: ['./item-popup.component.css']
 })
 export class ItemPopupComponent implements OnChanges {
-  @Input() visible = false;
+  @Input() uiState: ItemUIState | null;
+  visible = false;
   @Input() itemHierarchy: ItemHierarchyViewModel | null;
   @Output() close = new EventEmitter();
   @Output() createPreplanItems = new EventEmitter<PreplanItemRequest>();
@@ -46,6 +48,9 @@ export class ItemPopupComponent implements OnChanges {
           ? this.itemHierarchy.itemHierarchy.alternatives[0].id
           : ''
       });
+    }
+    if (this.uiState && this.visible !== this.uiState.popupOpened) {
+      this.visible = this.uiState.popupOpened;
     }
   }
 

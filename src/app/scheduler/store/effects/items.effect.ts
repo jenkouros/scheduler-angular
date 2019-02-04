@@ -33,7 +33,7 @@ export class ItemsEffects {
         .ofType(fromActions.LOAD_ITEMHIERARCHY)
         .pipe(
             switchMap((action: fromActions.LoadItemHierarchy) => {
-                return this.itemService.getItemHierarchy(action.payload.itemId)
+                return this.itemService.getItemHierarchy(action.payload.item.idItem)
                     .pipe(
                         map(itemHierarchy =>
                             new fromActions.LoadItemHierarchySuccess(itemHierarchy)
