@@ -21,6 +21,7 @@ export class Item {
     article: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
+    importDate: Date;
 
     static fromServer(planItemServer: ItemServer) {
         const result = new Item();
@@ -35,6 +36,7 @@ export class Item {
         result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
+        result.importDate = planItemServer.importDate;
         return result;
     }
 }

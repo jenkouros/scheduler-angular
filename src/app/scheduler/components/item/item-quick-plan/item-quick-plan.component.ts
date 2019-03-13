@@ -9,10 +9,12 @@ import { DxAutocompleteComponent } from '../../../../../../node_modules/devextre
     selector: 'app-item-quick-plan',
     template: `
         <dx-autocomplete
+            [(value)]="autocompleteValue"
             placeholder="Hitro planiranje naloga"
             [dataSource]="dataSource"
             valueExpr="code"
-            (onItemClick)="onItemClick($event)">
+            (onItemClick)="onItemClick($event)"
+            (onEnterKey)="log($event)">
         </dx-autocomplete>
     `
 })
@@ -23,6 +25,7 @@ export class ItemQuickPlanComponent implements OnChanges {
     @ViewChild(DxAutocompleteComponent) autoComplete: DxAutocompleteComponent;
 
     dataSource: DataSource | null;
+    autocompleteValue: string;
 
     ngOnChanges(changes: SimpleChanges) {
       if (changes.storeConfiguration) {
@@ -44,6 +47,18 @@ export class ItemQuickPlanComponent implements OnChanges {
 
     //     }
     // }
+
+    log(e) {
+      if (this.dataSource) {
+        const items = this.dataSource.items();
+        console.log(this.autocompleteValue);
+        if (items.length === 1 && items[0].code === this.autocompleteValue) {
+          this.selectItem.emit(items[0]);
+          this.reset();
+        }
+      }
+
+    }
 
     onItemClick(e) {
       if (e && e.itemData) {

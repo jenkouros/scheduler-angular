@@ -82,6 +82,7 @@
                     </div>
                     <div *ngIf="plannedEvent.linkedItemSequenceWarning" class="alert alert-warning" role="alert">
                         <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Plan izdelovalnega naloga še ni končan.
+                        <a (click)="onLinkedItemSequenceResolve(plannedEvent)" class="span-link alert-link">Prestavi na konec</a>
                     </div>
                         <h6>Operacija</h6>
                             <table class="table table-sm">

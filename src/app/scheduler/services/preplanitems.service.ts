@@ -3,10 +3,10 @@ import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import { PreplanitemServer } from '../models/server/preplanitem.servermodel';
+import { PreplanitemServer, PreplanitemSuggestionServer } from '../models/server/preplanitem.servermodel';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { PreplanItem, PreplanItemRequest } from '../models/preplanitem.dto';
+import { PreplanItem, PreplanItemRequest, PrePlanItemSuggestion } from '../models/preplanitem.dto';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
 
 @Injectable()
@@ -14,18 +14,30 @@ export class PreplanitemsService {
     constructor(private http: HttpClient) {}
 
     getPreplanitems(filterDictionary: {[id: string]: number[]} = {}) {
-        const dict = DictionaryHelper.stringify(filterDictionary);
-        const params = new HttpParams()
-        .set('ids', dict.ids)
-        .set('values', dict.values);
+      const dict = DictionaryHelper.stringify(filterDictionary);
+      const params = new HttpParams()
+      .set('ids', dict.ids)
+      .set('values', dict.values);
 
-        return this.http.get<PreplanitemServer[]>
-            (environment.apiUrl + '/preplanitems', { params: params })
-            .pipe(
-                map(response => {
-                    return response.map(f => PreplanItem.fromServer(f));
-                })
-            );
+      return this.http.get<PreplanitemServer[]>
+          (environment.apiUrl + '/preplanitems', { params: params })
+          .pipe(
+              map(response => {
+                  return response.map(f => PreplanItem.fromServer(f));
+              })
+          );
+    }
+
+    getPrePlanItemSuggestion(idPrePlanItem: number) {
+      const params = new HttpParams()
+        .set('idPrePlanItem', idPrePlanItem.toString());
+      return this.http.get<PreplanitemSuggestionServer[]>
+        (environment.apiUrl + '/getPrePlanItemPlanSuggestion', { params: params })
+        .pipe(
+          map(response => {
+            return response.map(f => PrePlanItemSuggestion.fromServer(f));
+          })
+        );
     }
 
     deleteItemBatch(itemBatchId: number) {

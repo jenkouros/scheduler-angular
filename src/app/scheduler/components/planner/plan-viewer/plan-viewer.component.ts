@@ -597,6 +597,28 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
     });
   }
 
+  onLinkedItemSequenceResolve(planItem: PlannedEvent) {
+    const linkedItemTimeStr = planItem.linkedPlanItems[planItem.linkedPlanItems.length - 1].timeEnd;
+    if (!linkedItemTimeStr) {
+      return;
+    }
+    const linkedItemTime = new Date(linkedItemTimeStr);
+    const duration = moment(
+      new Date(planItem.timeEndExecution)
+        ).diff(moment(new Date(planItem.timeStartPreparation)), 'm');
+    const eventMove: PlannedEventMove = {
+      idPlanItem: planItem.id,
+      idPrePlanItem: planItem.idPrePlanItem,
+      idContainer: planItem.containerId,
+      planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
+      timeStart: linkedItemTime,
+      timeEnd: moment(linkedItemTime).add(duration, 'm').toDate()
+    };
+    console.log(eventMove);
+    this.resolveNotWorkingHours.emit(eventMove);
+    this.scheduler.instance.hideAppointmentTooltip();
+  }
+
   getScrollHeight(containerElement: HTMLElement) {
     return window.innerHeight * 0.8;
 

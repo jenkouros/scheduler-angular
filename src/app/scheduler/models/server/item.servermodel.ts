@@ -14,6 +14,7 @@ export interface ItemServer {
     article: ProductServer;
     limitDateFrom: Date;
     limitDateTo: Date;
+    importDate: Date;
 }
 
 export interface ItemProgressServer {

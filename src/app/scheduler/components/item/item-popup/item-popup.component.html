@@ -1,7 +1,7 @@
-<app-popup height="auto" width="70%" 
-  [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
-  [visible]="visible && itemHierarchy" 
-  [cancelCallback]="hideItemInfo" 
+<app-popup height="auto" width="70%"
+  [title]="'Projekt ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
+  [visible]="visible && itemHierarchy"
+  [cancelCallback]="hideItemInfo"
   [confirmCallback]="onSubmit"
   [validToConfirm]="createPreplanItemsForm.valid">
 
@@ -31,7 +31,7 @@
             <div class="card card-body bg-light">
               <app-field label="Količina">
                 <dx-number-box formControlName="batchQuantity">
-                    <dx-validator>                     
+                    <dx-validator>
                         <dxi-validation-rule type="required" message="Polje je obvezno">
                         </dxi-validation-rule>
                     </dx-validator>
@@ -44,7 +44,7 @@
 
               <app-field label="Število šarž">
                 <dx-number-box formControlName="batchCount">
-                  <dx-validator>                     
+                  <dx-validator>
                       <dxi-validation-rule type="required" message="Polje je obvezno">
                       </dxi-validation-rule>
                   </dx-validator>
@@ -58,9 +58,9 @@
               <app-field label="Alternativa">
                 <dx-select-box [dataSource]="itemHierarchy!.alternativeOptions" name="alternative" valueExpr="id" displayExpr="name" placeholder="Izberi alternativo"
                   [showClearButton]="true" formControlName="idAlternative">
-                  <dx-validator>                     
+                  <dx-validator>
                       <dxi-validation-rule type="required" message="Polje je obvezno">
-                      </dxi-validation-rule>                    
+                      </dxi-validation-rule>
                   </dx-validator>
                 </dx-select-box>
                 <!-- <p class="help-block" *ngIf="alternativeIdControl.invalid && alternativeIdControl.touched">
@@ -104,15 +104,15 @@
             {{ itemHierarchy!.item.name }}
         </app-field>
         <app-field label="Artikel" [isStatic]="true">
-            {{ itemHierarchy!.item.article.code }} - 
+            {{ itemHierarchy!.item.article.code }} -
             {{ itemHierarchy!.item.article.name }}
         </app-field>
         <app-field label="Količina" [isStatic]="true">
             {{ itemHierarchy!.item.quantity }} {{ itemHierarchy!.item.measurementUnit.code }}
         </app-field>
         <app-field label="Datum" [isStatic]="true">
-            {{ itemHierarchy!.item.limitDateFrom | date:'mediumDate' }} -  
-            {{ itemHierarchy!.item.limitDateTo | date:'mediumDate' }}      
+            {{ itemHierarchy!.item.limitDateFrom | date:'mediumDate' }} -
+            {{ itemHierarchy!.item.limitDateTo | date:'mediumDate' }}
         </app-field>
       </app-fieldset>
     </div> -->
