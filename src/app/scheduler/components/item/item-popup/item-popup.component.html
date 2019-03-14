@@ -1,5 +1,5 @@
 <app-popup height="auto" width="70%"
-  [title]="'Projekt ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
+  [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
   [visible]="visible && itemHierarchy"
   [cancelCallback]="hideItemInfo"
   [confirmCallback]="onSubmit"
