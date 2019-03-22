@@ -1,0 +1,56 @@
+<app-popup
+   
+  title="Potrdi predlagano razporeditev"
+  [cancelCallback]="onHidePreplanSuggestionPopup"
+  [confirmCallback]="onConfirmPreplanSuggestionPopup"
+  width="1200"
+  height="auto">
+  <!-- <table *ngIf="planItems && suggestion" class="table"> -->
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Operacija</th>
+            <th>Začetek priprave</th>
+            <th>Začetek izdelave</th>
+            <th>Konec izdelave</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let planItem of planSuggestedItems">
+          <!-- <ng-container> -->
+            <!-- <tr *ngIf="suggestion[planItem.id]"> -->
+                <tr>
+                <td>
+                    <strong>#{{ planItem.subItemCode }} {{ planItem.subItemName }}</strong>
+                    @{{ planItem.itemName }} {{ planItem.articleName }}
+                    
+                </td>
+                <td>
+                    {{ planItem.timeStartPreparation | date:"mediumDate" }} {{ planItem.timeStartPreparation | date:"shortTime" }} - 
+                    {{ planItem.endDate | date:"mediumDate" }} {{ planItem.endDate | date:"shortTime" }}
+                </td>
+                <td>
+                    {{ suggestion[planItem.id].timeStart | date:"mediumDate" }} {{ suggestion[planItem.id].timeStart | date:"shortTime" }} - 
+                    {{ suggestion[planItem.id].timeEnd | date:"mediumDate" }} {{ suggestion[planItem.id].timeEnd | date:"shortTime" }}
+                </td>
+            </tr>
+        </ng-container>
+        
+    </tbody>
+</table>
+</app-popup>
+
+<!-- <app-popup 
+  
+  [visible]="preplanItemUiState !== null && preplanItemUiState!.isPreplanSuggestionPopupVisible"
+  [visible]="preplanItemUiState !== null && preplanItemUiState!.isDeletePopupVisible"
+  (visibilityChanged)="popupVisibilityChanged($event)"
+  title="Potrdi predlagano spremembo"
+  [cancelCallback]="onHideDeleteBatchPopup"
+  [confirmCallback]="onConfirmPreplanSuggestionPopup"
+  width="300px"
+  height="auto">
+  <p>
+    Izbrišem celotno šaržo?
+  </p>
+</app-popup> -->

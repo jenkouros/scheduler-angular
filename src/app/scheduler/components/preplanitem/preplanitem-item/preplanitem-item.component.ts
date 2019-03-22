@@ -13,6 +13,7 @@ export class PrePlanitemItemComponent implements OnInit {
   @Input() groupColorNumber: number;
   @Output() reselectContainers = new EventEmitter<number[]>();
   @Output() showDeleteBatchPopup = new EventEmitter<number>();
+  @Output() prePlanItemPlanSuggestion = new EventEmitter<number>();
 
   calendarIcon = faCalendarAlt;
   deleteIcon = faTrash;
@@ -28,4 +29,7 @@ export class PrePlanitemItemComponent implements OnInit {
     this.reselectContainers.emit(this.preplanitem.containers.map(i => i.container.id));
   }
 
+  onPrePlanItemPlanSuggestion() {
+    this.prePlanItemPlanSuggestion.emit(this.preplanitem.id);
+  }
 }

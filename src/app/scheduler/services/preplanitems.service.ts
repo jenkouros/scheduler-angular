@@ -32,7 +32,7 @@ export class PreplanitemsService {
       const params = new HttpParams()
         .set('idPrePlanItem', idPrePlanItem.toString());
       return this.http.get<PreplanitemSuggestionServer[]>
-        (environment.apiUrl + '/getPrePlanItemPlanSuggestion', { params: params })
+        (environment.apiUrl + '/preplanitems' + '/getPrePlanItemPlanSuggestion', { params: params })
         .pipe(
           map(response => {
             return response.map(f => PrePlanItemSuggestion.fromServer(f));

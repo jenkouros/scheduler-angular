@@ -1,7 +1,8 @@
-import { PreplanItem } from './preplanitem.dto';
+import { PreplanItem, PrePlanItemSuggestion } from './preplanitem.dto';
 
 export interface PreplanitemState {
     preplanItems: PreplanItem[];
+    preplanItemSuggestions: PrePlanItemSuggestion[];
     selectedPreplanItems: PreplanItem | null;
     uiState: PreplanitemUiState;
 }
@@ -9,5 +10,6 @@ export interface PreplanitemState {
 export interface PreplanitemUiState {
     draggedEnded: boolean;
     isDeletePopupVisible: boolean;
+    isPreplanSuggestionPopupVisible: boolean;
     idDeleteItemBatchCandidate: number | null;
 }

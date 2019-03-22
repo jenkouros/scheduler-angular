@@ -67,4 +67,20 @@ export class PreplanitemEffects {
                 );
             })
         );
+
+        @Effect()
+        prePlanItemsSuggestions$ = this.actions$
+        .ofType(fromActions.LOAD_PREPLANITEMS_SUGGESTIONS)
+        .pipe(
+            switchMap((action: fromActions.LoadPreplanItemsSuggestions) => {
+                return this.preplanitemService.getPrePlanItemSuggestion(action.payload)
+                .pipe(
+                    map(result => new fromActions.LoadPreplanItemsSuggestionsSuccess(result)),
+                    catchError((error) => {
+                        console.log(error);
+                        return of(new fromActions.LoadPreplanItemsSuggestionsFail()); // CREATE NEW FAIL ACTION TODO
+                    })
+                );
+            })
+        );
 }

@@ -15,6 +15,7 @@ import { PreplanitemUiState } from '../../models/preplanItem.store';
             [groupColorNumber]="i > 0 && preplanItems[i-1].item.name !== preplanitem.item.name
                 ? nextColorNumber : (i === 0 ? resetColorNumber() : colorNumber)"
             [preplanitem]="preplanitem"
+            (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
             (reselectContainers)="onReselectContainers($event)"
             (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)">
         </app-preplanitem-item>
@@ -23,10 +24,14 @@ import { PreplanitemUiState } from '../../models/preplanItem.store';
             [preplanItemUiState]="preplanItemsUiState$ | async"
             (deleteBatch)="onDeleteBatch($event)"
             (hideDeleteBatchPopup)="onHideDeleteBatchPopup()">
-        </app-preplanitem-delete-popup>`
+        </app-preplanitem-delete-popup>
+        <app-preplanitem-suggestion-popup>
+        </app-preplanitem-suggestion-popup>
+        `
 })
 export class PreplanItemsComponent implements OnInit {
     preplanitems$: Observable<PreplanItem[]>;
+    preplansuggesteditems$: Observable<PreplanItem[]>;
     preplanItemsUiState$: Observable<PreplanitemUiState>;
     colorNumber = 0;
     constructor(private store: Store<fromStore.SchedulerState>) {}
@@ -65,5 +70,9 @@ export class PreplanItemsComponent implements OnInit {
 
     onHideDeleteBatchPopup() {
         this.store.dispatch(new fromStore.HideItemBatchDeletePopup());
+    }
+
+    onPrePlanItemPlanSuggestion(prePlanItemId: number) {
+        this.store.dispatch(new fromStore.LoadPreplanItemsSuggestions(prePlanItemId));
     }
 }

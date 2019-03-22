@@ -67,6 +67,8 @@ export class PrePlanItemSuggestion {
     result.executionStartTime = serverData.executionStartTime;
     result.executionEndTime = serverData.executionEndTime;
     result.containerName = serverData.containerName;
+
+    return result;
   }
 }
 
