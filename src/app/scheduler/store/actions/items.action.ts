@@ -43,7 +43,7 @@ export class LoadItemsSuccess implements Action {
 
 export class LoadItemHierarchy implements Action {
     readonly type = LOAD_ITEMHIERARCHY;
-    constructor(public payload: { itemId: number}) {}
+    constructor(public payload: { item: Item, addToList: boolean}) {}
 }
 
 export class LoadItemHierarchyFail implements Action {

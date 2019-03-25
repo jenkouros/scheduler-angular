@@ -109,6 +109,7 @@ export class PlannedEvent {
     title: string;
     containers: SubItemContainer[];
     sequencePlanItems: PlannedEventSimple[];
+    linkedPlanItems: PlannedEventSimple[];
     isLocked: boolean;
     isInNotWorkingHours: boolean;
     isPlanned: boolean;
@@ -151,6 +152,20 @@ export class PlannedEvent {
             }
         }
         return false;
+    }
+
+
+    // SETTINGS !!!! planItem.timeStartPreparation or planItem.timeEnd
+    get linkedItemSequenceWarning(): boolean {
+        if (!this.linkedPlanItems || this.linkedPlanItems.length < 1) {
+            return false;
+        }
+        const childItem = this.linkedPlanItems[this.linkedPlanItems.length - 1];
+        const parentItem = this.sequencePlanItems[0];
+        if (!childItem.timeEnd || !parentItem.timeStartPreparation) {
+            return false;
+        }
+        return new Date(childItem.timeEnd).getTime() > new Date(parentItem.timeStartPreparation).getTime();
     }
 
     get statusDescription() {
@@ -254,14 +269,15 @@ export class PlannedEvent {
         result.articleName = event.articleName;
         result.subItemCode = event.subItemCode;
         result.subItemName = event.subItemName;
-        result.timeStartPreparation = event.timeStartPreparation;
-        result.timeStartExecution = event.timeStart;
-        result.timeEndExecution = event.timeEnd;
+        result.timeStartPreparation = new Date(event.timeStartPreparation);
+        result.timeStartExecution = new Date(event.timeStart);
+        result.timeEndExecution = new Date(event.timeEnd);
         result.title = event.title;
         result.containers = event.allowedContainers.map(SubItemContainer.fromServer);
         result.isPlanned = true;
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
+        result.linkedPlanItems = event.linkedPlanItems.map(PlannedEventSimple.fromServer);
         result.isInNotWorkingHours = event.isInNotWorkingHours;
         result.color = colorMapper(event.idPlanItemStatus);
         result.manufacturedQuantity = event.manufacturedQuantity;

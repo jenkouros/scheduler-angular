@@ -7,6 +7,7 @@ import { GroupsService } from './groups.service';
 
 import { SearchService } from './search.service';
 import { NotifyService } from '../../shared/services/notify.service';
+import { ExcelService } from './excel.service';
 
 export const services: any[] = [
     ItemsService,
@@ -16,7 +17,8 @@ export const services: any[] = [
         PreplanitemsService,
         NotifyService,
         SearchService,
-        GroupsService
+        GroupsService,
+        ExcelService
 ];
 
 

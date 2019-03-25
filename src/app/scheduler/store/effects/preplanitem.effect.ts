@@ -47,20 +47,39 @@ export class PreplanitemEffects {
     })
   );
 
-  @Effect()
-  deleteItemBatch$ = this.actions$.ofType(fromActions.DELETE_ITEMBATCH).pipe(
-    switchMap((action: fromActions.DeleteItemBatch) => {
-      return this.preplanitemService.deleteItemBatch(action.payload).pipe(
-        mergeMap(result => [new fromActions.LoadPreplanItems(), new fromActions.LoadItems()]),
-        // mergeMap(result => [
-        //     new fromActions.LoadPreplanItems(),
-        //     new fromActions.ReloadAllSelectedContainersEvents()
-        // ]),
-        catchError(error => {
-          console.log(error);
-          return of(new fromActions.DeleteItemBatchFail()); // CREATE NEW FAIL ACTION TODO
-        })
-      );
-    })
-  );
+    @Effect()
+    deleteItemBatch$ = this.actions$
+        .ofType(fromActions.DELETE_ITEMBATCH)
+        .pipe(
+            switchMap((action: fromActions.DeleteItemBatch) => {
+                return this.preplanitemService.deleteItemBatch(action.payload)
+                .pipe(
+                    mergeMap(result => [new fromActions.LoadPreplanItems(), new fromActions.LoadItems()]),
+                    // mergeMap(result => [
+                    //     new fromActions.LoadPreplanItems(),
+                    //     new fromActions.ReloadAllSelectedContainersEvents()
+                    // ]),
+                    catchError((error) => {
+                        console.log(error);
+                        return of(new fromActions.DeleteItemBatchFail()); // CREATE NEW FAIL ACTION TODO
+                    })
+                );
+            })
+        );
+
+        @Effect()
+        prePlanItemsSuggestions$ = this.actions$
+        .ofType(fromActions.LOAD_PREPLANITEMS_SUGGESTIONS)
+        .pipe(
+            switchMap((action: fromActions.LoadPreplanItemsSuggestions) => {
+                return this.preplanitemService.getPrePlanItemSuggestion(action.payload)
+                .pipe(
+                    map(result => new fromActions.LoadPreplanItemsSuggestionsSuccess(result)),
+                    catchError((error) => {
+                        console.log(error);
+                        return of(new fromActions.LoadPreplanItemsSuggestionsFail()); // CREATE NEW FAIL ACTION TODO
+                    })
+                );
+            })
+        );
 }

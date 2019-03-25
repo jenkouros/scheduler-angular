@@ -1,6 +1,7 @@
+
 <ul class="nav nav-pills flex-column">
   <li *ngIf="settings.Menu_Scheduler_Filters" class="nav-item">
-    
+
     <a href="#" class="nav-link" (click)="selected = selected === 'filters' ? '' : 'filters'; false;">
         <fa-icon [ngStyle]="(filterActive || containerFilterActive) && { 'color': 'orange' }" class="mr-3" size="lg" [icon]="faFilter"></fa-icon>
       Filter
@@ -8,9 +9,9 @@
     </a>
     <div *ngIf="selected === 'filters'" class="mx-3 mb-3">
       <button *ngIf="filterActive || containerFilterActive" class="btn w-100" (click)="onFilterClear()">Počisti filter</button>
-        
+
       <app-filters></app-filters>
-      
+
     </div>
   </li>
 
@@ -19,14 +20,14 @@
         <fa-icon class="mr-3" size="lg" [icon]="faGroup"></fa-icon> Skupine
     </a>
   </li>
-  
+
   <li *ngIf="settings.Menu_Scheduler_Items" class="nav-item">
     <a class="nav-link" (click)="selected = 'workorders'" routerLink='planitems' routerLinkActive='active'>
       <fa-icon class="mr-3" style="padding-left:1px" size="lg" [icon]="faItems"></fa-icon> Delovni nalogi
     </a>
   </li>
 
-  <li *ngIf="settings.Menu_Scheduler_Planner" class="nav-item"> 
+  <li *ngIf="settings.Menu_Scheduler_Planner" class="nav-item">
     <a class="nav-link" (click)="selected = 'planner'" routerLink='planner' routerLinkActive='active'>
         <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razporejanje
     </a>
@@ -37,10 +38,10 @@
         <fa-icon class="mr-3" size="lg" [icon]="faSearch"></fa-icon> Iskalnik
     </a>
   </li>
-
-  <li><hr class="mb-1 mt-3"></li>
+  <li><div class="mx-3 mt-2"><container-item-quick-plan></container-item-quick-plan></div></li>
+  <li><hr class="mb-1 mt-2"></li>
   <li *ngIf="settings.Menu_Scheduler_Planner">
-    
+
         <dx-scroll-view #scrollElement [height]="getScrollHeight(scrollElement.element)">
             <div class="mx-2">
               <app-preplanitems></app-preplanitems>

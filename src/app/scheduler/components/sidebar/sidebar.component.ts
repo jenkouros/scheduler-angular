@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faClipboardList, faFilter, faCalendarAlt, faSearch, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { appSettings } from '../../../../environments/environment';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })

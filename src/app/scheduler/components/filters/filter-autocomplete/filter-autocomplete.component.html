@@ -30,7 +30,8 @@
       (onContentReady)="syncListSelection()"
       (onSelectionChanged)="onChange($event)">
         <div *dxTemplate="let item of 'listItem'">
-            {{item.displayName}}
+            <div style="white-space: normal" data-bind="text: text">{{item.displayName}}</div>
+
         </div>
     </dx-list>
 </div>

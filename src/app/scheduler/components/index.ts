@@ -23,6 +23,8 @@ import { PlanItemsSearchComponent } from './search/planitems/planitems-search.co
 import { ContainerGroupComponent } from './containers/container-group/container-group.component';
 import { RealizationTimeUpdateComponent } from './planner/realization-timeupdate-popup/realization-timeupdate.component';
 import { FilterContainerComponent } from './filters/filter-container/filter-container.component';
+import { ItemQuickPlanComponent } from './item/item-quick-plan/item-quick-plan.component';
+import { PreplanitemSuggestionPopupComponent } from './preplanitem/preplanitem-suggestion-popup/preplanitem-suggestion-popup.component';
 
 
 
@@ -44,6 +46,7 @@ export const components: any[] = [
     PlanViewerItemComponent,
     PrePlanitemItemComponent,
     PreplanitemDeletePopupComponent,
+    PreplanitemSuggestionPopupComponent,
     ItemPopupComponent,
     MassLockPopupComponent,
     PlanViewerItemEditComponent,
@@ -51,7 +54,8 @@ export const components: any[] = [
     ItemsSearchComponent,
     PlanItemsSearchComponent,
     RealizationTimeUpdateComponent,
-    FilterContainerComponent
+    FilterContainerComponent,
+    ItemQuickPlanComponent
 ];
 
 export * from './filters/filters.component';
@@ -79,3 +83,4 @@ export * from './search/items/items-search.component';
 export * from './search/planitems/planitems-search.component';
 export * from './planner/realization-timeupdate-popup/realization-timeupdate.component';
 export * from './filters/filter-container/filter-container.component';
+export * from './item/item-quick-plan/item-quick-plan.component';

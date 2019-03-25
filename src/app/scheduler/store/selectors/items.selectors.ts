@@ -21,15 +21,20 @@ export const getSelectedItemHierarchy = createSelector(
         }
 
         const idPlanItem = state.selectedItemHierarchy.idPlanItem;
-
-        const idx = state.items.findIndex(i => i.idItem === idPlanItem);
-        if (idx < 0) {
-            return null; // new PlanItemHierarchyViewModel(null, null, []);
+        let loadingItem = state.loadingItem && idPlanItem === state.loadingItem.idItem
+            ? state.loadingItem
+            : null;
+        if (!loadingItem) {
+            const idx = state.items.findIndex(i => i.idItem === idPlanItem);
+            if (idx < 0) {
+                return null; // new PlanItemHierarchyViewModel(null, null, []);
+            }
+            loadingItem = state.items[idx];
         }
 
 
         return new ItemHierarchyViewModel(
-            state.items[idx],
+            loadingItem,
             state.selectedItemHierarchy,
             state.selectedItemHierarchy.alternatives.map(a =>
                 FilterValue.create(a.id, a.name))

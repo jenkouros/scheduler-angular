@@ -30,15 +30,20 @@ export class ItemsEffects {
     })
   );
 
-  @Effect()
-  loadItemHierarchy$ = this.actions$.ofType(fromActions.LOAD_ITEMHIERARCHY).pipe(
-    switchMap((action: fromActions.LoadItemHierarchy) => {
-      return this.itemService.getItemHierarchy(action.payload.itemId).pipe(
-        map(itemHierarchy => new fromActions.LoadItemHierarchySuccess(itemHierarchy)),
-        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
-      );
-    })
-  );
+    @Effect()
+    loadItemHierarchy$ = this.actions$
+        .ofType(fromActions.LOAD_ITEMHIERARCHY)
+        .pipe(
+            switchMap((action: fromActions.LoadItemHierarchy) => {
+                return this.itemService.getItemHierarchy(action.payload.item.idItem)
+                    .pipe(
+                        map(itemHierarchy =>
+                            new fromActions.LoadItemHierarchySuccess(itemHierarchy)
+                        ),
+                        catchError(error => of(new fromActions.LoadItemHierarchyFail()))
+                    );
+            })
+        );
 
   @Effect()
   hideItem$ = this.actions$.ofType(fromActions.HIDE_ITEM).pipe(

@@ -1,5 +1,5 @@
 import { Container } from './container.dto';
-import { PreplanitemServer, PreplanitemBasicServer, SubItemContainerServer } from './server/preplanitem.servermodel';
+import { PreplanitemServer, PreplanitemBasicServer, SubItemContainerServer, PreplanitemSuggestionServer } from './server/preplanitem.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
 import { SubItem } from './item.dto';
 import { SubItemContainer } from './subitem.dto';
@@ -51,5 +51,24 @@ export class PreplanItemBasicData {
         result.product = Product.fromServer(serverData.product);
         return result;
     }
+}
+
+export class PrePlanItemSuggestion {
+  idContainer: number;
+  preparationStartTime: Date;
+  executionStartTime: Date;
+  executionEndTime: Date;
+  containerName: string;
+
+  static fromServer(serverData: PreplanitemSuggestionServer) {
+    const result = new this();
+    result.idContainer = serverData.idContainer;
+    result.preparationStartTime = serverData.preparationStartTime;
+    result.executionStartTime = serverData.executionStartTime;
+    result.executionEndTime = serverData.executionEndTime;
+    result.containerName = serverData.containerName;
+
+    return result;
+  }
 }
 

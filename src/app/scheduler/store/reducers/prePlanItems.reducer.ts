@@ -6,10 +6,12 @@ export { PreplanitemState } from '../../models/preplanItem.store';
 
 export const initState: PreplanitemState = {
     preplanItems: [],
+    preplanItemSuggestions: [],
     selectedPreplanItems: null,
     uiState: {
         draggedEnded: true,
         isDeletePopupVisible: false,
+        isPreplanSuggestionPopupVisible: false,
         idDeleteItemBatchCandidate: null
     }
 };
@@ -68,7 +70,19 @@ export function prePlanItems(state = initState, action: fromAction.PreplanitemAc
                 }
             };
         }
-
+        case(fromAction.LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS): {
+            // alert('state: ' + this.uiState);
+            // alert('stateVisible: ' + this.uiState.isPreplanSuggestionPopupVisible);
+            alert('test state: ' + state.uiState.isPreplanSuggestionPopupVisible);
+            return {
+                ...state,
+                preplanItemSuggestions: action.payload,
+                uiState: {
+                    ...state.uiState,
+                    isPreplanSuggestionPopupVisible: true
+                }
+            };
+        }
         default:
             return state;
     }

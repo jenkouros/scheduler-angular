@@ -21,6 +21,7 @@ import * as fromPlanStore from '../../../plan/store';
           : colorNumber
       "
       [preplanitem]="preplanitem"
+      (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
       (reselectContainers)="onReselectContainers($event)"
       (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)"
     >
@@ -32,10 +33,13 @@ import * as fromPlanStore from '../../../plan/store';
       (hideDeleteBatchPopup)="onHideDeleteBatchPopup()"
     >
     </app-preplanitem-delete-popup>
+    <app-preplanitem-suggestion-popup>
+        </app-preplanitem-suggestion-popup>
   `
 })
 export class PreplanItemsComponent implements OnInit {
   preplanitems$: Observable<PreplanItem[]>;
+  preplansuggesteditems$: Observable<PreplanItem[]>;
   preplanItemsUiState$: Observable<PreplanitemUiState>;
   colorNumber = 0;
   constructor(
@@ -70,11 +74,16 @@ export class PreplanItemsComponent implements OnInit {
     this.store.dispatch(new fromStore.DeleteItemBatch(batchId));
   }
 
+  // TODO check if needed
   onShowDeleteBatchPopup(idItemBatch: number) {
     this.store.dispatch(new fromStore.ShowItemBatchDeletePopup({ idItemBatch: idItemBatch }));
   }
 
   onHideDeleteBatchPopup() {
-    this.store.dispatch(new fromStore.HideItemBatchDeletePopup());
+      this.store.dispatch(new fromStore.HideItemBatchDeletePopup());
+  }
+
+  onPrePlanItemPlanSuggestion(prePlanItemId: number) {
+      this.store.dispatch(new fromStore.LoadPreplanItemsSuggestions(prePlanItemId));
   }
 }

@@ -33,3 +33,11 @@ export interface SubItemContainerServer {
     preparationNormativeInMinutes: number;
     // unitPreparationNormative: string;
 }
+
+export interface PreplanitemSuggestionServer {
+    idContainer: number;
+    preparationStartTime: Date;
+    executionStartTime: Date;
+    executionEndTime: Date;
+    containerName: string;
+}

@@ -1,4 +1,4 @@
-const serverUrl = 'http://10.10.20.11:21000';
+const serverUrl = 'http://10.99.1.54:21010';
 
 export const environment = {
     production: true,
@@ -12,10 +12,10 @@ export const appSettings = {
     Menu_Scheduler_Items: true,
     Menu_Scheduler_Planner: true,
     Menu_Scheduler_Searcher: true,
-    Menu_Scheduler_Filters: false,
-    Menu_Scheduler_Groups: false,
+    Menu_Scheduler_Filters: true,
+    Menu_Scheduler_Groups: true,
     Menu_TimeTables: true,
-    PlanItem_EnablePlanningOnAllWorkplaces: false,
+    PlanItem_EnablePlanningOnAllWorkplaces: true,
     Item_EnableHiddingItems: true,
     Item_EnableBatchPlanning: true,
     PlanItem_DisplayOperationFirst: true, // workorder otherwise

@@ -49,11 +49,11 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadItemsSuccess(items.map(i => Item.fromServer(i))));
   }
 
-  onSelectItem(item: Item) {
-    this.store.dispatch(new fromStore.LoadItemHierarchy({ itemId: item.idItem }));
-    this.store.dispatch(new fromStore.ShowItemPopup());
-  }
-  onHideItem(item: Item) {
-    this.store.dispatch(new fromStore.HideItem(item.idItem));
-  }
+    onSelectItem(item: Item) {
+        this.store.dispatch(new fromStore.LoadItemHierarchy({item: item, addToList: false}));
+        this.store.dispatch(new fromStore.ShowItemPopup());
+    }
+    onHideItem(item: Item) {
+        this.store.dispatch(new fromStore.HideItem(item.idItem));
+    }
 }

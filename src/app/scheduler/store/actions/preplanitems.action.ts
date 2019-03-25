@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { PreplanItemRequest, PreplanItem } from '../../models/preplanitem.dto';
+import { PreplanItemRequest, PreplanItem, PrePlanItemSuggestion } from '../../models/preplanitem.dto';
 
 export const CREATE_PREPLANITEMS = '[PrePlanItem] CREATE PreplanItems';
 export const LOAD_PREPLANITEMS = '[PrePlanItem] GET PreplanItems';
@@ -13,6 +13,10 @@ export const DELETE_ITEMBATCH_FAIL = '[PrePlanItem] DELETE ItemBatch FAIL';
 export const DELETE_ITEMBATCH_SUCCESS = '[PrePlanItem] DELETE ItemBatch SUCCESS';
 export const SHOW_ITEMBATCH_DELETE_POPUP = '[PrePlanItem] SHOW DELETE ItemBatch popup';
 export const HIDE_ITEMBATCH_DELETE_POPUP = '[PrePlanItem] HIDE DELETE ItemBatch popup';
+export const LOAD_PREPLANITEMS_SUGGESTIONS = '[PrePlanItem] GET PreplanItemsSuggestions';
+export const LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS = '[PrePlanItem] GET PreplanItemsSuggestions success';
+export const LOAD_PREPLANITEMS_SUGGESTIONS_FAIL = '[PrePlanItem] GET PreplanItemsSuggestions fail';
+
 
 export class CreatePreplanItems implements Action {
     readonly type = CREATE_PREPLANITEMS;
@@ -60,10 +64,26 @@ export class DeleteItemBatchFail implements Action {
 
 export class ShowItemBatchDeletePopup implements Action {
     readonly type = SHOW_ITEMBATCH_DELETE_POPUP;
-    constructor (public payload: { idItemBatch: number }) {}
+    constructor (public payload: { idItemBatch: number }) {
+    }
 }
 export class HideItemBatchDeletePopup implements Action {
     readonly type = HIDE_ITEMBATCH_DELETE_POPUP;
+}
+
+export class LoadPreplanItemsSuggestions implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS;
+    constructor(public payload: number) {}
+}
+
+export class LoadPreplanItemsSuggestionsSuccess implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS;
+    constructor(public payload: PrePlanItemSuggestion[]) {
+    }
+}
+
+export class LoadPreplanItemsSuggestionsFail implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS_FAIL;
 }
 
 export type PreplanitemAction =
@@ -79,4 +99,7 @@ export type PreplanitemAction =
     | DeleteItemBatchSuccess
     | ShowItemBatchDeletePopup
     | HideItemBatchDeletePopup
+    | LoadPreplanItemsSuggestions
+    | LoadPreplanItemsSuggestionsSuccess
+    | LoadPreplanItemsSuggestionsFail
 ;
