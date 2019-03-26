@@ -71,12 +71,12 @@ export class PlanitemsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.planStore.select(fromPlanStore.getSelectedPlanId).subscribe(id => {
+    /* this.planStore.select(fromPlanStore.getSelectedPlanId).subscribe(id => {
       console.log(id);
       this.store.select(fromStore.getSelectedContainerIds).subscribe(ids => {
         this.store.dispatch(new fromStore.ReloadEvents({ containerIds: ids }));
       });
-    });
+    }); */
 
     this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
     this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
