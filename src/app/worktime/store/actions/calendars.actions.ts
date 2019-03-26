@@ -93,21 +93,47 @@ export class CalendarPopupVisible implements Action {
   constructor(public payload: boolean) {}
 }
 
+//
+// popup calendar generate
+export const CALENDAR_GENERATE_POPUP_VISIBLE = '[WorkTime] Show calendar generate popup';
+// export const HIDE_CALENDAR_POPUP = '[WorkTime] Hide calendar popup';
+
+export class CalendarGeneratePopupVisible implements Action {
+  readonly type = CALENDAR_GENERATE_POPUP_VISIBLE;
+  constructor(public payload: boolean) {}
+}
+
 // update subcalendar
-export const UPDATE_CALENDAR_SUBCALENDAR =
-  '[WorkTime] Update calendar subcalendar';
+export const UPDATE_CALENDAR_SUBCALENDAR = '[WorkTime] Update calendar subcalendar';
 
 export class UpdateCalendarSubCalendar implements Action {
   readonly type = UPDATE_CALENDAR_SUBCALENDAR;
   constructor(public payload: SubCalendar) {}
 }
 // remove
-export const REMOVE_CALENDAR_SUBCALENDAR =
-  '[WorkTime] Remove calendar subcalendar';
+export const REMOVE_CALENDAR_SUBCALENDAR = '[WorkTime] Remove calendar subcalendar';
 
 export class RemoveCalendarSubCalendar implements Action {
   readonly type = REMOVE_CALENDAR_SUBCALENDAR;
   constructor(public payload: SubCalendar) {}
+}
+
+// generate calendar
+export const GENERATE_CALENDAR = '[WorkTime] Generate Calendar';
+export const GENERATE_CALENDAR_SUCCESS = '[WorkTime] Generate Calendar Success';
+export const GENERATE_CALENDAR_FAIL = '[WorkTime] Generate Calendar Fail';
+
+export class GenerateCalendar implements Action {
+  readonly type = GENERATE_CALENDAR;
+  constructor(public payload: Date) {}
+}
+export class GenerateCalendarSuccess implements Action {
+  readonly type = GENERATE_CALENDAR_SUCCESS;
+  constructor(public payload: Boolean) {}
+}
+export class GenerateCalendarFail implements Action {
+  readonly type = GENERATE_CALENDAR_FAIL;
+  constructor(public payload: any) {}
 }
 
 // calendars types
@@ -128,4 +154,8 @@ export type CalendarsActions =
   | RemoveCalendarFail
   | CalendarPopupVisible
   | UpdateCalendarSubCalendar
-  | RemoveCalendarSubCalendar;
+  | RemoveCalendarSubCalendar
+  | CalendarGeneratePopupVisible
+  | GenerateCalendar
+  | GenerateCalendarSuccess
+  | GenerateCalendarFail;

@@ -11,6 +11,7 @@ import { ScheduleEventsComponent } from './schedule/schedule-events/schedule-eve
 import { ScheduleEventPopupComponent } from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
 import { ContainersListComponent } from './containers-list/containers-list.component';
 import { ScheduleDeletePopupComponent } from './schedule/schedule-events/schedule-delete-popup/schedule-delete-popup.component';
+import { CalendarGenerateComponent } from './calendar/calendar-generate/calendar-generate.component';
 
 export const components: any[] = [
   CalendarItemComponent,
@@ -23,7 +24,8 @@ export const components: any[] = [
   ContainersListComponent,
   SubCalendarPopupComponent,
   SubCalendarDeletePopupComponent,
-  ScheduleDeletePopupComponent
+  ScheduleDeletePopupComponent,
+  CalendarGenerateComponent
 ];
 
 export * from './calendar';
@@ -33,3 +35,4 @@ export * from './schedule/schedule-events/schedule-events.component';
 export * from './schedule/schedule-events/schedule-event-popup/schedule-event-popup.component';
 export * from './containers-list/containers-list.component';
 export * from './schedule/schedule-events/schedule-delete-popup/schedule-delete-popup.component';
+export * from './calendar/calendar-generate/calendar-generate.component';

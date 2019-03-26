@@ -54,9 +54,12 @@ export const getCalendarsSelected = createSelector(
 );
 // = (containerIds: number[]) => createSelector(
 export const getCalendarById = (id: number) =>
-  createSelector(getCalendarsEntities, entities => {
-    return entities[id];
-  });
+  createSelector(
+    getCalendarsEntities,
+    entities => {
+      return entities[id];
+    }
+  );
 
 export const getCalendarPopupVisibility = createSelector(
   getCalendarsState,
@@ -64,6 +67,14 @@ export const getCalendarPopupVisibility = createSelector(
 );
 
 export const getSubCalendars = (calendarId: number) =>
-  createSelector(getCalendarsEntities, entities => {
-    return entities[calendarId].subCalendars;
-  });
+  createSelector(
+    getCalendarsEntities,
+    entities => {
+      return entities[calendarId].subCalendars;
+    }
+  );
+
+export const getCalendarGeneratePopupVisibility = createSelector(
+  getCalendarsState,
+  fromCalendars.getCalendarGeneratePopupVisibility
+);

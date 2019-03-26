@@ -79,7 +79,7 @@ export class RemovePlanFail implements Action {
   constructor(public payload: any) {}
 }
 
-// calendars types
+// plan types
 export type PlansActions =
   | LoadPlans
   | LoadPlansFail

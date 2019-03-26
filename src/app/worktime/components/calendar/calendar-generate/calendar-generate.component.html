@@ -1,0 +1,20 @@
+<app-popup
+  height="auto"
+  width="400px"
+  [visible]="visible"
+  [cancelCallback]="onCancel"
+  [confirmCallback]="onSubmit"
+  [title]="header"
+>
+  <form [formGroup]="form">
+    <div class="dx-fieldset">
+      <app-field label="Uveljavi od">
+        <dx-date-box
+          type="date"
+          formControlName="timeStart"
+          [isValid]="!timeStartControlInvalid"
+        ></dx-date-box>
+      </app-field>
+    </div>
+  </form>
+</app-popup>

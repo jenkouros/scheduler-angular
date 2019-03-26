@@ -5,6 +5,7 @@ export interface CalendarsState {
   entities: { [id: number]: Calendar };
   selectedId: number;
   popupVisible: boolean;
+  generatePopupVisible: boolean;
   loading: boolean;
   loaded: boolean;
 }
@@ -13,6 +14,7 @@ export const initialState: CalendarsState = {
   entities: {},
   selectedId: 0,
   popupVisible: false,
+  generatePopupVisible: false,
   loading: false,
   loaded: false
 };
@@ -94,6 +96,13 @@ export function reducer(
         popupVisible
       };
     }
+    case fromCalendars.CALENDAR_GENERATE_POPUP_VISIBLE: {
+      const generatePopupVisible = action.payload;
+      return {
+        ...state,
+        generatePopupVisible
+      };
+    }
     case fromCalendars.UPDATE_CALENDAR_SUBCALENDAR: {
       const item = action.payload;
       const sc = [...state.entities[item.idCalendar].subCalendars];
@@ -147,7 +156,7 @@ export function reducer(
 export const getCalendarsEntities = (state: CalendarsState) => state.entities;
 export const getCalendarsLoading = (state: CalendarsState) => state.loading;
 export const getCalendarsLoaded = (state: CalendarsState) => state.loaded;
-export const getCalendarPopupVisibility = (state: CalendarsState) =>
-  state.popupVisible;
-export const getCalendarsSelectedId = (state: CalendarsState) =>
-  state.selectedId;
+export const getCalendarPopupVisibility = (state: CalendarsState) => state.popupVisible;
+export const getCalendarGeneratePopupVisibility = (state: CalendarsState) =>
+  state.generatePopupVisible;
+export const getCalendarsSelectedId = (state: CalendarsState) => state.selectedId;

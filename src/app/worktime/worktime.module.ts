@@ -61,11 +61,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    ...fromContainers.containers,
-    ...fromComponents.components,
-    RRulePipe
-  ],
+  declarations: [...fromContainers.containers, ...fromComponents.components, RRulePipe],
   imports: [
     CoreModule,
     CommonModule,
