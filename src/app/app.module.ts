@@ -26,7 +26,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { PlanModule } from './plan/plan.module';
 import { PlansComponent } from './plan/containers/plans/plans.component';
 
-loadMessages(messagesSl);
+loadMessages(messagesSl.default);
 // Set locale according the browser language
 locale('sl');
 registerLocaleData(localeSl, 'sl');
