@@ -4,46 +4,50 @@ import { EventsService } from '../../../services/events.service';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { ExcelService } from '../../../services/excel.service';
+import { appSettings } from '../../../../../environments/environment';
 
 @Component({
     selector: 'app-container-group',
     template: `
-    <button style="padding:9px; color: #084578;" class="btn btn-light" (click)="processClick()">
+      <button style="padding:9px; color: #084578;" class="btn btn-light" (click)="processClick()">
         {{ selected ? 'Odstrani izbiro' : 'Izberi vse' }}
-        </button>
+      </button>
+      <div *ngIf="env.PlanItems_ExcelExport">
         <button style="padding:9px; margin-left: 4px" class="btn btn-custom-primary" (click)="onExportDataToExcel()">
-        Izvozi v Excel
-    <dx-popup height="auto" width="70%"
-        class="popup"
-        [width]="650"
-        [height]="260"
-        [showTitle]="true"
-        title="Izvoz plana v Excel"
-        [dragEnabled]="false"
-        [closeOnOutsideClick]="true"
-        [(visible)]="popupVisible">
-        <div *dxTemplate="let data of 'content'">
-        <div style="margin-top: 15px;">
-            <app-field label="Datum in čas od:">
-                    <dx-date-box
-                    [(value)]="dateTimeFrom"
-                        type="datetime">
-                    </dx-date-box>
-            </app-field>
-            <app-field label="Datum in čas do:">
-                        <dx-date-box
-                        [(value)]="dateTimeTo"
-                            type="datetime">
-                        </dx-date-box>
-            </app-field>
-            </div>
-            <div class="text-right" style="margin-top: 20px;">
-                    <button type="button" (click)="onCloseExport()"
-                    class="btn btn-outline-secondary" style="margin-right: 5px;">Prekliči</button>
-                    <button type="button" (click)="onConfirmExportToExcel()" class="btn btn-success">Potrdi</button>
-            </div>
-        </div>
-    </dx-popup>
+          Izvozi v Excel
+        </button>
+        <dx-popup height="auto" width="70%"
+          class="popup"
+          [width]="650"
+          [height]="260"
+          [showTitle]="true"
+          title="Izvoz plana v Excel"
+          [dragEnabled]="false"
+          [closeOnOutsideClick]="true"
+          [(visible)]="popupVisible">
+          <div *dxTemplate="let data of 'content'">
+          <div style="margin-top: 15px;">
+              <app-field label="Datum in čas od:">
+                      <dx-date-box
+                      [(value)]="dateTimeFrom"
+                          type="datetime">
+                      </dx-date-box>
+              </app-field>
+              <app-field label="Datum in čas do:">
+                          <dx-date-box
+                          [(value)]="dateTimeTo"
+                              type="datetime">
+                          </dx-date-box>
+              </app-field>
+              </div>
+              <div class="text-right" style="margin-top: 20px;">
+                      <button type="button" (click)="onCloseExport()"
+                      class="btn btn-outline-secondary" style="margin-right: 5px;">Prekliči</button>
+                      <button type="button" (click)="onConfirmExportToExcel()" class="btn btn-success">Potrdi</button>
+              </div>
+          </div>
+        </dx-popup>
+      </div>
     `
 })
 export class ContainerGroupComponent implements OnChanges {
@@ -58,6 +62,8 @@ export class ContainerGroupComponent implements OnChanges {
     testNumber: any[] = new Array();
     dataResult: any;
     popupVisible = false;
+
+    env = appSettings;
 
     constructor(
         private eventsService: EventsService,

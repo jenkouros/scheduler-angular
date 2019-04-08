@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
-import { environment } from '../environments/environment';
+import { appSettings } from '../environments/environment';
 
 interface Nav {
   link: string;
@@ -15,6 +14,7 @@ interface Nav {
 })
 export class AppComponent {
   title = 'app';
+  env = appSettings;
 
   navigation: Nav[] = [
     {

@@ -47,7 +47,7 @@ export class PlansComponent implements OnInit {
     this.store.dispatch(new fromStore.CreatePlan(plan));
   }
 
-  onCancel(plan: Plan) {
+  onCancel() {
     this.store.dispatch(new fromStore.PlanPopupVisible(false));
   }
 

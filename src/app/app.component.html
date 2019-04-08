@@ -35,7 +35,9 @@
       -->
     </ul>
   </div>
-  <div class="mr-auto"><app-plans></app-plans></div>
+  <div *ngIf="env.Menu_Plan_Selector" class="mr-auto">
+    <app-plans></app-plans>
+  </div>
 
   <!--
     <div class="nav">
