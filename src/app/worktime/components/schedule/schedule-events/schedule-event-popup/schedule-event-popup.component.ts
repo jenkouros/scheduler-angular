@@ -1,17 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnChanges
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { TimeTable } from '../../../../models/timetable.model';
-import {
-  FormBuilder,
-  Validators,
-  FormControl
-} from '../../../../../../../node_modules/@angular/forms';
+import { FormBuilder, Validators, FormControl } from '../../../../../../../node_modules/@angular/forms';
 
 import { RRule } from 'rrule';
 import { RecurrenceRule } from '../../../../helpers/recurrenceRule.helper';
@@ -55,19 +44,10 @@ export class ScheduleEventPopupComponent implements OnChanges {
   });
 
   // code lists
-  timetableTypes: { key: number; name: string }[] = [
-    { key: 1, name: 'Delovni' },
-    { key: 2, name: 'Nedelovni' }
-  ];
+  timetableTypes: { key: number; name: string }[] = [{ key: 1, name: 'Delovni' }, { key: 2, name: 'Nedelovni' }];
 
-  repeatings: { key: boolean; name: string }[] = [
-    { key: false, name: 'Se ne ponavlja' },
-    { key: true, name: 'Se ponavlja' }
-  ];
-  frequencyItems: { key: number; name: string }[] = [
-    { key: 1, name: 'Dan' },
-    { key: 2, name: 'Teden' }
-  ];
+  repeatings: { key: boolean; name: string }[] = [{ key: false, name: 'Se ne ponavlja' }, { key: true, name: 'Se ponavlja' }];
+  frequencyItems: { key: number; name: string }[] = [{ key: 3, name: 'Dan' }, { key: 2, name: 'Teden' }];
   days: string[] = ['P', 'T', 'S', 'Č', 'P', 'S', 'N'];
 
   constructor(private fb: FormBuilder) {
@@ -85,8 +65,7 @@ export class ScheduleEventPopupComponent implements OnChanges {
       this.form.patchValue(this.timetable);
       this.form.patchValue({ repetitions: 1 });
       this.form.patchValue({
-        timetableType: this.timetableTypes[this.timetable.idTimeTableType - 1]
-          .key
+        timetableType: this.timetableTypes[this.timetable.idTimeTableType - 1].key
       });
       // calendar rules
       const rules = RecurrenceRule.Parse(this.timetable.recurrenceRule);
@@ -147,9 +126,12 @@ export class ScheduleEventPopupComponent implements OnChanges {
     if (rules) {
       this.form.patchValue({ repeating: true });
       if (rules.freq) {
-        this.form.patchValue({
-          frequency: this.frequencyItems[rules.freq - 1].key
-        });
+        const f = this.frequencyItems.find(item => item.key === rules.freq);
+        if (f) {
+          this.form.patchValue({
+            frequency: f.key
+          });
+        }
       }
       if (rules.byweekday) {
         this.selectedDays = rules.byweekday.map(d => d.weekday);
@@ -166,6 +148,7 @@ export class ScheduleEventPopupComponent implements OnChanges {
     }
     const freq = this.frequencyControl.value;
     const byweekday = this.selectedDays.sort((a, b) => a - b);
+
     const rule = new RRule({
       freq,
       byweekday

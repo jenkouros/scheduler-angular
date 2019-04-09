@@ -6,7 +6,7 @@ export class RecurrenceRule {
     if (!rfcString) {
       return null;
     }
-    // rfcString = rfcString.replace(/^\s+|\s+$/, '');
+    rfcString = rfcString.replace('RRULE:', '');
 
     let i, j, key, value, attr;
     const attrs = rfcString.split(';');
@@ -91,15 +91,7 @@ export function getTextById(id: string) {
 }
 
 export const slovenian /*: Language*/ = {
-  dayNames: [
-    'nedeljo',
-    'ponedeljek',
-    'torek',
-    'sreda',
-    'četrtek',
-    'petek',
-    'soboto'
-  ],
+  dayNames: ['nedeljo', 'ponedeljek', 'torek', 'sreda', 'četrtek', 'petek', 'soboto'],
   monthNames: [
     'januar',
     'februar'
