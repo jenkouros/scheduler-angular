@@ -49,6 +49,7 @@ export class ScheduleEventPopupComponent implements OnChanges {
   repeatings: { key: boolean; name: string }[] = [{ key: false, name: 'Se ne ponavlja' }, { key: true, name: 'Se ponavlja' }];
   frequencyItems: { key: number; name: string }[] = [{ key: 3, name: 'Dan' }, { key: 2, name: 'Teden' }];
   days: string[] = ['P', 'T', 'S', 'Č', 'P', 'S', 'N'];
+  frequencyByDay = 3;
 
   constructor(private fb: FormBuilder) {
     this.onSubmit = this.onSubmit.bind(this);
@@ -165,7 +166,10 @@ export class ScheduleEventPopupComponent implements OnChanges {
   }
 
   frequencyChanged(event: any) {
-    this.repetitionVisible = event.value === this.frequencyItems[1].key;
+    if (this.frequencyControl.value === this.frequencyByDay) {
+      this.selectedDays = [];
+    }
+    this.repetitionVisible = event.value !== this.frequencyByDay;
   }
 
   repeatingChanged(event: any) {
