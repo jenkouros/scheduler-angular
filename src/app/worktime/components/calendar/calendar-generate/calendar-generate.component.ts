@@ -10,6 +10,7 @@ export class CalendarGenerateComponent implements OnChanges {
   exists = false;
   header: string;
   date = new Date();
+  enabledSubmit = true;
 
   @Input()
   visible: boolean;
@@ -40,6 +41,7 @@ export class CalendarGenerateComponent implements OnChanges {
     this.form.reset();
     this.form.patchValue({ timeStart: new Date() });
     this.header = 'Uveljavi koledar';
+    this.enabledSubmit = true;
   }
 
   validToConfirm() {
@@ -54,6 +56,7 @@ export class CalendarGenerateComponent implements OnChanges {
   onSubmit() {
     const { value } = this.form;
     if (this.validToConfirm()) {
+      this.enabledSubmit = false;
       this.create.emit(value.timeStart);
     }
   }
