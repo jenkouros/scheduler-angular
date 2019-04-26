@@ -24,8 +24,9 @@ import { locale, loadMessages } from 'devextreme/localization';
 import 'devextreme-intl';
 import * as messagesSl from './shared/localization/sl.json';
 import { SignalRService } from './scheduler/services/signalr.service';
-import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { storeFreeze } from 'ngrx-store-freeze';
+import { JwtInterceptor, ErrorInterceptor } from './auth/helpers';
 
 loadMessages(messagesSl);
 // Set locale according the browser language
@@ -63,7 +64,9 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
       deps: [SignalRService],
       multi: true
     },
-    { provide: RouterStateSerializer, useClass: CustomSerializer }
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

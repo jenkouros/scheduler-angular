@@ -8,21 +8,29 @@
                 <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <ul class="navbar-nav mr-auto">
+                <ul  *ngIf="isLoggedIn" class="navbar-nav mr-auto">
                         <li class="nav-item nav-link" *ngFor="let item of navigation">
                                 <a class="nav-link" [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact }">
                                         {{ item.name }}
                                 </a>
 
                         </li>
-
+                       
 
                         <!-- <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                   <a class="nav-item nav-link" href="#">Features</a>
                   <a class="nav-item nav-link" href="#">Pricing</a>
                   <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
                 </ul>
+               
+                <a *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth']">Odjava</a>
+               
+                
         </div>
+
+      
+      
+           
 
         <!-- <div class="nav">
                 <a *ngFor="let item of navigation" [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact }">
