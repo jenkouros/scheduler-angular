@@ -1,0 +1,24 @@
+<div class="container" style="width: 40%; margin-top: 30px">
+  <h2 style="margin-bottom:30px;">Sprememba gesla</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="password">Novo geslo </label>
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched" class="alert alert-danger">
+              Novo geslo je obvezno
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="newpassword">Potrdite novo geslo</label>
+          <input type="password" formControlName="newpassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.newpassword.errors }" />
+          <div *ngIf="loginForm.get('newpassword').invalid && loginForm.get('newpassword').touched" class="alert alert-danger">
+              Potrditev novega gesla je obvezno
+          </div>
+      </div>
+      <div class="form-group">
+          <button class="btn btn-primary" style="background-color:#1f5684; border-color: #1f5684">Spremeni</button>
+      </div>
+      <div *ngIf="error && !saved" class="alert alert-danger">{{error}}</div>
+      <div *ngIf="saved" class="alert alert-success">Uspešno spremenjeno</div>
+  </form>
+</div>

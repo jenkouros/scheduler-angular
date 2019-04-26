@@ -22,8 +22,8 @@
                   <a class="nav-item nav-link" href="#">Pricing</a>
                   <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
                 </ul>
-               
-                <a *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth']">Odjava</a>
+                <a *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth/updateuser']">Nastavitve</a>
+                <a *ngIf="isLoggedIn" style="margin-left: 25px" class="logout" [routerLink]="['/auth']">Odjava</a>
                
                 
         </div>

@@ -52,7 +52,7 @@ export class LogInComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    this.error = "Uporabniško ime ali geslo je napačno";
+                    this.error = 'Uporabniško ime ali geslo je napačno';
                     this.loading = false;
                 });
     }
