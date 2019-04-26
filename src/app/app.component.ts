@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
 import { appSettings } from '../environments/environment';
+import { AuthenticationService } from './auth/services';
 
 interface Nav {
   link: string;
@@ -12,9 +14,19 @@ interface Nav {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   env = appSettings;
+  isLoggedIn = false;
+
+  constructor(private authService: AuthenticationService) {}
+
+  ngOnInit() {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.authService.isLoggedIn$.subscribe(val => this.isLoggedIn = val);
+  }
+
+
 
   navigation: Nav[] = [
     {
