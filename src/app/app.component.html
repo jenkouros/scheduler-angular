@@ -38,7 +38,7 @@
   <div *ngIf="env.Menu_Plan_Selector" class="mr-auto">
     <app-plans></app-plans>
   </div>
-
+  <a *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth/updateuser']">Nastavitve</a>
   <a *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth']">Odjava</a>
 
   <!--
