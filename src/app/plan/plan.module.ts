@@ -22,6 +22,8 @@ import { SharedModule } from '../shared/shared.module';
 import { PlanPopupComponent } from './components/plan-popup/plan-popup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlanSimulationPopupComponent } from './components/plan-simulation-popup/plan-simulation-popup.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../auth/helpers';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,10 @@ import { PlanSimulationPopupComponent } from './components/plan-simulation-popup
     StoreModule.forFeature('plan', reducers),
     EffectsModule.forFeature(effects)
   ],
-  providers: [...fromServices.services],
+  providers: [
+    ...fromServices.services,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   exports: [PlansComponent]
 })
 export class PlanModule {}

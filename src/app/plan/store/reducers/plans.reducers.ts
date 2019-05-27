@@ -15,7 +15,7 @@ export interface PlansState {
 
 export const initialState: PlansState = {
   entities: {},
-  selectedId: 0,
+  selectedId: 1,
   simulations: [],
   simulationPopupVisible: false,
   popupVisible: false,
@@ -30,7 +30,7 @@ export function reducer(state = initialState, action: fromPlans.PlansActions): P
     case fromPlans.LOAD_PLANS: {
       return {
         ...state,
-        selectedId: 0,
+        selectedId: 1,
         loading: true,
         loaded: false
       };

@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services';
     templateUrl: 'login.component.html'})
 export class LogInComponent implements OnInit {
     loginForm: FormGroup;
-    loading = false;
+    // loading = false;
     submitted = false;
     returnUrl: string;
     error = '';
@@ -31,7 +31,7 @@ export class LogInComponent implements OnInit {
         this.authenticationService.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/'; 
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     // convenience getter for easy access to form fields
@@ -44,7 +44,7 @@ export class LogInComponent implements OnInit {
         if (this.loginForm.invalid) {
             return;
         }
-        this.loading = true;
+        // this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
@@ -53,7 +53,7 @@ export class LogInComponent implements OnInit {
                 },
                 error => {
                     this.error = 'Uporabniško ime ali geslo je napačno';
-                    this.loading = false;
+                    // this.loading = false;
                 });
     }
 }

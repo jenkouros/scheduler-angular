@@ -3,20 +3,20 @@
         <div class="col-4">
             <dx-text-box
                 placeholder="Išči nalog, artikel, delovno mesto, status operacij ..."
-                [(value)]="searchValue" 
+                [(value)]="searchValue"
                 (onEnterKey)="onSearch()">
             </dx-text-box>
         </div>
         <div class="col">
-            <dx-button text="Išči" (click)="onSearch()" type="default">Išči></dx-button>
+            <dx-button text="Išči" (click)="onSearch()" type="default">Išči</dx-button>
         </div>
     </div>
 
-    
-    <!-- <input class="form-control w-50 mr-2 d-inline-block" 
+
+    <!-- <input class="form-control w-50 mr-2 d-inline-block"
         (enter)
-        
-        type="text" 
+
+        type="text"
         placeholder=""> -->
     <!-- <button type="button" class="btn bg-kolektor-light text-kolektor d-inline-block" (click)="onSearch()">Išči</button> -->
 </div>
@@ -24,6 +24,6 @@
 <h5>Nalogi</h5>
 <app-items-search *ngIf="searchItemStoreConfiguration !== null" [searchItemStoreConfiguration]="searchItemStoreConfiguration"></app-items-search>
 <h5 class="mt-2">Operacije</h5>
-<app-planitems-search *ngIf="searchPlanItemStoreConfiguration !== null" 
+<app-planitems-search *ngIf="searchPlanItemStoreConfiguration !== null"
     (openInScheduler)="onOpenInScheduler($event)"
     [searchPlanItemStoreConfiguration]="searchPlanItemStoreConfiguration"></app-planitems-search>

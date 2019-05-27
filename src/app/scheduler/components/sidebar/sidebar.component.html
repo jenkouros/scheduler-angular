@@ -8,7 +8,7 @@
       <i class="oi" [ngClass]="{'oi-caret-right': selected !== 'filters', 'oi-caret-bottom': selected === 'filters' }" style="font-size: small;"></i>
     </a>
     <div *ngIf="selected === 'filters'" class="mx-3 mb-3">
-      <button *ngIf="filterActive || containerFilterActive" class="btn w-100" (click)="onFilterClear()">Počisti filter</button>
+      <button *ngIf="filterActive || containerFilterActive" class="btn btn-secondary w-100" (click)="onFilterClear()">Počisti filter</button>
 
       <app-filters></app-filters>
 

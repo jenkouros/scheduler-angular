@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Dx Component
 import {
@@ -36,6 +36,7 @@ import * as fromGuards from './guards';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { RRulePipe } from './pipes/rrule.pipe';
+import { JwtInterceptor } from '../auth/helpers';
 
 const routes: Routes = [
   {
@@ -84,6 +85,10 @@ const routes: Routes = [
     StoreModule.forFeature('worktime', reducers),
     EffectsModule.forFeature(effects)
   ],
-  providers: [...fromServices.services, ...fromGuards.guards]
+  providers: [
+    ...fromServices.services,
+    ...fromGuards.guards,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ]
 })
 export class WorktimeModule {}

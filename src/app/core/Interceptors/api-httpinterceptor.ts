@@ -20,7 +20,9 @@ export class ApiHttpInterceptor implements HttpInterceptor {
       (event: HttpEvent<any>) => {
         this.handleSuccessResponse(event, interceptObservable);
       },
-      () => this.notifyService.notifyError('Strežnik ni dosegljiv.')
+      (err) => {
+        this.notifyService.notifyError('Strežnik ni dosegljiv.');
+      }
     );
     return interceptObservable;
   }

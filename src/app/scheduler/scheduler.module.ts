@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { CoreModule } from '../core/core.module';
@@ -41,6 +41,7 @@ import {
 import { ContainersEffects } from './store/effects/containers.effect';
 import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
+import { JwtInterceptor } from '../auth/helpers';
 
 @NgModule({
     imports: [
@@ -86,7 +87,8 @@ import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemsta
         PlanItemStatusPipe
     ],
     providers: [
-        ...fromServices.services
+        ...fromServices.services,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ]
 })
 export class SchedulerModule {
