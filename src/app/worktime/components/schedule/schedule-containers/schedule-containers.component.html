@@ -1,9 +1,9 @@
 <div class="card mb-1" style="height:300px">
   <div class="card-body pt-2 pl-2 pr-2 pb-1" style="font-size: 14px;">
-    <h5 class="card-title">Izbira delovnih mest</h5>
+    <h5 class="card-title">{{translate('Workplace_Selection')}}</h5>
     <div class="containers-container">
       <div class="top">
-        <app-containers-list class="absolute" [header]="'Razpoložljiva delovna mesta'" [containers]="avalableContainers" (selected)="onSelected($event)"></app-containers-list>
+        <app-containers-list class="absolute" header="{{translate('Available_Workplaces')}}" [containers]="avalableContainers" (selected)="onSelected($event)"></app-containers-list>
       </div>
       <div>
         <div class="button-center">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="top">
-        <app-containers-list class="absolute" [header]="'Izbrana delovna mesta'" [containers]="selectedContainers" (selected)="onDeSelected($event)"></app-containers-list>
+        <app-containers-list class="absolute" header="{{translate('Chosen_Workplaces')}}" [containers]="selectedContainers" (selected)="onDeSelected($event)"></app-containers-list>
       </div>
     </div>
   </div>

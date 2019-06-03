@@ -5,35 +5,36 @@ import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { ExcelService } from '../../../services/excel.service';
 import { appSettings } from '../../../../../environments/environment';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
     selector: 'app-container-group',
     template: `
       <button style="padding:9px; color: #084578;" class="btn btn-light" (click)="processClick()">
-        {{ selected ? 'Odstrani izbiro' : 'Izberi vse' }}
+        {{ selected ? translate('Remove_Selected') : translate('Select_All') }}
       </button>
       <div *ngIf="env.PlanItems_ExcelExport">
         <button style="padding:9px; margin-left: 4px" class="btn btn-custom-primary" (click)="onExportDataToExcel()">
-          Izvozi v Excel
+          {{translate('Export_To_Excel')}}
         </button>
         <dx-popup height="auto" width="70%"
           class="popup"
           [width]="650"
           [height]="260"
           [showTitle]="true"
-          title="Izvoz plana v Excel"
+          title="{{translate('Export_Excel_Title')}}"
           [dragEnabled]="false"
           [closeOnOutsideClick]="true"
           [(visible)]="popupVisible">
           <div *dxTemplate="let data of 'content'">
           <div style="margin-top: 15px;">
-              <app-field label="Datum in čas od:">
+              <app-field label="{{translate('DateTime_From')}}">
                       <dx-date-box
                       [(value)]="dateTimeFrom"
                           type="datetime">
                       </dx-date-box>
               </app-field>
-              <app-field label="Datum in čas do:">
+              <app-field label="{{translate('DateTime_To')}}">
                           <dx-date-box
                           [(value)]="dateTimeTo"
                               type="datetime">
@@ -42,15 +43,15 @@ import { appSettings } from '../../../../../environments/environment';
               </div>
               <div class="text-right" style="margin-top: 20px;">
                       <button type="button" (click)="onCloseExport()"
-                      class="btn btn-outline-secondary" style="margin-right: 5px;">Prekliči</button>
-                      <button type="button" (click)="onConfirmExportToExcel()" class="btn btn-success">Potrdi</button>
+                      class="btn btn-outline-secondary" style="margin-right: 5px;">{{translate('Cancel')}}</button>
+                      <button type="button" (click)="onConfirmExportToExcel()" class="btn btn-success">{{translate('Confirm')}}</button>
               </div>
           </div>
         </dx-popup>
       </div>
     `
 })
-export class ContainerGroupComponent implements OnChanges {
+export class ContainerGroupComponent extends AppComponentBase implements OnChanges {
 
     @Input() containers: ContainerSelect[];
     @Output() groupSelect = new EventEmitter<number[]>();
@@ -68,7 +69,9 @@ export class ContainerGroupComponent implements OnChanges {
     constructor(
         private eventsService: EventsService,
         private excelService: ExcelService
-    ) {}
+    ) {
+      super();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.selected = this.containers.findIndex(o => o.selected) > -1;

@@ -9,6 +9,7 @@ import { TimeHelper } from '../../../../helpers/time.helper';
 import * as moment from 'moment';
 import { DateValidators } from '../../../../../shared/validators/date.validators';
 import { Subscription } from 'rxjs';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-viewer-item-edit',
@@ -16,7 +17,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./plan-viewer-item-edit.component.css']
 })
 
-export class PlanViewerItemEditComponent implements OnInit, OnChanges, OnDestroy {
+export class PlanViewerItemEditComponent extends AppComponentBase implements OnInit, OnChanges, OnDestroy {
   @Input() planItem: PlannedEvent | null;
   @Input() visible: false;
   @Output() planItemUpdate = new EventEmitter<PlannedEvent>();
@@ -40,6 +41,7 @@ export class PlanViewerItemEditComponent implements OnInit, OnChanges, OnDestroy
   }
 
   constructor(private fb: FormBuilder) {
+    super();
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onFormHide = this.onFormHide.bind(this);
   }

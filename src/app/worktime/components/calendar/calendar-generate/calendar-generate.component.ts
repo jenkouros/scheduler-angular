@@ -1,12 +1,13 @@
 import { Component, Output, EventEmitter, SimpleChanges, OnChanges, Input } from '@angular/core';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-calendar-generate',
   templateUrl: './calendar-generate.component.html',
   styleUrls: ['./calendar-generate.component.css']
 })
-export class CalendarGenerateComponent implements OnChanges {
+export class CalendarGenerateComponent extends AppComponentBase implements OnChanges {
   exists = false;
   header: string;
   date = new Date();
@@ -24,6 +25,7 @@ export class CalendarGenerateComponent implements OnChanges {
   });
 
   constructor(private fb: FormBuilder) {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
@@ -40,7 +42,7 @@ export class CalendarGenerateComponent implements OnChanges {
     this.exists = false;
     this.form.reset();
     this.form.patchValue({ timeStart: new Date() });
-    this.header = 'Uveljavi koledar';
+    this.header = this.translate('Calendar_Apply');
     this.enabledSubmit = true;
   }
 

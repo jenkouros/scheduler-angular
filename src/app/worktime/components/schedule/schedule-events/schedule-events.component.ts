@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { TimeTable } from '../../../models/timetable.model';
 import { SubCalendar } from '../../../models/calendar.model';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-schedule-events',
@@ -15,7 +16,12 @@ import { SubCalendar } from '../../../models/calendar.model';
   templateUrl: './schedule-events.component.html',
   styleUrls: ['./schedule-events.component.css']
 })
-export class ScheduleEventsComponent implements OnInit {
+export class ScheduleEventsComponent extends AppComponentBase implements OnInit {
+
+  constructor() {
+    super();
+  }
+
   @Input()
   timeTables: TimeTable[];
   @Input()
@@ -54,7 +60,7 @@ export class ScheduleEventsComponent implements OnInit {
         widget: 'dxButton',
         options: {
           icon: 'add',
-          text: 'Dodaj dogodek',
+          text: this.translate('Add_Event'),
           onClick: this.newTimeTable.bind(this)
         }
       }

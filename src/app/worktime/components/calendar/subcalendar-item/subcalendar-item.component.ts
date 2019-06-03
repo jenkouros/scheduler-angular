@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { SubCalendar } from '../../../models/calendar.model';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-subcalendar-item',
@@ -15,7 +16,7 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './subcalendar-item.component.html',
   styleUrls: ['./subcalendar-item.component.css']
 })
-export class SubCalendarItemComponent implements OnInit {
+export class SubCalendarItemComponent extends AppComponentBase implements OnInit {
   @Input()
   subCalendars: SubCalendar[];
   @Output()
@@ -28,7 +29,9 @@ export class SubCalendarItemComponent implements OnInit {
   iconDelete = faTrash;
   iconEdit = faEdit;
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   ngOnInit() {}
 

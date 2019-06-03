@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services';
+import { AppComponentBase } from '../../../shared/app-component-base';
 
 @Component({
     selector: 'app-log-in',
     templateUrl: 'login.component.html'})
-export class LogInComponent implements OnInit {
+export class LogInComponent extends AppComponentBase implements OnInit {
     loginForm: FormGroup;
     // loading = false;
     submitted = false;
@@ -19,7 +20,9 @@ export class LogInComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService) {}
+        private authenticationService: AuthenticationService) {
+            super();
+        }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -49,7 +52,10 @@ export class LogInComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    if (data != null) {
+                        this.router.navigate([this.returnUrl]);
+                    }
+
                 },
                 error => {
                     this.error = 'Uporabniško ime ali geslo je napačno';

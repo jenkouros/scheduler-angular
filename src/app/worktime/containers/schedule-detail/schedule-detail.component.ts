@@ -7,6 +7,7 @@ import { TimeTable } from '../../models/timetable.model';
 
 import * as fromStore from '../../store';
 import { Container } from '../../../scheduler/models/container.dto';
+import { AppComponentBase } from '../../../shared/app-component-base';
 
 @Component({
   selector: 'app-schedule-detail',
@@ -32,7 +33,7 @@ import { Container } from '../../../scheduler/models/container.dto';
   </div>
   <div *ngIf="!isSubCalendarSelected">
     <div class="alert alert-primary" role="alert">
-      Za prikaz je treba je izbrati urnik v levem meniju.
+    {{ translate('Choose_Calendar_ForView') }}
     </div>
   </div>
 
@@ -44,7 +45,7 @@ import { Container } from '../../../scheduler/models/container.dto';
   </app-schedule-delete-popup>
   `
 })
-export class ScheduleDetailComponent implements OnInit {
+export class ScheduleDetailComponent extends AppComponentBase implements OnInit {
   timetables$: Observable<TimeTable[]>;
   avalableContainers$: Observable<Container[]>;
   selectedContainers$: Observable<Container[]>;
@@ -53,7 +54,9 @@ export class ScheduleDetailComponent implements OnInit {
   isSubCalendarSelected = false;
   timetable: TimeTable | null;
 
-  constructor(private store: Store<fromStore.WorkTimeState>) {}
+  constructor(private store: Store<fromStore.WorkTimeState>) {
+    super();
+  }
 
   ngOnInit() {
     this.selectedSubCalendar$ = this.store.pipe(select(fromStore.getSubCalendarsSelected));
@@ -72,12 +75,12 @@ export class ScheduleDetailComponent implements OnInit {
   }
 
   removeFromSelected(selected: SelectedContainers) {
-    //console.log(selected);
+    // console.log(selected);
     this.store.dispatch(new fromStore.RemoveFromSelectedContainers(selected));
   }
 
   onAdd(openPopup: boolean) {
-    //console.log(openPopup);
+    // console.log(openPopup);
     this.store.dispatch(new fromStore.TimeTablePopupVisible(openPopup));
   }
   onConfirmBeforeRemove(timetable: TimeTable) {

@@ -5,6 +5,9 @@ import { appSettings } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Subscription } from 'rxjs';
+import { formatMessage } from 'devextreme/localization';
+import { AppComponentBase } from '../../../shared/app-component-base';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +15,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent extends AppComponentBase implements OnInit, OnDestroy {
   settings = appSettings;
   selected = '';
   filterSubscription: Subscription;
@@ -20,7 +23,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   filterActive = false;
   containerFilterActive = false;
 
-  constructor(private router: Router, private store: Store<fromStore.SchedulerState>) { }
+  constructor(private router: Router, private store: Store<fromStore.SchedulerState>) {
+    super();
+   }
 
   faItems = faClipboardList;
   faPlanItems = faCalendarAlt;
@@ -60,7 +65,5 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.filterSubscription.unsubscribe();
     }
   }
-
-
 
 }

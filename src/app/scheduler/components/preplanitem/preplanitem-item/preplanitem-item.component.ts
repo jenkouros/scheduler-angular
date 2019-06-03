@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PreplanItem } from '../../../models/preplanitem.dto';
 import { faTrash, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-preplanitem-item',
@@ -8,7 +9,7 @@ import { faTrash, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './preplanitem-item.component.html',
   styleUrls: ['./preplanitem-item.component.css']
 })
-export class PrePlanitemItemComponent implements OnInit {
+export class PrePlanitemItemComponent extends AppComponentBase implements OnInit {
   @Input() preplanitem: PreplanItem;
   @Input() groupColorNumber: number;
   @Output() reselectContainers = new EventEmitter<number[]>();
@@ -17,6 +18,10 @@ export class PrePlanitemItemComponent implements OnInit {
 
   calendarIcon = faCalendarAlt;
   deleteIcon = faTrash;
+
+  constructor() {
+        super();
+    }
 
   ngOnInit() {
   }

@@ -5,10 +5,14 @@ import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { NotifyService } from '../../shared/services/notify.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiHttpInterceptor implements HttpInterceptor {
-  constructor(private notifyService: NotifyService) {}
+  constructor(
+    private notifyService: NotifyService,
+    private router: Router) {}
+
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const interceptObservable = new Subject<HttpEvent<any>>();
@@ -21,7 +25,12 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         this.handleSuccessResponse(event, interceptObservable);
       },
       (err) => {
-        this.notifyService.notifyError('Strežnik ni dosegljiv.');
+        if (err.status === 401) {
+          this.router.navigate(['/auth']);
+        } else {
+          this.notifyService.notifyError('Strežnik ni dosegljiv.');
+        }
+
       }
     );
     return interceptObservable;

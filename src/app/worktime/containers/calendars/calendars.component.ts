@@ -6,6 +6,7 @@ import * as fromStore from '../../store';
 import { Store } from '@ngrx/store';
 import { DxScrollViewComponent } from '../../../../../node_modules/devextreme-angular';
 import { NotifyService } from '../../services';
+import { AppComponentBase } from '../../../shared/app-component-base';
 
 @Component({
   selector: 'app-calendars',
@@ -43,7 +44,7 @@ import { NotifyService } from '../../services';
   `,
   styleUrls: ['./calendars.component.css']
 })
-export class CalendarsComponent implements OnInit, AfterContentInit {
+export class CalendarsComponent extends AppComponentBase implements OnInit, AfterContentInit {
   selectedId: number;
   selectedCalendar$: Observable<Calendar>;
 
@@ -61,6 +62,7 @@ export class CalendarsComponent implements OnInit, AfterContentInit {
     private router: Router,
     private notifyService: NotifyService
   ) {
+    super();
     this.items = [
       {
         location: 'before',
@@ -76,7 +78,7 @@ export class CalendarsComponent implements OnInit, AfterContentInit {
 
         options: {
           icon: 'plus',
-          text: 'Dodaj',
+          text: this.translate('Add'),
           onClick: () => {
             this.store.dispatch(new fromStore.DeSelectCalendar());
             this.store.dispatch(new fromStore.CalendarPopupVisible(true));
@@ -90,7 +92,7 @@ export class CalendarsComponent implements OnInit, AfterContentInit {
 
         options: {
           icon: 'refresh',
-          text: 'Uveljavi',
+          text: this.translate('Apply'),
           onClick: () => {
             this.store.dispatch(new fromStore.CalendarGeneratePopupVisible(true));
           }

@@ -4,11 +4,11 @@
   </dxo-pager>
 
 
-  <dxi-column caption="Naziv urnika" dataField="name"></dxi-column>
-  <dxi-column caption="Vrsta časa" dataField="idTimeTableType" cellTemplate="timeTableType"></dxi-column>
-  <dxi-column caption="Pravilo" dataField="recurrenceRule" cellTemplate="rruleTemplate"></dxi-column>
-  <dxi-column caption="Dogodek od" dataField="timeStart" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
-  <dxi-column caption="Dogodek do" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
+  <dxi-column caption="{{translate('Scheduler_Name')}}" dataField="name"></dxi-column>
+  <dxi-column caption="{{translate('Timetable_Type')}}" dataField="idTimeTableType" cellTemplate="timeTableType"></dxi-column>
+  <dxi-column caption="{{translate('Rule')}}" dataField="recurrenceRule" cellTemplate="rruleTemplate"></dxi-column>
+  <dxi-column caption="{{translate('Event_From')}}" dataField="timeStart" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
+  <dxi-column caption="{{translate('Event_To')}}" dataField="timeEnd" cellTemplate="dateCellTemplate" [width]="150"></dxi-column>
 
   <dxi-column alignment="center" dataField="" cellTemplate="removeCelltemplate" [width]="100"></dxi-column>
   <dxi-column alignment="center" dataField="" cellTemplate="editCelltemplate" [width]="100"></dxi-column>
@@ -28,16 +28,16 @@
   </div>
 
   <div *dxTemplate="let cell of 'editCelltemplate'">
-    <a class="span-link" (click)="onSelect(cell.data)">Uredi</a>
+    <a class="span-link" (click)="onSelect(cell.data)">{{translate('Edit')}}</a>
   </div>
 
   <div *dxTemplate="let cell of 'removeCelltemplate'">
-    <a class="span-link" (click)="onRemove(cell.data)">Briši</a>
+    <a class="span-link" (click)="onRemove(cell.data)">{{translate('Delete_Short')}}</a>
   </div>
 
   <div *dxTemplate="let data of 'header'">
     <div class="informer">
-      <h5 class="name">Pregled dogodkov</h5>
+      <h5 class="name">{{translate('Event_Overview')}}</h5>
     </div>
   </div>
 </dx-data-grid>

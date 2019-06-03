@@ -13,10 +13,10 @@
     <hr class="mt-1 mb-1">
     <div class="float-right">
       <button (click)="onRemove(calendar)" type="button" class="btn btn-sm btn-light mr-1 mb-1" [disabled]="true">
-        <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> Briši koledar
+        <fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> {{translate('Calendar_Delete')}}
       </button>
       <button (click)="onSelect()" type="button" class="btn btn-sm btn-light mr-1 mb-1">
-        <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> Uredi koledar
+        <fa-icon class="cursor-pointer" [icon]="editIcon"></fa-icon> {{translate('Calendar_Edit')}}
       </button>
     </div>
   </div>

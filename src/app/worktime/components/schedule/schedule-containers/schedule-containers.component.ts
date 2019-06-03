@@ -12,6 +12,7 @@ import {
   SubCalendar,
   SelectedContainers
 } from '../../../models/calendar.model';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-schedule-containers',
@@ -19,7 +20,7 @@ import {
   templateUrl: './schedule-containers.component.html',
   styleUrls: ['./schedule-containers.component.css']
 })
-export class ScheduleContainersComponent implements OnInit {
+export class ScheduleContainersComponent extends AppComponentBase implements OnInit {
   @Input() selectedSubCalendar: SubCalendar;
   @Input() avalableContainers: Container[];
   @Input() selectedContainers: Container[];
@@ -33,7 +34,9 @@ export class ScheduleContainersComponent implements OnInit {
   toRemoveContainers: number[];
   isAddingEnabled = false;
   isRemovingEnabled = false;
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   ngOnInit() {}
 

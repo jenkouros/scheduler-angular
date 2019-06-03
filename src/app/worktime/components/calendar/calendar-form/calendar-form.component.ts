@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 
 import { Calendar } from '../../../models/calendar.model';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-calendar-form',
@@ -29,20 +30,20 @@ import { Calendar } from '../../../models/calendar.model';
   >
     <form [formGroup]="form">
       <div class="dx-fieldset">
-        <app-field label="Naziv urnika">
-          <dx-text-box placeholder="Naziv urnika..."
+        <app-field label="{{translate('Scheduler_Name')}}">
+          <dx-text-box placeholder="{{translate('Scheduler_Name_Dots')}}"
             formControlName="description"
             [isValid]="!descriptionControlInvalid">
           </dx-text-box>
           <p class="help-block" *ngIf="descriptionControlInvalid">
-            Vnesite naziv urnika.
+          {{translate('Input_Scheduler_Name')}}
           </p>
         </app-field>
-        <app-field label="Začetek urnika">
+        <app-field label="{{translate('Scheduler_Start')}}">
           <dx-date-box type="date" formControlName="timeStart"
           [isValid]="!timeStartControlInvalid"></dx-date-box>
         </app-field>
-        <app-field label="Konec urnika">
+        <app-field label="{{translate('Scheduler_End')}}">
           <dx-date-box type="date" formControlName="timeEnd"
           [isValid]="!timeEndControlInvalid"
           ></dx-date-box>
@@ -53,7 +54,7 @@ import { Calendar } from '../../../models/calendar.model';
   `,
   styleUrls: ['./calendar-form.component.css']
 })
-export class CalendarFormComponent implements OnChanges {
+export class CalendarFormComponent extends AppComponentBase implements OnChanges {
   exists = false;
   header: string;
   date = new Date();
@@ -78,6 +79,7 @@ export class CalendarFormComponent implements OnChanges {
   });
 
   constructor(private fb: FormBuilder) {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
@@ -109,7 +111,7 @@ export class CalendarFormComponent implements OnChanges {
       this.exists = true;
       this.form.patchValue(this.calendar);
     }
-    this.header = this.exists ? 'Urejanje koledarja' : 'Kreiranje koledarja';
+    this.header = this.exists ? this.translate('Calendar_Editing') : this.translate('Calendar_Creating');
   }
 
   validToConfirm() {

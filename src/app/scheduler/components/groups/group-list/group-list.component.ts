@@ -3,13 +3,14 @@ import { select } from '@ngrx/store';
 import { GroupFilterViewModel, GroupFilter } from '../../../models/groupfilter.dto';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { NotifyService } from '../../../../shared/services/notify.service';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.css']
 })
-export class GroupListComponent implements OnInit {
+export class GroupListComponent extends AppComponentBase implements OnInit {
     @Input() groups: GroupFilterViewModel[] | null;
     @Output() groupFilterSelected = new EventEmitter<GroupFilterViewModel>();
     @Output() editGroupFilter = new EventEmitter<GroupFilterViewModel | null>();
@@ -17,7 +18,9 @@ export class GroupListComponent implements OnInit {
     @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
     selectedGroup: GroupFilterViewModel | null = null;
 
-    constructor(private notifyService: NotifyService) { }
+    constructor(private notifyService: NotifyService) {
+      super();
+    }
 
     ngOnInit() {
     }

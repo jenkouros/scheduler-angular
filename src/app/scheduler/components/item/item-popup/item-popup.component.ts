@@ -6,13 +6,14 @@ import { PreplanItemRequest } from '../../../models/preplanitem.dto';
 import { FormValidators } from '../../../../shared/validators/form.validators';
 import { appSettings } from '../../../../../environments/environment';
 import { ItemUIState } from '../../../models/item.store';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-item-popup',
   templateUrl: './item-popup.component.html',
   styleUrls: ['./item-popup.component.css']
 })
-export class ItemPopupComponent implements OnChanges {
+export class ItemPopupComponent extends AppComponentBase implements OnChanges {
   @Input() uiState: ItemUIState | null;
   visible = false;
   @Input() itemHierarchy: ItemHierarchyViewModel | null;
@@ -24,6 +25,7 @@ export class ItemPopupComponent implements OnChanges {
   alternatives: ItemHierarchyAlternative[] = [];
 
   constructor(private fb: FormBuilder) {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.hideItemInfo = this.hideItemInfo.bind(this);
     this.initForm();

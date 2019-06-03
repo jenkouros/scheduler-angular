@@ -1,6 +1,6 @@
-<app-popup [visible]="visible" title="Potrdi brisanje" [cancelCallback]="onCancel" [confirmCallback]="onConfirm" width="300px"
+<app-popup [visible]="visible" title="{{translate('Confirm_Delete')}}" [cancelCallback]="onCancel" [confirmCallback]="onConfirm" width="300px"
   height="auto">
   <p>
-    Brišem dogodek?
+    {{translate('Event_Delete')}}
   </p>
 </app-popup>

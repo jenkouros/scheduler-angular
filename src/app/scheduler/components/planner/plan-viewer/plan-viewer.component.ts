@@ -32,6 +32,7 @@ import { PlanSchedule } from '../../../models/planschedule.dto';
 import { ColorHelper } from '../../../helpers/color.helper';
 import { NotifyService } from '../../../../worktime/services';
 import { appSettings } from '../../../../../environments/environment';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -39,7 +40,7 @@ import { appSettings } from '../../../../../environments/environment';
   styleUrls: ['./plan-viewer.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlanViewerComponent implements AfterViewInit, OnChanges {
+export class PlanViewerComponent extends AppComponentBase implements AfterViewInit, OnChanges {
   @Input() selectedPreplanItem: PreplanItem | null = null;
   @Input() selectedContainers: ContainerSelect[] = [];
   @Input()
@@ -100,6 +101,7 @@ export class PlanViewerComponent implements AfterViewInit, OnChanges {
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
   constructor(private notifyService: NotifyService) {
+    super();
     this.drop = this.drop.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.scroll = this.scroll.bind(this);

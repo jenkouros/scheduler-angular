@@ -3,18 +3,18 @@
   <button class="btn btn-primary mb-2" 
     [disabled]="!grid.selectedRowKeys.length"
     (click)="confirmGroupFilter()">
-    Izberi skupino
+    {{translate('Choose_Group')}} 
   </button>
 
     <button class="btn btn-primary mb-2 ml-1" 
       [disabled]="!grid.selectedRowKeys.length"
       (click)="onEditGroupFilter()">
-      Uredi
+      {{translate('Edit')}} 
     </button>
 
     <button class="btn btn-success mb-2 ml-1" 
       (click)="onCreateGroupFilter()">
-      Dodaj
+      {{translate('Add')}} 
     </button>
 
   <dx-data-grid 
@@ -30,9 +30,9 @@
       [allowSelectAll]="false">
     </dxo-selection>
   
-    <dxi-column dataField="name" caption="Naziv skupine"></dxi-column>
-    <dxi-column caption="Delovna mesta" cellTemplate="containerCellTemplate"></dxi-column>
-    <dxi-column caption="Filtri" cellTemplate="filterCellTemplate"></dxi-column>
+    <dxi-column dataField="name" caption="{{translate('Group_Name')}}"></dxi-column>
+    <dxi-column caption="{{translate('Workplaces')}}" cellTemplate="containerCellTemplate"></dxi-column>
+    <dxi-column caption="{{translate('Filters')}}" cellTemplate="filterCellTemplate"></dxi-column>
   
     <div *dxTemplate="let cell of 'containerCellTemplate'">
       <span class="badge badge-secondary mr-1 px-2 py-1" *ngFor="let container of cell.data.selectedContainers">{{ container.code }}</span>

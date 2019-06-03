@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Calendar, SubCalendar } from '../../../models/calendar.model';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-calendar-item',
@@ -15,7 +16,7 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './calendar-item.component.html',
   styleUrls: ['./calendar-item.component.css']
 })
-export class CalendarItemComponent implements OnInit {
+export class CalendarItemComponent extends AppComponentBase implements OnInit {
   @Input() calendar: Calendar;
 
   @Output() select = new EventEmitter<Calendar>();
@@ -24,7 +25,9 @@ export class CalendarItemComponent implements OnInit {
 
   editIcon = faEdit;
   deleteIcon = faTrash;
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   ngOnInit() {}
 

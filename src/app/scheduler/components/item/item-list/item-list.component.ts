@@ -6,6 +6,7 @@ import { Item } from '../../../models/item.dto';
 import { GridStoreConfiguration } from '../../../models/shared.dto';
 import { ItemServer } from '../../../models/server/item.servermodel';
 import { appSettings } from '../../../../../environments/environment';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 // import { appSettings } from ''
 
 @Component({
@@ -13,7 +14,7 @@ import { appSettings } from '../../../../../environments/environment';
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css']
 })
-export class ItemListComponent implements OnChanges {
+export class ItemListComponent extends AppComponentBase implements OnChanges {
   @Input() storeConfiguration: GridStoreConfiguration | null;
   @Output() selectItem = new EventEmitter<Item>();
   @Output() hideItem = new EventEmitter<Item>();

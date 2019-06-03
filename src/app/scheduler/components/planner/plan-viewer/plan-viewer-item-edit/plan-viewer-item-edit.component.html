@@ -1,6 +1,6 @@
 <app-popup 
   [validToConfirm]="planItemEditForm.valid"
-  title="Urejanje operacije" 
+  title="{{ translate('Edit_Operation') }}"
   [confirmCallback]="onFormSubmit"
   [cancelCallback]="onFormHide"
   [visible]="visible" 
@@ -8,17 +8,17 @@
   [height]="'680px'">
   <div *ngIf="planItem">
     <form [formGroup]="planItemEditForm">
-      <app-field label="Operacija" [isStatic]="true">
+      <app-field label="{{ translate('Operation') }}" [isStatic]="true">
         #{{ planItem!.subItemCode }} {{ planItem!.subItemName }}
       </app-field>
-      <app-field label="Komentar">
+      <app-field label="{{ translate('Comment') }}">
         <dx-text-area formControlName="comment"></dx-text-area>
       </app-field>
 
-      <app-field label="Količina" [isStatic]="true">
+      <app-field label="{{ translate('Quantity') }}" [isStatic]="true">
         {{ planItem!.quantity }} {{ planItem!.unitQuantity }}
       </app-field>
-      <app-field label="Delovno mesto">
+      <app-field label="{{ translate('Workplace') }}">
           <!-- [value]="planItem!.containerId" -->
         <dx-select-box
           [items]="containers"
@@ -27,7 +27,7 @@
           formControlName="idContainer"
         ></dx-select-box>
       </app-field>
-      <app-field label="Začetek priprave">
+      <app-field label="{{ translate('Preparation_Start') }}">
         <app-datebox 
           type="datetime" 
           formControlName="preparationStartTime" 
@@ -35,14 +35,14 @@
         </app-datebox>
       </app-field>
       <div class="ml-5">
-        <app-field label="Čas priprave" [isStatic]="true">
+        <app-field label="{{ translate('Preparation_Time') }}" [isStatic]="true">
           {{ preparationDurationControl.value }}
         </app-field>
-        <app-field label="Zakleni normativ" [isStatic]="true">
+        <app-field label="{{ translate('Lock_Normative') }}" [isStatic]="true">
           <dx-check-box formControlName="isPreparationTimeLocked"></dx-check-box>
         </app-field>
       </div>
-      <app-field label="Začetek izdelave">
+      <app-field label="{{ translate('Execution_Start') }}">
         <app-datebox 
           type="datetime" 
           formControlName="executionStartTime"
@@ -51,15 +51,15 @@
         </app-datebox>
       </app-field>
       <div class="ml-5">
-        <app-field label="Čas izdelave" [isStatic]="true">
+        <app-field label="{{ translate('Execution_Time') }}" [isStatic]="true">
           {{ executionDurationControl.value }}
         </app-field>
-        <app-field label="Zakleni normativ" [isStatic]="true">
+        <app-field label="{{ translate('Lock_Normative') }}" [isStatic]="true">
           <dx-check-box formControlName="isExecutionTimeLocked"></dx-check-box>
         </app-field>
       </div>
 
-      <app-field label="Konec izdelave">
+      <app-field label="{{ translate('Execution_End') }}">
         <app-datebox 
           type="datetime" 
           formControlName="executionEndTime"

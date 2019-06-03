@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { DxPopupComponent } from 'devextreme-angular';
+import { AppComponentBase } from '../../app-component-base';
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.css']
 })
-export class PopupComponent {
+export class PopupComponent extends AppComponentBase {
   @ViewChild(DxPopupComponent) popup: DxPopupComponent;
 
   @Input() title: string;
@@ -24,6 +25,7 @@ export class PopupComponent {
 
 
   constructor() {
+    super();
     this.onHidding = this.onHidding.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
   }
@@ -49,5 +51,6 @@ export class PopupComponent {
       this.cancelCallback();
     }
   }
+
 
 }

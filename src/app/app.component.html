@@ -38,8 +38,8 @@
   <div *ngIf="env.Menu_Plan_Selector && isLoggedIn" class="mr-auto">
     <app-plans></app-plans>
   </div>
-  <a style="margin-left: 20px" *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth/updateuser']">Nastavitve</a>
-  <a style="margin-left: 20px" *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth']">Odjava</a>
+  <a style="margin-left: 20px" *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth/updateuser']">{{translate('Settings')}}</a>
+  <a style="margin-left: 20px" *ngIf="isLoggedIn" class="logout" [routerLink]="['/auth']">{{translate('Logout')}}</a>
 
   <!--
     <div class="nav">

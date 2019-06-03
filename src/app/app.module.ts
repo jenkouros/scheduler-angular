@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { locale, loadMessages } from 'devextreme/localization';
 import 'devextreme-intl';
 import messagesSl from './shared/localization/sl.json';
+import messagesCustom from './shared/localization/messages.json';
 import { SignalRService } from './scheduler/services/signalr.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { storeFreeze } from 'ngrx-store-freeze';
@@ -27,6 +28,7 @@ import { PlanModule } from './plan/plan.module';
 import { JwtInterceptor, ErrorInterceptor } from './auth/helpers';
 
 loadMessages(messagesSl);
+loadMessages(messagesCustom);
 // Set locale according the browser language
 locale('sl');
 registerLocaleData(localeSl, 'sl');

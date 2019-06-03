@@ -12,7 +12,7 @@
     toolbar="bottom" 
     location="after" 
     widget="dxButton" 
-    [options]="{ text: 'Prekliči', onClick: hidePopup }">
+    [options]="{ text: translate('Cancel'), onClick: hidePopup }">
   </dxi-toolbar-item>
 
   <dxi-toolbar-item *ngIf="hasConfirmBtn"
@@ -20,7 +20,7 @@
     location="after" 
     widget="dxButton" 
     [options]="{ 
-      text: 'Potrdi',
+      text: translate('Confirm'),
       useSubmitBehavior: true,
       type: 'success',
       onClick: confirmCallback,

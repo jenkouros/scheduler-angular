@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { GridStoreConfiguration } from '../../models/shared.dto';
+import { AppComponentBase } from '../../../shared/app-component-base';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent extends AppComponentBase implements OnInit {
   @Input() searchItemStoreConfiguration: GridStoreConfiguration | null;
   @Input() searchPlanItemStoreConfiguration: GridStoreConfiguration | null;
   @Output() search = new EventEmitter<string>();
@@ -14,7 +15,9 @@ export class SearchComponent implements OnInit {
 
   searchValue = '';
 
-  constructor() { }
+  constructor() {
+    super();
+   }
 
   ngOnInit() {
   }

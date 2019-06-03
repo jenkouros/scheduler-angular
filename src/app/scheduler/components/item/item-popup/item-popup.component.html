@@ -1,5 +1,5 @@
 <app-popup height="auto" width="70%"
-  [title]="'Planiraj delovni nalog ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
+  [title]="translate('Plan_Workorder') + ' ' + (itemHierarchy !== null && itemHierarchy!.item ? itemHierarchy!.item.name : '')"
   [visible]="visible && itemHierarchy"
   [cancelCallback]="hideItemInfo"
   [confirmCallback]="onSubmit"
@@ -10,13 +10,13 @@
       <div class="col-6">
         <h6 class="mb-3">{{ itemHierarchy!.item.name }}</h6>
 
-        <app-field label="Artikel" [isStatic]="true">
+        <app-field [label]="translate('Article')" [isStatic]="true">
           {{ itemHierarchy!.item.article.code }} - {{ itemHierarchy!.item.article.name }}
         </app-field>
-        <app-field label="Količina" [isStatic]="true">
+        <app-field [label]="translate('Quantity')" [isStatic]="true">
           {{ itemHierarchy!.item.quantity }} {{ itemHierarchy!.item.measurementUnit.code }}
         </app-field>
-        <app-field label="Datum" [isStatic]="true">
+        <app-field [label]="translate('Date')" [isStatic]="true">
           {{ itemHierarchy!.item.limitDateFrom | date:'mediumDate' }} - {{ itemHierarchy!.item.limitDateTo | date:'mediumDate' }}
         </app-field>
 
@@ -27,12 +27,12 @@
 
             <!-- <app-fieldset header="Planiranje delovnega naloga" class="col-6"> -->
 
-            <h6 class="mb-3">Planiranje delovnega naloga</h6>
+            <h6 class="mb-3">{{translate('Planning_Workorder')}}</h6>
             <div class="card card-body bg-light">
-              <app-field label="Količina">
+              <app-field [label]="translate('Quantity')">
                 <dx-number-box formControlName="batchQuantity">
                     <dx-validator>
-                        <dxi-validation-rule type="required" message="Polje je obvezno">
+                        <dxi-validation-rule type="required" [message]="translate('Required_Field')">
                         </dxi-validation-rule>
                     </dx-validator>
                 </dx-number-box>
@@ -42,10 +42,10 @@
                 </p> -->
               </app-field>
 
-              <app-field label="Število šarž">
+              <app-field [label]="translate('Batch_Count')">
                 <dx-number-box formControlName="batchCount">
                   <dx-validator>
-                      <dxi-validation-rule type="required" message="Polje je obvezno">
+                      <dxi-validation-rule type="required" [message]="translate('Required_Field')">
                       </dxi-validation-rule>
                   </dx-validator>
                 </dx-number-box>
@@ -55,11 +55,11 @@
                 </p> -->
               </app-field>
 
-              <app-field label="Alternativa">
-                <dx-select-box [dataSource]="itemHierarchy!.alternativeOptions" name="alternative" valueExpr="id" displayExpr="name" placeholder="Izberi alternativo"
+              <app-field [label]="translate('Alternative')">
+                <dx-select-box [dataSource]="itemHierarchy!.alternativeOptions" name="alternative" valueExpr="id" displayExpr="name" [placeholder]="translate('Choose_Alternative')"
                   [showClearButton]="true" formControlName="idAlternative">
                   <dx-validator>
-                      <dxi-validation-rule type="required" message="Polje je obvezno">
+                      <dxi-validation-rule type="required" [message]="translate('Required_Field')">
                       </dxi-validation-rule>
                   </dx-validator>
                 </dx-select-box>

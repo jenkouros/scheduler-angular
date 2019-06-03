@@ -6,13 +6,14 @@ import { RRule } from 'rrule';
 import { RecurrenceRule } from '../../../../helpers/recurrenceRule.helper';
 import { SubCalendar } from '../../../../models/calendar.model';
 import { first } from '../../../../../../../node_modules/rxjs/operators';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-schedule-event-popup',
   templateUrl: './schedule-event-popup.component.html',
   styleUrls: ['./schedule-event-popup.component.css']
 })
-export class ScheduleEventPopupComponent implements OnChanges {
+export class ScheduleEventPopupComponent extends AppComponentBase implements OnChanges {
   @Input()
   subCalendar: SubCalendar;
   @Input()
@@ -44,14 +45,18 @@ export class ScheduleEventPopupComponent implements OnChanges {
   });
 
   // code lists
-  timetableTypes: { key: number; name: string }[] = [{ key: 1, name: 'Delovni' }, { key: 2, name: 'Nedelovni' }];
+  timetableTypes: { key: number; name: string }[] = [{ key: 1, name: this.translate('Working') },
+                                                     { key: 2, name: this.translate('NotWorking') }];
 
-  repeatings: { key: boolean; name: string }[] = [{ key: false, name: 'Se ne ponavlja' }, { key: true, name: 'Se ponavlja' }];
-  frequencyItems: { key: number; name: string }[] = [{ key: 3, name: 'Dan' }, { key: 2, name: 'Teden' }];
+  repeatings: { key: boolean; name: string }[] = [{ key: false, name: this.translate('Does_Not_Repeat') },
+                                                  { key: true, name: this.translate('Does_Repeat') }];
+
+  frequencyItems: { key: number; name: string }[] = [{ key: 3, name: this.translate('Day') }, { key: 2, name: this.translate('Week') }];
   days: string[] = ['P', 'T', 'S', 'Č', 'P', 'S', 'N'];
   frequencyByDay = 3;
 
   constructor(private fb: FormBuilder) {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
@@ -78,7 +83,7 @@ export class ScheduleEventPopupComponent implements OnChanges {
       this.form.patchValue({ repetitions: 1 });
       this.form.patchValue({ frequency: this.frequencyItems[0].key });
     }
-    this.header = this.exists ? 'Urejanje dogodka' : 'Kreiranje dogodka';
+    this.header = this.exists ? this.translate('Event_Editing') : this.translate('Event_Creating');
   }
 
   validToConfirm() {

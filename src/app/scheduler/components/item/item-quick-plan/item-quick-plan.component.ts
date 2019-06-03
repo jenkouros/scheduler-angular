@@ -4,13 +4,14 @@ import { Item } from '../../../models/item.dto';
 import DataSource from 'devextreme/data/data_source';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { DxAutocompleteComponent } from '../../../../../../node_modules/devextreme-angular';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
     selector: 'app-item-quick-plan',
     template: `
         <dx-autocomplete
             [(value)]="autocompleteValue"
-            placeholder="Hitro planiranje naloga"
+            placeholder="{{translate('Fast_Plan_Workorder')}}"
             [dataSource]="dataSource"
             valueExpr="code"
             (onItemClick)="onItemClick($event)"
@@ -18,7 +19,7 @@ import { DxAutocompleteComponent } from '../../../../../../node_modules/devextre
         </dx-autocomplete>
     `
 })
-export class ItemQuickPlanComponent implements OnChanges {
+export class ItemQuickPlanComponent extends AppComponentBase implements OnChanges {
     @Input() storeConfiguration: GridStoreConfiguration | null;
     @Output() selectItem = new EventEmitter<Item>();
     @Output() hideItem = new EventEmitter<Item>();
@@ -26,6 +27,10 @@ export class ItemQuickPlanComponent implements OnChanges {
 
     dataSource: DataSource | null;
     autocompleteValue: string;
+
+    constructor() {
+      super();
+    }
 
     ngOnChanges(changes: SimpleChanges) {
       if (changes.storeConfiguration) {

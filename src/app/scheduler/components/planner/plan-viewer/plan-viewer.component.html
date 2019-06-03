@@ -4,7 +4,7 @@
         <div class="cellDurationContainer">
             <div></div>
             <div class="dx-field">
-                <div class="dx-field-label">Dolžina celice</div>
+                <div class="dx-field-label">{{translate('Cell_Length')}}</div>
                 <div class="dx-field-value">
                     <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
                     </dx-select-box>
@@ -12,22 +12,22 @@
             </div>
         </div>
         <button type="button" (click)="onRemoveBlankSpace()" class="btn btn-custom-primary">
-                <fa-icon [icon]="faGroup"></fa-icon> Zgoščevanje
+                <fa-icon [icon]="faGroup"></fa-icon> {{translate('Remove_Blank_Space')}}
             </button>
         <button type="button" (click)="onShowMassLockPopup()" class="btn btn-custom-primary">
-                <fa-icon [icon]="faLock"></fa-icon> Masovno zaklepanje
+                <fa-icon [icon]="faLock"></fa-icon> {{translate('Mass_Lock')}}
         </button>
         <button type="button" (click)="onLoadTimeRealizationSuggestion()" class="btn btn-custom-primary">
-            <fa-icon [icon]="faAlign"></fa-icon> Uskladi plan z realizacijo
+            <fa-icon [icon]="faAlign"></fa-icon> {{translate('Time_Realization')}}
         </button>
         <button type="button" (click)="onPlanItemReload()" class="btn btn-custom-primary">
-            <fa-icon [icon]="faRefresh"></fa-icon> Osveži
+            <fa-icon [icon]="faRefresh"></fa-icon> {{translate('Reload')}}
         </button>
     </div>
 
     <div class="card" *ngIf="!visible">
         <div class="card-body">
-            Za razporejanje izberite delovno mesto.
+            {{translate('Choose_Workplace')}}
         </div>
     </div>
 
@@ -70,56 +70,56 @@
 
                 <div *ngIf="!timeUpdateSuggestion && !notWorkingHoursUpdateSuggestion">
                     <div *ngIf="plannedEvent.isLocked" class="alert alert-warning mb-2" role="alert">
-                        <fa-icon class="mr-2" [icon]="faLock"></fa-icon> Operacija je zaklenjena.
+                        <fa-icon class="mr-2" [icon]="faLock"></fa-icon> {{translate('Opearation_Closed')}}
                     </div>
                     <div *ngIf="plannedEvent.isInNotWorkingHours" class="alert alert-warning mb-2" role="alert">
-                        <fa-icon class="mr-2" [icon]="faExclamation"></fa-icon> Operacija je planirana v nedelovnem času.
-                        <a (click)="onGetResolveNotWorkingHoursSuggestion(plannedEvent.id)" class="span-link alert-link">Razreši</a>
+                        <fa-icon class="mr-2" [icon]="faExclamation"></fa-icon> {{translate('Operation_Planned_OutWorkTime')}}
+                        <a (click)="onGetResolveNotWorkingHoursSuggestion(plannedEvent.id)" class="span-link alert-link">{{translate('Solve')}}</a>
                     </div>
                     <div *ngIf="plannedEvent.sequenceWarning" class="alert alert-warning" role="alert">
-                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Operacije niso razporejene zaporedno.
-                        <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">Razreši</a>
+                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> {{translate('Operations_Not_Arranged')}}
+                        <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">{{translate('Solve')}}</a>
                     </div>
                     <div *ngIf="plannedEvent.linkedItemSequenceWarning" class="alert alert-warning" role="alert">
-                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> Plan izdelovalnega naloga še ni končan.
-                        <a (click)="onLinkedItemSequenceResolve(plannedEvent)" class="span-link alert-link">Prestavi na konec</a>
+                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> {{translate('Plan_Not_Finished')}}
+                        <a (click)="onLinkedItemSequenceResolve(plannedEvent)" class="span-link alert-link">{{translate('Move_ToEnd')}}</a>
                     </div>
-                        <h6>Operacija</h6>
+                        <h6>{{translate('Operation')}}</h6>
                             <table class="table table-sm">
                                 <tr>
-                                    <td>DN</td>
+                                    <td>{{translate('Workorder_Short')}}</td>
                                     <th>
                                         <div>
                                             {{ plannedEvent.itemName }}
                                             <span *ngIf="plannedEvent.itemTypeShortName" class="badge badge-secondary">{{ plannedEvent.itemTypeShortName }}</span>
                                         </div>
                                     </th>
-                                    <td>Priprava</td>
+                                    <td>{{translate('Preparation')}}</td>
                                     <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
                                 </tr>
                                 <tr>
-                                    <td>Izdelek</td>
+                                    <td>{{translate('Product')}}</td>
                                     <th>{{ plannedEvent.articleCode }} - {{ plannedEvent.articleName }}</th>
-                                    <td>Izdelava</td>
+                                    <td>{{translate('Production')}}</td>
                                     <th>{{ plannedEvent.timeStartExecution | date:'mediumDate' }} {{ plannedEvent.timeStartExecution | date:'shortTime' }}</th>
                                 </tr>
                                 <tr>
-                                    <td>Količina</td>
+                                    <td>{{translate('Quantity')}}</td>
                                     <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
-                                    <td>Konec</td>
+                                    <td>{{translate('End')}}</td>
                                     <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
                                 </tr>
                                 <tr>
-                                    <td>Izdelano</td>
+                                    <td>{{translate('Manufactured')}}</td>
                                     <th>{{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }}
                                         ({{ plannedEvent.manufacturedQuantity * 100 /
                                             (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)
                                     </th>
-                                    <td>Status</td>
+                                    <td>{{translate('Status')}}</td>
                                     <th><span class="p-1 text-white" [ngStyle]="{'background-color': plannedEvent.color}">{{ plannedEvent.statusDescription }}</span></th>
                                 </tr>
                                 <tr *ngIf="plannedEvent.description">
-                                    <td>Komentar</td>
+                                    <td>{{translate('Comment')}}</td>
                                     <th colspan="3">
                                         <div style="white-space: normal;">{{plannedEvent.description}}</div>
                                     </th>
@@ -145,7 +145,7 @@
 
 
 
-                    <h6>Delovni nalog</h6>
+                    <h6>{{translate('Workorder2')}}</h6>
                     <table class="table table-sm">
                         <tr *ngFor="let op of plannedEvent.sequencePlanItems" [ngClass]="{'font-weight-bold': op.idPrePlanItem === plannedEvent.idPrePlanItem}">
                             <td>#{{ op.code }} {{ op.name }}</td>
@@ -155,7 +155,7 @@
                         </tr>
                     </table>
                     <ng-container *ngIf="plannedEvent.linkedPlanItems && plannedEvent.linkedPlanItems.length">
-                        <h6>Vezan nalog</h6>
+                        <h6>{{translate('Linked_Plan_Item')}}</h6>
                         <table class="table table-sm">
                             <tr *ngFor="let op of plannedEvent.linkedPlanItems">
                                 <td>#{{ op.code }} {{ op.name }}</td>
@@ -165,19 +165,19 @@
                             </tr>
                         </table>
                     </ng-container>
-                    <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
-                    <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='showUpdateAppointmentPopup(plannedEvent)'></dx-button>
-                    <dx-button icon="trash" type="danger" text="Izbriši" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
+                    <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? translate('Unlock') : translate('Lock') }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
+                    <dx-button class="mr-4" icon="edit" text="{{translate('Edit')}}" (onClick)='showUpdateAppointmentPopup(plannedEvent)'></dx-button>
+                    <dx-button icon="trash" type="danger" text="{{translate('Delete')}}" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
                 </div>
 
                 <div *ngIf="timeUpdateSuggestion">
-                    <h6>Urejanje zaporedja operacij</h6>
+                    <h6>{{translate('Edit_Operation_Sequence')}}</h6>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th colspan="2">Izvirni podatki</th>
+                                    <th colspan="2">{{translate('Original_Data')}}</th>
                                     <th></th>
-                                    <th>Predlagane spremembe</th>
+                                    <th>{{translate('Suggested_Changes')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -199,23 +199,23 @@
                             </tbody>
                         </table>
                         <div class="float-right">
-                            <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">Prekliči</button>
-                            <button class="btn btn-success" (click)="onResolveSequence()">Potrdi</button>
+                            <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">{{translate('Cancel')}}</button>
+                            <button class="btn btn-success" (click)="onResolveSequence()">{{translate('Confirm')}}</button>
                         </div>
                 </div>
 
                 <div *ngIf="notWorkingHoursUpdateSuggestion">
                     <div class="mb-3">
-                        <h4>Izvirni podatki</h4>
+                        <h4>{{translate('Original_Data')}}</h4>
                         <span class="dx-field">{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }} -
                             {{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}
                         </span>
                     </div>
                     <div>
-                        <h4>Razrešitev prekrivanja</h4>
+                        <h4>{{translate('Solve_Overlaps')}}</h4>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="movePlanItem" [(ngModel)]="notWorkingHoursResolveMode" checked>
-                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">Premakni operacijo
+                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Move_Operation')}}
                                     <strong>
                                         {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'shortTime' }} -
                                         {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'shortTime' }}
@@ -224,7 +224,7 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="extendPlanItem" [(ngModel)]="notWorkingHoursResolveMode">
-                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">Razširi operacijo
+                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Expand_Workplace')}}
                                     <strong>
                                         {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'shortTime' }} -
                                         {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'shortTime' }}
@@ -233,8 +233,8 @@
                             </div>
                     </div>
                         <div class="float-right">
-                            <button class="btn btn-default mr-1" (click)="onClearNotWorkingHoursSuggestion()">Prekliči</button>
-                            <button class="btn btn-success" (click)="onResolveNotWorkingHours()">Potrdi</button>
+                            <button class="btn btn-default mr-1" (click)="onClearNotWorkingHoursSuggestion()">{{translate('Cancel')}}</button>
+                            <button class="btn btn-success" (click)="onResolveNotWorkingHours()">{{translate('Confirm')}}</button>
                         </div>
                 </div>
             </div>
@@ -258,5 +258,5 @@
 <app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
-    Za prikaz koledarja izberite eno ali več delovnih mest
+    {{translate('Show_Calendar_Choose')}}
 </div>
