@@ -5,6 +5,7 @@
 const serverUrl = 'http://10.99.1.54:21000';
 
 export const environment = {
+  locale: 'sl',
   production: false,
   apiUrl: `${serverUrl}/api`,
   signalRUrl: `${serverUrl}/containershub`,

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeSl from '@angular/common/locales/sl';
+import localeSr from '@angular/common/locales/sr-Latn';
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule, MetaReducer } from '@ngrx/store';
@@ -19,7 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { locale, loadMessages } from 'devextreme/localization';
 import 'devextreme-intl';
-import messagesSl from './shared/localization/sl.json';
+import devextremeMessages from './shared/localization/sl-sr.json';
 import messagesCustom from './shared/localization/messages.json';
 import { SignalRService } from './scheduler/services/signalr.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -27,11 +28,24 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { PlanModule } from './plan/plan.module';
 import { JwtInterceptor, ErrorInterceptor } from './auth/helpers';
 
-loadMessages(messagesSl);
-loadMessages(messagesCustom);
 // Set locale according the browser language
-locale('sl');
-registerLocaleData(localeSl, 'sl');
+loadMessages(messagesCustom);
+loadMessages(devextremeMessages);
+
+
+
+ locale(environment.locale);
+ switch (environment.locale) {
+   case 'sl': {
+     registerLocaleData(localeSl);
+     break;
+   }
+   case 'sr-Latn': {
+    registerLocaleData(localeSr);
+    break;
+  }
+ }
+
 
 export function init_signalR(signalRService: SignalRService): () => Promise<any> {
   return () => signalRService.init();
@@ -56,7 +70,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
   ],
   providers: [
     SignalRService,
-    { provide: LOCALE_ID, useValue: 'sl-SI' },
+    { provide: LOCALE_ID, useValue: environment.locale },
     {
       provide: APP_INITIALIZER,
       useFactory: init_signalR,
