@@ -6,6 +6,7 @@ import { PlanitemsComponent } from './planitem/planitems.component';
 import { SearcherComponent } from './search/searcher.component';
 import { GroupIndexComponent } from './groups/group.index.component';
 import { ItemQuickPlanContainerComponent } from './item/item-quick-plan.container';
+import { GroupSelectComponent } from './groups/group.select.component';
 
 export const containers: any[] = [
     ItemsComponent,
@@ -15,6 +16,7 @@ export const containers: any[] = [
     PlanitemsComponent,
     SearcherComponent,
     GroupIndexComponent,
+    GroupSelectComponent,
     ItemQuickPlanContainerComponent
 ];
 
@@ -26,3 +28,4 @@ export * from './planitem/planitems.component';
 export * from './search/searcher.component';
 export * from './groups/group.index.component';
 export * from './item/item-quick-plan.container';
+export * from './groups/group.select.component';

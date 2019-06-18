@@ -1,5 +1,5 @@
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, map, catchError } from 'rxjs/operators';
@@ -38,5 +38,17 @@ export class GroupsService {
 
         return this.http
             .post(environment.apiUrl + '/groupfilters', serverModel);
+    }
+
+    setGroup(idGroup: number | null) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '');
+        if (currentUser === '') {
+            return of(null);
+        }
+        return this.http
+            .post(environment.apiUrl + '/groupfilters/setGroup', {
+                idGroup: idGroup,
+                idUser: currentUser.id
+            } );
     }
 }

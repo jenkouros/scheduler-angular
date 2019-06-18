@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import * as fromFeature from '../reducers';
-import { GroupFilterViewModel, GroupFilter } from '../../models/groupfilter.dto';
+import { GroupFilterViewModel, GroupSelectorViewModel, GroupFilter } from '../../models/groupfilter.dto';
 import { getFilterCodeList } from './filters.selectors';
 import { Filter } from '../../models/filter.dto';
 import { FilterSelect } from '../../models/filter.viewmodel';
@@ -19,6 +19,12 @@ const selectGroupFilters = createSelector(
 const selectEditGroupState = createSelector(
     getGroupsState,
     state => state.groupEdit
+);
+
+export const selectGroupSelectorViewModel = createSelector(
+    selectGroupFilters,
+    (groups) => GroupSelectorViewModel.fromModel(groups)
+
 );
 
 export const selectGroupCodeListFilter = createSelector(

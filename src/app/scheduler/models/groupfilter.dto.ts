@@ -36,7 +36,20 @@ export class GroupFilter {
     //     return result;
     // }
 }
+export class GroupSelectorViewModel {
 
+    constructor(public id: number, public name: string) {
+
+    }
+
+    static fromModel(groups: GroupFilter[] | null) {
+        if (!groups) {
+            return null;
+        }
+
+        return groups.map(g => new GroupSelectorViewModel(g.id, g.name));
+    }
+}
 export class GroupFilterViewModel {
     id: number;
     name: string;
