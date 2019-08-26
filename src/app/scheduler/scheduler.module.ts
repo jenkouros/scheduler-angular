@@ -42,6 +42,7 @@ import { ContainersEffects } from './store/effects/containers.effect';
 import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
 import { JwtInterceptor } from '../auth/helpers';
+import { GroupSelectComponent } from './containers';
 
 @NgModule({
     imports: [
@@ -79,6 +80,9 @@ import { JwtInterceptor } from '../auth/helpers';
         DxAutocompleteModule,
         DxPopupModule,
         DxDateBoxModule
+    ],
+    exports: [
+      GroupSelectComponent
     ],
     declarations: [
         ...fromContainers.containers,

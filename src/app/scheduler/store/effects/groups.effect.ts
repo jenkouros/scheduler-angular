@@ -71,8 +71,13 @@ export class GroupsEffects extends AppComponentBase {
                 return this.groupsService.setGroup(action.payload)
                     .pipe(
                         map(response => {
+                          if (response) {
                             this.notifyService.notifySuccess(this.translate('Save_Group_Success'));
                             return new fromActions.SetDefaultGroupSuccess(response);
+                          } else {
+                            this.notifyService.notifyError(this.translate('Save_Group_Failure'));
+                            return new fromActions.SetDefaultGroupSuccess(response);
+                          }
                         })
                     );
             })

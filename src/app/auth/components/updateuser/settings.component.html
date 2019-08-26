@@ -1,0 +1,13 @@
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+  <div class="btn-group" >
+
+    <button *ngFor="let item of tabs"
+      (click)="activeTab = item.settings"
+      class="btn btn-secondary"
+      [ngClass]="{'active': item.settings === activeTab}">
+        {{ item.text }}
+  </button>
+  </div>
+</div>
+<app-update-user *ngIf="activeTab === SettingsEnum.ChangePassword"></app-update-user>
+<app-group-select *ngIf="activeTab === SettingsEnum.ChooseDefaultGroup"></app-group-select>

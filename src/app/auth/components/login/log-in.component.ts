@@ -71,6 +71,9 @@ export class LogInComponent extends AppComponentBase implements OnInit {
                     if (data != null) {
                       if (data.defaultGroupId) {
                         this.selectDefaultGroup(data.defaultGroupId);
+                      } else {
+                        this.store.dispatch(new fromStore.ChangeFilter({}));
+                        this.store.dispatch(new fromStore.ChangeContainersFilter([]));
                       }
                       this.router.navigate([this.returnUrl]);
                     }

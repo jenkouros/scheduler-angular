@@ -40,13 +40,14 @@ export class GroupsService {
             .post(environment.apiUrl + '/groupfilters', serverModel);
     }
 
-    setGroup(idGroup: number | null) {
+    setGroup(idGroup: number | null): Observable<boolean> {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '');
         if (currentUser === '') {
-            return of(null);
+            // tslint:disable-next-line: deprecation
+            return of(false);
         }
         return this.http
-            .post(environment.apiUrl + '/groupfilters/setGroup', {
+            .post<boolean>(environment.apiUrl + '/groupfilters/setGroup', {
                 idGroup: idGroup,
                 idUser: currentUser.id
             } );
