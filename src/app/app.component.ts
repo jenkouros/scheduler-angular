@@ -20,20 +20,6 @@ export class AppComponent extends AppComponentBase implements OnInit {
   env = appSettings;
   isLoggedIn = false;
 
-  constructor(private authService: AuthenticationService) {
-    super();
-  }
-
-  ngOnInit() {
-    this.isLoggedIn = this.authService.isUserLoggedIn();
-    this.authService.isLoggedIn$.subscribe(val => {
-      this.isLoggedIn = val;
-
-    }); 
-  }
-
-
-
   navigation: Nav[] = [
     {
       link: '/scheduler',
@@ -46,4 +32,19 @@ export class AppComponent extends AppComponentBase implements OnInit {
       exact: false
     }
   ];
+
+  constructor(private authService: AuthenticationService) {
+    super();
+  }
+
+  ngOnInit() {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.authService.isLoggedIn$.subscribe(val => {
+      this.isLoggedIn = val;
+
+    });
+  }
+
+
+
 }

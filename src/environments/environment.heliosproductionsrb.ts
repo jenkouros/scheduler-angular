@@ -1,4 +1,4 @@
-const serverUrl = 'http://localhost:55501';
+const serverUrl = 'http://10.9.22.106:9511';
 
 export const environment = {
     locale: 'sr-Latn',

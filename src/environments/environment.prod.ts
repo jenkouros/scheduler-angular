@@ -1,11 +1,11 @@
-const serverUrl = 'http://10.99.1.54:21010';
+const serverUrl = 'http://10.99.1.54:21000';
 
 export const environment = {
     locale: 'sl',
     production: true,
     apiUrl: `${serverUrl}/api`,
     signalRUrl: `${serverUrl}/containershub`,
-    parallelOperations: true
+    parallelOperations: false
 };
 
 export const appSettings = {
@@ -22,5 +22,5 @@ export const appSettings = {
   PlanItem_DisplayOperationFirst: true, // workorder otherwise
   PlanItem_DisplayArticleCode: true,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
-  PlanItems_ExcelExport: true
+  PlanItems_ExcelExport: false
 };

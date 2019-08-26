@@ -3,7 +3,10 @@
     <h5 class="card-title">{{translate('Workplace_Selection')}}</h5>
     <div class="containers-container">
       <div class="top">
-        <app-containers-list class="absolute" header="{{translate('Available_Workplaces')}}" [containers]="avalableContainers" (selected)="onSelected($event)"></app-containers-list>
+        <app-containers-list class="absolute"
+        header="{{translate('Available_Workplaces')}}"
+        [containers]="avalableContainers"
+        (selected)="onSelected($event)"></app-containers-list>
       </div>
       <div>
         <div class="button-center">

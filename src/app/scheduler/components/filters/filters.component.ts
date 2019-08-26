@@ -42,6 +42,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromStore.LoadItems());
     this.store.dispatch(new fromStore.LoadContainers());
     this.store.dispatch(new fromStore.LoadPreplanItems());
+    this.store.dispatch(new fromStore.GetSearchItemsStore(''));
+    this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
+
   }
 
   getScrollHeight(el: ElementRef) {

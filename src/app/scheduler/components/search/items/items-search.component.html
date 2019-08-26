@@ -1,32 +1,32 @@
-<dx-data-grid 
-  [columnAutoWidth]="true" 
-  [allowColumnResizing]="true" 
-  columnResizingMode="nextColumn" 
+<dx-data-grid
+  [columnAutoWidth]="true"
+  [allowColumnResizing]="true"
+  columnResizingMode="nextColumn"
   [dataSource]="store"
-  [showRowLines]="true" 
+  [showRowLines]="true"
   [showBorders]="true"
   [rowAlternationEnabled]="true">
 
   <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxo-remote-operations 
-    [filtering]="true" 
-    [sorting]="false" 
-    [grouping]="false" 
-    [paging]="true" 
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="false"
+    [grouping]="false"
+    [paging]="true"
     [summary]="false">
   </dxo-remote-operations>
 
   <dxo-paging [pageSize]="5"></dxo-paging>
-  <dxo-pager 
-    [showPageSizeSelector]="true" 
-    [allowedPageSizes]="[5, 10, 15]" 
-    [showInfo]="true" 
+  <dxo-pager
+    [showPageSizeSelector]="true"
+    [allowedPageSizes]="[5, 10, 15]"
+    [showInfo]="true"
     [showNavigationButtons]="true">
   </dxo-pager>
 
   <dxi-column caption="{{translate('Workorder')}}">
     <dxi-column dataField="name" caption="{{translate('Code')}}" cssClass="font-weight-500"></dxi-column>
-    <dxi-column dataField="itemProgresses[0].quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
+    <dxi-column dataField="quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
     <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
   </dxi-column>
   <dxi-column caption="{{translate('Article')}}">

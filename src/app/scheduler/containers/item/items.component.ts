@@ -39,7 +39,7 @@ export class ItemsComponent implements OnInit {
   ngOnInit(): void {
     this.planStore.select(fromPlanStore.getSelectedPlanId).subscribe(id => {
       this.store.dispatch(new fromStore.LoadItems());
-      console.log('sdfsdfsd', id);
+      // console.log('sdfsdfsd', id);
     });
 
     this.itemsStoreConfiguration$ = this.store.select(fromStore.getItemsStoreConfiguration);

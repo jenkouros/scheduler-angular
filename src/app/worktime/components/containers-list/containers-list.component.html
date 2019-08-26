@@ -1,4 +1,8 @@
-<dx-data-grid class="grid" [dataSource]="containers" keyExpr="id" [hoverStateEnabled]="true" (onSelectionChanged)="onSelected($event)"
+<dx-data-grid class="grid"
+  [dataSource]="containers"
+  keyExpr="id"
+  [hoverStateEnabled]="true"
+  (onSelectionChanged)="onSelected($event)"
   (onContentReady)="onContentReadyHandler($event)">
   <dxo-scrolling mode="virtual">
 
@@ -12,5 +16,12 @@
   </dxo-pager>-->
   <dxo-filter-row [visible]="true" [applyFilter]="true">
   </dxo-filter-row>
-  <dxi-column [caption]="header" dataField="name" alignment="center"></dxi-column>
+  <dxi-column dataType="string" [caption]="header" dataField="" alignment="center" cellTemplate="containerCellTemplate"></dxi-column>
+
+
+  <div *dxTemplate="let cell of 'containerCellTemplate'">
+    <div>({{ cell.data.code }}) {{ cell.data.name }}</div>
+  </div>
+
+
 </dx-data-grid>

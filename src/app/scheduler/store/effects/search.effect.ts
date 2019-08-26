@@ -18,10 +18,13 @@ export class SearchEffects {
   @Effect()
   getSearchItemStore$ = this.actions$.ofType(fromAction.GET_SEARCHITEMS_STORE).pipe(
     map((action: fromAction.GetSearchItemsStore) => action.payload),
-    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
-    map(([search, idPlan]) => {
+    withLatestFrom(
+      this.store.select(state => state.scheduler.filters.selectedEntities),
+      this.store.select(state => state.plan.items.selectedId)
+    ),
+    map(([search, filters, idPlan]) => {
       return new fromAction.GetSearchItemsStoreSuccess(
-        this.searchService.getSearchItemsStoreConfiguration(idPlan, search)
+        this.searchService.getSearchItemsStoreConfiguration(idPlan, search, filters)
       );
     })
   );
@@ -35,10 +38,13 @@ export class SearchEffects {
   @Effect()
   getSearchPlanItemStore$ = this.actions$.ofType(fromAction.GET_SEARCHPLANITEMS_STORE).pipe(
     map((action: fromAction.GetSearchPlanItemsStore) => action.payload),
-    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
-    map(([search, idPlan]) => {
+    withLatestFrom(
+      this.store.select(state => state.scheduler.filters.selectedEntities),
+      this.store.select(state => state.plan.items.selectedId)
+    ),
+    map(([search, filters, idPlan]) => {
       return new fromAction.GetSearchPlanItemsStoreSuccess(
-        this.searchService.getSearchPlanItemsStoreConfiguration(idPlan, search)
+        this.searchService.getSearchPlanItemsStoreConfiguration(idPlan, search, filters)
       );
     })
   );

@@ -24,8 +24,8 @@ export class ItemsEffects {
       this.store.select(state => state.scheduler.filters.selectedEntities),
       this.store.select(state => state.plan.items.selectedId)
     ),
-    map(([action, state, idPlan]) => {
-      const storeConfiguration = this.itemService.getItemsStoreConfiguration(idPlan, state);
+    map(([action, filters, idPlan]) => {
+      const storeConfiguration = this.itemService.getItemsStoreConfiguration(idPlan, filters);
       return new fromActions.RegisterItemStore(storeConfiguration);
     })
   );
