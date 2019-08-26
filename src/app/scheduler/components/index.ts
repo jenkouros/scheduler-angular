@@ -25,12 +25,14 @@ import { RealizationTimeUpdateComponent } from './planner/realization-timeupdate
 import { FilterContainerComponent } from './filters/filter-container/filter-container.component';
 import { ItemQuickPlanComponent } from './item/item-quick-plan/item-quick-plan.component';
 import { PreplanitemSuggestionPopupComponent } from './preplanitem/preplanitem-suggestion-popup/preplanitem-suggestion-popup.component';
+import { GroupSelectorComponent } from './groups/group-selector/groupselector.component';
 
 
 
 export const components: any[] = [
     FiltersComponent,
     GroupEditComponent,
+    GroupSelectorComponent,
     GroupListComponent,
     PlannerComponent,
     PlanViewerComponent,
@@ -84,3 +86,4 @@ export * from './search/planitems/planitems-search.component';
 export * from './planner/realization-timeupdate-popup/realization-timeupdate.component';
 export * from './filters/filter-container/filter-container.component';
 export * from './item/item-quick-plan/item-quick-plan.component';
+export * from './groups/group-selector/groupselector.component';

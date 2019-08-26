@@ -4,17 +4,21 @@ import { GroupsService } from '../../services/groups.service';
 import * as fromActions from '../actions/groups.action';
 import { switchMap, map, mergeMap } from 'rxjs/operators';
 import { FiltersService } from '../../services/filters.service';
-import { ContainersService } from '../../services';
+import { ContainersService, NotifyService } from '../../services';
+import { AppComponentBase } from '../../../shared/app-component-base';
 
 
 @Injectable()
-export class GroupsEffects {
+export class GroupsEffects extends AppComponentBase {
     constructor(
         private actions$: Actions,
         private groupsService: GroupsService,
         private filterService: FiltersService,
-        private containerService: ContainersService
-    ) {}
+        private containerService: ContainersService,
+        private notifyService: NotifyService
+    ) {
+        super();
+    }
 
     @Effect()
     loadGroups$ = this.actions$.ofType(fromActions.LOAD_GROUPS)
@@ -59,4 +63,19 @@ export class GroupsEffects {
                     );
             })
         );
+
+    @Effect()
+    setDefaultGroup$ = this.actions$.ofType(fromActions.SET_DEFAULT_GROUP)
+        .pipe(
+            switchMap((action: fromActions.SetDefaultGroup) => {
+                return this.groupsService.setGroup(action.payload)
+                    .pipe(
+                        map(response => {
+                            this.notifyService.notifySuccess(this.translate('Save_Group_Success'));
+                            return new fromActions.SetDefaultGroupSuccess(response);
+                        })
+                    );
+            })
+        );
+
 }

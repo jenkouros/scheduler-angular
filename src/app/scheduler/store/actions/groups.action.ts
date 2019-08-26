@@ -13,6 +13,8 @@ export const SET_GROUP_EDIT = '[Groups] Set edit group';
 export const UPDATE_GROUP = '[Groups] Update group';
 export const CHANGE_EDIT_GROUP_FILTER = '[Groups] Change edit group filter';
 export const CHANGE_EDIT_GROUP_CONTAINER_FILTER = '[Groups] Change edit container filter';
+export const SET_DEFAULT_GROUP = '[Groups] Set default group';
+export const SET_DEFAULT_GROUP_SUCCESS = '[Groups] Set default group success';
 
 export class LoadGroups implements Action {
     readonly type = LOAD_GROUPS;
@@ -58,6 +60,16 @@ export class SetEditGroup {
     constructor(public payload: GroupFilterViewModel | null) {}
 }
 
+export class SetDefaultGroup {
+    readonly type = SET_DEFAULT_GROUP;
+    constructor(public payload: number | null) {}
+}
+
+export class SetDefaultGroupSuccess {
+    readonly type = SET_DEFAULT_GROUP_SUCCESS;
+    constructor(public payload: any) {}
+}
+
 export type GroupActions =
     LoadGroups |
     LoadGroupsSuccess |
@@ -68,5 +80,7 @@ export type GroupActions =
     LoadGroupCodeListContainerSuccess |
     UpdateGroup |
     ChangeEditGroupFilter |
-    ChangeEditGroupContainerFilter
+    ChangeEditGroupContainerFilter |
+    SetDefaultGroup |
+    SetDefaultGroupSuccess
     ;

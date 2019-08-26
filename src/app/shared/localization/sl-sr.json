@@ -264,16 +264,16 @@
     "sr-Latn": {
         "Yes": "Da",
         "No": "Ne",
-        "Cancel": "Otkazati",
-        "Clear": "Obriši",
-        "Done": "Završeno",
+        "Cancel": "Poništi",
+        "Clear": "Očisti",
+        "Done": "Gotovo",
         "Loading": "Učitavam...",
         "Select": "Izaberi...",
         "Search": "Traži",
-        "Back": "Nazad",
+        "Back": "Natrag",
         "OK": "U redu",
 
-        "dxCollectionWidget-noDataText": "Nema zapisov.",
+        "dxCollectionWidget-noDataText": "Nema podataka.",
 
         "validation-required": "Required",
         "validation-required-formatted": "{0} is required",
@@ -299,8 +299,8 @@
         "dxList-pulledDownText": "Release to refresh...",
         "dxList-refreshingText": "Refreshing...",
         "dxList-pageLoadingText": "Loading...",
-        "dxList-nextButtonText": "Več",
-        "dxList-selectAll": "Izberi vse",
+        "dxList-nextButtonText": "Više",
+        "dxList-selectAll": "Izaberi sve",
         "dxListEditDecorator-delete": "Delete",
         "dxListEditDecorator-more": "More",
 
@@ -351,7 +351,7 @@
         "dxDataGrid-editingConfirmDeleteMessage": "Are you sure you want to delete this record?",
         "dxDataGrid-validationCancelChanges": "Cancel changes",
         "dxDataGrid-groupPanelEmptyText": "Drag a column header here to group by that column",
-        "dxDataGrid-noDataText": "Ni zapisov.",
+        "dxDataGrid-noDataText": "Nema podataka.",
         "dxDataGrid-searchPanelPlaceholder": "Search...",
         "dxDataGrid-filterRowShowAllText": "(All)",
         "dxDataGrid-filterRowResetOperationText": "Reset",
@@ -412,7 +412,7 @@
         "dxTreeList-ariaTreeList": "Tree list",
         "dxTreeList-editingAddRowToNode": "Add",
 
-        "dxPager-infoText": "Stran {0} od {1} (Skupaj {2})",
+        "dxPager-infoText": "Stranica {0} od {1} (Skupa {2})",
         "dxPager-pagesCountText": "of",
 
         "dxPivotGrid-grandTotal": "Grand Total",
@@ -441,7 +441,7 @@
         "dxScheduler-editorLabelDescription": "Description",
         "dxScheduler-editorLabelRecurrence": "Repeat",
 
-        "dxScheduler-openAppointment": "Pojdi na urejanje",
+        "dxScheduler-openAppointment": "Idi na uređivanje",
 
         "dxScheduler-recurrenceNever": "Never",
         "dxScheduler-recurrenceDaily": "Daily",
@@ -460,20 +460,20 @@
         "dxScheduler-recurrenceRepeatYearly": "year(s)",
 
         "dxScheduler-switcherDay": "Dan",
-        "dxScheduler-switcherWeek": "Teden",
-        "dxScheduler-switcherWorkWeek": "Delovni teden",
+        "dxScheduler-switcherWeek": "Sedmica",
+        "dxScheduler-switcherWorkWeek": "Radna sedmica",
         "dxScheduler-switcherMonth": "Mesec",
 
-        "dxScheduler-switcherAgenda": "Agenda",
+        "dxScheduler-switcherAgenda": "Dnevni red",
 
-        "dxScheduler-switcherTimelineDay": "Raspored [dan]",
-        "dxScheduler-switcherTimelineWeek": "Raspored [teden]",
-        "dxScheduler-switcherTimelineWorkWeek": "Raspored [delovni teden]",
-        "dxScheduler-switcherTimelineMonth": "Raspored [mesec]",
+        "dxScheduler-switcherTimelineDay": "Razpored [dan]",
+        "dxScheduler-switcherTimelineWeek": "Razpored [sedmica]",
+        "dxScheduler-switcherTimelineWorkWeek": "Razpored [radna sedmica]",
+        "dxScheduler-switcherTimelineMonth": "Razpored [mesec]",
 
         "dxScheduler-recurrenceRepeatOnDate": "on date",
         "dxScheduler-recurrenceRepeatCount": "occurrence(s)",
-        "dxScheduler-allDay": "Ves dan",
+        "dxScheduler-allDay": "Celi dan",
 
         "dxScheduler-confirmRecurrenceEditMessage": "Do you want to edit only this appointment or the whole series?",
         "dxScheduler-confirmRecurrenceDeleteMessage": "Do you want to delete only this appointment or the whole series?",
@@ -486,7 +486,7 @@
         "dxScheduler-noTimezoneTitle": "No timezone",
         "dxScheduler-moreAppointments": "{0} more",
 
-        "dxCalendar-todayButtonText": "Danes",
+        "dxCalendar-todayButtonText": "Danas",
         "dxCalendar-ariaWidgetName": "Calendar",
 
         "dxColorView-ariaRed": "Red",

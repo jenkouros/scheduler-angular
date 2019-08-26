@@ -1,3 +1,11 @@
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+  <div class="btn-group" >
+      <a class="btn btn-secondary active" [routerLink]="['/auth/updateuser']">{{translate('Password')}}</a>
+      <a class="btn btn-secondary" [routerLink]="['/scheduler/groupselector']">{{translate('Group')}}</a>
+  </div>
+</div>
+
+
 <div class="container" style="width: 40%; margin-top: 30px">
   <h2 style="margin-bottom:30px;">{{translate('Password_Change')}}</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">

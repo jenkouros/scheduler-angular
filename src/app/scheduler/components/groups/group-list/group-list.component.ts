@@ -41,9 +41,8 @@ export class GroupListComponent extends AppComponentBase implements OnInit {
     confirmGroupFilter() {
       if (this.selectedGroup) {
         this.groupFilterSelected.emit(this.selectedGroup);
-        this.notifyService.notifyInfo('Izbran je filter ' + this.selectedGroup.name);
+        this.notifyService.notifyInfo(this.translate('Choosen_Filter') + this.selectedGroup.name);
         this.grid.instance.deselectAll();
-
       }
     }
 
