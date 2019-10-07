@@ -35,7 +35,7 @@ export const appSettings = {
   Menu_Scheduler_Groups: true,
   Menu_TimeTables: true,
   Item_EnableHiddingItems: false,
-  Item_EnableBatchPlanning: false,
+  Item_EnableBatchPlanning: true,
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
   PlanItem_DisplayArticleCode: false,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
