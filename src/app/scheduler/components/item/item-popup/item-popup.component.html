@@ -22,11 +22,11 @@
 
         <div class="w-100 mb-4"></div>
 
-        <div [hidden]="!settings.Item_EnableBatchPlanning" >
+        <div *ngIf="createPreplanItemsForm.value.batchCount == 1">
           <form [formGroup]="createPreplanItemsForm">
 
             <!-- <app-fieldset header="Planiranje delovnega naloga" class="col-6"> -->
-
+              
             <h6 class="mb-3">{{translate('Planning_Workorder')}}</h6>
             <div class="card card-body bg-light">
               <app-field [label]="translate('Quantity')">
