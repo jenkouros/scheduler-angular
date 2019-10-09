@@ -58,7 +58,7 @@ export class ItemsService {
 
   hideItem(idPlan: number, itemId: number) {
     return this.http.post(
-      environment.apiUrl + `/items/hideItem?idPlan=${idPlan}&itemId=${itemId}`,
+      environment.apiUrl + `/items/hideItem?idPlan=${idPlan}&idItem=${itemId}`,
       null
     );
   }

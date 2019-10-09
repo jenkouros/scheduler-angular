@@ -11,6 +11,7 @@ import { AppComponentBase } from '../../../shared/app-component-base';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from './../../../scheduler/store';
 import { Observable } from 'rxjs';
+import { appSettings } from './../../../../environments/environment';
 
 @Component({
     selector: 'app-log-in',
@@ -45,14 +46,15 @@ export class LogInComponent extends AppComponentBase implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-        this.store.dispatch(new fromStore.LoadGroupCodelistFilter());
-        this.store.dispatch(new fromStore.LoadGroupCodeListContainer());
-        this.store.dispatch(new fromStore.LoadGroups());
-        this.store.pipe(
-          select(fromStore.selectGroupViewModelList)
-        ).subscribe(v => this.groups = v);
+    if (appSettings.Menu_Scheduler_Groups) {
+          this.store.dispatch(new fromStore.LoadGroupCodelistFilter());
+          this.store.dispatch(new fromStore.LoadGroupCodeListContainer());
+          this.store.dispatch(new fromStore.LoadGroups());
+          this.store.pipe(
+            select(fromStore.selectGroupViewModelList)
+          ).subscribe(v => this.groups = v);
+      }
     }
-
     // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }
 
@@ -69,11 +71,13 @@ export class LogInComponent extends AppComponentBase implements OnInit {
             .subscribe(
                 data => {
                     if (data != null) {
-                      if (data.defaultGroupId) {
-                        this.selectDefaultGroup(data.defaultGroupId);
-                      } else {
-                        this.store.dispatch(new fromStore.ChangeFilter({}));
-                        this.store.dispatch(new fromStore.ChangeContainersFilter([]));
+                      if (appSettings.Menu_Scheduler_Groups) {
+                        if (data.defaultGroupId) {
+                          this.selectDefaultGroup(data.defaultGroupId);
+                        } else {
+                          this.store.dispatch(new fromStore.ChangeFilter({}));
+                          this.store.dispatch(new fromStore.ChangeContainersFilter([]));
+                        }
                       }
                       this.router.navigate([this.returnUrl]);
                     }

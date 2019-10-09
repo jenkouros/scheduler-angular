@@ -36,6 +36,7 @@ export interface PlannedEventServer {
     sequencePlanItems: PlannedEventSimpleServer[];
     linkedPlanItems: PlannedEventSimpleServer[];
     itemTypeShortName: string | null;
+    extensionDurationMin: number | null;
 }
 
 export interface PlannedEventSimpleServer {

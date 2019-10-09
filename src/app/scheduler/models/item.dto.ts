@@ -14,7 +14,7 @@ export class Item {
     code: string;
     name: string;
     quantity: number; // celotna kolicina
-    quantityBatch: number; // kolicina sarze
+    // quantityBatch: number; // kolicina sarze
     // quantityPlanned: number; ze planirana kolicina
     itemProgresses: ItemProgress[];
     measurementUnit: MeasurementUnit;
@@ -29,7 +29,7 @@ export class Item {
         result.name = planItemServer.name;
         result.idItem = planItemServer.idItem;
         result.quantity = planItemServer.quantity;
-        result.quantityBatch = planItemServer.quantityBatch;
+        // result.quantityBatch = planItemServer.quantityBatch;
         // result.quantityPlanned = planItemServer.quantityPlanned;
         result.itemProgresses = planItemServer.itemProgresses.map(ItemProgress.fromServer);
         result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
@@ -56,12 +56,18 @@ export class ItemHierarchy {
     idPlanItem: number;
     codePlanItem: string;
     alternatives: ItemHierarchyAlternative[];
+    quantity: number;
+    quantityBatch: number;
+    measurementUnit: MeasurementUnit;
 
     static fromServer(serverData: ItemHierarchyServer) {
         const result = new ItemHierarchy();
         result.idPlanItem = serverData.id;
         result.codePlanItem = serverData.code;
         result.alternatives = serverData.alternatives.map(a => ItemHierarchyAlternative.fromServer(a));
+        result.quantity = serverData.quantity;
+        result.quantityBatch = serverData.quantityBatch;
+        result.measurementUnit = MeasurementUnit.fromServer(serverData.measurementUnit);
         return result;
     }
 }

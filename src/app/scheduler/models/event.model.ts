@@ -5,6 +5,7 @@ import { SubItemContainer } from './subitem.dto';
 import { PlanSchedule } from './planschedule.dto';
 import * as moment from 'moment';
 import { environment } from '../../../environments/environment';
+import { TimeHelper } from '../helpers/time.helper';
 
 export interface ContainerEvents {
     events: PlannedEvent[];
@@ -117,6 +118,7 @@ export class PlannedEvent {
     startDate: Date;
     endDate: Date;
     itemTypeShortName: string | null;
+    extensionDurationInMinutes: number;
 
     color: string;
 
@@ -131,6 +133,15 @@ export class PlannedEvent {
     }
     set timeStartPreparation(newValue) {
         this.startDate = newValue;
+    }
+
+    get operationDuration() {
+      return ((this.timeEndExecution.getTime() - this.timeStartPreparation.getTime()) / 60000)
+        - (this.extensionDurationInMinutes || 0);
+    }
+
+    get operationDurationString() {
+      return TimeHelper.convertMinutesIntoString(this.operationDuration);
     }
 
 

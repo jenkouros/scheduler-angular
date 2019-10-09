@@ -105,18 +105,19 @@
                                 </tr>
                                 <tr>
                                     <td>{{translate('Quantity')}}</td>
-                                    <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
+                                    <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }} / {{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }}
+                                      ({{ plannedEvent.manufacturedQuantity * 100 /
+                                          (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)</th>
                                     <td>{{translate('End')}}</td>
                                     <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
                                 </tr>
                                 <tr>
-                                    <td>{{translate('Manufactured')}}</td>
-                                    <th>{{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }}
-                                        ({{ plannedEvent.manufacturedQuantity * 100 /
-                                            (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)
-                                    </th>
                                     <td>{{translate('Status')}}</td>
                                     <th><span class="p-1 text-white" [ngStyle]="{'background-color': plannedEvent.color}">{{ plannedEvent.statusDescription }}</span></th>
+                                    <td>{{translate('Execution_Time')}}</td>
+                                    <th>
+                                      {{ plannedEvent.operationDurationString }}
+                                    </th>
                                 </tr>
                                 <tr *ngIf="plannedEvent.description">
                                     <td>{{translate('Comment')}}</td>

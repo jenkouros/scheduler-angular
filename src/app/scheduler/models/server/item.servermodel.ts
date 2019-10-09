@@ -26,6 +26,9 @@ export interface ItemHierarchyServer {
     id: number;
     code: string;
     alternatives: ItemHierarchyAlternativeServer[];
+    quantity: number;
+    quantityBatch: number;
+    measurementUnit: MeasurementUnitServer;
 }
 
 export interface ItemHierarchyAlternativeServer {
