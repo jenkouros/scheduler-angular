@@ -118,7 +118,7 @@ export class PlannedEvent {
     startDate: Date;
     endDate: Date;
     itemTypeShortName: string | null;
-    extensionDurationInMinutes: number;
+    extensionDurationInMinutes: number | null;
 
     color: string;
 
@@ -294,6 +294,7 @@ export class PlannedEvent {
         result.manufacturedQuantity = event.manufacturedQuantity;
         result.manufactureStartTime = event.manufactureStartTime;
         result.itemTypeShortName = event.itemTypeShortName;
+        result.extensionDurationInMinutes = event.extensionDurationInMinutes;
         return result;
 
 
