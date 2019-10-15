@@ -7,7 +7,9 @@ import {
   EventEmitter,
   OnChanges,
   Input,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  Renderer2,
+  HostListener
 } from '@angular/core';
 import { DxSchedulerComponent } from 'devextreme-angular';
 import { off, on } from 'devextreme/events';
@@ -33,6 +35,7 @@ import { ColorHelper } from '../../../helpers/color.helper';
 import { NotifyService } from '../../../../worktime/services';
 import { appSettings } from '../../../../../environments/environment';
 import { AppComponentBase } from '../../../../shared/app-component-base';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -100,7 +103,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
 
-  constructor(private notifyService: NotifyService) {
+  constructor(private notifyService: NotifyService, private renderer: Renderer2) {
     super();
     this.drop = this.drop.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
@@ -735,4 +738,11 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
       y: yPos
     };
   }
+
+  @HostListener('wheel', ['$event'])
+    onWindowScroll($event) {
+      $event.preventDefault();
+      return false;
+  }
+
 }
