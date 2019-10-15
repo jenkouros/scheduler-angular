@@ -200,6 +200,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     }, 500);
     this.onClearTimeSuggestion();
     this.onClearNotWorkingHoursSuggestion();
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   onAppointmentDblClick($event) {
