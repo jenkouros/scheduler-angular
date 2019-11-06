@@ -89,6 +89,19 @@ export function reducer(
         entities
       };
     }
+    case fromCalendars.REMOVE_CALENDAR_SUCCESS: {
+      const calendar = action.payload;
+
+
+      const calendars = {...state.entities};
+      delete calendars[calendar.id];
+
+      console.log(calendar);
+      return {
+        ...state,
+        entities: calendars
+      };
+    }
     case fromCalendars.CALENDAR_POPUP_VISIBLE: {
       const popupVisible = action.payload;
       return {

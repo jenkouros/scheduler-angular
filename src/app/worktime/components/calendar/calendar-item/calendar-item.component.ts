@@ -34,6 +34,7 @@ export class CalendarItemComponent extends AppComponentBase implements OnInit {
   addSchedule() {}
 
   onRemove(calendar: Calendar) {
+    console.log(calendar);
     this.remove.emit(calendar);
   }
 
