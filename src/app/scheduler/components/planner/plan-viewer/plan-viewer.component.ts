@@ -35,7 +35,6 @@ import { ColorHelper } from '../../../helpers/color.helper';
 import { NotifyService } from '../../../../worktime/services';
 import { appSettings } from '../../../../../environments/environment';
 import { AppComponentBase } from '../../../../shared/app-component-base';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -740,7 +739,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     };
   }
 
-  @HostListener('wheel', ['$event'])
+  @HostListener('wheel',  ['$event'])
     onWindowScroll($event) {
       $event.preventDefault();
       return false;

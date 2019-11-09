@@ -43,6 +43,7 @@ import { PreplanitemDraggableDirective } from './components/preplanitem/preplani
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
 import { JwtInterceptor } from '../auth/helpers';
 import { GroupSelectComponent } from './containers';
+import { PlanItemGridComponent } from './components/planner-grid/plan-item-grid/plan-item-grid.component';
 
 @NgModule({
     imports: [
@@ -88,7 +89,8 @@ import { GroupSelectComponent } from './containers';
         ...fromContainers.containers,
         ...fromComponents.components,
         PreplanitemDraggableDirective,
-        PlanItemStatusPipe
+        PlanItemStatusPipe,
+        PlanItemGridComponent
     ],
     providers: [
         ...fromServices.services,

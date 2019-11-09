@@ -1,0 +1,44 @@
+<dx-data-grid
+    id="gridContainer"
+    [dataSource]="items"
+    [allowColumnReordering]="true"
+    [masterDetail]="{ enabled: true, template: 'detail' }"
+    [showBorders]="true">
+    <dxo-editing
+      mode="cell"
+      [allowUpdating]="true">
+    </dxo-editing>
+    <dxi-column dataField="OperationCode"  [allowEditing]="false"></dxi-column>
+    <dxi-column dataField="ContainerCode"></dxi-column>
+    <dxi-column dataField="DateStart" dataType="datetime"></dxi-column>
+    <dxi-column dataField="DateEnd" dataType="datetime"></dxi-column>
+    <dxi-column dataField="ItemCode" [groupIndex]="0" [allowEditing]="false"></dxi-column>
+
+    <div *dxTemplate="let ItemCode of 'detail'">
+      <!-- <div class="master-detail-caption">Test</div> -->
+      <dx-data-grid
+          [dataSource]="getParentItem()"
+          [showBorders]="true"
+          [columnAutoWidth]="true">
+          <dxi-column dataField="OperationCode"  [allowEditing]="false"></dxi-column>
+          <dxi-column dataField="ContainerCode"></dxi-column>
+          <dxi-column dataField="DateStart" dataType="datetime"></dxi-column>
+          <dxi-column dataField="DateEnd" dataType="datetime"></dxi-column>
+          <dxi-column dataField="ItemCode" [groupIndex]="0" [allowEditing]="false"></dxi-column>      </dx-data-grid>
+  </div>
+
+
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+</dx-data-grid>
+<div class="options">
+    <div class="caption">Options</div>
+    <div class="option">
+        <dx-check-box
+            [(value)]="expand.autoExpandAll"
+            text="Expand All Groups">
+        </dx-check-box>
+    </div>
+</div>
