@@ -1,4 +1,4 @@
-<app-popup 
+<app-popup
   [visible]="preplanItemUiState !== null && preplanItemUiState!.isDeletePopupVisible"
   (visibilityChanged)="popupVisibilityChanged($event)"
   title="Potrdi brisanje"
@@ -7,6 +7,7 @@
   width="300px"
   height="auto">
   <p>
-    Izbrišem celotno šaržo?
+      {{ translate('Batch_Delete_Confirmation') }}
+
   </p>
 </app-popup>

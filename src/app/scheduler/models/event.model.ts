@@ -85,7 +85,8 @@ export class PlanItemsGetResponse {
 }
 
 export class PlannedEvent {
-    PARALLEL_SEQUENCE_ALLOWED = environment.parallelOperations;
+    settings: any;
+    // PARALLEL_SEQUENCE_ALLOWED = environment.parallelOperations;
     id: number;
     idPrePlanItem: number;
     idPlan: number;
@@ -110,7 +111,9 @@ export class PlannedEvent {
     title: string;
     containers: SubItemContainer[];
     sequencePlanItems: PlannedEventSimple[];
-    linkedPlanItems: PlannedEventSimple[];
+    // linkedPlanItems: PlannedEventSimple[];
+    linkedItem: LinkedItemModel;
+    parentLinkedItems: LinkedItemModel[];
     isLocked: boolean;
     isInNotWorkingHours: boolean;
     isPlanned: boolean;
@@ -157,7 +160,7 @@ export class PlannedEvent {
                 return true;
             }
             if (planItem.timeEnd) { // if planned
-                lastEnd = this.PARALLEL_SEQUENCE_ALLOWED
+                lastEnd = environment.parallelOperations || planItem.allowParallelPlan
                     ? planItem.timeStartPreparation
                     : planItem.timeEnd;
             }
@@ -168,16 +171,67 @@ export class PlannedEvent {
 
     // SETTINGS !!!! planItem.timeStartPreparation or planItem.timeEnd
     get linkedItemSequenceWarning(): boolean {
-        if (!this.linkedPlanItems || this.linkedPlanItems.length < 1) {
+        if (!this.linkedItem || this.linkedItem.linkedPlanItems.length < 1) {
             return false;
         }
-        const childItem = this.linkedPlanItems[this.linkedPlanItems.length - 1];
-        const parentItem = this.sequencePlanItems[0];
-        if (!childItem.timeEnd || !parentItem.timeStartPreparation) {
+
+        let linkedPlanItem: PlannedEventSimple | null = null;
+        for (let i = this.linkedItem.linkedPlanItems.length - 1; i >= 0; i--) {
+          if (this.linkedItem.linkedPlanItems[i].timeEnd &&
+                (linkedPlanItem === null ||
+                (new Date((linkedPlanItem as any).timeEnd).getTime() <
+                  new Date(this.linkedItem.linkedPlanItems[i].timeEnd as any).getTime())
+              )) {
+                linkedPlanItem = this.linkedItem.linkedPlanItems[i];
+              }
+        }
+
+        let parentItem: PlannedEventSimple | null = null;
+        for (let i = 0; i < this.sequencePlanItems.length; i++) {
+            if (this.sequencePlanItems[i].timeStartPreparation && (parentItem === null ||
+                new Date((parentItem as any).timeStartPreparation).getTime() >
+                new Date(this.sequencePlanItems[i].timeStartPreparation as any).getTime() )) {
+                    parentItem = this.sequencePlanItems[i];
+            }
+        }
+
+        if (linkedPlanItem === null || parentItem === null
+          || !linkedPlanItem.timeEnd || !parentItem.timeStartPreparation) {
             return false;
         }
-        return new Date(childItem.timeEnd).getTime() > new Date(parentItem.timeStartPreparation).getTime();
+        return new Date(linkedPlanItem.timeEnd).getTime() > new Date(parentItem.timeStartPreparation).getTime();
     }
+
+
+    // get linkedItemSequenceWarning(): boolean {
+    //     if (!this.linkedPlanItems || this.linkedPlanItems.length < 1) {
+    //         return false;
+    //     }
+
+    //     let childItem: PlannedEventSimple | null = null;
+    //     for (let i = this.linkedPlanItems.length - 1; i >= 0; i--) {
+    //         if (this.linkedPlanItems[i].timeEnd && (childItem === null ||
+    //             new Date((childItem as any).timeEnd).getTime() <
+    //             new Date(this.linkedPlanItems[i].timeEnd as any).getTime() )) {
+    //                 childItem = this.linkedPlanItems[i];
+    //         }
+    //     }
+
+    //     let parentItem: PlannedEventSimple | null = null;
+    //     for (let i = 0; i < this.sequencePlanItems.length; i++) {
+    //         if (this.sequencePlanItems[i].timeStartPreparation && (parentItem === null ||
+    //             new Date((parentItem as any).timeStartPreparation).getTime() >
+    //             new Date(this.sequencePlanItems[i].timeStartPreparation as any).getTime() )) {
+    //                 parentItem = this.sequencePlanItems[i];
+    //         }
+    //     }
+
+    //     if (childItem === null || parentItem === null
+    //       || !childItem.timeEnd || !parentItem.timeStartPreparation) {
+    //         return false;
+    //     }
+    //     return new Date(childItem.timeEnd).getTime() > new Date(parentItem.timeStartPreparation).getTime();
+    // }
 
     get statusDescription() {
         switch (this.idPlanItemStatus) {
@@ -242,7 +296,8 @@ export class PlannedEvent {
         quantity: number,
         unitQuantity: string,
         // preplanItem: PreplanItem | null = null,
-        isPlanned: boolean = true
+        isPlanned: boolean = true,
+        allowParallel: boolean = false
     ) {
         const result = new PlannedEvent();
         result.idPrePlanItem = idPrePlanItem;
@@ -258,6 +313,7 @@ export class PlannedEvent {
         result.unitQuantity = unitQuantity;
         result.isPlanned = isPlanned;
         result.isLocked = false;
+        // result.PARALLEL_SEQUENCE_ALLOWED = environment.parallelOperations || allowParallel;
 
         return result;
     }
@@ -288,13 +344,33 @@ export class PlannedEvent {
         result.isPlanned = true;
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
-        result.linkedPlanItems = event.linkedPlanItems.map(PlannedEventSimple.fromServer);
+        if (event.linkedItem) {
+          result.linkedItem = new LinkedItemModel();
+          result.linkedItem.batchNumber = event.linkedItem.batchNumber;
+          result.linkedItem.idItem = event.linkedItem.idItem;
+          result.linkedItem.idItemBatch = event.linkedItem.idItemBatch;
+          result.linkedItem.itemCode = event.linkedItem.itemCode;
+          result.linkedItem.linkedPlanItems = event.linkedItem.linkedPlanItems.map(PlannedEventSimple.fromServer);
+        }
+        if (event.parentLinkedItems) {
+          result.parentLinkedItems = event.parentLinkedItems.map(parentLinkedItem => {
+            const model = new LinkedItemModel();
+            model.batchNumber = parentLinkedItem.batchNumber;
+            model.idItem = parentLinkedItem.idItem;
+            model.idItemBatch = parentLinkedItem.idItemBatch;
+            model.itemCode = parentLinkedItem.itemCode;
+            model.linkedPlanItems = parentLinkedItem.linkedPlanItems.map(PlannedEventSimple.fromServer);
+            return model;
+          });
+        }
+        // result.linkedPlanItems = event.linkedPlanItems.map(PlannedEventSimple.fromServer);
         result.isInNotWorkingHours = event.isInNotWorkingHours;
         result.color = colorMapper(event.idPlanItemStatus);
         result.manufacturedQuantity = event.manufacturedQuantity;
         result.manufactureStartTime = event.manufactureStartTime;
         result.itemTypeShortName = event.itemTypeShortName;
         result.extensionDurationInMinutes = event.extensionDurationInMinutes;
+        // result.PARALLEL_SEQUENCE_ALLOWED = event.allowParallelPlan;
         return result;
 
 
@@ -316,6 +392,7 @@ export class PlannedEventSimple {
     timeStartPreparation: Date | null;
     timeEnd: Date | null;
     containerCode: string | null;
+    allowParallelPlan: boolean;
 
     static fromServer(data: PlannedEventSimpleServer) {
         const result = new PlannedEventSimple();
@@ -325,6 +402,7 @@ export class PlannedEventSimple {
         result.containerCode = data.containerCode;
         result.timeStartPreparation = data.timeStartPreparation;
         result.timeEnd = data.timeEnd;
+        result.allowParallelPlan = data.allowParallelPlan;
         return result;
     }
 }
@@ -353,6 +431,19 @@ export enum PlanItemProgressEnum {
     OnTime = 2,
     Late = 3,
     NotFinished = 4
+}
+
+export enum LinkedItemRelationEnum {
+  Parent = 1,
+  Child = 2
+}
+
+export class LinkedItemModel {
+  idItem: number;
+  idItemBatch: number;
+  itemCode: string;
+  batchNumber: number;
+  linkedPlanItems: PlannedEventSimple[];
 }
 
 export interface PlanItemSearch {

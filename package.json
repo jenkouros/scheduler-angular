@@ -43,7 +43,7 @@
     "devextreme-aspnet-data-nojquery": "^1.4.8",
     "exceljs": "^1.7.0",
     "file-saver": "^2.0.1",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "npm": "^6.3.0",
     "rrule": "^2.3.3",
     "rxjs": "^6.2.2",

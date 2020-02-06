@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+.dx-master-detail-cell {
+  padding: 10px 20px 15px 0 !important;
+}
+
+
 .span-link {
     cursor: pointer;
     color: rgb(0, 96, 177) !important;
@@ -63,7 +68,7 @@ h1, h2, h3, h4, h5 {
 input.ng-invalid.ng-touched {
     border: 1px solid red;
 }
-    
+
 hr.redline {
     border-top: 1px solid #DE1A1A;
     border-bottom: 1px solid #DE1A1A;

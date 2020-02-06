@@ -1,0 +1,20 @@
+.dx-accordion-item-title {
+  padding: 10px 0 0 0;
+}
+
+.dx-accordion-item-body {
+  padding: 0;
+  font-size: .85em;
+}
+
+::ng-deep .dx-accordion-item {
+  border: 0;
+}
+
+::ng-deep .dx-accordion-wrapper {
+  padding-bottom: 15px;
+}
+
+/* ::ng-deep .dx-accordion-item-closed {
+  margin: 10px 0;
+} */

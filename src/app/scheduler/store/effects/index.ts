@@ -6,6 +6,7 @@ import { PreplanitemEffects } from './preplanitem.effect';
 import { ItemsEffects } from './items.effect';
 import { SearchEffects } from './search.effect';
 import { GroupsEffects } from './groups.effect';
+import { PlanItemGridEffect } from './plan-item-grid.effect';
 
 export const effects: any[] = [
     ItemsEffects,
@@ -14,7 +15,8 @@ export const effects: any[] = [
     EventsEffects,
     PreplanitemEffects,
     SearchEffects,
-    GroupsEffects
+    GroupsEffects,
+    PlanItemGridEffect
 ];
 
 
@@ -26,3 +28,4 @@ export * from './preplanitem.effect';
 export * from './search.effect';
 export * from './items.effect';
 export * from './groups.effect';
+export * from './plan-item-grid.effect';

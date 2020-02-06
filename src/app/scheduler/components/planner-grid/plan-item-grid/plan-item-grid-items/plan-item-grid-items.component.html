@@ -1,0 +1,73 @@
+<dx-data-grid
+    id="gridContainer"
+    [dataSource]="items"
+    keyExpr="item.idItem"
+    [allowColumnReordering]="true"
+    [masterDetail]="{ enabled: true, template: 'detail', autoExpandAll: false }"
+    [showBorders]="true"
+    (onCellPrepared)="applyCellStyles($event)"
+    (onRowExpanding)="rowExpanded($event)"
+    (onRowCollapsing)="rowCollapsed($event)"
+    (onContentReady)="onContentReady($event)"
+    >
+    <!-- <dxi-column dataField="item.idItem"></dxi-column> -->
+
+    <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}"></dxi-column>
+    <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}"></dxi-column>
+    <dxi-column dataField="item.articleName" caption="{{translate('Name')}}"></dxi-column>
+    <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}"></dxi-column>
+    <dxi-column dataField="item.itemPlanStatus">
+      <dxo-lookup
+            [dataSource]="itemPlanStatuses"
+            displayExpr="Name"
+            valueExpr="ID">
+          </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="item.itemExecutionStatus">
+      <dxo-lookup
+            [dataSource]="itemExecutionStatuses"
+            displayExpr="Name"
+            valueExpr="ID">
+          </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="item.priority">
+      <dxo-lookup
+            [dataSource]="priorities"
+            displayExpr="Name"
+            valueExpr="ID">
+          </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="item.published" dataType="datetime"></dxi-column>
+    <dxi-column dataField="item.lastUpdate" dataType="datetime"></dxi-column>
+
+    <div *dxTemplate="let planItemGrid of 'detail'">
+
+      <app-plan-item-grid-operations
+        (updateItem)="updateItem()"
+        [operations]="planItemGrid.data.operations"
+        [item]="planItemGrid.data.item"></app-plan-item-grid-operations>
+
+      <div class="sub-table" *ngIf="planItemGrid.data.packingItems && planItemGrid.data.packingItems.length > 0">
+        <strong class="sub-table-header">Pakirni nalogi</strong>
+        <app-plan-item-grid-items [items]="planItemGrid.data.packingItems"
+          [enableGrouping]="false"
+          [enableSearch]="false"
+          ></app-plan-item-grid-items>
+      </div>
+
+      <div class="sub-table" *ngIf="planItemGrid.data.productionItems && planItemGrid.data.productionItems.length > 0">
+        <strong class="sub-table-header">Izdelovalni nalog</strong>
+        <app-plan-item-grid-items [items]="planItemGrid.data.productionItems"
+          [enableGrouping]="false"
+          [enableSearch]="false"
+          ></app-plan-item-grid-items>
+      </div>
+  </div>
+
+
+    <dxo-search-panel [visible]="enableSearch"></dxo-search-panel>
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-group-panel [visible]="enableGrouping"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+</dx-data-grid>
+

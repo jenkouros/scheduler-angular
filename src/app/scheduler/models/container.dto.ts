@@ -1,9 +1,15 @@
 import { ContainerServer } from './server/container.servermodel';
 
+export class ContainerSettings {
+  allowParalellWorkWithinContainer: boolean;
+  allowParalellWorkWithinItem: boolean;
+}
+
 export class Container {
     id: number;
     code: string;
     name: string;
+    containerSettings: ContainerSettings;
     get displayExpression() {
         return `${this.code} ${this.name}`;
     }
@@ -13,7 +19,13 @@ export class Container {
         result.name = containerServer.name;
         result.id = containerServer.idContainer;
         result.code = containerServer.code;
-
+        if (containerServer.settings) {
+          result.containerSettings = new ContainerSettings();
+          result.containerSettings.allowParalellWorkWithinContainer = containerServer.settings.allowParalellWorkWithinContainer;
+          result.containerSettings.allowParalellWorkWithinItem = containerServer.settings.allowParalellWorkWithinItem;
+        }
         return result;
     }
 }
+
+

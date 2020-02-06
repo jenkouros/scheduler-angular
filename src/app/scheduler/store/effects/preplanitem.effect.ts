@@ -68,6 +68,31 @@ export class PreplanitemEffects {
         );
 
         @Effect()
+        hidePreplaItem$ = this.actions$
+            .ofType(fromActions.HIDE_PREPLANITEM)
+            .pipe(
+                switchMap((action: fromActions.HidePreplanItem) => {
+                    return this.preplanitemService.hidePreplanItem(action.payload)
+                    .pipe(
+                        map(result => {
+                          if (result) {
+                            return new fromActions.RemovePreplanItem(action.payload);
+                          }
+                          return new fromActions.HidePreplanItemFail();
+                        }),
+                        // mergeMap(result => [
+                        //     new fromActions.LoadPreplanItems(),
+                        //     new fromActions.ReloadAllSelectedContainersEvents()
+                        // ]),
+                        catchError((error) => {
+                            console.log(error);
+                            return of(new fromActions.HidePreplanItemFail()); // CREATE NEW FAIL ACTION TODO
+                        })
+                    );
+                })
+            );
+
+        @Effect()
         prePlanItemsSuggestions$ = this.actions$
         .ofType(fromActions.LOAD_PREPLANITEMS_SUGGESTIONS)
         .pipe(

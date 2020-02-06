@@ -64,7 +64,12 @@ export class CalendarsEffects {
     switchMap(calendar => {
       return this.calendarsService.removeCalendar(calendar).pipe(
         // tap(() => this.notify.notifySuccess('Koledar je bil uspešno brisan.')),
-        map(success => new fromActions.RemoveCalendarSuccess(calendar)),
+        map(success => {
+          if (!success) {
+            return new fromActions.RemoveCalendarFail(success);
+          }
+          return new fromActions.RemoveCalendarSuccess(calendar);
+        }),
         catchError(error => of(new fromActions.RemoveCalendarFail(error)))
       );
     })

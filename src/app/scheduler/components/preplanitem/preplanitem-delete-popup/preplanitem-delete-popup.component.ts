@@ -1,3 +1,4 @@
+import { AppComponentBase } from '../../../../shared/app-component-base';
 import { Component, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Output } from '@angular/core';
 import { PreplanitemUiState } from '../../../models/preplanItem.store';
@@ -9,12 +10,13 @@ import { Input } from '@angular/core';
   templateUrl: './preplanitem-delete-popup.component.html',
   styleUrls: ['./preplanitem-delete-popup.component.css']
 })
-export class PreplanitemDeletePopupComponent implements OnInit {
+export class PreplanitemDeletePopupComponent extends AppComponentBase implements OnInit {
   @Output() deleteBatch = new EventEmitter<number>();
   @Output() hideDeleteBatchPopup = new EventEmitter();
   @Input() preplanItemUiState: PreplanitemUiState | null;
 
   constructor() {
+    super();
     this.onHideDeleteBatchPopup = this.onHideDeleteBatchPopup.bind(this);
     this.onConfirmDeleteBatchPopup = this.onConfirmDeleteBatchPopup.bind(this);
   }

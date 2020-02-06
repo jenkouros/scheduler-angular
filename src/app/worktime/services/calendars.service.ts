@@ -38,8 +38,8 @@ export class CalendarsService {
     );
   }
 
-  removeCalendar(payload: Calendar): Observable<Calendar> {
-    return this.http.delete<Calendar>(`${environment.apiUrl}/calendars?id=${payload.id}`).pipe(
+  removeCalendar(payload: Calendar): Observable<Boolean> {
+    return this.http.delete<boolean>(`${environment.apiUrl}/calendars?id=${payload.id}`).pipe(
       map(response => {
         return response;
       }),

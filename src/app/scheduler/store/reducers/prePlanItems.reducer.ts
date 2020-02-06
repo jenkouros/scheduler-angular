@@ -12,7 +12,9 @@ export const initState: PreplanitemState = {
         draggedEnded: true,
         isDeletePopupVisible: false,
         isPreplanSuggestionPopupVisible: false,
-        idDeleteItemBatchCandidate: null
+        idDeleteItemBatchCandidate: null,
+        idPreplanItemHideCandidate: null,
+        isHidePreplanItemPopupVisible: false
     }
 };
 
@@ -67,6 +69,26 @@ export function prePlanItems(state = initState, action: fromAction.PreplanitemAc
                     ...state.uiState,
                     idDeleteItemBatchCandidate: null,
                     isDeletePopupVisible: false
+                }
+            };
+        }
+        case(fromAction.SHOW_PREPLANITEM_HIDE_POPUP): {
+          return {
+              ...state,
+              uiState: {
+                  ...state.uiState,
+                  idPreplanItemHideCandidate: action.payload.idPreplanItem,
+                  isHidePreplanItemPopupVisible: true
+              }
+          };
+        }
+        case(fromAction.HIDE_PREPLANITEM_HIDE_POPUP): {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idPreplanItemHideCandidate: null,
+                    isHidePreplanItemPopupVisible: false
                 }
             };
         }

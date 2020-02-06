@@ -10,6 +10,8 @@ export interface PreplanitemState {
 export interface PreplanitemUiState {
     draggedEnded: boolean;
     isDeletePopupVisible: boolean;
+    isHidePreplanItemPopupVisible: boolean;
     isPreplanSuggestionPopupVisible: boolean;
     idDeleteItemBatchCandidate: number | null;
+    idPreplanItemHideCandidate: number | null;
 }

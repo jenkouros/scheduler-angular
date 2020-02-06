@@ -47,6 +47,14 @@ export class PreplanitemsService {
     );
   }
 
+  hidePreplanItem(preplanItemId: number) {
+    // TODO create methods on serverside
+    return this.http.post<boolean>(
+      environment.apiUrl + '/preplanitems/hidePreplanItem',
+        preplanItemId
+    );
+  }
+
   createPreplanitems(idPlan: number, requestModel: PreplanItemRequest) {
     return this.http.post(environment.apiUrl + `/preplanitems?idPlan=${idPlan}`, requestModel, {
       headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })

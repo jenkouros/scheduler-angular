@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { DateValidators } from '../../../../../shared/validators/date.validators';
 import { Subscription } from 'rxjs';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
+import { startWith, pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'app-plan-viewer-item-edit',
@@ -28,6 +29,9 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   executionEndSubscribtion: Subscription;
 
   planItemEditForm: FormGroup;
+  preparationDuration = 0;
+  executionDuration = 0;
+
   get containers(): SubItemContainer[] {
     return this.planItem ? this.planItem.containers : [];
   }
@@ -101,18 +105,34 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
     this.onFormChanges();
   }
 
+
   onFormChanges() {
-    this.preparationStartSubscription = this.preparationStartTimeControl.valueChanges.subscribe(val => {
-      this.updatePreparationStartTime(val);
-    });
+    this.preparationStartSubscription = this.preparationStartTimeControl.valueChanges
+      .subscribe(next => this.updatePreparationStartTime(next));
 
-    this.executionStartSubscribtion = this.executionStartTimeControl.valueChanges.subscribe(val => {
-      this.updateExecutionStartTime(val);
-    });
+    this.executionStartSubscribtion = this.executionStartTimeControl.valueChanges
+      .subscribe(next => this.updateExecutionStartTime(next));
 
-    this.executionEndSubscribtion = this.executionEndTimeControl.valueChanges.subscribe(val => {
-      this.updateExecutionEndTime(val);
-    });
+    this.executionEndSubscribtion = this.executionEndTimeControl.valueChanges
+      .subscribe(next => this.updateExecutionEndTime(next));
+
+    this.isPreparationTimeLockedControl.valueChanges
+      .subscribe(flag => {
+        if (flag) {
+          this.preparationDuration = TimeHelper.getDateDiffInMinutes(
+            this.preparationStartTimeControl.value, this.executionStartTimeControl.value);
+          if (isNaN(this.preparationDuration)) { this.preparationDuration = 0; }
+        }
+      });
+
+    this.isExecutionTimeLockedControl.valueChanges
+      .subscribe(flag => {
+        if (flag) {
+          this.executionDuration = TimeHelper.getDateDiffInMinutes(
+            this.executionStartTimeControl.value, this.executionEndTimeControl.value);
+          if (isNaN(this.executionDuration)) { this.executionDuration = 0; }
+        }
+      });
   }
 
   unsubscribe() {
@@ -150,7 +170,6 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   onFormHide() {
     if (this.visible) {
       this.popupClose.emit();
-      console.log('closing');
     }
 
   }
@@ -164,7 +183,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   updatePreparationStartTime(date: Date) {
     if (this.isPreparationTimeLockedControl.value) {
       const timeExecutionStartCandidate = moment(this.preparationStartTimeControl.value)
-        .add(this.selectedContainer ? this.selectedContainer.preparationNormative : 0, 'm').toDate();
+        .add(/*this.selectedContainer ? this.selectedContainer.preparationNormative : 0*/
+          this.preparationDuration, 'm').toDate();
       if (timeExecutionStartCandidate.getTime() !== this.executionStartTimeControl.value.getTime()) {
         this.planItemEditForm.patchValue({ 'executionStartTime': timeExecutionStartCandidate });
       }
@@ -175,7 +195,7 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   updateExecutionStartTime(date: Date) {
     if (this.isExecutionTimeLockedControl.value) {
       const timeExecutionEndCandidate = moment(this.executionStartTimeControl.value)
-        .add(this.getExecutionNormative(), 'm').toDate();
+        .add(/*this.getExecutionNormative()*/ this.executionDuration, 'm').toDate();
       if (timeExecutionEndCandidate.getTime() !== this.executionEndTimeControl.value.getTime()) {
         this.planItemEditForm.patchValue({ 'executionEndTime': timeExecutionEndCandidate });
       } else {
@@ -187,7 +207,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
 
     if (this.isPreparationTimeLockedControl.value) {
       const timePreparationStartCandidate = moment(this.executionStartTimeControl.value)
-        .subtract(this.selectedContainer ? this.selectedContainer.preparationNormative : 0, 'm').toDate();
+        .subtract(/*this.selectedContainer ? this.selectedContainer.preparationNormative : 0*/
+          this.preparationDuration, 'm').toDate();
       if (timePreparationStartCandidate.getTime() !== this.preparationStartTimeControl.value.getTime()) {
         this.planItemEditForm.patchValue({ 'preparationStartTime': timePreparationStartCandidate });
       }
@@ -198,7 +219,7 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   updateExecutionEndTime(date: Date) {
     if (this.isExecutionTimeLockedControl.value) {
       const timeExecutionStartCandidate = moment(this.executionEndTimeControl.value)
-        .subtract(this.getExecutionNormative(), 'm').toDate();
+        .subtract(/*this.getExecutionNormative()*/ this.executionDuration , 'm').toDate();
       if (timeExecutionStartCandidate.getTime() !== this.executionStartTimeControl.value.getTime()) {
         this.planItemEditForm.patchValue({ 'executionStartTime': timeExecutionStartCandidate });
         this.updateExecutionDuration();
@@ -261,3 +282,4 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
     this.unsubscribe();
   }
 }
+

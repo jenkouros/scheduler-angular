@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PreplanItem } from '../../../models/preplanitem.dto';
-import { faTrash, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCalendarAlt, faMinusSquare } from '@fortawesome/free-solid-svg-icons';
 import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
@@ -15,9 +15,11 @@ export class PrePlanitemItemComponent extends AppComponentBase implements OnInit
   @Output() reselectContainers = new EventEmitter<number[]>();
   @Output() showDeleteBatchPopup = new EventEmitter<number>();
   @Output() prePlanItemPlanSuggestion = new EventEmitter<number>();
+  @Output() showHidePreplanItemPopup = new EventEmitter<number>();
 
   calendarIcon = faCalendarAlt;
   deleteIcon = faTrash;
+  hideIcon = faMinusSquare;
 
   constructor() {
         super();
@@ -36,5 +38,9 @@ export class PrePlanitemItemComponent extends AppComponentBase implements OnInit
 
   onPrePlanItemPlanSuggestion() {
     this.prePlanItemPlanSuggestion.emit(this.preplanitem.id);
+  }
+
+  onShowHidePreplanItemPopup() {
+    this.showHidePreplanItemPopup.emit(this.preplanitem.id);
   }
 }

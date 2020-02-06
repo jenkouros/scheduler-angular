@@ -1,0 +1,20 @@
+<dx-accordion
+    [dataSource]="items"
+    itemTemplate="item"
+    [collapsible]="false"
+    [multiple]="false">
+
+    <div *dxTemplate="let itemHeader of 'title'">
+        <h6>{{translate('Parent_Order')}} {{ itemHeader.itemCode }}</h6>
+    </div>
+    <div *dxTemplate="let itemData of 'item'">
+      <table class="table table-sm">
+          <tr *ngFor="let op of itemData.linkedPlanItems">
+              <td>#{{ op.code }} {{ op.name }}</td>
+              <td>{{ op.containerCode }}</td>
+              <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }}</td>
+              <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
+          </tr>
+      </table>
+    </div>
+</dx-accordion>

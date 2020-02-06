@@ -1,4 +1,5 @@
-const serverUrl = 'http://10.9.22.106:9511';
+// const serverUrl = 'http://10.9.22.106:9511';
+const serverUrl = 'http://localhost:55501';
 
 export const environment = {
     locale: 'sr-Latn',
@@ -22,5 +23,6 @@ export const appSettings = {
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
   PlanItem_DisplayArticleCode: false,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
-  PlanItems_ExcelExport: false
+  PlanItems_ExcelExport: false,
+  Planning_multiplyTimeWithQuantityFactor: false
 };

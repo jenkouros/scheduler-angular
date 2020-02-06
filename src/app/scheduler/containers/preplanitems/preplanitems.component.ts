@@ -24,6 +24,7 @@ import * as fromPlanStore from '../../../plan/store';
       (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
       (reselectContainers)="onReselectContainers($event)"
       (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)"
+      (showHidePreplanItemPopup)="onShowHidePreplanItemPopup($event)"
     >
     </app-preplanitem-item>
 
@@ -33,6 +34,14 @@ import * as fromPlanStore from '../../../plan/store';
       (hideDeleteBatchPopup)="onHideDeleteBatchPopup()"
     >
     </app-preplanitem-delete-popup>
+
+    <app-preplanitem-hide-popup
+    [preplanItemUiState]="preplanItemsUiState$ | async"
+    (hidePreplanItem)="onHidePreplanItem($event)"
+    (hidePreplanItemHidePopup)="onHidePreplanItemHidePopup()"
+  >
+  </app-preplanitem-hide-popup>
+
     <app-preplanitem-suggestion-popup>
         </app-preplanitem-suggestion-popup>
   `
@@ -74,13 +83,25 @@ export class PreplanItemsComponent implements OnInit {
     this.store.dispatch(new fromStore.DeleteItemBatch(batchId));
   }
 
+  onHidePreplanItem(preplanItemId: number) {
+    this.store.dispatch(new fromStore.HidePreplanItem(preplanItemId));
+  }
+
   // TODO check if needed
   onShowDeleteBatchPopup(idItemBatch: number) {
     this.store.dispatch(new fromStore.ShowItemBatchDeletePopup({ idItemBatch: idItemBatch }));
   }
 
   onHideDeleteBatchPopup() {
-      this.store.dispatch(new fromStore.HideItemBatchDeletePopup());
+    this.store.dispatch(new fromStore.HideItemBatchDeletePopup());
+}
+
+  onShowHidePreplanItemPopup(idPreplanItem: number) {
+    this.store.dispatch(new fromStore.ShowPreplanitemHidePopup({ idPreplanItem: idPreplanItem }));
+  }
+
+  onHidePreplanItemHidePopup() {
+      this.store.dispatch(new fromStore.HidePreplanitemHidePopup());
   }
 
   onPrePlanItemPlanSuggestion(prePlanItemId: number) {

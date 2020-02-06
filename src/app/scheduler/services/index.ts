@@ -8,17 +8,19 @@ import { GroupsService } from './groups.service';
 import { SearchService } from './search.service';
 import { NotifyService } from '../../shared/services/notify.service';
 import { ExcelService } from './excel.service';
+import { PlanItemGridService } from './plan-item-grid.service';
 
 export const services: any[] = [
-    ItemsService,
-        FiltersService,
-        ContainersService,
-        EventsService,
-        PreplanitemsService,
-        NotifyService,
-        SearchService,
-        GroupsService,
-        ExcelService
+  ItemsService,
+  FiltersService,
+  ContainersService,
+  EventsService,
+  PreplanitemsService,
+  NotifyService,
+  SearchService,
+  GroupsService,
+  ExcelService,
+  PlanItemGridService
 ];
 
 
@@ -30,3 +32,4 @@ export * from './items.service';
 export * from './search.service';
 export * from '../../shared/services/notify.service';
 export * from './groups.service';
+export * from './plan-item-grid.service';

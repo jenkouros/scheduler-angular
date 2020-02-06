@@ -3,15 +3,19 @@
       <div>
           <h6 class="card-title mb-1" style="font-size: 16px;">#{{ preplanitem.subItem.code }} {{ preplanitem.subItem.name }}</h6>
           <hr class="hrline mt-1 mb-1">
-          <span style="font-weight: 500" [ngClass]="groupColorNumber === 0 ? 'text-kolektor' : 'text-success' ">{{ preplanitem.item.name }}</span><br>      
+          <span style="font-weight: 500" [ngClass]="groupColorNumber === 0 ? 'text-kolektor' : 'text-success' ">
+            {{ preplanitem.item.name }}<span *ngIf="preplanitem.itemBatch.batchNumber > 1">/{{ preplanitem.itemBatch.batchNumber }}</span>
+          </span><br>
           <span>{{ preplanitem.item.product.code }} - {{ preplanitem.item.product.name }}</span>
       </div>
       <hr class="mt-1 mb-1">
       <div class="float-right">
           <!-- <button (click)="onPrePlanItemPlanSuggestion()" type="button" class="btn btn-sm btn-light mr-1 mb-1"><fa-icon class="cursor-pointer" [icon]="calendarIcon"></fa-icon> Razporedi</button> -->
             <button (click)="onReselectContainers()" type="button" class="btn btn-sm btn-light mr-1 mb-1"><fa-icon class="cursor-pointer" [icon]="calendarIcon"></fa-icon> {{translate('Choose_Workplace_Short')}}</button>
-            <button (click)="onShowDeleteBatchPopup()" type="button" class="btn btn-sm btn-light mb-1"><fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> {{translate('Workorder_Delete')}}</button>            
-      </div>
-    
+            <button (click)="onShowDeleteBatchPopup()" type="button" class="btn btn-sm btn-light mr-1 mb-1"><fa-icon class="cursor-pointer" [icon]="deleteIcon"></fa-icon> {{translate('Workorder_Delete')}}</button>
+            <button (click)="onShowHidePreplanItemPopup()" type="button" class="btn btn-sm btn-light mb-1"><fa-icon class="cursor-pointer" [icon]="hideIcon"></fa-icon> {{translate('Hide')}}</button>
+
+          </div>
+
   </div>
 </div>

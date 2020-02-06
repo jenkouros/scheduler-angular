@@ -50,7 +50,7 @@ loadMessages(devextremeMessages);
 export function init_signalR(signalRService: SignalRService): () => Promise<any> {
   return () => signalRService.init();
 }
-export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [storeFreeze] : [];
+export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [] : [];
 
 @NgModule({
   declarations: [AppComponent],

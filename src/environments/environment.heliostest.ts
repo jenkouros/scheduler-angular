@@ -1,8 +1,8 @@
-const serverUrl = 'http://localhost:55501';
+const serverUrl = 'http://10.9.22.106:9188';
 
 export const environment = {
     locale: 'sl',
-    production: false,
+    production: true,
     apiUrl: `${serverUrl}/api`,
     signalRUrl: `${serverUrl}/containershub`,
     parallelOperations: false
@@ -22,5 +22,6 @@ export const appSettings = {
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
   PlanItem_DisplayArticleCode: false,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
-  PlanItems_ExcelExport: true
+  PlanItems_ExcelExport: false,
+  Planning_multiplyTimeWithQuantityFactor: true
 };

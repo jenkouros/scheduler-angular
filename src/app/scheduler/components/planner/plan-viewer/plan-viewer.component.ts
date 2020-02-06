@@ -281,6 +281,79 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     e.target.classList.remove('dx-scheduler-date-table-droppable-cell');
   }
 
+
+  private getDroppedData(dataTransfer): PreplanItem {
+    // getData() and setData() attribute must be called exactly "text", IE rocks again
+    return JSON.parse(dataTransfer.getData('text'));
+  }
+  private getDroppedDataCell(target) {
+    return (<any>this.scheduler.instance).getWorkSpace().getCellData(target);
+  }
+  private getDroppedDataSubItemContainers(draggedData) {
+    // map data to concrete class instance
+    return draggedData.containers.map(c =>
+      Object.assign(new SubItemContainer(), c, {
+        container: Object.assign(new Container(), c.container)
+      })
+    );
+  }
+  private getDroppedDataPreplanItem(draggedData, subItemContainers: SubItemContainer[]) {
+    const preplanItem: PreplanItem = {
+      ...new PreplanItem(),
+      ...draggedData,
+      containers: subItemContainers
+    };
+    return preplanItem;
+  }
+  private createSubItemContainer(container: Container, subItemContainers: SubItemContainer[]) {
+    const subItemContainer = SubItemContainer.createSubItemContainer(container);
+    if (subItemContainers && subItemContainers.length) {
+      subItemContainer.quantity = subItemContainers[0].quantity;
+      subItemContainer.unitQuantity = subItemContainers[0].unitQuantity;
+      subItemContainer.preparationNormative = subItemContainers[0].preparationNormative;
+      subItemContainer.executionNormative = subItemContainers[0].executionNormative;
+    }
+    return subItemContainer;
+  }
+  private createPlanItem(prePlanitem: PreplanItem, container: Container, subItemContainer: SubItemContainer,
+    cellStartDate: Date, cellEndDate: Date, subItemContainers: SubItemContainer[]) {
+
+      const allowParallelWorkWithinContainer = container.containerSettings &&
+        container.containerSettings.allowParalellWorkWithinContainer;
+      const allowParallelWorkWithinItem = container.containerSettings &&
+        container.containerSettings.allowParalellWorkWithinItem;
+
+      const calculatedStartTime = allowParallelWorkWithinContainer
+        ? cellStartDate
+        : this.getCalculatedStartTimeInCell(container.id, cellStartDate, cellEndDate);
+
+      const normativeQuantity = Math.max(subItemContainer.quantity, 1);
+
+      const duration =
+        subItemContainer.preparationNormative +
+        (subItemContainer.executionNormative / normativeQuantity) * prePlanitem.quantity;
+      const plannedEvent = PlannedEvent.createFromPreplanitem(
+        prePlanitem.id,
+        container.id,
+        prePlanitem.subItem.code,
+        '',
+        prePlanitem.subItem.name,
+        calculatedStartTime,
+        moment(calculatedStartTime)
+          .add(subItemContainer.preparationNormative, 'm')
+          .toDate(),
+        moment(calculatedStartTime)
+          .add(duration, 'm')
+          .toDate(),
+        subItemContainers,
+        prePlanitem.quantity,
+        prePlanitem.unit.code,
+        false,
+        allowParallelWorkWithinItem
+      );
+      return plannedEvent;
+  }
+
   drop(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -291,78 +364,35 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
         if (el.classList.contains('dx-scheduler-date-table-droppable-cell')) {
           el.classList.remove('dx-scheduler-date-table-droppable-cell');
         }
-        const cellData = (<any>this.scheduler.instance).getWorkSpace().getCellData([el]);
-        if (cellData.groups === undefined) {
+        const cellData = this.getDroppedDataCell([el]);
+        if (cellData.groups === undefined) { return false; }
+
+        const draggedData: PreplanItem = this.getDroppedData(e.dataTransfer);
+        if (!draggedData) { return false; }
+
+        const subItemContainers: SubItemContainer[] = this.getDroppedDataSubItemContainers(draggedData);
+        const preplanItem: PreplanItem = this.getDroppedDataPreplanItem(draggedData, subItemContainers);
+
+        const selectedContainer = this.selectedContainers.find(i => i.id === cellData.groups.containerId);
+        if (!selectedContainer) {
+          this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
           return false;
         }
+        let selectedSubItemContainer = subItemContainers.find(subItemContainer => selectedContainer.id === subItemContainer.container.id);
 
-        // const draggedData: PreplanItem = JSON.parse(e.dataTransfer.getData('prePlanItem'));
-        // getData() and setData() attribute must be called exactly "text", IE rocks again
-        const draggedData: PreplanItem = JSON.parse(e.dataTransfer.getData('text'));
-
-        const containers: SubItemContainer[] = draggedData.containers.map(c =>
-          Object.assign(new SubItemContainer(), c, {
-            container: Object.assign(new Container(), c.container)
-          })
-        );
-
-        const preplanItem: PreplanItem = {
-          ...new PreplanItem(),
-          ...draggedData,
-          containers: containers
-        };
-
-        if (draggedData !== undefined) {
-          let selectedContainer = draggedData.containers.find(item => cellData.groups.containerId === item.container.id);
-
-          if (selectedContainer === undefined) {
-            // TODO check settings - add
+        if (selectedSubItemContainer === undefined) {
+            // check settings
             if (appSettings.PlanItem_EnablePlanningOnAllWorkplaces) {
-              const container = this.selectedContainers.find(i => i.id === cellData.groups.containerId);
-              if (!container) {
-                this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
-                return false;
-              }
-              selectedContainer = SubItemContainer.createSubItemContainer(container);
-              if (draggedData.containers && draggedData.containers.length) {
-                selectedContainer.quantity = draggedData.containers[0].quantity;
-                selectedContainer.unitQuantity = draggedData.containers[0].unitQuantity;
-                selectedContainer.preparationNormative = draggedData.containers[0].preparationNormative;
-                selectedContainer.executionNormative = draggedData.containers[0].executionNormative;
-              }
-              preplanItem.containers.push(selectedContainer);
+              selectedSubItemContainer = this.createSubItemContainer(selectedContainer, subItemContainers);
+              preplanItem.containers.push(selectedSubItemContainer);
             } else {
               this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
               return false;
             }
           }
-          const calculatedStartTime = this.getCalculatedStartTimeInCell(cellData.groups.containerId, cellData.startDate, cellData.endDate);
-
-          const normativeQuantity = Math.max(selectedContainer.quantity, 1);
-
-          const duration =
-            selectedContainer.preparationNormative + (selectedContainer.executionNormative / normativeQuantity) * draggedData.quantity;
-          const plannedEvent = PlannedEvent.createFromPreplanitem(
-            draggedData.id,
-            cellData.groups.containerId,
-            draggedData.subItem.code,
-            '',
-            draggedData.subItem.name,
-            calculatedStartTime,
-            moment(calculatedStartTime)
-              .add(selectedContainer.preparationNormative, 'm')
-              .toDate(),
-            moment(calculatedStartTime)
-              .add(duration, 'm')
-              .toDate(),
-            containers,
-            draggedData.quantity,
-            draggedData.unit.code,
-            false
-          );
-          this.planItemEditing = plannedEvent;
+          this.planItemEditing = this.createPlanItem(preplanItem, selectedContainer, selectedSubItemContainer,
+            cellData.startDate, cellData.endDate, subItemContainers);
           this.planItemEditMode = true;
-        }
       }
     }
   }
@@ -564,8 +594,18 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     });
   }
 
+  // JUST SENT IdPlanItem and serverside has to RESOLVE it
   onLinkedItemSequenceResolve(planItem: PlannedEvent) {
-    const linkedItemTimeStr = planItem.linkedPlanItems[planItem.linkedPlanItems.length - 1].timeEnd;
+    console.log('todo');
+    return null;
+
+    let linkedItemTimeStr: any | null = null;
+    for (let i = planItem.linkedItem.linkedPlanItems.length - 1; i >= 0; i--) {
+      linkedItemTimeStr = planItem.linkedItem.linkedPlanItems[i].timeEnd;
+      if (linkedItemTimeStr) {
+        break;
+      }
+    }
     if (!linkedItemTimeStr) {
       return;
     }

@@ -9,8 +9,10 @@ export class ContainerSelect extends Container implements Select {
         result.id = container.id;
         result.name = container.name;
         result.code = container.code;
+        result.containerSettings = container.containerSettings;
         result.selected = false;
         result.displayName = container.displayExpression;
+        result.containerSettings = container.containerSettings;
         return result;
     }
 }

@@ -1,3 +1,5 @@
+import { PlanViewerLinkedItemsComponent } from './planner/plan-viewer/linked-items/plan-viewer-linked-items.component';
+import { PreplanitemHidePopupComponent } from './preplanitem/preplanitem-hide-popup/preplanitem-hide-popup.component';
 import { FiltersComponent } from './filters/filters.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupListComponent } from './groups/group-list/group-list.component';
@@ -26,6 +28,10 @@ import { FilterContainerComponent } from './filters/filter-container/filter-cont
 import { ItemQuickPlanComponent } from './item/item-quick-plan/item-quick-plan.component';
 import { PreplanitemSuggestionPopupComponent } from './preplanitem/preplanitem-suggestion-popup/preplanitem-suggestion-popup.component';
 import { GroupSelectorComponent } from './groups/group-selector/groupselector.component';
+import { PlanItemGridComponent } from './planner-grid/plan-item-grid/plan-item-grid.component';
+import { PlanContainerGridComponent } from './planner-grid/plan-container-grid/plan-container-grid.component';
+import { PlanItemGridOperationsComponent } from './planner-grid/plan-item-grid/plan-item-grid-operations/plan-item-grid-operations.component';
+import { PlanItemGridItemsComponent } from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
 
 
 
@@ -57,7 +63,13 @@ export const components: any[] = [
     PlanItemsSearchComponent,
     RealizationTimeUpdateComponent,
     FilterContainerComponent,
-    ItemQuickPlanComponent
+    ItemQuickPlanComponent,
+    PlanItemGridComponent,
+    PlanContainerGridComponent,
+    PreplanitemHidePopupComponent,
+    PlanViewerLinkedItemsComponent,
+    PlanItemGridOperationsComponent,
+    PlanItemGridItemsComponent
 ];
 
 export * from './filters/filters.component';
@@ -87,3 +99,10 @@ export * from './planner/realization-timeupdate-popup/realization-timeupdate.com
 export * from './filters/filter-container/filter-container.component';
 export * from './item/item-quick-plan/item-quick-plan.component';
 export * from './groups/group-selector/groupselector.component';
+export * from './planner-grid/plan-item-grid/plan-item-grid.component';
+export * from './planner-grid/plan-container-grid/plan-container-grid.component';
+export * from './planner/plan-viewer/linked-items/plan-viewer-linked-items.component';
+export * from './planner-grid/plan-item-grid/plan-item-grid-operations/plan-item-grid-operations.component';
+export * from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
+
+

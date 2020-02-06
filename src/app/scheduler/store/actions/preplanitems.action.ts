@@ -16,6 +16,10 @@ export const HIDE_ITEMBATCH_DELETE_POPUP = '[PrePlanItem] HIDE DELETE ItemBatch 
 export const LOAD_PREPLANITEMS_SUGGESTIONS = '[PrePlanItem] GET PreplanItemsSuggestions';
 export const LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS = '[PrePlanItem] GET PreplanItemsSuggestions success';
 export const LOAD_PREPLANITEMS_SUGGESTIONS_FAIL = '[PrePlanItem] GET PreplanItemsSuggestions fail';
+export const SHOW_PREPLANITEM_HIDE_POPUP = '[PrePlanItem] SHOW PreplanItem hide popup';
+export const HIDE_PREPLANITEM_HIDE_POPUP = '[PrePlanItem] HIDE PreplanItem hide popup';
+export const HIDE_PREPLANITEM = '[PrePlanItem] HIDE PreplanItem';
+export const HIDE_PREPLANITEM_FAIL = '[PrePlanItem] HIDE PreplanItem FAIL';
 
 
 export class CreatePreplanItems implements Action {
@@ -62,13 +66,33 @@ export class DeleteItemBatchFail implements Action {
     readonly type = DELETE_ITEMBATCH_FAIL;
 }
 
+export class HidePreplanItem implements Action {
+  readonly type = HIDE_PREPLANITEM;
+  constructor(public payload: number) {}
+}
+
+export class HidePreplanItemFail implements Action {
+  readonly type = HIDE_PREPLANITEM_FAIL;
+}
+
 export class ShowItemBatchDeletePopup implements Action {
     readonly type = SHOW_ITEMBATCH_DELETE_POPUP;
     constructor (public payload: { idItemBatch: number }) {
     }
 }
+
 export class HideItemBatchDeletePopup implements Action {
     readonly type = HIDE_ITEMBATCH_DELETE_POPUP;
+}
+
+export class ShowPreplanitemHidePopup implements Action {
+  readonly type = SHOW_PREPLANITEM_HIDE_POPUP;
+  constructor (public payload: { idPreplanItem: number }) {
+  }
+}
+
+export class HidePreplanitemHidePopup implements Action {
+  readonly type = HIDE_PREPLANITEM_HIDE_POPUP;
 }
 
 export class LoadPreplanItemsSuggestions implements Action {
@@ -102,4 +126,6 @@ export type PreplanitemAction =
     | LoadPreplanItemsSuggestions
     | LoadPreplanItemsSuggestionsSuccess
     | LoadPreplanItemsSuggestionsFail
+    | ShowPreplanitemHidePopup
+    | HidePreplanitemHidePopup
 ;

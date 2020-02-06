@@ -22,5 +22,6 @@ export const appSettings = {
   PlanItem_DisplayOperationFirst: true, // workorder otherwise
   PlanItem_DisplayArticleCode: true,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
-  PlanItems_ExcelExport: false
+  PlanItems_ExcelExport: false,
+Planning_multiplyTimeWithQuantityFactor: true
 };

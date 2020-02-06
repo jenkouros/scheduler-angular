@@ -1,0 +1,29 @@
+<dx-data-grid
+  (onCellPrepared)="applyPlanItemStyles($event)"
+  [dataSource]="model"
+  [columnAutoWidth]="true"
+>
+  <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+  <dxi-column dataField="operationCode" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="containerCode" [groupIndex]="0">
+    <dxo-lookup [dataSource]="containers" displayExpr="Code" valueExpr="ID">
+    </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="dateStart" dataType="datetime"></dxi-column>
+  <dxi-column dataField="dateEnd" dataType="datetime"></dxi-column>
+  <dxi-column dataField="executionStatus">
+    <dxo-lookup
+      [dataSource]="itemExecutionStatuses"
+      displayExpr="Name"
+      valueExpr="ID"
+    >
+    </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="priority">
+    <dxo-lookup
+          [dataSource]="priorities"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+</dx-data-grid>

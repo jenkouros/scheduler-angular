@@ -34,9 +34,21 @@ export interface PlannedEventServer {
     isInNotWorkingHours: boolean;
     allowedContainers: SubItemContainerServer[];
     sequencePlanItems: PlannedEventSimpleServer[];
-    linkedPlanItems: PlannedEventSimpleServer[];
+    // linkedPlanItems: PlannedEventSimpleServer[];
+    linkedItem: LinkedItemServer;
+    parentLinkedItems: LinkedItemServer[];
+
     itemTypeShortName: string | null;
     extensionDurationInMinutes: number | null;
+    allowParallelPlan: boolean;
+}
+
+export interface LinkedItemServer {
+  idItem: number;
+  idItemBatch: number;
+  itemCode: string;
+  batchNumber: number;
+  linkedPlanItems: PlannedEventSimpleServer[];
 }
 
 export interface PlannedEventSimpleServer {
@@ -46,4 +58,5 @@ export interface PlannedEventSimpleServer {
     timeStartPreparation: Date | null;
     timeEnd: Date | null;
     containerCode: string | null;
+    allowParallelPlan: boolean;
 }

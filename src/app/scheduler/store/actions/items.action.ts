@@ -1,3 +1,4 @@
+import { ItemAutoplanRequest } from './../../models/item-autoplan.model';
 import { Action } from '@ngrx/store';
 import { PaginationResponse } from '../../../shared/shared.model';
 import { Item, ItemHierarchy } from '../../models/item.dto';
@@ -16,6 +17,8 @@ export const SHOW_ITEM_POPUP = '[Item] Show plan item popup';
 export const HIDE_ITEM_POPUP = '[Item] Hide plan item popup';
 
 export const HIDE_ITEM = '[Item] Hide item';
+
+
 
 export class LoadItems implements Action {
     readonly type = LOAD_ITEMS;
@@ -63,6 +66,8 @@ export class HideItemPopup implements Action {
     readonly type = HIDE_ITEM_POPUP;
 }
 
+
+
 export type ItemActions =
     | LoadItems
     | RegisterItemStore
@@ -73,4 +78,5 @@ export type ItemActions =
     | LoadItemHierarchySuccess
     | ShowItemPopup
     | HideItemPopup
+
 ;
