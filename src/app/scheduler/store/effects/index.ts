@@ -1,3 +1,4 @@
+import { PlanContainerGridEffect } from './plan-container-grid.effect';
 
 import { FiltersEffects } from './filters.effect';
 // import { ContainersEffects } from './containers.effect';
@@ -16,7 +17,8 @@ export const effects: any[] = [
     PreplanitemEffects,
     SearchEffects,
     GroupsEffects,
-    PlanItemGridEffect
+    PlanItemGridEffect,
+    PlanContainerGridEffect
 ];
 
 
@@ -29,3 +31,4 @@ export * from './search.effect';
 export * from './items.effect';
 export * from './groups.effect';
 export * from './plan-item-grid.effect';
+export * from './plan-container-grid.effect';

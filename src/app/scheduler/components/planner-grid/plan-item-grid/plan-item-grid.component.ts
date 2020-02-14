@@ -1,8 +1,12 @@
-import { LoadPlanItemGrid, PlanItemGridOpen } from './../../../store/actions/plan-item-grid.action';
+import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
+import { ContainerSelect } from './../../../models/container.viewmodel';
+import { LoadContainers } from './../../../store/actions/containers.action';
+import { getSelectedPlanId } from './../../../../plan/store/selectors/plans.selector';
+import * as PlanItemGridActions from './../../../store/actions/plan-item-grid.action';
 import { PlanItemGrid } from './../../../models/plan-item-grid-model';
-import { getPlanItemGrid, selectedPlanItemGrid } from './../../../store/selectors/plan-item-grid.selectors';
+import * as PlanItemGridSelectors from './../../../store/selectors/plan-item-grid.selectors';
 import { AppState } from './../../../../store/app.reducers';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
@@ -14,25 +18,36 @@ import { Store, select } from '@ngrx/store';
 export class PlanItemGridComponent {
   planItemGrid$: Observable<PlanItemGrid[]>;
   selectedPlanItemGrid$: Observable<PlanItemGrid[]>;
-  // containers$: Observable<ContainerSelect[]>;
+  limitDate$: Observable<Date>;
+  loading$: Observable<boolean>;
+  limitDateSubscription: Subscription;
+  containers$: Observable<ContainerSelect[]>;
 
   constructor(private store: Store<AppState>) {
-    // store.pipe(select(getSelectedPlanId))
-    // .subscribe(id => {
-    //   store.dispatch(new LoadContainers());
-    // });
-    this.planItemGrid$ = store.pipe(select(getPlanItemGrid));
-    store.dispatch(new LoadPlanItemGrid());
+    store.pipe(select(getSelectedPlanId))
+    .subscribe(id => {
+      store.dispatch(new LoadContainers());
+    });
+    this.loading$ = this.store.pipe(select(PlanItemGridSelectors.loader));
+    this.loading$.subscribe(i => console.log(i));
 
-    this.selectedPlanItemGrid$ = store.pipe(select(selectedPlanItemGrid));
+    this.limitDate$ = store.pipe(select(PlanItemGridSelectors.limitItemLoadDate));
+    this.planItemGrid$ = store.pipe(select(PlanItemGridSelectors.getPlanItemGrid));
+    this.limitDate$.subscribe(i => store.dispatch(new PlanItemGridActions.LoadPlanItemGrid()));
 
-    // this.containers$ = store.pipe(select(getContainerSelectList));
+
+    this.selectedPlanItemGrid$ = store.pipe(select(PlanItemGridSelectors.selectedPlanItemGrid));
+
+    this.containers$ = store.pipe(select(getContainerSelectList));
   }
 
   onItemSelect(item: PlanItemGrid) {
-    this.store.dispatch(new PlanItemGridOpen(item));
+    this.store.dispatch(new PlanItemGridActions.PlanItemGridOpen(item));
   }
 
+  setLimitDate(date: Date) {
+    this.store.dispatch(new PlanItemGridActions.SetItemLimitDate(date));
+  }
 
   // test(e, idItem: number) {
   //   console.log(e);

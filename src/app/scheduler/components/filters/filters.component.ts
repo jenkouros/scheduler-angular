@@ -44,6 +44,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromStore.LoadPreplanItems());
     this.store.dispatch(new fromStore.GetSearchItemsStore(''));
     this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
+    this.store.dispatch(new fromStore.LoadPlanItemGrid());
+    this.store.dispatch(new fromStore.LoadPlanContainerGrid());
 
   }
 

@@ -15,3 +15,13 @@ export const selectedPlanItemGrid = createSelector(
   getPlanItemGridState,
   state => state.openedPlanItemGrids
 );
+
+export const limitItemLoadDate = createSelector(
+  getPlanItemGridState,
+  state => state.itemLimitDate
+);
+
+export const loader = createSelector(
+  getPlanItemGridState,
+  state => state.loading
+);

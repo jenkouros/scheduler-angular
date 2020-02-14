@@ -1,136 +1,56 @@
+import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
+import { LoadContainers } from './../../../store/actions/containers.action';
+import { getSelectedPlanId } from './../../../../plan/store/selectors/plans.selector';
+import { AppState } from './../../../../store/app.reducers';
+import { ContainerSelect } from './../../../models/container.viewmodel';
+import { PlanContainerGrid } from './../../../models/plan-container-grid.model';
 import { Component } from '@angular/core';
-
-
-export interface ItemGrid {
-  itemCode: string;
-  articleCode: string;
-  articleName: string;
-  itemPlanStatus: number;
-  quantity: string;
-  published: Date;
-  lastUpdate: Date;
-  itemExecutionStatus: number;
-  priority: number;
-}
-
-export interface OperationGrid {
-  articleCode: string;
-  articleName: string;
-  operationCode: string;
-  containerCode: number;
-  dateStart: Date;
-  dateEnd: Date;
-  itemCode: string;
-  executionStatus: number;
-  priority: number;
-}
-
-export interface PlanItemGridModel {
-  item: ItemGrid;
-  operations: OperationGrid[];
-  linkedItem?: PlanItemGridModel;
-}
+import { Observable, Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
+import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
 
 @Component({
   selector: 'app-plan-container-grid',
   templateUrl: './plan-container-grid.component.html'
 })
 export class PlanContainerGridComponent {
+  planContainerGrid$: Observable<PlanContainerGrid[]>;
+  // selectedPlanItemGrid$: Observable<PlanItemGrid[]>;
+  limitDate$: Observable<Date>;
+  loading$: Observable<boolean>;
+  planHoursSwitch$: Observable<boolean>;
+  limitDateSubscription: Subscription;
+  containers$: Observable<ContainerSelect[]>;
+
+  constructor(private store: Store<AppState>) {
+    store.pipe(select(getSelectedPlanId))
+    .subscribe(id => {
+      store.dispatch(new LoadContainers());
+    });
+    this.loading$ = this.store.pipe(select(PlanContainerGridSelectors.loader));
+    this.planHoursSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+    this.limitDate$ = store.pipe(select(PlanContainerGridSelectors.limitContainerGridLoadDate));
+    this.planContainerGrid$ = store.pipe(select(PlanContainerGridSelectors.getPlanContainerGrid));
+    this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid()));
 
 
-  priorities = [
-    { Name: 'Nizka', ID: 1 },
-    { Name: 'Normalna', ID: 2 },
-    { Name: 'Visoka', ID: 3 }
-  ];
+    // this.selectedPlanItemGrid$ = store.pipe(select(PlanContainerGridSelectors.selectedPlanItemGrid));
 
-  itemPlanStatuses = [
-    { Name: 'Delno planiran', ID: 1 },
-    { Name: 'Lansiran', ID: 2 },
-    { Name: 'Dokončno planiran', ID: 3 },
-  ];
+    this.containers$ = store.pipe(select(getContainerSelectList));
+  }
 
-  itemExecutionStatuses = [
-    { Name: 'V izvajanju', ID: 1 },
-    { Name: 'Končan', ID: 2 },
-    { Name: 'Ni podatka', ID: 3 },
-    { Name: 'Planiran', ID: 4 }
-  ];
-
-  containers = [
-    {Code: 'M2', ID: 2},
-    {Code: 'M1', ID: 1},
-    {Code: 'D1', ID: 3},
-    {Code: 'D2', ID: 4},
-    {Code: 'Navidezno DM', ID: 5}
-  ];
-
-  model: OperationGrid[] = [
-    {
-      operationCode: '#0010 Mletje',
-      containerCode: 1,
-      dateStart: new Date(2019, 11, 8, 12, 15),
-      dateEnd: new Date(2019, 11, 8, 16, 15),
-      executionStatus: 4,
-      articleCode: '400678',
-      articleName: 'TESSAROL emajl bakreni RAL 8029',
-      itemCode: '2699869',
-      priority: 3
-    },
-    {
-      operationCode: '#0020 Dokončevanje',
-      containerCode: 4,
-      dateStart: new Date(2019, 11, 8, 12, 15),
-      dateEnd: new Date(2019, 11, 8, 16, 15),
-      executionStatus: 4,
-      articleCode: '400678',
-      articleName: 'TESSAROL emajl bakreni RAL 8029',
-      itemCode: '2699869',
-      priority: 2
-
-    },
-    {
-      operationCode: '#0010 Mletje',
-      containerCode: 1,
-      dateStart: new Date(2019, 11, 8, 12, 15),
-      dateEnd: new Date(2019, 11, 8, 16, 15),
-      executionStatus: 1,
-      articleCode: '400678',
-      articleName: 'TESSAROL emajl bakreni RAL 8029',
-      itemCode: '1699869',
-      priority: 2
-
-    },
-    {
-      operationCode: '#0020 Dokončevanje',
-      containerCode: 5,
-      dateStart: new Date(2019, 11, 8, 16, 15),
-      dateEnd: new Date(2019, 11, 8, 18, 15),
-      executionStatus: 4,
-      articleCode: '400678',
-      articleName: 'TESSAROL emajl bakreni RAL 8029',
-      itemCode: '1699869',
-      priority: 2
-
-    }
-  ];
-
-  // items: OperationGrid[] = [
-  //   {
-  //       operationCode: '#0010 Mletje',
-  //       containerCode: 1,
-  //       dateStart: new Date(2019, 11, 8, 12, 15),
-  //       dateEnd: new Date(2019, 11, 8, 16, 15),
-  //       itemCode: '1004321'
-  //   },
-  //   {
-  //     operationCode: '#0020 Dokončevanje',
-  //     containerCode: 4,
-  //     dateStart: new Date(2019, 11, 8, 12, 15),
-  //     dateEnd: new Date(2019, 11, 8, 16, 15),
-  //     itemCode: '1004321'
+  // onItemSelect(item: PlanContainerGrid) {
+  //   this.store.dispatch(new PlanItemGridActions.PlanItemGridOpen(item));
   // }
-  // ];
+
+  setLimitDate(date: Date) {
+    this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridLimitDate(date));
+  }
+
+  plannedHoursSwitch(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
+  }
 
 
   applyCellStyles(e) {

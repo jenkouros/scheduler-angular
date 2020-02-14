@@ -1,22 +1,40 @@
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { AppState } from './../../../store/app.reducers';
+import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as fromActions from '../actions/plan-item-grid.action';
 import { of } from 'rxjs';
 import { PlanItemGridService } from '../../services/plan-item-grid.service';
+import { Store, select } from '@ngrx/store';
 
 @Injectable()
 export class PlanItemGridEffect {
   constructor(
     private actions$: Actions,
-    private planItemGridService: PlanItemGridService
+    private planItemGridService: PlanItemGridService,
+    private store: Store<AppState>
   ) {}
 
+  // @Effect()
+  // loadPlanItemGrid$ = this.actions$.ofType(fromActions.LOAD_PLAN_ITEM_GRID).pipe(
+  //   map((action: fromActions.LoadPlanItemGrid ) => action),
+  //   switchMap(() =>
+  //     this.planItemGridService.loadPlanItemGrid().pipe(
+  //       map(event => new fromActions.LoadPlanItemGridSuccess(event)),
+  //       catchError(error => of(new fromActions.LoadPlanItemGridFail()))
+  //     )
+  //   )
+  // );
+
   @Effect()
-  loadPlanItemGrid$ = this.actions$.ofType(fromActions.LOAD_PLAN_ITEM_GRID).pipe(
-    map((action: fromActions.LoadPlanItemGrid ) => action),
-    switchMap(() =>
-      this.planItemGridService.loadPlanItemGrid().pipe(
+  loadPlanItemGridWithFilter$ = this.actions$.ofType(fromActions.LOAD_PLAN_ITEM_GRID).pipe(
+    withLatestFrom(
+      this.store.pipe(select(state => state.scheduler.filters)),
+      this.store.pipe(select(state => state.plan.items.selectedId)),
+      this.store.pipe(select(state => state.scheduler.planItemGrid.itemLimitDate))
+    ),
+    switchMap(([action, filters, idPlan, limitDate]) =>
+      this.planItemGridService.loadPlanItemGrid(idPlan, limitDate, filters.selectedEntities).pipe(
         map(event => new fromActions.LoadPlanItemGridSuccess(event)),
         catchError(error => of(new fromActions.LoadPlanItemGridFail()))
       )

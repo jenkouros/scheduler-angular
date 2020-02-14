@@ -12,6 +12,7 @@ const schedulerRoutes: Routes = [
         { path: 'groupselector', component: GroupSelectComponent },
         { path: 'planitems', component: ItemsComponent },
         { path: 'planitemgrid', component: PlanItemGridComponent },
+        { path: 'plancontainergrid', component: PlanContainerGridComponent },
         { path: 'planner', component: PlannerComponent },
         { path: 'search', component: SearcherComponent },
         { path: '**', redirectTo: 'planitems' }

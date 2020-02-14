@@ -1,4 +1,4 @@
-export interface PlanItemGridOperation {
+export interface PlanGridOperation {
   idPrePlanItem: number;
   code: string;
   name: string;

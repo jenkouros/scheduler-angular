@@ -1,4 +1,4 @@
-export interface PlanItemGridItem {
+export interface PlanGridItem {
   idItem: number;
   idItemBatch: number;
   itemCode: string;

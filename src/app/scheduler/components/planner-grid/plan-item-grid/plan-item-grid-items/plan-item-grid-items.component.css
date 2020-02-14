@@ -1,9 +1,9 @@
-::ng-deep .dx-row.dx-data-row {
+::ng-deep #plan-item-grid-container .dx-row.dx-data-row {
   background-color: #e6e6fa;
 
 }
 
-::ng-deep .dx-master-detail-row .dx-row.dx-data-row {
+::ng-deep #plan-item-grid-container .dx-master-detail-row .dx-row.dx-data-row {
   background-color: transparent;
 }
 

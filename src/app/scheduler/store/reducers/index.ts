@@ -6,6 +6,7 @@ import * as fromPreplanitems from './prePlanItems.reducer';
 import * as fromSearch from './search.reducer';
 import * as fromGroups from './groups.reducer';
 import * as fromPlanItemGrid from './plan-item-grid.reducer';
+import * as fromPlanContainerGrid from './plan-container-grid.reducer';
 
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
@@ -18,6 +19,7 @@ export interface SchedulerState {
   search: fromSearch.SearchState;
   groups: fromGroups.GroupState;
   planItemGrid: fromPlanItemGrid.PlanItemGridState;
+  planContainerGrid: fromPlanContainerGrid.PlanContainerGridState;
 }
 
 export function getInitialState() {
@@ -29,7 +31,8 @@ export function getInitialState() {
     preplanitems: fromPreplanitems.initState,
     search: fromSearch.initialState,
     groups: fromGroups.initialState,
-    planItemGrid: fromPlanItemGrid.initialState
+    planItemGrid: fromPlanItemGrid.initialState,
+    planContainerGrid: fromPlanContainerGrid.initialState
   } as SchedulerState;
 }
 
@@ -41,7 +44,8 @@ export const reducers: ActionReducerMap<SchedulerState> = {
   preplanitems: fromPreplanitems.prePlanItems,
   search: fromSearch.search,
   groups: fromGroups.groupsReducer,
-  planItemGrid: fromPlanItemGrid.planItemGridReducer
+  planItemGrid: fromPlanItemGrid.planItemGridReducer,
+  planContainerGrid: fromPlanContainerGrid.planItemGridReducer
 };
 
 export const getSchedulerState = createFeatureSelector<SchedulerState>('scheduler');
@@ -53,3 +57,4 @@ export { PreplanitemState } from './prePlanItems.reducer';
 export { SearchState } from './search.reducer';
 export { GroupState } from './groups.reducer';
 export { PlanItemGridState } from './plan-item-grid.reducer';
+export { PlanContainerGridState } from './plan-container-grid.reducer';

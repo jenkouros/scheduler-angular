@@ -57,6 +57,8 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
     this.store.dispatch(new fromStore.LoadPreplanItems());
     this.store.dispatch(new fromStore.GetSearchItemsStore(''));
     this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
+    this.store.dispatch(new fromStore.LoadPlanItemGrid());
+    this.store.dispatch(new fromStore.LoadPlanContainerGrid());
   }
 
   ngOnDestroy() {

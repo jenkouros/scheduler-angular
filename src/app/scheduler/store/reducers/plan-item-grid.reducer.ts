@@ -5,12 +5,18 @@ export interface PlanItemGridState {
   loading: boolean;
   planItemGrids: PlanItemGrid[];
   openedPlanItemGrids: PlanItemGrid[];
+  itemLimitDate: Date;
 }
 
+const loadLimitDate = new Date();
+loadLimitDate.setHours(0, 0, 0, 0);
+// loadLimitDate.setMonth(loadLimitDate.getMonth() - 1);
+loadLimitDate.setDate(loadLimitDate.getDate() - 7);
 export const initialState: PlanItemGridState = {
   loading: false,
   planItemGrids: [],
-  openedPlanItemGrids: []
+  openedPlanItemGrids: [],
+  itemLimitDate: loadLimitDate
 };
 
 export function planItemGridReducer (
@@ -22,6 +28,12 @@ export function planItemGridReducer (
       return {
         ...state,
         loading: true
+      };
+    }
+    case fromAction.LOAD_PLAN_ITEM_GRID_FAIL: {
+      return {
+        ...state,
+        loading: false
       };
     }
     case fromAction.LOAD_PLAN_ITEM_GRID_SUCCESS: {
@@ -42,7 +54,29 @@ export function planItemGridReducer (
 
       return {
         ...state,
-        planItemGrids: updatedGridItems
+        planItemGrids: updatedGridItems,
+        loading: false
+      };
+    }
+
+    case fromAction.AUTOPLAN_ITEM_FAIL: {
+      return {
+        ...state,
+        loading: false
+      };
+    }
+
+
+    case fromAction.PLAN_ITEM_GRID_UPDATE: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case fromAction.AUTOPLAN_ITEM: {
+      return {
+        ...state,
+        loading: true
       };
     }
 
@@ -52,6 +86,13 @@ export function planItemGridReducer (
       return {
         ...state,
         openedPlanItemGrids: selectedPlanItemGrid
+      };
+    }
+
+    case fromAction.PLAN_ITEM_GRID_SET_LIMIT_DATE: {
+      return {
+        ...state,
+        itemLimitDate: action.payload
       };
     }
   }

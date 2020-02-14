@@ -1,8 +1,8 @@
-import { PlanItemGridOperation } from './plan-item-grid-operation.model';
-import { PlanItemGridItem } from './plan-item-grid-item-model';
+import { PlanGridOperation } from './plan-grid-operation.model';
+import { PlanGridItem } from './plan-grid-item-model';
 export interface PlanItemGrid {
-  item: PlanItemGridItem;
-  operations: PlanItemGridOperation[];
+  item: PlanGridItem;
+  operations: PlanGridOperation[];
   packingItems: PlanItemGrid[];
   productionItems: PlanItemGrid[];
 }

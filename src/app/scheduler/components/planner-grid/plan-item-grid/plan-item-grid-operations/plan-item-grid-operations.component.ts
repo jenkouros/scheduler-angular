@@ -1,13 +1,13 @@
 import { AutoplanItem, PlanItemGridUpdate } from './../../../../store/actions/plan-item-grid.action';
-import { PlanItemGridItem } from './../../../../models/plan-item-grid-item-model';
+import { PlanGridItem } from '../../../../models/plan-grid-item-model';
 import { getContainerSelectList } from './../../../../store/selectors/containers.selectors';
 import { getSelectedPlanId } from './../../../../../plan/store/selectors/plans.selector';
 import { LoadContainers } from './../../../../store/actions/containers.action';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { AppState } from './../../../../../store/app.reducers';
-import { PlanItemGridOperation } from './../../../../models/plan-item-grid-operation.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { PlanGridOperation } from '../../../../models/plan-grid-operation.model';
+import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -17,17 +17,25 @@ import { Observable } from 'rxjs';
   templateUrl: './plan-item-grid-operations.component.html'
 })
 export class PlanItemGridOperationsComponent {
-  @Input() operations: PlanItemGridOperation[];
-  @Input() item: PlanItemGridItem;
+  @Input() operations: PlanGridOperation[];
+  @Input() item: PlanGridItem;
   @Output() updateItem = new EventEmitter();
-  containers$: Observable<ContainerSelect[]>;
+  @Input() containers: ContainerSelect[];
+  // containers$: Observable<ContainerSelect[]>;
+
+  @HostListener('dxmousewheel',  ['$event'])
+    onWindowScroll($event) {
+      console.log($event);
+      // $event.preventDefault();
+      // return false;
+  }
 
   constructor(private store: Store<AppState>) {
-    store.pipe(select(getSelectedPlanId))
-    .subscribe(id => {
-      store.dispatch(new LoadContainers());
-    });
-    this.containers$ = store.pipe(select(getContainerSelectList));
+    // store.pipe(select(getSelectedPlanId))
+    // .subscribe(id => {
+    //   store.dispatch(new LoadContainers());
+    // });
+    // this.containers$ = store.pipe(select(getContainerSelectList));
 
   }
 
@@ -38,7 +46,7 @@ export class PlanItemGridOperationsComponent {
     const updatedOperation = {
       ...e.oldData,
       ...e.newData
-    } as PlanItemGridOperation;
+    } as PlanGridOperation;
 
     if (updatedOperation.idSubItem && updatedOperation.idContainer && updatedOperation.timeStart) {
 

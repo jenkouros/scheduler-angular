@@ -1,7 +1,7 @@
 import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import { Action } from '@ngrx/store';
 import { ItemAutoplanRequest } from '../../models/item-autoplan.model';
-import { PlanItemGridOperation } from '../../models/plan-item-grid-operation.model';
+import { PlanGridOperation } from '../../models/plan-grid-operation.model';
 
 export const LOAD_PLAN_ITEM_GRID = '[PlanItemGrid] Load Plan Item Grid';
 export const LOAD_PLAN_ITEM_GRID_SUCCESS = '[PlanItemGrid] Load Plan Item Grid Success';
@@ -11,6 +11,7 @@ export const AUTOPLAN_ITEM_FAIL = '[PlanItemGrid] Auto plan item fail';
 export const UPDATE_ITEM_GRID_SUCCESS = '[PlanItemGrid] Auto plan item success';
 export const PLAN_ITEM_GRID_OPEN = '[PlanItemGrid] Open Item';
 export const PLAN_ITEM_GRID_UPDATE = '[PlanItemGrid] Plan Item Grid Update';
+export const PLAN_ITEM_GRID_SET_LIMIT_DATE = '[PlanItemGrid] Set load item limit date';
 
 export class LoadPlanItemGrid implements Action {
   readonly type = LOAD_PLAN_ITEM_GRID;
@@ -48,7 +49,12 @@ export class PlanItemGridOpen implements Action {
 
 export class PlanItemGridUpdate implements Action {
   readonly type = PLAN_ITEM_GRID_UPDATE;
-  constructor(public payload: PlanItemGridOperation) {}
+  constructor(public payload: PlanGridOperation) {}
+}
+
+export class SetItemLimitDate implements Action {
+  readonly type = PLAN_ITEM_GRID_SET_LIMIT_DATE;
+  constructor(public payload: Date) {}
 }
 
 export type PlanItemGridAction =
@@ -60,4 +66,5 @@ export type PlanItemGridAction =
   | AutoplanItemFail
   | PlanItemGridOpen
   | PlanItemGridUpdate
+  | SetItemLimitDate
   ;

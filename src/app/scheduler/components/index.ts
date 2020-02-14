@@ -1,3 +1,4 @@
+import { PlanContainerGridOperationsComponent } from './planner-grid/plan-container-grid/plan-container-grid-operations/plan-container-grid-operations.component';
 import { PlanViewerLinkedItemsComponent } from './planner/plan-viewer/linked-items/plan-viewer-linked-items.component';
 import { PreplanitemHidePopupComponent } from './preplanitem/preplanitem-hide-popup/preplanitem-hide-popup.component';
 import { FiltersComponent } from './filters/filters.component';
@@ -69,7 +70,9 @@ export const components: any[] = [
     PreplanitemHidePopupComponent,
     PlanViewerLinkedItemsComponent,
     PlanItemGridOperationsComponent,
-    PlanItemGridItemsComponent
+    PlanItemGridItemsComponent,
+    PlanContainerGridComponent,
+    PlanContainerGridOperationsComponent
 ];
 
 export * from './filters/filters.component';
@@ -105,4 +108,5 @@ export * from './planner/plan-viewer/linked-items/plan-viewer-linked-items.compo
 export * from './planner-grid/plan-item-grid/plan-item-grid-operations/plan-item-grid-operations.component';
 export * from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
 
-
+export * from './planner-grid/plan-container-grid/plan-container-grid.component';
+export * from './planner-grid/plan-container-grid/plan-container-grid-operations/plan-container-grid-operations.component';
