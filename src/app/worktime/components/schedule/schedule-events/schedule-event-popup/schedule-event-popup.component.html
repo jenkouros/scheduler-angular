@@ -1,0 +1,65 @@
+<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel" [confirmCallback]="onSubmit"
+  [title]="header" [validToConfirm]="validToConfirm()">
+  <!--  <p>{{timetable |json}}</p>-->
+  <form [formGroup]="form">
+    <div class="dx-fieldset">
+      <div class="dx-field">
+        <div class="dx-field-label">{{translate('Name')}}</div>
+        <div class="dx-field-value">
+          <dx-text-box placeholder="{{translate('Scheduler_Name_Dots')}}" formControlName="name" [isValid]="!nameControlInvalid">
+          </dx-text-box>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">{{translate('Event_From_To')}}</div>
+        <div class="dx-field-value">
+          <div style="float:left">
+            <dx-date-box type="datetime" formControlName="timeStart" [isValid]="!timeStartControlInvalid"
+              dateSerializationFormat="yyyy-MM-ddTHH:mm:ss"></dx-date-box>
+          </div>
+          <div style="float:left">&nbsp;</div>
+          <div style="float:left">
+            <dx-date-box style="float:left" type="datetime" formControlName="timeEnd" [isValid]="!timeEndControlInvalid"
+              dateSerializationFormat="yyyy-MM-ddTHH:mm:ss"></dx-date-box>
+          </div>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">{{translate('Timetable_WorkingType')}}</div>
+        <div class="dx-field-value">
+          <dx-select-box formControlName="timetableType" [items]="timetableTypes" displayExpr="name" valueExpr="key"></dx-select-box>
+        </div>
+      </div>
+      <div class="dx-field">
+        <div class="dx-field-label">{{translate('Repetitions')}}</div>
+        <div class="dx-field-value">
+          <dx-select-box formControlName="repeating" [items]="repeatings" displayExpr="name" valueExpr="key"
+            (onValueChanged)="repeatingChanged($event)"></dx-select-box>
+        </div>
+      </div>
+      <div *ngIf="repeatingVisible">
+        <div class="dx-field">
+          <div class="dx-field-label">{{translate('Repeat_On')}}</div>
+          <div class="dx-field-value">
+            <div style="float:left">
+              <dx-number-box formControlName="repetitions" [showSpinButtons]="true"></dx-number-box>
+            </div>
+            <div style="float:left">&nbsp;</div>
+            <div style="float:left">
+              <dx-select-box formControlName="frequency" [items]="frequencyItems" displayExpr="name" valueExpr="key"
+                (onValueChanged)="frequencyChanged($event)"></dx-select-box>
+            </div>
+          </div>
+        </div>
+        <div class="dx-field" *ngIf="repetitionVisible">
+          <div class="dx-field-label">{{translate('Repeat_On_ChosenDay')}}</div>
+          <div class="dx-field-value">
+            <div class="left" *ngFor="let day of days; let i=index">
+              <button type="button" class="btn" (click)="selectDay(i)" [ngClass]="isSelected(i) ? 'btn-primary': 'btn-light'">{{day}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-popup>

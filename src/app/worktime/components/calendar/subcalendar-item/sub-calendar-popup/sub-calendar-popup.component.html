@@ -1,0 +1,15 @@
+<app-popup height="auto" width="50%" [visible]="visible" [cancelCallback]="onCancel" [validToConfirm]="validToConfirm()"
+  [confirmCallback]="onSubmit" [title]="header">
+  <!--  <p>{{timetable |json}}</p>-->
+  <form [formGroup]="form">
+    <div class="dx-fieldset">
+      <div class="dx-field">
+        <div class="dx-field-label">Naziv</div>
+        <div class="dx-field-value">
+          <dx-text-box placeholder="Naziv dogodka..." formControlName="name" [isValid]="!nameControlInvalid">
+          </dx-text-box>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-popup>

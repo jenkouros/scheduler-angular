@@ -1,15 +1,22 @@
 import * as fromAction from '../actions/events.action';
-import { ContainerEvents, PlannedEvent } from '../../models/event.model';
+import { ContainerEvents, PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
+import { PlanSchedule } from '../../models/planschedule.dto';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
     loading: boolean;
     loaded: boolean;
+    timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
+    timeUpdateByRealizationSuggestion: {[idPlanItem: number]: PlannedEventMove} | null;
+    notWorkingHoursTimeUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
     uiState: {
         massLockPopup: {
             visibility: boolean,
             massLockPopupContainers: number[]
-        }
+        },
+        idItemBatchTimeUpdateSuggestion: number | null,
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: number | null,
+        schedulerCurrentDate: Date | null
     };
 }
 
@@ -17,11 +24,17 @@ export const initialState: EventsState = {
     entities: {},
     loaded: false,
     loading: false,
+    timeUpdateSuggestion: null,
+    timeUpdateByRealizationSuggestion: null,
+    notWorkingHoursTimeUpdateSuggestion: null,
     uiState: {
         massLockPopup: {
             visibility: false,
             massLockPopupContainers: []
-        }
+        },
+        idItemBatchTimeUpdateSuggestion: null,
+        idPlanItemNotWorkingHoursTimeUpdateSuggestion: null,
+        schedulerCurrentDate: null
     }
 };
 
@@ -31,21 +44,6 @@ export function eventsReducer(
 ): EventsState {
     switch (action.type) {
         case fromAction.LOAD_EVENTS: {
-            // const events = { ...state.entities };
-            // for (const i of action.payload.containerIds) {
-            //     const containerEvents: ContainerEvents = {
-            //         ...events[i],
-            //         dateFrom: action.payload.dateFrom,
-            //         dateTo: action.payload.dateTo,
-            //         events: events[i] ? [...events[i].events] : []
-            //     };
-            //     events[i] = containerEvents;
-            // }
-            // return {
-            //     ...state,
-            //     loading: true,
-            //     entities: events
-            // };
             return {
                 ...state,
                 loading: true
@@ -56,30 +54,29 @@ export function eventsReducer(
 
             const dict: {[containerId: number]: PlannedEvent[] } = {};
 
-            // const initDictionary: number[] = [];
             for (const event of action.payload.events) {
                 if (event.hasOwnProperty('containerId')) {
                     if (!dict[event.containerId]) {
                         dict[event.containerId] = [];
                     }
                     dict[event.containerId].push(event);
+                }
+            }
 
-                    // if (initDictionary.indexOf(event.containerId) < 0) {
-                    //     events[event.containerId].events = [];
-                    //     initDictionary.push(event.containerId);
-                    // }
-
-                    // events[event.containerId] = {
-                    //     events: [...events[event.containerId].events, event],
-                    //     dateFrom: action.payload.dateFrom,
-                    //     dateTo: action.payload.dateTo
-                    // };
+            const notWorkingHoursDict: {[containerId: number]: PlanSchedule[] } = [];
+            for (const notWorkingHoursEvent of action.payload.notWorkingHoursEvents) {
+                if (notWorkingHoursEvent.hasOwnProperty('idContainer')) {
+                    if (!notWorkingHoursDict[notWorkingHoursEvent.idContainer]) {
+                        notWorkingHoursDict[notWorkingHoursEvent.idContainer] = [];
+                    }
+                    notWorkingHoursDict[notWorkingHoursEvent.idContainer].push(notWorkingHoursEvent);
                 }
             }
 
             for (const key of action.payload.containers) {
                 events[key] = {
                     events: dict[key] || [],
+                    notWorkingHoursEvents: notWorkingHoursDict[key] || [],
                     dateFrom: action.payload.dateFrom,
                     dateTo: action.payload.dateTo
                 };
@@ -107,24 +104,6 @@ export function eventsReducer(
                 loading: true
             };
         }
-        // case fromAction.UPDATE_EVENT_SUCCESS:
-        // case fromAction.CREATE_EVENT_SUCCESS: {
-        //     const events =  { ...state.entities };
-
-        //     // if (!events[action.payload.containerId]) {
-        //     //     events[action.payload.containerId] = <any>{};
-        //     // }
-
-        //     events[action.payload.containerId] = {
-        //         ...events[action.payload.containerId],
-        //         events: [...events[action.payload.containerId].events || [], action.payload]
-        //     };
-
-        //     return {
-        //         ...state,
-        //         entities: events
-        //     };
-        // }
         case fromAction.CREATE_EVENT_FAIL: {
             return {
                 ...state,
@@ -133,13 +112,19 @@ export function eventsReducer(
             };
         }
         case fromAction.DELETE_EVENT_SUCCESS: {
-            const events =  { ...state.entities };
-            events[action.payload.containerId].events = events[action.payload.containerId].events.filter((item) =>
-                item.id !== action.payload.id);
+            const containerEvents =  { ...state.entities };
+            containerEvents[action.payload.containerId] = {
+                ...containerEvents[action.payload.containerId],
+                events: containerEvents[action.payload.containerId].events.filter((item) =>
+                    item.id !== action.payload.id)
+            };
+
+            // containerEvents[action.payload.containerId].events = containerEvents[action.payload.containerId].events.filter((item) =>
+            //     item.id !== action.payload.id);
 
             return {
                 ...state,
-                entities: events,
+                entities: containerEvents,
                 loaded: false,
                 loading: false
             };
@@ -156,7 +141,6 @@ export function eventsReducer(
                 }
             };
         }
-
         case fromAction.REMOVE_EVENTS: {
             const { [action.payload]: removed, ...events} = state.entities;
             console.log(action.payload);
@@ -173,6 +157,84 @@ export function eventsReducer(
                 entities: {},
                 loaded: false,
                 loading: false
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idItemBatchTimeUpdateSuggestion: action.payload
+                }
+            };
+        }
+        case fromAction.CLEAR_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idItemBatchTimeUpdateSuggestion: null
+                },
+                timeUpdateSuggestion: null
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION_SUCCESS: {
+            const suggestion: { [idPrePlanItem: number]: PlannedEventMove } = {};
+            action.payload.forEach(move => suggestion[move.idPrePlanItem] = move);
+
+            return {
+                ...state,
+                timeUpdateSuggestion: suggestion
+            };
+        }
+        case fromAction.GET_NOTWORKINGHOURS_PLANITEM_UPDATE_SUGGESTION_SUCCESS: {
+            return {
+                ...state,
+                notWorkingHoursTimeUpdateSuggestion: action.payload
+            };
+        }
+        case fromAction.GET_ITEMBATCH_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idPlanItemNotWorkingHoursTimeUpdateSuggestion: action.payload
+                }
+            };
+        }
+
+        case fromAction.CLEAR_NOTWORKINGHOURS_PLANITEM_SUGGESTION: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    idPlanItemNotWorkingHoursTimeUpdateSuggestion: null
+                },
+                notWorkingHoursTimeUpdateSuggestion: null
+            };
+        }
+        case fromAction.CLEAR_REALIZATION_TIMEUPDATE_SUGGESTION: {
+            return {
+                ...state,
+                timeUpdateByRealizationSuggestion: null
+            };
+        }
+        case fromAction.GET_REALIZATION_TIMEUPDATE_SUGGESTION_SUCCESS: {
+            const suggestion: { [idPlanItem: number]: PlannedEventMove } = {};
+            action.payload.forEach(move => suggestion[move.idPlanItem] = move);
+            return {
+                ...state,
+                timeUpdateByRealizationSuggestion: suggestion
+            };
+        }
+
+        case fromAction.SET_CURRENTDATE: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    schedulerCurrentDate: action.payload
+                }
             };
         }
 

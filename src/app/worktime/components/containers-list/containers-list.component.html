@@ -1,0 +1,27 @@
+<dx-data-grid class="grid"
+  [dataSource]="containers"
+  keyExpr="id"
+  [hoverStateEnabled]="true"
+  (onSelectionChanged)="onSelected($event)"
+  (onContentReady)="onContentReadyHandler($event)">
+  <dxo-scrolling mode="virtual">
+
+
+    <!-- or "virtual" | "infinite" -->
+  </dxo-scrolling>
+  <dxo-load-panel [enabled]="false"></dxo-load-panel>
+  <dxo-selection mode="multiple"></dxo-selection>
+  <!--<dxo-paging [pageSize]="5"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10]" [showInfo]="true" [showNavigationButtons]="true">
+  </dxo-pager>-->
+  <dxo-filter-row [visible]="true" [applyFilter]="true">
+  </dxo-filter-row>
+  <dxi-column dataType="string" [caption]="header" dataField="" alignment="center" cellTemplate="containerCellTemplate"></dxi-column>
+
+
+  <div *dxTemplate="let cell of 'containerCellTemplate'">
+    <div>({{ cell.data.code }}) {{ cell.data.name }}</div>
+  </div>
+
+
+</dx-data-grid>

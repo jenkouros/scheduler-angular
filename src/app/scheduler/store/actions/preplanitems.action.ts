@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { PreplanItemRequest, PreplanItem } from '../../models/preplanitem.dto';
+import { PreplanItemRequest, PreplanItem, PrePlanItemSuggestion } from '../../models/preplanitem.dto';
 
 export const CREATE_PREPLANITEMS = '[PrePlanItem] CREATE PreplanItems';
 export const LOAD_PREPLANITEMS = '[PrePlanItem] GET PreplanItems';
@@ -11,6 +11,15 @@ export const DRAGEND_PREPLANITEM = '[PrePlanItem] DRAGEND PreplanItem';
 export const DELETE_ITEMBATCH = '[PrePlanItem] DELETE ItemBatch';
 export const DELETE_ITEMBATCH_FAIL = '[PrePlanItem] DELETE ItemBatch FAIL';
 export const DELETE_ITEMBATCH_SUCCESS = '[PrePlanItem] DELETE ItemBatch SUCCESS';
+export const SHOW_ITEMBATCH_DELETE_POPUP = '[PrePlanItem] SHOW DELETE ItemBatch popup';
+export const HIDE_ITEMBATCH_DELETE_POPUP = '[PrePlanItem] HIDE DELETE ItemBatch popup';
+export const LOAD_PREPLANITEMS_SUGGESTIONS = '[PrePlanItem] GET PreplanItemsSuggestions';
+export const LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS = '[PrePlanItem] GET PreplanItemsSuggestions success';
+export const LOAD_PREPLANITEMS_SUGGESTIONS_FAIL = '[PrePlanItem] GET PreplanItemsSuggestions fail';
+export const SHOW_PREPLANITEM_HIDE_POPUP = '[PrePlanItem] SHOW PreplanItem hide popup';
+export const HIDE_PREPLANITEM_HIDE_POPUP = '[PrePlanItem] HIDE PreplanItem hide popup';
+export const HIDE_PREPLANITEM = '[PrePlanItem] HIDE PreplanItem';
+export const HIDE_PREPLANITEM_FAIL = '[PrePlanItem] HIDE PreplanItem FAIL';
 
 
 export class CreatePreplanItems implements Action {
@@ -57,6 +66,50 @@ export class DeleteItemBatchFail implements Action {
     readonly type = DELETE_ITEMBATCH_FAIL;
 }
 
+export class HidePreplanItem implements Action {
+  readonly type = HIDE_PREPLANITEM;
+  constructor(public payload: number) {}
+}
+
+export class HidePreplanItemFail implements Action {
+  readonly type = HIDE_PREPLANITEM_FAIL;
+}
+
+export class ShowItemBatchDeletePopup implements Action {
+    readonly type = SHOW_ITEMBATCH_DELETE_POPUP;
+    constructor (public payload: { idItemBatch: number }) {
+    }
+}
+
+export class HideItemBatchDeletePopup implements Action {
+    readonly type = HIDE_ITEMBATCH_DELETE_POPUP;
+}
+
+export class ShowPreplanitemHidePopup implements Action {
+  readonly type = SHOW_PREPLANITEM_HIDE_POPUP;
+  constructor (public payload: { idPreplanItem: number }) {
+  }
+}
+
+export class HidePreplanitemHidePopup implements Action {
+  readonly type = HIDE_PREPLANITEM_HIDE_POPUP;
+}
+
+export class LoadPreplanItemsSuggestions implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS;
+    constructor(public payload: number) {}
+}
+
+export class LoadPreplanItemsSuggestionsSuccess implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS_SUCCESS;
+    constructor(public payload: PrePlanItemSuggestion[]) {
+    }
+}
+
+export class LoadPreplanItemsSuggestionsFail implements Action {
+    readonly type = LOAD_PREPLANITEMS_SUGGESTIONS_FAIL;
+}
+
 export type PreplanitemAction =
     | CreatePreplanItems
     | LoadPreplanItems
@@ -68,4 +121,11 @@ export type PreplanitemAction =
     | DeleteItemBatch
     | DeleteItemBatchFail
     | DeleteItemBatchSuccess
+    | ShowItemBatchDeletePopup
+    | HideItemBatchDeletePopup
+    | LoadPreplanItemsSuggestions
+    | LoadPreplanItemsSuggestionsSuccess
+    | LoadPreplanItemsSuggestionsFail
+    | ShowPreplanitemHidePopup
+    | HidePreplanitemHidePopup
 ;

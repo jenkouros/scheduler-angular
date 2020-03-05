@@ -1,0 +1,32 @@
+<!-- <div style="display: flex; justify-content: center; margin-top: 20px;">
+  <div class="btn-group" >
+      <a class="btn btn-secondary active" [routerLink]="['/auth/updateuser']">{{translate('Password')}}</a>
+      <a class="btn btn-secondary" [routerLink]="['/scheduler/groupselector']">{{translate('Group')}}</a>
+  </div>
+</div> -->
+
+
+<div class="container" style="width: 40%; margin-top: 30px">
+  <h2 style="margin-bottom:30px;">{{translate('Password_Change')}}</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="password">{{translate('New_Password')}}</label>
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched" class="alert alert-danger">
+            {{translate('New_Password_Required')}}
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="newpassword">{{translate('Confirm_New_Password')}}</label>
+          <input type="password" formControlName="newpassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.newpassword.errors }" />
+          <div *ngIf="loginForm.get('newpassword')!.invalid && loginForm.get('newpassword')!.touched" class="alert alert-danger">
+            {{translate('Confirm_New_Password_Required')}}
+          </div>
+      </div>
+      <div class="form-group">
+          <button class="btn btn-primary" style="background-color:#1f5684; border-color: #1f5684">{{translate('Change')}}</button>
+      </div>
+      <div *ngIf="error && !saved" class="alert alert-danger">{{error}}</div>
+      <div *ngIf="saved" class="alert alert-success">{{translate('Change_Success')}}</div>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+.planLabel {
+  color: #fff !important;
+}
+.toolbar {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center !important;
+}
+
+.toolbar > div {
+  margin-left: 2px;
+  margin-right: 2px;
+  align-items: center !important;
+}
+
+.select-item {
+  display: flex;
+
+  flex-direction: row;
+  align-items: center !important;
+}
+
+.select-item--txt {
+  position: relative;
+  min-height: 30px;
+  flex: 1;
+}
+
+.select-item--right {
+  margin-left: auto;
+  max-width: 60px;
+}
+
+::ng-deep .custom-item {
+  position: relative;
+  min-height: 30px;
+}

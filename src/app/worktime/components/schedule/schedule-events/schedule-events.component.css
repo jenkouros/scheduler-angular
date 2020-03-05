@@ -1,0 +1,31 @@
+::ng-deep .dx-datagrid-header-panel {
+  padding-top: 10px;
+}
+
+::ng-deep .dx-datagrid-header-panel .dx-toolbar {
+  margin: 0;
+  padding-right: 5px;
+  background-color: transparent;
+}
+
+::ng-deep .dx-datagrid-header-panel .dx-toolbar-items-container {
+  height: 40px;
+}
+
+::ng-deep
+  .dx-datagrid-header-panel
+  .dx-toolbar-before
+  .dx-toolbar-item:last-child {
+  padding-right: 5px;
+}
+
+::ng-deep .informer {
+  height: 40px;
+  text-align: left;
+  color: #fff;
+}
+
+::ng-deep .name {
+  padding-top: 5px;
+  line-height: 27px;
+}

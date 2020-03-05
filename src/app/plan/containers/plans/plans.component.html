@@ -1,0 +1,29 @@
+<app-plan-list
+  [planItems]="plans$ | async"
+  (selected)="onSelect($event)"
+  (add)="onAdd($event)"
+  (remove)="confirmDelete($event)"
+  (showSimulation)="showSimulation($event)"
+>
+</app-plan-list>
+<app-plan-popup
+  [plan]="plan"
+  [visible]="isPopupVisible$ | async"
+  (cancel)="onCancel()"
+  (update)="onUpdate($event)"
+>
+</app-plan-popup>
+<app-plan-delete-popup
+  [plan]="plan"
+  [visible]="isDeletePopupVisible$ | async"
+  (confirm)="onConfirmRemove($event)"
+  (cancel)="onCancelRemove()"
+>
+</app-plan-delete-popup>
+
+<app-plan-simulation-popup
+  [changes]="simulations$ | async"
+  [visible]="isSimulationPopupVisible$ | async"
+  (cancel)="onCancelSimulation()"
+>
+</app-plan-simulation-popup>

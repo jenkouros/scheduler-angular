@@ -10,7 +10,6 @@ export class FieldComponent implements OnInit {
   @Input() value: string | null;
   @Input() isStatic = false;
   @HostBinding('class.dx-field') hostClass = true;
-
   constructor() { }
 
   ngOnInit() {

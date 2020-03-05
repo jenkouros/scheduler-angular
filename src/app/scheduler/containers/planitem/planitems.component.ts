@@ -1,96 +1,211 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
-import { PlannedEvent, PlanItemsLoadRequest } from '../../models/event.model';
+import {
+  PlannedEvent,
+  PlanItemsLoadRequest,
+  PlannedEventMove,
+  PlannedEventNotWorkingHoursMove
+} from '../../models/event.model';
 import { PreplanItem } from '../../models/preplanitem.dto';
 import { Observable } from 'rxjs';
 import { ContainerSelect } from '../../models/container.viewModel';
+import { PlanSchedule } from '../../models/planschedule.dto';
+import { PreplanitemUiState } from '../../models/preplanItem.store';
+import * as fromPlanStore from '../../../plan/store';
 
 @Component({
-    selector: 'app-planitems',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
-        <app-plan-viewer
-            [selectedPreplanItem]="selectedPrePlanItem$ | async"
-            [selectedContainers]="selectedContainers$ | async"
-            [planItems]="planItems$ | async"
-            [preplanItemDragEnd]="prePlanItemDragEnd$ | async"
-            (removeBlankSpace)="onRemoveBlankSpace($event)"
-            (toggleLock)="onToggleLock($event)"
-            (showMassLockPopup)="onShowMassLockPopup($event)"
-            (planItemLoad)="onPlanItemLoad($event)"
-            (planItemCreate)="onPlanItemCreate($event)"
-            (planItemUpdate)="onPlanItemUpdate($event)"
-            (planItemDelete)="onPlanItemDelete($event)">
-        </app-plan-viewer>
-    `
+  selector: 'app-planitems',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <app-plan-viewer
+      [currentDate]="currentDate"
+      [selectedPreplanItem]="selectedPrePlanItem$ | async"
+      [selectedContainers]="selectedContainers$ | async"
+      [planItemGetReponse]="planItems$ | async"
+      [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
+      [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
+      (planItemReload)="onPlanItemReload($event)"
+      (removeBlankSpace)="onRemoveBlankSpace($event)"
+      (toggleLock)="onToggleLock($event)"
+      (showMassLockPopup)="onShowMassLockPopup($event)"
+      (planItemLoad)="onPlanItemLoad($event)"
+      (planItemCreate)="onPlanItemCreate($event)"
+      (planItemUpdate)="onPlanItemUpdate($event)"
+      (planItemDelete)="onPlanItemDelete($event)"
+      (getResolveSequenceSuggestion)="onGetResolveSequenceSuggestion($event)"
+      (resolveSequence)="onResolveSequence($event)"
+      (clearTimeSuggestion)="onClearTimeSuggestion()"
+      (getResolveNotWorkingHoursSuggestion)="onGetResolveNotWorkingHoursSuggestion($event)"
+      (resolveNotWorkingHours)="onResolveNotWorkingHours($event)"
+      (clearNotWorkingHoursSuggestion)="onClearNotWorkingHoursSuggestion()"
+      (loadTimeRealizationSuggestion)="onLoadTimeRealizationSuggestion($event)"
+    >
+    </app-plan-viewer>
+    <app-realization-timeupdate-popup
+      [planItems]="(planItems$ | async).planItems"
+      [suggestion]="timeUpdateRealizationSuggestion$ | async"
+      (clearTimeRealizationSuggestion)="onClearTimeRealizationSuggestion()"
+      (resolveTimeRealization)="onResolveRealization($event)"
+    >
+    </app-realization-timeupdate-popup>
+  `
 })
 export class PlanitemsComponent implements OnInit {
-    selectedPrePlanItem$: Observable<PreplanItem | null>;
-    selectedContainers$: Observable<ContainerSelect[]>;
-    planItems$: Observable<PlannedEvent[]>;
-    prePlanItemDragEnd$: Observable<boolean>;
-    private _containers: ContainerSelect[] = [];
-    constructor(private store: Store<fromStore.SchedulerState>) {}
+  selectedPrePlanItem$: Observable<PreplanItem | null>;
+  selectedContainers$: Observable<ContainerSelect[]>;
+  planItems$: Observable<{
+    planItems: PlannedEvent[];
+    notWorkingHoursEvents: { [idContainer: number]: PlanSchedule[] };
+  }>;
+  prePlanItemUiState$: Observable<PreplanitemUiState>;
+  timeUpdateSuggestion$: Observable<{ [idPrePlanItem: number]: PlannedEventMove } | null>;
+  timeUpdateRealizationSuggestion$: Observable<{ [idPlanItem: number]: PlannedEventMove } | null>;
+  notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
+  currentDate = new Date();
 
-    ngOnInit(): void {
-        this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
-        this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
-        this.planItems$ = this.store.pipe(select(fromStore.getEvents));
-        // this.selectedContainers$.subscribe(containers => {
-        //     if (containers && containers.length > 0) {
-        //         if (containers.length > this._containers.length) {
-        //             console.log('get events from selector');
-        //             this.planItems$ = this.store.pipe(
-        //                 select(fromStore.getEventsForContainers(containers.map(i => i.id)))
-        //             );
-        //         }
-        //         this._containers = containers;
-        //         // this.planItems$ = this.store.pipe(
-        //         //     map(fromStore.getEventsForContainers(ids)),
-        //         //     distinctUntilChanged()
-        //         // );
-        //         // this.planItems$.subscribe(data => console.log(data));
-        //     } else {
-        //         this._containers = [];
-        //     }
-        // });
-        this.prePlanItemDragEnd$ = this.store.select(fromStore.getSelectedPrePlanItemDraggedEnd);
-    }
+  private _containers: ContainerSelect[] = [];
+  constructor(
+    private store: Store<fromStore.SchedulerState>,
+    private planStore: Store<fromPlanStore.SchedulerPlansState>
+  ) {}
 
-    onPlanItemLoad(loadRequest: PlanItemsLoadRequest) {
-        this.store.dispatch(
-            new fromStore.LoadEvents({
-                containerIds: loadRequest.containerIds,
-                dateFrom: loadRequest.fromDate,
-                dateTo: loadRequest.toDate
-            })
-        );
-    }
+  ngOnInit(): void {
+    /* this.planStore.select(fromPlanStore.getSelectedPlanId).subscribe(id => {
+      console.log(id);
+      this.store.select(fromStore.getSelectedContainerIds).subscribe(ids => {
+        this.store.dispatch(new fromStore.ReloadEvents({ containerIds: ids }));
+      });
+    }); */
 
-    onPlanItemCreate(planItem: PlannedEvent) {
-        this.store.dispatch(new fromStore.CreateEvent(planItem));
-    }
+    this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
+    this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
+    this.planItems$ = this.store.pipe(select(fromStore.getEvents));
 
-    onPlanItemUpdate(planItem: PlannedEvent) {
-        this.store.dispatch(new fromStore.UpdateEvent(planItem));
-    }
+    // this.selectedContainers$.subscribe(containers => {
+    //     if (containers && containers.length > 0) {
+    //         if (containers.length > this._containers.length) {
+    //             console.log('get events from selector');
+    //             this.planItems$ = this.store.pipe(
+    //                 select(fromStore.getEventsForContainers(containers.map(i => i.id)))
+    //             );
+    //         }
+    //         this._containers = containers;
+    //         // this.planItems$ = this.store.pipe(
+    //         //     map(fromStore.getEventsForContainers(ids)),
+    //         //     distinctUntilChanged()
+    //         // );
+    //         // this.planItems$.subscribe(data => console.log(data));
+    //     } else {
+    //         this._containers = [];
+    //     }
+    // });
+    this.timeUpdateSuggestion$ = this.store.select(fromStore.getItemBatchTimeUpdateSuggestion);
+    this.timeUpdateRealizationSuggestion$ = this.store.select(
+      fromStore.getRealizationTimeUpdateSuggestion
+    );
+    this.notWorkingHoursUpdateSuggestion$ = this.store.select(
+      fromStore.getNotWorkingHoursUpdateSuggestion
+    );
+    this.store.select(fromStore.getEventsUiState).subscribe(i => {
+      if (i.schedulerCurrentDate && i.schedulerCurrentDate !== this.currentDate) {
+        this.currentDate = i.schedulerCurrentDate;
+      }
+    });
+    // this.prePlanItemUiState$ = this.store.select(fromStore.getPrePlanItemUiState);
+  }
 
-    onPlanItemDelete(planItem: PlannedEvent) {
-        this.store.dispatch(new fromStore.DeleteEvent(planItem));
-    }
+  onPlanItemReload(containerIds: number[]) {
+    this.store.dispatch(new fromStore.ReloadEvents({ containerIds: containerIds }));
+  }
 
-    onRemoveBlankSpace(containerIds: number[]) {
-        this.store.dispatch(new fromStore.RemoveContainersBlankSpace(
-            { containerIds: containerIds }
-        ));
-    }
+  onPlanItemLoad(loadRequest: PlanItemsLoadRequest) {
+    this.store.dispatch(
+      new fromStore.LoadEvents({
+        containerIds: loadRequest.containerIds,
+        dateFrom: loadRequest.fromDate,
+        dateTo: loadRequest.toDate
+      })
+    );
+  }
 
-    onToggleLock(plannedEvent: PlannedEvent) {
-        this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
-    }
+  onPlanItemCreate(planItem: PlannedEvent) {
+    this.store.dispatch(new fromStore.CreateEvent(planItem));
+  }
 
-    onShowMassLockPopup(containerIds: number[]) {
-        this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: containerIds, visibility: true }));
-    }
+  onPlanItemUpdate(planItem: PlannedEvent) {
+    this.store.dispatch(new fromStore.UpdateEvent(planItem));
+  }
+
+  onPlanItemDelete(planItem: PlannedEvent) {
+    this.store.dispatch(new fromStore.DeleteEvent(planItem));
+  }
+
+  onRemoveBlankSpace(containerIds: number[]) {
+    this.store.dispatch(new fromStore.RemoveContainersBlankSpace({ containerIds: containerIds }));
+  }
+
+  onToggleLock(plannedEvent: PlannedEvent) {
+    this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
+  }
+
+  onShowMassLockPopup(containerIds: number[]) {
+    this.store.dispatch(
+      new fromStore.ToggleMassLockPopup({ containerIds: containerIds, visibility: true })
+    );
+  }
+
+  onResolveSequence(eventMoveList: PlannedEventMove[]) {
+    this.store.dispatch(
+      new fromStore.UpdateEvents({
+        planItemMoves: eventMoveList,
+        fixPlanItems: false,
+        ignoreStatusLimitation: false
+      })
+    );
+  }
+
+  onGetResolveSequenceSuggestion(idItemBatch: number) {
+    this.store.dispatch(new fromStore.GetItemBatchTimeUpdateSuggestion(idItemBatch));
+  }
+
+  onClearTimeSuggestion() {
+    this.store.dispatch(new fromStore.ClearItemBatchTimeUpdateSuggestion());
+  }
+
+  onResolveNotWorkingHours(eventMove: PlannedEventMove) {
+    this.store.dispatch(
+      new fromStore.UpdateEvents({
+        planItemMoves: [eventMove],
+        fixPlanItems: true,
+        ignoreStatusLimitation: false
+      })
+    );
+  }
+
+  onGetResolveNotWorkingHoursSuggestion(idPlanItem: number) {
+    this.store.dispatch(new fromStore.GetNotWorkingHoursPlanItemUpdateSuggestion(idPlanItem));
+  }
+
+  onClearNotWorkingHoursSuggestion() {
+    this.store.dispatch(new fromStore.ClearNotWorkingHoursPlanItemUpdateSuggestion());
+  }
+
+  onClearTimeRealizationSuggestion() {
+    this.store.dispatch(new fromStore.ClearRealizationTimeUpdateSuggestion());
+  }
+
+  onLoadTimeRealizationSuggestion(request: PlanItemsLoadRequest) {
+    this.store.dispatch(new fromStore.GetRealizationTimeUpdateSuggestion(request));
+  }
+
+  onResolveRealization(eventMoveList: PlannedEventMove[]) {
+    this.store.dispatch(
+      new fromStore.UpdateEvents({
+        planItemMoves: eventMoveList,
+        fixPlanItems: true,
+        ignoreStatusLimitation: true
+      })
+    );
+  }
 }

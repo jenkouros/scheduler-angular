@@ -1,0 +1,58 @@
+<dx-data-grid 
+  [columnAutoWidth]="true" 
+  [allowColumnResizing]="true" 
+  columnResizingMode="nextColumn" 
+  [dataSource]="store"
+  [showRowLines]="true" 
+  [showBorders]="true"
+  [rowAlternationEnabled]="true">
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-remote-operations 
+    [filtering]="true" 
+    [sorting]="false" 
+    [grouping]="false" 
+    [paging]="true" 
+    [summary]="false">
+  </dxo-remote-operations>
+
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager 
+    [showPageSizeSelector]="true" 
+    [allowedPageSizes]="[10, 15, 30]" 
+    [showInfo]="true" 
+    [showNavigationButtons]="true">
+  </dxo-pager>
+
+  <dxi-column caption="{{translate('Operation')}}">
+    <dxi-column alignment="center" dataField="" cellTemplate="openInScheduler"></dxi-column>
+ 
+    <dxi-column dataField="planItemCode" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="planItemName" caption="{{translate('Name')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="containerCode" caption="{{translate('Workplace_Code')}}"></dxi-column>
+    <dxi-column dataField="containerName" caption="{{translate('Workplace_Name')}}"></dxi-column>
+    <dxi-column dataField="quantity" caption="{{translate('Quantity')}}"></dxi-column>
+    <dxi-column dataField="statusName" caption="{{translate('Status')}}"></dxi-column>
+    <dxi-column dataField="timeStartPreparation" dataType="date" caption="{{translate('Preparation')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
+    <dxi-column dataField="timeStart" dataType="date" caption="{{translate('Start')}}" cellTemplate="dateCellTemplate"></dxi-column>
+    <dxi-column dataField="timeEnd" dataType="date" caption="{{translate('End')}}" cellTemplate="dateCellTemplate"></dxi-column>
+    
+  </dxi-column>
+  <dxi-column caption="Nalog">
+    <dxi-column dataField="itemName" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="articleCode" caption="{{translate('Article_Number')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="articleName" caption="{{translate('Article_Name')}}" cssClass="font-weight-500"></dxi-column>
+  </dxi-column>
+
+  <div *dxTemplate="let cell of 'dateCellTemplate'">
+    {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+  </div>
+
+  <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
+    {{ cell.displayValue ? cell.displayValue : 0 }}
+  </div>
+
+  <div *dxTemplate="let cell of 'openInScheduler'">
+        <a class="span-link" (click)="onOpenInScheduler(cell.data)">{{translate('Open')}}</a>
+      </div>
+</dx-data-grid>

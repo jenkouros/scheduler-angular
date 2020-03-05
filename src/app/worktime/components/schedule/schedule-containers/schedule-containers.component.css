@@ -1,0 +1,19 @@
+.containers-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.top {
+  align-self: flex-start;
+}
+
+.button-center {
+  text-align: center;
+}
+
+.absolute {
+  max-height: 250px;
+  overflow-y: auto;
+}

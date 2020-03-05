@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FilterValueSelect } from '../../../models/filter.viewModel';
 
 @Component({
@@ -6,22 +6,27 @@ import { FilterValueSelect } from '../../../models/filter.viewModel';
   templateUrl: './filter-checkbox.component.html',
   styleUrls: ['./filter-checkbox.component.css']
 })
-export class FilterCheckboxComponent implements OnInit {
+export class FilterCheckboxComponent {
   @Input() filterValues: FilterValueSelect[];
-  @Output() add = new EventEmitter<number>();
-  @Output() remove = new EventEmitter<number>();
+  @Output() changeSelection = new EventEmitter<number[]>();
 
-  constructor() { }
-
-  ngOnInit() {
+  getSelectedValues(): number[] {
+    return this.filterValues
+      .filter(i => i.selected)
+      .map(i => i.id) || [];
   }
 
-  onCheckboxClick(value, btnRef: HTMLElement) {
-    if (!btnRef.classList.contains('active')) {
-      this.add.emit(value);
+
+
+  onClick(id: number) {
+    let selection = this.getSelectedValues();
+
+    if (selection.indexOf(id) < 0) {
+      selection.push(id);
     } else {
-      this.remove.emit(value);
+      selection = selection.filter(i => i !== id);
     }
-  }
+    this.changeSelection.emit(selection);
 
+  }
 }

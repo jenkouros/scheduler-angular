@@ -19,6 +19,6 @@ export const OPTIONCHANGED_CURRENTDATE = 'currentDate';
 export const OPTIONCHANGED_CELLDURATION = 'cellDuration';
 export const OPTIONCHANGED_DATASOURCE = 'dataSource';
 export const OPTIONCHANGED_VISIBLE = 'visible';
-
+export const OPTIONCHANGED_FIRSTDAYOFWEEK = 'firstDayOfWeek';
 
 export const RESOURCES_FIELD = 'containerId';

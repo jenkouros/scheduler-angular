@@ -1,19 +1,22 @@
- <div *ngFor="let filterElement of (filtersState$ | async)">
 
-  <h5 class="mt-3">{{ filterElement.name }}</h5>     
-  <app-filter-checkbox *ngIf="filterElement.type === FilterTypeEnum.checkbox"
-    [filterValues]="filterElement.valuesSelect"
-    (add)="onFilterChange(filterElement.id, $event, false)"
-    (remove)="onFilterChange(filterElement.id, $event, true)">
-  </app-filter-checkbox>
+    <div class="px-3" *ngFor="let filterElement of (filtersState$ | async)">
 
-  <app-filter-autocomplete *ngIf="filterElement.type === FilterTypeEnum.autocomplete"
-    [filterValues]="filterElement.valuesSelect"
-    [placeholder]="filterElement.name"
-    (add)="onFilterChange(filterElement.id, $event, false)"
-    (remove)="onFilterChange(filterElement.id, $event, true)">
-  </app-filter-autocomplete>
-</div>
+      <h5 class="mt-1">{{ filterElement.name }}</h5>
 
+      <app-filter-checkbox *ngIf="filterElement.type === FilterTypeEnum.checkbox" 
+        [filterValues]="filterElement.valuesSelect" 
+        (changeSelection)="onFilterChange(filterElement.id, $event)">
+      </app-filter-checkbox>
 
+      <app-filter-autocomplete *ngIf="filterElement.type === FilterTypeEnum.autocomplete" 
+        [filterValues]="filterElement.valuesSelect"
+        [placeholder]="filterElement.name" 
+        (changeSelection)="onFilterChange(filterElement.id, $event)">
+      </app-filter-autocomplete>
+    </div>
 
+    <ng-container *ngIf="selectedContainers !== null && selectedContainers!.length">
+        <h5 class="mt-1">Delovna mesta</h5>
+        <dx-list height="150px" selectionMode="none" [items]="selectedContainers">
+        </dx-list>
+    </ng-container>

@@ -1,0 +1,55 @@
+<dx-data-grid
+  [dataSource]="gridItems"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+  (onRowUpdating)="updateOperation($event)"
+  [allowColumnReordering]="true"
+  (onRowExpanded)="rowExpanded($event)"
+  (onRowCollapsed)="rowCollapsed($event)"
+  (onContentReady)="onContentReady($event)"
+  >
+  <dxo-editing
+    mode="cell"
+    [allowUpdating]="true">
+  </dxo-editing>
+  <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="operation.name" caption="Naziv"  [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="operation.idContainer" caption="Delovno mesto">
+  <dxo-lookup
+    [dataSource]="containers"
+    displayExpr="code"
+    valueExpr="id">
+  </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="operation.containerCode" caption="Delovno mesto" [groupIndex]="0"></dxi-column>
+
+
+  <dxi-column dataField="item.itemCode" caption="Delovni nalog" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="operation.timeStart" caption="Začetek" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="operation.timeEnd" caption="Konec" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+
+  <dxi-column dataField="item.priority" caption="Prioriteta" [allowEditing]="true">
+    <dxo-lookup
+          [dataSource]="priorities"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="operation.executionStatus" caption="Izvajanje">
+    <dxo-lookup
+          [dataSource]="executionStatuses"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+    <dxo-pager
+        [showPageSizeSelector]="true"
+        [allowedPageSizes]="[5, 10, 20,30,50,100]"
+        [showInfo]="true">
+    </dxo-pager>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-paging [pageSize]="20"></dxo-paging>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+
+</dx-data-grid>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromStore from '../../../store';
 import { Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { DateValidators } from '../../../../shared/validators/date.validators';
 
 @Component({
   selector: 'app-mass-lock-popup',
@@ -11,11 +13,26 @@ import { Input } from '@angular/core';
 export class MassLockPopupComponent implements OnInit {
   containerIds: number[];
   visible = false;
-  dateTo: Date;
-  dateFrom: Date;
+  massLockForm: FormGroup;
 
-  constructor(private store: Store<fromStore.SchedulerState>) {
+  constructor(private store: Store<fromStore.SchedulerState>, private fb: FormBuilder) {
     this.confirmMassLock = this.confirmMassLock.bind(this);
+    this.cancelMassLock = this.cancelMassLock.bind(this);
+    this.initForm();
+  }
+
+  initForm() {
+    const date = new Date();
+    this.massLockForm = this.fb.group(
+      {
+        fromDate: [date, Validators.required],
+        toDate: [date, Validators.required]
+      },
+      {
+        validator: [
+          DateValidators.minDate('toDate', 'fromDate')
+        ]
+      });
   }
 
   ngOnInit() {
@@ -25,20 +42,34 @@ export class MassLockPopupComponent implements OnInit {
     });
   }
 
-  visibilityChanged(popupShow: boolean) {
-    if (!popupShow) {
-      this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
-    }
+  // visibilityChanged(popupShow: boolean) {
+  //   if (!popupShow) {
+  //     this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
+  //   }
+  // }
+
+  cancelMassLock() {
+    this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
   }
 
   confirmMassLock() {
+    const { value, valid } = this.massLockForm;
+
+    if (!valid) {
+      return;
+    }
+
     this.store.dispatch(new fromStore.MassToggleEventsLock({
       containerIds: this.containerIds,
-      fromDate: this.dateFrom,
-      toDate: this.dateTo
+      fromDate: value.fromDate,
+      toDate: value.toDate
     }));
 
     this.store.dispatch(new fromStore.ToggleMassLockPopup({ containerIds: [], visibility: false }));
+  }
+
+  get fromDate() {
+    return this.massLockForm.get('fromDate') as FormControl;
   }
 
 }

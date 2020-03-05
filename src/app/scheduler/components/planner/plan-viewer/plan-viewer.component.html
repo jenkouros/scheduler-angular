@@ -1,76 +1,282 @@
 <!-- <button (click)="removeBlankSpace()" class="btn btn-success" type="button">Zgosti</button> -->
-<div class="cellDurationContainer" [hidden]="!visible">
-    <div></div>
-    <div class="dx-field">
-        <div class="dx-field-label">Dolžina celice</div>
-        <div class="dx-field-value">
-            <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
-            </dx-select-box>
+<div #schedulerContainer>
+    <div class="toolbar px-2 py-1" *ngIf="visible">
+        <div class="cellDurationContainer">
+            <div></div>
+            <div class="dx-field">
+                <div class="dx-field-label">{{translate('Cell_Length')}}</div>
+                <div class="dx-field-value">
+                    <dx-select-box [(ngModel)]="cellDuration" [dataSource]="cellDurations" style="margin: 2px;">
+                    </dx-select-box>
+                </div>
+            </div>
         </div>
-    </div>   
+        <button type="button" (click)="onRemoveBlankSpace()" class="btn btn-custom-primary">
+                <fa-icon [icon]="faGroup"></fa-icon> {{translate('Remove_Blank_Space')}}
+            </button>
+        <button type="button" (click)="onShowMassLockPopup()" class="btn btn-custom-primary">
+                <fa-icon [icon]="faLock"></fa-icon> {{translate('Mass_Lock')}}
+        </button>
+        <button type="button" (click)="onLoadTimeRealizationSuggestion()" class="btn btn-custom-primary">
+            <fa-icon [icon]="faAlign"></fa-icon> {{translate('Time_Realization')}}
+        </button>
+        <button type="button" (click)="onPlanItemReload()" class="btn btn-custom-primary">
+            <fa-icon [icon]="faRefresh"></fa-icon> {{translate('Reload')}}
+        </button>
+    </div>
+
+    <div class="card" *ngIf="!visible">
+        <div class="card-body">
+            {{translate('Choose_Workplace')}}
+        </div>
+    </div>
+
+    <dx-scheduler id="scheduler"
+        [firstDayOfWeek]="firstDayOfWeek"
+        [height]="getScrollHeight(schedulerContainer)"
+        [width]="getScrollWidth()"
+        [editing]="{ allowAdding: false }"
+        [dataSource]="planItemGetReponse.planItems"
+        [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda']"
+        [(currentView)]="currentView"
+        [groups]="['containerId']"
+        [resources]="schedulerResources"
+        [currentDate]="currentDate"
+        [crossScrollingEnabled]="true"
+        [(cellDuration)]="cellDuration"
+        [visible] = "visible"
+        appointmentTemplate="appointment-template"
+        dataCellTemplate="datacell-template"
+        (onOptionChanged)="optionChanged($event)"
+        (onContentReady)="onContentReady($event)"
+        (onAppointmentUpdating)="onAppointmentUpdating($event)"
+        (onAppointmentDeleting)="onAppointmentDeleting($event)"
+        (onAppointmentClick)="onAppointmentClick($event)"
+        (onAppointmentDblClick)="onAppointmentDblClick($event)"
+        (onAppointmentRendered)="onAppointmentRedered($event)"
+        appointmentTooltipTemplate="tooltip-template"
+        dropDownAppointmentTemplate="appointment-template"
+        >
+
+        <div *dxTemplate="let plannedEvent of 'appointment-template'">
+            <app-plan-viewer-item [viewName]="currentView" [plannerItemData]="plannedEvent"></app-plan-viewer-item>
+        </div>
+
+        <div *dxTemplate="let plannedEvent of 'tooltip-template'">
+            <h4>#{{ plannedEvent.subItemCode }} {{ plannedEvent.subItemName }}</h4>
+            <hr class="redline">
+
+            <div class='event-tooltip text-left'>
+
+                <div *ngIf="!timeUpdateSuggestion && !notWorkingHoursUpdateSuggestion">
+                    <div *ngIf="plannedEvent.isLocked" class="alert alert-warning mb-2" role="alert">
+                        <fa-icon class="mr-2" [icon]="faLock"></fa-icon> {{translate('Opearation_Closed')}}
+                    </div>
+                    <div *ngIf="plannedEvent.isInNotWorkingHours" class="alert alert-warning mb-2" role="alert">
+                        <fa-icon class="mr-2" [icon]="faExclamation"></fa-icon> {{translate('Operation_Planned_OutWorkTime')}}
+                        <a (click)="onGetResolveNotWorkingHoursSuggestion(plannedEvent.id)" class="span-link alert-link">{{translate('Solve')}}</a>
+                    </div>
+                    <div *ngIf="plannedEvent.sequenceWarning" class="alert alert-warning" role="alert">
+                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> {{translate('Operations_Not_Arranged')}}
+                        <a (click)="onGetResolveSequenceSuggestion(plannedEvent.idItemBatch)" class="span-link alert-link">{{translate('Solve')}}</a>
+                    </div>
+                    <div *ngIf="plannedEvent.linkedItemSequenceWarning" class="alert alert-warning" role="alert">
+                        <fa-icon class="mr-2" [icon]="faWarning"></fa-icon> {{translate('Plan_Not_Finished')}}
+                        <a (click)="onLinkedItemSequenceResolve(plannedEvent)" class="span-link alert-link">{{translate('Move_ToEnd')}}</a>
+                    </div>
+                        <h6>{{translate('Operation')}}</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>{{translate('Workorder_Short')}}</td>
+                                    <th>
+                                        <div>
+                                            {{ plannedEvent.itemName }}
+                                            <span *ngIf="plannedEvent.itemTypeShortName" class="badge badge-secondary">{{ plannedEvent.itemTypeShortName }}</span>
+                                        </div>
+                                    </th>
+                                    <td>{{translate('Preparation')}}</td>
+                                    <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
+                                </tr>
+                                <tr>
+                                    <td>{{translate('Product')}}</td>
+                                    <th>{{ plannedEvent.articleCode }} - {{ plannedEvent.articleName }}</th>
+                                    <td>{{translate('Production')}}</td>
+                                    <th>{{ plannedEvent.timeStartExecution | date:'mediumDate' }} {{ plannedEvent.timeStartExecution | date:'shortTime' }}</th>
+                                </tr>
+                                <tr>
+                                    <td>{{translate('Quantity')}}</td>
+                                    <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }} / {{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }}
+                                      ({{ plannedEvent.manufacturedQuantity * 100 /
+                                          (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)</th>
+                                    <td>{{translate('End')}}</td>
+                                    <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
+                                </tr>
+                                <tr>
+                                    <td>{{translate('Status')}}</td>
+                                    <th><span class="p-1 text-white" [ngStyle]="{'background-color': plannedEvent.color}">{{ plannedEvent.statusDescription }}</span></th>
+                                    <td>{{translate('Execution_Time')}}</td>
+                                    <th>
+                                      {{ plannedEvent.operationDurationString }}
+                                    </th>
+                                </tr>
+                                <tr *ngIf="plannedEvent.description">
+                                    <td>{{translate('Comment')}}</td>
+                                    <th colspan="3">
+                                        <div style="white-space: normal;">{{plannedEvent.description}}</div>
+                                    </th>
+                                </tr>
+                            </table>
+
+                        <!-- <div class="col-6">
+                            <table class="table">
+                                <tr>
+                                    <td>Priprava</td>
+                                    <th>{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }}</th>
+                                </tr>
+                                <tr>
+                                    <td>Izdelava</td>
+                                    <th>{{ plannedEvent.timeStartExecution | date:'mediumDate' }} {{ plannedEvent.timeStartExecution | date:'shortTime' }}</th>
+                                </tr>
+                                <tr>
+                                    <td>Konec</td>
+                                    <th>{{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}</th>
+                                </tr>
+                            </table>
+                        </div> -->
+
+
+
+                    <h6>{{translate('Workorder2')}}</h6>
+                    <table class="table table-sm">
+                        <tr *ngFor="let op of plannedEvent.sequencePlanItems" [ngClass]="{'font-weight-bold': op.idPrePlanItem === plannedEvent.idPrePlanItem}">
+                            <td>#{{ op.code }} {{ op.name }}</td>
+                            <td>{{ op.containerCode }}</td>
+                            <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }}</td>
+                            <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
+                        </tr>
+                    </table>
+                    <ng-container *ngIf="plannedEvent.linkedItem && plannedEvent.linkedItem.linkedPlanItems.length">
+                        <h6>{{translate('Linked_Plan_Item')}} {{ plannedEvent.linkedItem.itemCode }}</h6>
+                        <table class="table table-sm">
+                            <tr *ngFor="let op of plannedEvent.linkedItem.linkedPlanItems">
+                                <td>#{{ op.code }} {{ op.name }}</td>
+                                <td>{{ op.containerCode }}</td>
+                                <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }}</td>
+                                <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
+                            </tr>
+                        </table>
+                    </ng-container>
+
+                    <app-linked-items
+                      *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length"
+                      [items]="plannedEvent.parentLinkedItems">
+                    </app-linked-items>
+                    <!-- <ng-container *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length">
+                      <div *ngFor="let parentItem of plannedEvent.parentLinkedItems">
+                        <h6>{{translate('Linked_Plan_Item')}} {{ parentItem.itemCode }}</h6>
+                        <table class="table table-sm">
+                            <tr *ngFor="let op of parentItem.linkedPlanItems">
+                                <td>#{{ op.code }} {{ op.name }}</td>
+                                <td>{{ op.containerCode }}</td>
+                                <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }}</td>
+                                <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                  </ng-container> -->
+
+                    <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? translate('Unlock') : translate('Lock') }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
+                    <dx-button class="mr-4" icon="edit" text="{{translate('Edit')}}" (onClick)='showUpdateAppointmentPopup(plannedEvent)'></dx-button>
+                    <dx-button icon="trash" type="danger" text="{{translate('Delete')}}" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
+                </div>
+
+                <div *ngIf="timeUpdateSuggestion">
+                    <h6>{{translate('Edit_Operation_Sequence')}}</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">{{translate('Original_Data')}}</th>
+                                    <th></th>
+                                    <th>{{translate('Suggested_Changes')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let op of plannedEvent.sequencePlanItems">
+                                    <td>#{{ op.code }}</td>
+                                    <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }} -
+                                        {{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
+                                    <td *ngIf="timeUpdateSuggestion[op.idPrePlanItem]" class="alert" [ngClass]="getPlanItemClass(timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus)">
+                                        {{ timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus | planItemStatusName }}</td>
+                                    <td *ngIf="!timeUpdateSuggestion[op.idPrePlanItem]"></td>
+                                    <td>
+                                        <ng-container *ngIf="timeUpdateSuggestion[op.idPrePlanItem] && timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus !== 1">
+                                        {{ timeUpdateSuggestion[op.idPrePlanItem].timeStart | date:'mediumDate' }} {{ timeUpdateSuggestion[op.idPrePlanItem].timeStart | date:'shortTime' }} -
+                                        {{ timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date:'mediumDate' }} {{ timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date:'shortTime' }}
+                                        </ng-container>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="float-right">
+                            <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">{{translate('Cancel')}}</button>
+                            <button class="btn btn-success" (click)="onResolveSequence()">{{translate('Confirm')}}</button>
+                        </div>
+                </div>
+
+                <div *ngIf="notWorkingHoursUpdateSuggestion">
+                    <div class="mb-3">
+                        <h4>{{translate('Original_Data')}}</h4>
+                        <span class="dx-field">{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }} -
+                            {{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}
+                        </span>
+                    </div>
+                    <div>
+                        <h4>{{translate('Solve_Overlaps')}}</h4>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="movePlanItem" [(ngModel)]="notWorkingHoursResolveMode" checked>
+                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Move_Operation')}}
+                                    <strong>
+                                        {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'shortTime' }} -
+                                        {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'shortTime' }}
+                                    </strong>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="extendPlanItem" [(ngModel)]="notWorkingHoursResolveMode">
+                                <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Expand_Workplace')}}
+                                    <strong>
+                                        {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'shortTime' }} -
+                                        {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'shortTime' }}
+                                    </strong>
+                                </label>
+                            </div>
+                    </div>
+                        <div class="float-right">
+                            <button class="btn btn-default mr-1" (click)="onClearNotWorkingHoursSuggestion()">{{translate('Cancel')}}</button>
+                            <button class="btn btn-success" (click)="onResolveNotWorkingHours()">{{translate('Confirm')}}</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div *dxTemplate="let cellData of 'datacell-template'" [ngStyle]="markNotWorkingHours(cellData)">
+            {{cellData.text}}
+        </div>
+
+    </dx-scheduler>
 </div>
 
-<button type="button" (click)="onRemoveBlankSpace()" class="btn btn-primary">Zgoščevanje</button>     
-<button type="button" (click)="onShowMassLockPopup()" class="btn btn-primary">Masovno zaklepanje</button>     
+<app-plan-viewer-item-edit
+    [visible]="planItemEditMode"
+    [planItem]="planItemEditing"
+    (planItemUpdate)="updateAppointment($event)"
+    (planItemCreate)="createAppointment($event)"
+    (popupClose)="planItemEditMode = false">
+</app-plan-viewer-item-edit>
+
 <app-mass-lock-popup></app-mass-lock-popup>
 
 <div class="alert alert-primary" role="alert" *ngIf="schedulerResources.length == 0;" style="margin: 2px; text-align: center; color: #084578; background-color: #F0F2EF; border-color: #F0F2EF;">
-    Za prikaz koledarja izberite eno ali več delovnih mest
+    {{translate('Show_Calendar_Choose')}}
 </div>
-<dx-scheduler id="scheduler" 
-    [dataSource]="planItems"
-    [views]="['day', 'week', 'timelineDay']" 
-    [(currentView)]="currentView"         
-    [groups]="['containerId']" 
-    [resources]="schedulerResources"
-    [currentDate]="currentDate"        
-    [crossScrollingEnabled]="true" 
-    [(cellDuration)]="cellDuration"
-    [visible] = "visible"
-    appointmentTemplate="appointment-template" 
-    (onOptionChanged)="optionChanged($event)"
-    (onContentReady)="onContentReady($event)" 
-    (onAppointmentUpdating)="onAppointmentUpdating($event)"
-    (onAppointmentDeleting)="onAppointmentDeleting($event)"    
-    (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
-    (onCellClick)="onCellClick($event)"
-    appointmentTooltipTemplate="tooltip-template"    
-    >
-   
-    <div *dxTemplate="let plannedEvent of 'appointment-template'">
-            <app-plan-viewer-item [plannerItemData]="plannedEvent"></app-plan-viewer-item>           
-    </div>
-
-    <div *dxTemplate="let plannedEvent of 'tooltip-template'">
-            <h4>#{{ plannedEvent.subItemCode }} {{ plannedEvent.subItemName }}</h4>
-            <hr class="redline">
-        <div class='event-tooltip text-left'>
-            
-            <h6>Delovni nalog</h6>
-            <table class="table">
-                <tr>
-                    <td>Šifra</td>
-                    <th>{{ plannedEvent.itemName }}</th>
-                </tr>
-                <tr>
-                    <td>Količina</td>
-                    <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}</th>
-                </tr>
-            </table>
-
-            <h6>Operacije delovnega naloga</h6>
-            <table class="table">
-                <tr *ngFor="let op of plannedEvent.sequencePlanItems" [ngClass]="{'font-weight-bold': op.idPrePlanItem === plannedEvent.idPrePlanItem}">
-                    <td>#{{ op.code }} {{ op.name }}</td>
-                    <td>{{ op.containerCode }}</td>
-                    <td>{{ op.timeStartPreparation | date:'mediumDate' }} {{ op.timeStartPreparation | date:'shortTime' }}</td>
-                    <td>{{ op.timeEnd | date:'mediumDate' }} {{ op.timeEnd | date:'shortTime' }}</td>
-                </tr>
-            </table>
-            <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? 'Odkleni' : 'Zakleni' }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>
-            <dx-button class="mr-4" icon="edit" text="Uredi" (onClick)='updateAppointment(plannedEvent)'></dx-button>
-            <dx-button icon="trash" type="danger" text="Izbriši" (onClick)='deleteAppointment(plannedEvent)'></dx-button>
-        </div>
-    </div>
-
-</dx-scheduler>

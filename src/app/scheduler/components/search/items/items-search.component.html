@@ -1,0 +1,50 @@
+<dx-data-grid
+  [columnAutoWidth]="true"
+  [allowColumnResizing]="true"
+  columnResizingMode="nextColumn"
+  [dataSource]="store"
+  [showRowLines]="true"
+  [showBorders]="true"
+  [rowAlternationEnabled]="true">
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="false"
+    [grouping]="false"
+    [paging]="true"
+    [summary]="false">
+  </dxo-remote-operations>
+
+  <dxo-paging [pageSize]="5"></dxo-paging>
+  <dxo-pager
+    [showPageSizeSelector]="true"
+    [allowedPageSizes]="[5, 10, 15]"
+    [showInfo]="true"
+    [showNavigationButtons]="true">
+  </dxo-pager>
+
+  <dxi-column caption="{{translate('Workorder')}}">
+    <dxi-column dataField="name" caption="{{translate('Code')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="quantityPlanned" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
+    <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+  </dxi-column>
+  <dxi-column caption="{{translate('Article')}}">
+    <dxi-column dataField="article.code" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
+    <dxi-column dataField="article.name" caption="{{translate('Name')}}" cssClass="font-weight-500"></dxi-column>
+  </dxi-column>
+  <dxi-column caption="ERP">
+    <dxi-column dataField="quantity" caption="{{translate('Quantity')}}"></dxi-column>
+    <dxi-column dataField="measurementUnit.code" caption="EM"></dxi-column>
+    <dxi-column dataField="limitDateFrom" dataType="date" caption="{{translate('Date_From')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
+    <dxi-column dataField="limitDateTo" dataType="date" caption="{{translate('Date_To')}}" cellTemplate="dateCellTemplate"></dxi-column>
+  </dxi-column>
+
+  <div *dxTemplate="let cell of 'dateCellTemplate'">
+    {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+  </div>
+
+  <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
+    {{ cell.displayValue ? cell.displayValue : 0 }}
+  </div>
+</dx-data-grid>

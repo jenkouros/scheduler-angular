@@ -1,0 +1,20 @@
+<app-datebox (change)="setLimitDate($event)" [date]="limitDate$ | async"></app-datebox>
+
+<app-plan-item-grid-items
+  id="itemGridContainer"
+  [items]="planItemGrid$ | async"
+  [selectedItems]="selectedPlanItemGrid$ | async"
+  (selectItem)="onItemSelect($event)"
+  [containers]="containers$ | async">
+</app-plan-item-grid-items>
+
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgba(0,0,0,0.4)"
+    [position]="{ of: '#itemGridContainer' }"
+    [visible]="loading$ | async"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [closeOnOutsideClick]="false"></dx-load-panel>
+

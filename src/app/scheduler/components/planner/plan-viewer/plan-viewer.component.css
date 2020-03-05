@@ -6,13 +6,21 @@
 /*
 https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascript-scheduler-improvements-v17-2.aspx
 */
-::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
-    height: 100px;
+/* ::ng-deep #scheduler .dx-scheduler-cell-sizes-vertical  {
+    height: 30px !important;
 }
 
-/* ::ng-deep #scheduler .dx-scheduler-group-header  {
-    height: 100px;
+::ng-deep #scheduler .dx-scheduler-cell-sizes-horizontal {
+    width: 80px !important;
 } */
+
+/* ::ng-deep #scheduler .dx-scheduler-timeline .dx-scheduler-group-header-content {
+    margin: 0;
+} */
+
+::ng-deep .dx-scheduler-work-space-month .dx-scheduler-appointment-content {
+    padding: 0; 
+}
 
 
 .cellDurationContainer{
@@ -22,32 +30,19 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 
 ::ng-deep .allowed {
     background-color: #bfd9f0;
-    font-size: 1.2rem !important;   
+    /* font-size: 1.2rem !important;    */
     border-left:5px solid #a8cef0 !important;
     transition: all 0.1s
 }
-  .btn {
-    margin: 2px;
-    color: #087873;
-    background-color: #F0F2EF;
-    border-color: #F0F2EF;  
-}
 
-.btn:hover {
-    margin: 2px;
-    color: #087873;
-    background-color: #e3e7e1;
-    border-color: #e3e7e1;
-}
-
-.btn-primary {
+.btn-custom-primary {
     margin: 2px;
     color: #fff;
     background-color: #087873;
     border-color: #087873;   
 }
 
-.btn-primary:hover {
+.btn-custom-primary:hover {
     margin: 2px;
     color: #fff;
     background-color: #06605c ;
@@ -55,6 +50,42 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 }
 
 ::ng-deep .dx-scheduler-appointment-move {
-    left:  20px;
-   transition: 0.1s;
+    background-color: #fff3cd;    
+    height: 10px !important;  
+    transition: 0.5s;
+}
+
+.toolbar {   
+    margin-top: 5px;
+    background-color: #f5f5f5;
+    border-top:  1px dotted;
+    border-left:  1px dotted;
+    border-right:  1px dotted;
+    border-bottom:  none;
+    border-color: rgba(221, 221, 221, 0.6)
+}
+
+/* ::ng-deep .dx-scheduler-header {
+    border-top: none;
+} */
+
+::ng-deep .weekend {
+    background-color: rgba(86, 202, 133, 0.1);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+::ng-deep .planitem-notfinished {
+    box-shadow: inset 5px 0px 0px 0px rgb(255, 0, 0) !important;
+    /* border-left: none; */
+    border-right: 2px solid transparent;
+}
+::ng-deep .planitem-late {
+    box-shadow: inset 5px 0px 0px 0px rgb(255, 155, 0) !important;
+    /* border-left: none; */
+    border-right: 2px solid transparent;
+}
+
+::ng-deep .dx-scheduler-group-header {
+    overflow: hidden;
 }

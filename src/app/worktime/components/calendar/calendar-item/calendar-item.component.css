@@ -1,0 +1,14 @@
+a.nav-link {
+  color: #000000;
+}
+a.nav-link:not(.active) fa-icon {
+  color: gray;
+}
+
+a.nav-link.active {
+  color: rgba(8, 69, 120, 1) !important;
+  font-weight: 500;
+  background-color: #ccd9e9 !important;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}

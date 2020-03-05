@@ -15,7 +15,7 @@ export class Filter implements FilterServer {
         result.type = filterServer.type;
         if (filterServer.values) {
             result.values = filterServer.values.map(v =>
-                new FilterValue(v.id, v.name));
+                FilterValue.create(v.id, v.name));
         }
         return result;
     }
@@ -24,7 +24,13 @@ export class Filter implements FilterServer {
 }
 
 export class FilterValue implements FilterValueServer {
-    constructor(
-        public id: number,
-        public name: string) {}
+    id: number;
+    name: string;
+
+    static create (id: number, name: string) {
+        const result = new FilterValue();
+        result.name = name;
+        result.id = id;
+        return result;
+    }
 }

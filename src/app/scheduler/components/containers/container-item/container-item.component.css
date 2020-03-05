@@ -1,0 +1,42 @@
+.btn {
+    margin: 2px;
+    color: #084578;
+    background-color: #F0F2EF;
+    border-color: #F0F2EF;  
+}
+
+.btn:hover {
+    margin: 2px;
+    color: #084578;
+    background-color: #e3e7e1;
+    border-color: #e3e7e1;
+}
+
+.btn-primary {
+    margin: 2px;
+    color: #fff;
+    background-color: #084578;
+    border-color: #084578;    
+
+}
+
+.btn-primary:hover {
+    margin: 2px;
+    color: #fff;
+    background-color: #063760 ;
+    border-color: #063760 ;
+}
+
+button {
+    line-height: 95%;
+}
+
+ /*
+  * KOLEKTROR color
+  * background-color: #084578; 
+  */
+
+/*
+ * Info #084578 
+ * https://www.colorhexa.com/084578
+ */

@@ -1,0 +1,29 @@
+<dx-data-grid
+  [dataSource]="operations"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+  (onRowUpdating)="updateOperation($event)"
+  >
+  <dxo-editing
+    mode="cell"
+    [allowUpdating]="true">
+  </dxo-editing>
+  <dxi-column dataField="code" caption="Koda" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="name" caption="Naziv"  [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="idContainer" caption="Delovno mesto">
+  <dxo-lookup
+    [dataSource]="containers"
+    displayExpr="code"
+    valueExpr="id">
+  </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="timeStart" dataType="datetime" caption="Začetek"></dxi-column>
+  <dxi-column dataField="timeEnd" dataType="datetime" caption="Konec"></dxi-column>
+  <dxi-column dataField="executionStatus" caption="Izvajanje">
+    <!-- <dxo-lookup
+          [dataSource]="itemExecutionStatuses"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup> -->
+  </dxi-column>
+</dx-data-grid>

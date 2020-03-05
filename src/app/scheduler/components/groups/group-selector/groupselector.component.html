@@ -1,0 +1,24 @@
+<!-- <div style="display: flex; justify-content: center; margin-top: 20px;">
+  <div class="btn-group" >
+      <a class="btn btn-secondary" [routerLink]="['/auth/updateuser']">{{translate('Password')}}</a>
+      <a class="btn btn-secondary active" [routerLink]="['/auth/updategroup']">{{translate('Group')}}</a>
+  </div>
+</div> -->
+
+<div class="container" style="width: 40%; margin-top: 30px">
+  <h2 style="margin-bottom:30px;">{{translate('Default_Group')}}</h2>
+  <div class="form-group">
+    <dx-select-box
+      [(ngModel)]="selectedItem"
+      [dataSource]="groups"
+      [showClearButton]="true"
+       displayExpr="name"
+       style="margin: 2px;">
+    </dx-select-box>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" (click)="saveSelectedItem()" style="background-color:#1f5684; border-color: #1f5684">{{translate('Save')}}</button>
+  </div>
+
+</div>
+

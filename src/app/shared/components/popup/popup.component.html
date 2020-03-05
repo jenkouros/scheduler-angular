@@ -6,25 +6,37 @@
   [width]="width"
   [height]="height"
   (onHiding)="onHidding()"
+  (onInitialized)="init($event)"
 >
   <dxi-toolbar-item *ngIf="hasCancelBtn"
     toolbar="bottom" 
     location="after" 
     widget="dxButton" 
-    [options]="{ text: 'Prekliči', onClick: cancelCallback }">
+    [options]="{ text: translate('Cancel'), onClick: hidePopup }">
   </dxi-toolbar-item>
 
   <dxi-toolbar-item *ngIf="hasConfirmBtn"
     toolbar="bottom"
     location="after" 
     widget="dxButton" 
-    [options]="{ text: 'Potrdi', type: 'success', onClick: confirmCallback }">
+    [options]="{ 
+      text: translate('Confirm'),
+      useSubmitBehavior: true,
+      type: 'success',
+      onClick: confirmCallback,
+      disabled: validToConfirm !== null && validToConfirm !== true
+  }">
   </dxi-toolbar-item>
 
   <div *dxTemplate="let data of 'content'">
     <dx-scroll-view>
-      <ng-content></ng-content>
+      <div class="mr-3">
+          <ng-content></ng-content>
+
+      </div>
+      
     </dx-scroll-view>   
+    <hr class="p-0 m-0">
   </div>
 
 </dx-popup>

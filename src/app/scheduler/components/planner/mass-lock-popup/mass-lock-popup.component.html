@@ -1,18 +1,26 @@
 <app-popup 
-  (visibilityChanged)="visibilityChanged($event)"
   [visible]="visible"
+  [validToConfirm]="massLockForm.valid"
+  [cancelCallback]="cancelMassLock"
   [confirmCallback]="confirmMassLock"
   width="400px"
-  height="auto"
-  title='Masovno zaklepanje operacij'
->
-  <app-fieldset>
-    <app-field label='Datum od'>
-      <app-datebox type="datetime" (change)="dateFrom = $event"></app-datebox>
-    </app-field>
-    <app-field label='Datum do'>
-      <app-datebox type="datetime" (change)="dateTo = $event"></app-datebox>
-    </app-field>
-  </app-fieldset>
-
+  height="auto" 
+  title='Masovno zaklepanje operacij'>
+  <form class="mb-4" [formGroup]="massLockForm">
+    <app-fieldset>
+      <app-field label='Datum od'>
+        <app-datebox 
+          type="datetime"         
+          formControlName="fromDate">
+        </app-datebox>
+      </app-field>
+      <app-field label='Datum do'>
+        <app-datebox 
+          type="datetime" 
+          formControlName="toDate"
+          [min]="fromDate.value">
+        </app-datebox>
+      </app-field>
+    </app-fieldset>
+  </form>
 </app-popup>

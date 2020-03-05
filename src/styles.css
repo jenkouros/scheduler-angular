@@ -1,8 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
+.dx-master-detail-cell {
+  padding: 10px 20px 15px 0 !important;
+}
+
+
 .span-link {
-    text-decoration: underline;
     cursor: pointer;
+    color: rgb(0, 96, 177) !important;
+    font-weight: 500;
 }
 
 .cursor-pointer {
@@ -10,28 +16,38 @@
 }
 
 .bg-kolektor {
-   background-color: #084578;
+   background-color: #1f5684;
+}
+.bg-kolektor-primary {
+    color: rgb(0, 96, 177);
+}
+
+.bg-kolektor-light {
+    background-color: #ccd9e9 !important;
 }
 
 .bg-kolektor-secondary {
-    background-color: #F0F2EF;
+    background-color: #f7f7f7;
 }
 
 .bg-kolektor-third {
     background-color: #cfd6e2;
 }
 
+.text-kolektor {
+    color: rgb(0, 96, 177);
+}
+
+.text-kolektor-light {
+    color: #ccd9e9 !important;
+}
+
+.font-weight-500:not([role="columnheader"]) {
+    font-weight: 500;
+}
+
 h1, h2, h3, h4, h5 {
     color: #272838;
-}
-
-a.nav-link {
-    color: #084578; 
-}
-
-a.nav-link.active {
-    color: white;
-    background-color: #084578 !important;
 }
 
 .draggable {
@@ -39,9 +55,9 @@ a.nav-link.active {
     user-select: none;
 }
 
-dx-select-box.ng-invalid.ng-touched {
+/* dx-select-box.ng-invalid.ng-touched {
     border: 1px solid red;
-}
+} */
 
 /* popup margins */
 .dx-popup-content .dx-fieldset {
@@ -52,9 +68,26 @@ dx-select-box.ng-invalid.ng-touched {
 input.ng-invalid.ng-touched {
     border: 1px solid red;
 }
-    
+
 hr.redline {
     border-top: 1px solid #DE1A1A;
     border-bottom: 1px solid #DE1A1A;
     height: 2px;
+}
+
+hr.hrline {
+    border-top: 1px solid #084578;
+}
+
+/* POPUP */
+.dx-toolbar.dx-popup-bottom {
+    padding-top: 0 !important;
+}
+.dx-popup-normal .dx-popup-title .dx-closebutton .dx-icon {
+    color: white;
+}
+
+.dx-popup-normal .dx-popup-title {
+    background-color: black;
+    color: white;
 }

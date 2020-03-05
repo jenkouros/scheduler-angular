@@ -1,93 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { select } from '@ngrx/store';
+import { GroupFilterViewModel, GroupFilter } from '../../../models/groupfilter.dto';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { NotifyService } from '../../../../shared/services/notify.service';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.css']
 })
-export class GroupListComponent implements OnInit {
-  groups = [
-    {
-        'id': 1,
-        'name': 'Ljubljana-Črnuče',
-        'type': 'system',
-        'selected': 'false',
-        'filters': [
-            { 'id': 1, 'values': [80] }
-        ]
-    },
-    {
-        'id': 2,
-        'name': 'Ljubljana-Zalog',
-        'type': 'system',
-        'selected': 'true',
-        'filters': [
-            { 'id': 1, 'values': [81] }
-        ]
-    },
-    {
-        'id': 3,
-        'name': 'Maribor',
-        'type': 'system',
-        'selected': 'false',
-        'filters': [
-            { 'id': 1, 'values': [82] }
-        ]
-    },
-    {
-        'id': 4,
-        'name': 'Tomx',
-        'type': 'user',
-        'selected': 'false',
-        'filters': [
-            { 'id': 2, 'values': [1] }
-        ],
-        'containers': [
-            1095, 1096, 1097, 1098, 1099
-        ]
-    },
-    {
-        'id': 5,
-        'name': 'Romx',
-        'type': 'user',
-        'selected': 'false',
-        'filters': [
-            { 'id': 2, 'values': [1] }
-        ],
-        'containers': [
-            1095, 1096, 1097, 1098, 1099
-        ]
-    }
-];
+export class GroupListComponent extends AppComponentBase implements OnInit {
+    @Input() groups: GroupFilterViewModel[] | null;
+    @Output() groupFilterSelected = new EventEmitter<GroupFilterViewModel>();
+    @Output() editGroupFilter = new EventEmitter<GroupFilterViewModel | null>();
+    @Output() createGroupFilter = new EventEmitter();
+    @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
+    selectedGroup: GroupFilterViewModel | null = null;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-
-    onClick(id: number, selected: string) {
-        const index = this.groups.findIndex((x => x.id === id));
-        // let group = this.groups.find((x => x.id == id));
-
-        if (this.groups[index].selected === 'true') {
-            this.groups[index].selected = 'false';
-            // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);
-        } else if (this.groups[index].selected === 'false') {
-            this.groups[index].selected = 'true';
-            // console.log("index => " + index + "; id => " + group.id + "; selected => " + group.selected);
-            for (let i = 0; i < this.groups.length; i++) {
-                if (index !== i) {
-                    this.groups[i].selected = 'false';
-                    // console.log("index => " + i + "; id => " + this.groups[i].id + "; selected => " + this.groups[i].selected);
-                }
-            }
-        }
-        // console.log(" ");
-
+    constructor(private notifyService: NotifyService) {
+      super();
     }
 
+    ngOnInit() {
+    }
 
+    onSelectionChange(selectionData) {
+      const selection: GroupFilterViewModel = selectionData.selectedRowsData.length
+            ? selectionData.selectedRowsData[selectionData.selectedRowKeys.length - 1]
+            : null;
+      if (selection && (!this.selectedGroup || selection.id !== this.selectedGroup.id)) {
+        this.selectedGroup = selection;
+      } else if (selection === null) {
+        this.selectedGroup = null;
+      }
+      this.grid.instance.deselectRows(
+          selectionData.selectedRowKeys.slice(0, selectionData.selectedRowKeys.length - 1));
+    }
 
+    confirmGroupFilter() {
+      if (this.selectedGroup) {
+        this.groupFilterSelected.emit(this.selectedGroup);
+        this.notifyService.notifyInfo(this.translate('Choosen_Filter') + this.selectedGroup.name);
+        this.grid.instance.deselectAll();
+      }
+    }
+
+    onCreateGroupFilter() {
+      this.createGroupFilter.emit();
+    }
+
+    onEditGroupFilter() {
+      this.editGroupFilter.emit(this.selectedGroup);
+    }
 }

@@ -1,0 +1,12 @@
+<app-popup
+  [visible]="preplanItemUiState !== null && preplanItemUiState!.isHidePreplanItemPopupVisible"
+  (visibilityChanged)="popupVisibilityChanged($event)"
+  [title]="translate('Confirm_Hide')"
+  [cancelCallback]="onHidePreplanItemHidePopup"
+  [confirmCallback]="onConfirmHidePreplanItemPopup"
+  width="300px"
+  height="auto">
+  <p>
+    {{ translate("Operation_Hide_Confirmation") }}
+  </p>
+</app-popup>

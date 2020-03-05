@@ -1,0 +1,76 @@
+<app-popup 
+  [validToConfirm]="planItemEditForm.valid"
+  title="{{ translate('Edit_Operation') }}"
+  [confirmCallback]="onFormSubmit"
+  [cancelCallback]="onFormHide"
+  [visible]="visible" 
+  [width]="'550px'" 
+  [height]="'680px'">
+  <div *ngIf="planItem">
+    <form [formGroup]="planItemEditForm">
+      <app-field label="{{ translate('Operation') }}" [isStatic]="true">
+        #{{ planItem!.subItemCode }} {{ planItem!.subItemName }}
+      </app-field>
+      <app-field label="{{ translate('Comment') }}">
+        <dx-text-area formControlName="comment"></dx-text-area>
+      </app-field>
+
+      <app-field label="{{ translate('Quantity') }}" [isStatic]="true">
+        {{ planItem!.quantity }} {{ planItem!.unitQuantity }}
+      </app-field>
+      <app-field label="{{ translate('Workplace') }}">
+          <!-- [value]="planItem!.containerId" -->
+        <dx-select-box
+          [items]="containers"
+          displayExpr="container.displayExpression"
+          valueExpr="container.id"
+          formControlName="idContainer"
+        ></dx-select-box>
+      </app-field>
+      <app-field label="{{ translate('Preparation_Start') }}">
+        <app-datebox 
+          type="datetime" 
+          formControlName="preparationStartTime" 
+          [max]="executionStartTimeControl.value">
+        </app-datebox>
+      </app-field>
+      <div class="ml-5">
+        <app-field label="{{ translate('Preparation_Time') }}" [isStatic]="true">
+          {{ preparationDurationControl.value }}
+        </app-field>
+        <app-field label="{{ translate('Lock_Normative') }}" [isStatic]="true">
+          <dx-check-box formControlName="isPreparationTimeLocked"></dx-check-box>
+        </app-field>
+      </div>
+      <app-field label="{{ translate('Execution_Start') }}">
+        <app-datebox 
+          type="datetime" 
+          formControlName="executionStartTime"
+          [max]="executionEndTimeControl.value"
+          [min]="preparationStartTimeControl.value">
+        </app-datebox>
+      </app-field>
+      <div class="ml-5">
+        <app-field label="{{ translate('Execution_Time') }}" [isStatic]="true">
+          {{ executionDurationControl.value }}
+        </app-field>
+        <app-field label="{{ translate('Lock_Normative') }}" [isStatic]="true">
+          <dx-check-box formControlName="isExecutionTimeLocked"></dx-check-box>
+        </app-field>
+      </div>
+
+      <app-field label="{{ translate('Execution_End') }}">
+        <app-datebox 
+          type="datetime" 
+          formControlName="executionEndTime"
+          [min]="executionStartTimeControl.value">
+        </app-datebox>
+      </app-field>
+      <!-- {{ planItemEditForm.invalid }} <br>
+      {{ planItemEditForm.controls['preparationStartTime'].value }} <br>
+      {{ planItemEditForm.controls['executionStartTime'].value }} <br>
+      {{ planItemEditForm.controls['executionEndTime'].value }} -->
+    </form>
+
+  </div>
+</app-popup>

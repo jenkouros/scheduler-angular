@@ -1,53 +1,51 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-        <div>System</div>
-      <div class="card-deck">
-        <div *ngFor="let group of groups">
-          <div 
-            *ngIf="group.type === 'system'"
-            [ngClass]="(group.selected == 'true') ? 'card border-dark mb-3' : 'card border-light mb-3'"
-            (click)="onClick(group.id, group.selected)"
-            style="max-width: 12rem; cursor:pointer;">
-            <div class="card-header">[{{ group.id }}]=>{{ group.name }}</div>
-            <div class="card-body">
-              <h5 class="card-title"></h5>
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-              <!-- <a href="#" class="card-link">Izberi</a>
-              <a href="#" class="card-link">Uredi</a> -->
-              <button type="button" class="btn btn-light" [disabled]="group.selected == 'true'">Izberi</button>
-              <button type="button" class="btn btn-light">Uredi</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>Usrer</div>
-      <div class="card-deck">
-        <div *ngFor="let group of groups">
-          <div 
-            *ngIf="group.type === 'user'" 
-            [ngClass]="(group.selected == 'true') ? 'card border-dark mb-3' : 'card border-light mb-3'"
-            (click)="onClick(group.id, group.selected)"
-            style="max-width: 12rem; cursor:pointer;">
-            <div class="card-header">[{{ group.id }}]=>{{ group.name }}</div>
-            <div class="card-body">
-              <h5 class="card-title"></h5>
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-              <!-- <a href="#" class="card-link">Izberi</a>
-              <a href="#" class="card-link">Uredi</a> -->
-              <button type="button" class="btn btn-light" [disabled]="group.selected == 'true'">Izberi</button>
-              <button type="button" class="btn btn-light">Uredi</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      </div>
+<div *ngIf="groups">
+  <button class="btn btn-primary mb-2" 
+    [disabled]="!grid.selectedRowKeys.length"
+    (click)="confirmGroupFilter()">
+    {{translate('Choose_Group')}} 
+  </button>
+
+    <button class="btn btn-primary mb-2 ml-1" 
+      [disabled]="!grid.selectedRowKeys.length"
+      (click)="onEditGroupFilter()">
+      {{translate('Edit')}} 
+    </button>
+
+    <button class="btn btn-success mb-2 ml-1" 
+      (click)="onCreateGroupFilter()">
+      {{translate('Add')}} 
+    </button>
+
+  <dx-data-grid 
+    #grid
+    [dataSource]="groups"
+    [showRowLines]="true" 
+    [showBorders]="true"
+    [rowAlternationEnabled]="true"
+    (onSelectionChanged)="onSelectionChange($event)">
+    <dxo-selection 
+      mode="multiple" 
+      showCheckBoxesMode="always"
+      [allowSelectAll]="false">
+    </dxo-selection>
+  
+    <dxi-column dataField="name" caption="{{translate('Group_Name')}}"></dxi-column>
+    <dxi-column caption="{{translate('Workplaces')}}" cellTemplate="containerCellTemplate"></dxi-column>
+    <dxi-column caption="{{translate('Filters')}}" cellTemplate="filterCellTemplate"></dxi-column>
+  
+    <div *dxTemplate="let cell of 'containerCellTemplate'">
+      <span class="badge badge-secondary mr-1 px-2 py-1" *ngFor="let container of cell.data.selectedContainers">{{ container.code }}</span>
     </div>
-  </div>
-<app-loader ></app-loader>
-
-
-<!-- card classess: selectded = true->card bg-light mb-3 selected = false->card border-dark mb-3 -->
-<!-- [ngClass]="{'card border-dark mb-3':group.selected == 'true', 'card border-light mb-3':group.selected == 'false'}"  -->
-            
+    <div *dxTemplate="let cell of 'filterCellTemplate'">
+      <div 
+        [ngClass]="{ 'mb-1': cell.data.filtersWithSelectedValue.length > 1 && idx !== cell.data.filtersWithSelectedValue.length - 1}" 
+        *ngFor="let filter of cell.data.filtersWithSelectedValue; let idx = index">
+        <strong>{{ filter.name }}: </strong>
+        <span class="badge badge-secondary mr-1 px-2 py-1" *ngFor="let filterValues of filter.selectedValues">
+          {{ filterValues.name }}
+        </span>
+      </div> 
+    </div>
+  </dx-data-grid>
+</div>

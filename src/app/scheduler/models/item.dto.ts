@@ -2,9 +2,11 @@ import {
     ItemHierarchyServer,
     ItemServer,
     SubItemServer,
-    ItemHierarchyAlternativeServer } from './server/item.servermodel';
+    ItemHierarchyAlternativeServer,
+    ItemProgressServer} from './server/item.servermodel';
 import { MeasurementUnit, Product } from './shared.dto';
 import { SubItemContainer } from './subitem.dto';
+import { Container } from './container.dto';
 
 
 export class Item {
@@ -12,12 +14,14 @@ export class Item {
     code: string;
     name: string;
     quantity: number; // celotna kolicina
-    quantityBatch: number; // kolicina sarze
-    quantityPlanned: number; // ze planirana kolicina
+    // quantityBatch: number; // kolicina sarze
+    // quantityPlanned: number; ze planirana kolicina
+    itemProgresses: ItemProgress[];
     measurementUnit: MeasurementUnit;
     article: Product;
     limitDateFrom: Date;
     limitDateTo: Date;
+    importDate: Date;
 
     static fromServer(planItemServer: ItemServer) {
         const result = new Item();
@@ -25,12 +29,25 @@ export class Item {
         result.name = planItemServer.name;
         result.idItem = planItemServer.idItem;
         result.quantity = planItemServer.quantity;
-        result.quantityBatch = planItemServer.quantityBatch;
-        result.quantityPlanned = planItemServer.quantityPlanned;
+        // result.quantityBatch = planItemServer.quantityBatch;
+        // result.quantityPlanned = planItemServer.quantityPlanned;
+        result.itemProgresses = planItemServer.itemProgresses.map(ItemProgress.fromServer);
         result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
         result.article = Product.fromServer(planItemServer.article);
         result.limitDateFrom = planItemServer.limitDateFrom;
         result.limitDateTo = planItemServer.limitDateTo;
+        result.importDate = planItemServer.importDate;
+        return result;
+    }
+}
+
+export class ItemProgress {
+    idPlan: number;
+    quantityPlanned: number;
+    static fromServer(serverData: ItemProgressServer) {
+        const result = new ItemProgress();
+        result.idPlan = serverData.idPlan;
+        result.quantityPlanned = serverData.quantityPlanned;
         return result;
     }
 }
@@ -39,12 +56,18 @@ export class ItemHierarchy {
     idPlanItem: number;
     codePlanItem: string;
     alternatives: ItemHierarchyAlternative[];
+    quantity: number;
+    quantityBatch: number;
+    measurementUnit: MeasurementUnit;
 
     static fromServer(serverData: ItemHierarchyServer) {
         const result = new ItemHierarchy();
         result.idPlanItem = serverData.id;
         result.codePlanItem = serverData.code;
         result.alternatives = serverData.alternatives.map(a => ItemHierarchyAlternative.fromServer(a));
+        result.quantity = serverData.quantity;
+        result.quantityBatch = serverData.quantityBatch;
+        result.measurementUnit = MeasurementUnit.fromServer(serverData.measurementUnit);
         return result;
     }
 }
@@ -73,20 +96,22 @@ export class SubItem {
     normativeTimePreparation: number;
     normativeTimeWorker: number;
     sequence: number;
-    planable: boolean;
+    plannable: boolean;
     quantity: number;
+    containers: Container[] | null;
 
     static fromServer(planSubItemServer: SubItemServer) {
         const result = new SubItem();
         result.id = planSubItemServer.id;
         result.name = planSubItemServer.name;
         result.code = planSubItemServer.code;
-        result.normativeTimeMachine = planSubItemServer.defaultExecutionNormative;
-        result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormative;
+        result.normativeTimeMachine = planSubItemServer.defaultExecutionNormativeInMinutes;
+        result.normativeTimePreparation = planSubItemServer.defaultPreparationtNormativeInMinutes;
         // result.normativeTimeWorker = planSubItemServer.normativeTimeWorker;
         result.sequence = planSubItemServer.sequenceNumber;
-        result.planable = planSubItemServer.isPlanable;
+        result.plannable = planSubItemServer.isPlanable;
         result.quantity = planSubItemServer.defaultQuantity;
+        result.containers = planSubItemServer.containers ? planSubItemServer.containers.map(Container.fromServer) : null;
         return result;
     }
 }

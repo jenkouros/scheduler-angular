@@ -1,149 +1,198 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { throwError as observableThrowError, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { PlannedEvent } from '../models/event.model';
+import {
+  PlannedEvent,
+  PlannedEventMove,
+  PlanItemPutRequest,
+  PlanItemMoveStatusEnum,
+  PlanItemCreateRequest,
+  PlanItemsGetResponse,
+  PlannedEventNotWorkingHoursMove,
+  PlanItemGetRequest
+} from '../models/event.model';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { PlannedEventServer } from '../models/server/plannedevent.servermodel';
+import { environment, appSettings } from '../../../environments/environment';
+import {
+  PlannedEventServer,
+  PlanItemResponseServer
+} from '../models/server/plannedevent.servermodel';
 import * as moment from 'moment';
-
+import { PlanSchedule } from '../models/planschedule.dto';
+import { PlanScheduleServer } from '../models/server/planschedule.servermodel';
 
 @Injectable()
 export class EventsService {
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    getEvents(containerIds: number[], fromDate: Date, toDate: Date): Observable<PlannedEvent[]> {
-        let httpParams = new HttpParams()
-            .set('IdPlan', '1')
-            .set('timeStart', moment(fromDate).toISOString())
-            .set('timeEnd', moment(toDate).toISOString()); // .format());
+  getEvents(
+    idPlan: number,
+    containerIds: number[],
+    fromDate: Date,
+    toDate: Date
+  ): Observable<PlanItemsGetResponse> {
+    // let httpParams = new HttpParams()
+    //     .set('IdPlan', '1')
+    //     .set('timeStart', moment(fromDate).toISOString())
+    //     .set('timeEnd', moment(toDate).toISOString());
 
-        containerIds.forEach(id => {
-            httpParams = httpParams.append('containers', id.toString());
-        });
+    const request = <PlanItemGetRequest>{
+      timeStart: moment(fromDate).format(),
+      timeEnd: moment(toDate).format(),
+      idPlan: idPlan,
+      containers: containerIds
+    };
 
-        const serachParams = {
-            params: httpParams
+    return this.http
+      .post<PlanItemResponseServer>(environment.apiUrl + '/planitems/GetPlanItems', request)
+      .pipe(
+        map(response => {
+          return PlanItemsGetResponse.fromServer(response);
+        })
+      );
 
-        };
+    // containerIds.forEach(id => {
+    //     httpParams = httpParams.append('containers', id.toString());
+    // });
 
-        return this.http.get<ApiResponse<PlannedEventServer[]>>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return response.result.map(PlannedEvent.fromServer);
-            }),
-            catchError((error: any) => observableThrowError(error.json))
-        );
-    }
+    // return this.http.get<PlanItemResponseServer>(environment.apiUrl + '/planitems', { params: httpParams }).pipe(
+    //     map((response) => {
+    //         return PlanItemsGetResponse.fromServer(response);
+    //     })
+    // );
+  }
 
-    createEvent(event: PlannedEvent): Observable<PlannedEvent> {
-        const planningItem = {
-            idPrePlanItem: event.idPrePlanItem,
-            idContainer: event.containerId,
-            timeStart: moment(event.startDate).format(),
-            timeEnd: moment(event.endDate).format()
-        };
-        return this.http.post<ApiResponse<PlannedEventServer>>(environment.apiUrl + '/planitems', planningItem,
-            {
-                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-            }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return PlannedEvent.fromServer(response.result);
-            } )
-        );
-    }
+  createEvent(event: PlannedEvent): Observable<PlannedEvent> {
+    const planningItem = <PlanItemCreateRequest>{
+      idPrePlanItem: event.idPrePlanItem,
+      idContainer: event.containerId,
+      timePreparationStart: moment(event.timeStartPreparation).format(),
+      timeExecutionStart: moment(event.timeStartExecution).format(),
+      timeExecutionEnd: moment(event.timeEndExecution).format(),
+      comment: event.description,
+      options: {
+        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+      }
+    };
+    return this.http
+      .post<PlannedEventServer>(environment.apiUrl + '/planitems', planningItem, {
+        headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+      })
+      .pipe(
+        map(response => {
+          return PlannedEvent.fromServer(response);
+        })
+      );
+  }
 
-    updateEvent(event: PlannedEvent): Observable<boolean> {
-        const planningItem = {
-            idPlanItem: event.id,
-            idContainer: event.containerId,
-            timeStart: moment(event.startDate).format(),
-            timeEnd: moment(event.endDate).format()
-        };
-        return this.http.put<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems', planningItem,
-            {
-                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-            }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return true;
-                // return PlannedEvent.fromServer(response.result);
-            } )
-        );
-    }
+  checkForNotPlannableEvents(idPlanItem: number) {
+    return this.http.post(
+      environment.apiUrl + '/planitems/checkForNotPlannablePlanItems',
+      idPlanItem
+    );
+  }
 
-    deleteEvent(event: PlannedEvent): Observable<boolean> {
-        return this.http.delete<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems?idPlanItem=' + event.id ,
-            {
-                headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-            }).pipe(
-            map((response) => {
-                if (response.code !== ApiResponseResult.success) {
-                    throw response.messages;
-                }
-                return true;
-            } )
-        );
-    }
+  updateEvent(event: PlannedEvent) {
+    const planningItem = <PlanItemPutRequest>{
+      idPlanItem: event.id,
+      idContainer: event.containerId,
+      timePreparationStart: moment(new Date(event.timeStartPreparation)).format(),
+      timeExecutionStart: moment(new Date(event.timeStartExecution)).format(),
+      timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
+      planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
+      comment: event.description,
+      options: {
+        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+      }
+    };
+    return this.http.put(environment.apiUrl + '/planitems', planningItem);
+  }
 
-    toggleLock(event: PlannedEvent): Observable<boolean> {
-        const url = event.isLocked ? 'unlockItem' : 'lockItem';
-        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, event.id).pipe(
-                map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return true;
-                })
-            );
-    }
+  updateEvents(
+    changedEvents: PlannedEventMove[],
+    fixPlanItem: boolean = false,
+    ignoreStatusLimitation = false
+  ) {
+    const request = changedEvents
+      .filter(i => i.planItemMoveStatus !== PlanItemMoveStatusEnum.Unchanged)
+      .map(
+        i =>
+          <PlanItemPutRequest>{
+            idContainer: i.idContainer,
+            idPlanItem: i.idPlanItem,
+            timeExecutionEnd: moment(i.timeEnd).format(),
+            timePreparationStart: moment(i.timeStart).format(),
+            // fixPlanItem: fixPlanItem,
+            options: {
+              fixPlanItem: fixPlanItem,
+              ignoreStatusLimitation: ignoreStatusLimitation
+            },
+            planItemMoveStatus: i.planItemMoveStatus
+          }
+      );
+    return this.http.put(environment.apiUrl + '/planitems/planitemslist', request);
+  }
 
-    toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {
-        const url = lock ? 'massLockItems' : 'massUnLockItems';
-        const request = {
-            containerIds: containerIds,
-            fromDate: moment(fromDate).format(),
-            toDate: moment(toDate).format()
-        };
+  deleteEvent(event: PlannedEvent) {
+    return this.http.delete(environment.apiUrl + '/planitems?idPlanItem=' + event.id);
+  }
 
-        return this.http.post<ApiResponse<ApiResponseResult>>(environment.apiUrl + '/planitems/' + url, request).pipe(
-                map(response => {
-                    if (response.code !== ApiResponseResult.success) {
-                        throw response.messages;
-                    }
-                    return true;
-                })
-            );
-    }
+  toggleLock(event: PlannedEvent) {
+    const url = event.isLocked ? 'unlockItem' : 'lockItem';
+    return this.http.post(environment.apiUrl + '/planitems/' + url, event.id);
+  }
 
-    /*
-        getEvents(containerIds: number[], fromDate: Date, toDate: Date) {
-            // TODO - go to server
-            return new Observable<{[containerId: number]: PlannedEvent[]}>(observer => {
-                observer.next(this.createDummyEvents(containerIds, fromDate, toDate));
-            });
-        }
+  toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {
+    const url = lock ? 'massLockItems' : 'massUnLockItems';
+    const request = {
+      containerIds: containerIds,
+      fromDate: moment(fromDate).format(),
+      toDate: moment(toDate).format()
+    };
 
-    private createDummyEvents(containerIds: number[], fromDate: Date, toDate: Date) {
-        const dummyEvents: { [containerId: number]: PlannedEvent[] } = {};
+    return this.http.post(environment.apiUrl + '/planitems/' + url, request);
+  }
 
-        // tslint:disable-next-line:forin
-        for (const i of containerIds) {
-            dummyEvents[i] = [];
-            dummyEvents[i].push(new PlannedEvent(1, i, '1000 Priprava', '', new Date(2018, 4, 17, 7, 0), new Date(2018, 4, 17, 8, 0)));
-            dummyEvents[i].push(new PlannedEvent(2, i, '2000 Izdelava', '', new Date(2018, 4, 17, 8, 0), new Date(2018, 4, 17, 10, 0)));
+  getTimeUpdateSuggestion(idItemBatch) {
+    return this.http.post<PlannedEventMove[]>(
+      environment.apiUrl + '/planitems/requestTimeUpdateByItemBatch',
+      idItemBatch
+    );
+  }
 
-        }
-        return dummyEvents;
-    }
-    */
+  getTimeUpdateByRealizationSuggestion(containers: number[], timeStart: Date, timeEnd: Date) {
+    return this.http.post<PlannedEventMove[]>(
+      environment.apiUrl + '/planitems/requestTimeUpdateByRealization',
+      {
+        containers: containers,
+        timeStart: moment(new Date(timeStart)).format(),
+        timeEnd: moment(new Date(timeEnd)).format()
+      }
+    );
+  }
+
+  getTimeSuggestionForNotWorkingHours(idPlanItem) {
+    return this.http.post<PlannedEventNotWorkingHoursMove>(
+      environment.apiUrl + '/planitems/getTimeSuggestionForNotWorkingHours',
+      idPlanItem
+    );
+  }
+
+  getExcelExportFile(fromDate: Date, toDate: Date): Observable<PlanItemsGetResponse> {
+
+    const request = <PlanItemGetRequest> {
+        timeStart: moment(fromDate).format(),
+        timeEnd: moment(toDate).format(),
+        idPlan: 1,
+        containers: [48, 49, 55, 60, 42, 2, 3, 4, 5, 6, 7, 8, 9, 39, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 57, 40, 41, 32, 44, 46, 38, 33, 34, 58, 50, 35, 36, 56, 45, 37, 43]
+    };
+    return this.http.post<PlanItemResponseServer>(environment.apiUrl + '/planitems/GetReportDataForExcel', request).pipe(
+        map((response) => {
+            return PlanItemsGetResponse.fromServer(response);
+        })
+    );
+
+}
 }

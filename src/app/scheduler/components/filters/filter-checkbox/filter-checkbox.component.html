@@ -1,4 +1,4 @@
-<div class="btn-group-vertical w-100" role="group" aria-label="Filter checkbox">
+<!-- <div class="btn-group-vertical w-100" role="group" aria-label="Filter checkbox">
   <button #btnRef type="button" 
     *ngFor="let filterValue of filterValues"
     (click)="onCheckboxClick(filterValue.id, btnRef)"
@@ -6,4 +6,20 @@
     [ngClass]="{active: filterValue.selected}">
       {{ filterValue.name }}
     </button>
-</div>
+</div> -->
+
+<!-- <dx-radio-group
+  [dataSource]="filterValues"
+  displayExpr="name"
+  valueExpr="id"
+  layout="vertical"
+  (click)="onClick()"
+  >
+</dx-radio-group> -->
+
+<dx-check-box *ngFor="let filterValue of filterValues"
+  class="d-block m-2"
+  (click)="onClick(filterValue.id)"
+  [text]="filterValue.name"
+  [value]="filterValue.selected">
+</dx-check-box>

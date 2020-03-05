@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../shared/shared.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
+import { SchedulerRouterModule } from './scheduler-router.module';
+import { reducers, effects } from './store';
 import * as fromComponents from './components';
 import * as fromContainers from './containers';
-import { SchedulerRouterModule } from './scheduler-router.module';
-// import * as fromServices from './services';
-import { HttpClientModule } from '@angular/common/http';
-import { EffectsModule } from '@ngrx/effects';
 import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-// Dx Component
+import * as fromServices from './services';
 import {
     DxButtonModule,
     DxTemplateModule,
@@ -19,38 +20,42 @@ import {
     DxLinearGaugeModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    DxFormModule
+    DxFormModule,
+    DxCheckBoxModule,
+    DxScrollViewModule,
+    DxNumberBoxModule,
+    DxValidatorModule,
+    DxValidationSummaryModule,
+    DxProgressBarModule,
+    DxTextAreaModule,
+    DxRadioGroupModule,
+    DxDropDownBoxModule,
+    DxListModule,
+    DxTreeViewModule,
+    DxTagBoxModule,
+    DxAutocompleteModule,
+    DxPopupModule,
+    DxDateBoxModule,
+    DxAccordionModule,
+    DxLoadPanelModule
 } from 'devextreme-angular';
 
-import { CommonModule } from '@angular/common';
-import { ItemsService } from './services/items.service';
-import { FiltersService } from './services/filters.service';
-import { ContainersService } from './services/containers.service';
-import { EventsService } from './services/events.service';
-import { PreplanitemsService } from './services/preplanitems.service';
-import { ItemsEffects } from './store/effects/items.effect';
-import { FiltersEffects } from './store/effects/filters.effect';
 import { ContainersEffects } from './store/effects/containers.effect';
-import { EventsEffects } from './store/effects/events.effect';
-import { PreplanitemEffects } from './store/effects/preplanitem.effect';
-import { PreplanitemDraggableDirective } from './components/preplanitem-item/preplanitem-dxdraggable.directive';
-
+import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
+import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
+import { JwtInterceptor } from '../auth/helpers';
+import { GroupSelectComponent } from './containers';
 
 @NgModule({
     imports: [
+        CoreModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         SchedulerRouterModule,
         StoreModule.forFeature('scheduler', reducers),
-        EffectsModule.forFeature([
-            ItemsEffects,
-            FiltersEffects,
-            ContainersEffects,
-            EventsEffects,
-            PreplanitemEffects
-        ]),
+        EffectsModule.forFeature([...effects, ContainersEffects]),
         SharedModule,
         DxSchedulerModule,
         DxButtonModule,
@@ -60,19 +65,38 @@ import { PreplanitemDraggableDirective } from './components/preplanitem-item/pre
         FontAwesomeModule,
         DxSelectBoxModule,
         DxTextBoxModule,
-        DxFormModule
+        DxTextAreaModule,
+        DxNumberBoxModule,
+        DxFormModule,
+        DxCheckBoxModule,
+        DxScrollViewModule,
+        DxValidatorModule,
+        DxValidationSummaryModule,
+        DxProgressBarModule,
+        DxRadioGroupModule,
+        DxCheckBoxModule,
+        DxDropDownBoxModule,
+        DxListModule,
+        DxTreeViewModule,
+        DxTagBoxModule,
+        DxAutocompleteModule,
+        DxPopupModule,
+        DxDateBoxModule,
+        DxAccordionModule,
+        DxLoadPanelModule
+    ],
+    exports: [
+      GroupSelectComponent
     ],
     declarations: [
         ...fromContainers.containers,
         ...fromComponents.components,
-        PreplanitemDraggableDirective],
+        PreplanitemDraggableDirective,
+        PlanItemStatusPipe
+    ],
     providers: [
-        // ...fromServices.services
-        ItemsService,
-        FiltersService,
-        ContainersService,
-        EventsService,
-        PreplanitemsService
+        ...fromServices.services,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ]
 })
 export class SchedulerModule {

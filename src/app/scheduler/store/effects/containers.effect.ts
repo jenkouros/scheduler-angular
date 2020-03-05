@@ -31,10 +31,12 @@ export class ContainersEffects {
   }
 
   @Effect()
-  loadContainers$ = this.actions$.ofType(fromActions.LOAD_CONTAINERS).pipe(
-    switchMap(action => {
+  loadContainers$ = this.actions$.ofType(fromActions.LOAD_CONTAINERS)
+  .pipe(
+    withLatestFrom(this.store.select(state => state.scheduler.filters)),
+    switchMap(([action, filters]) => {
       return this.containersService
-        .getContainers()
+        .getContainers(filters.selectedEntities, filters.selectedContainers)
         .pipe(
           map(containers => new fromActions.LoadContainersSuccess(containers)),
           catchError(error => of(new fromActions.LoadContainersFail()))
@@ -55,14 +57,18 @@ export class ContainersEffects {
       )
     );
 
-  @Effect()
+  @Effect({ dispatch: false })
   reselectContainers = this.actions$
     .ofType(fromActions.RESELECT_CONTAINERS)
     .pipe(
-      mergeMap((action: fromActions.ReselectContainers) => [
-        new fromActions.DeselectAllContainers(),
-        new fromActions.SelectContainers(action.payload)
-      ])
+      tap((action: fromActions.ReselectContainers) => {
+        this.store.dispatch(new fromActions.DeselectAllContainers());
+        this.store.dispatch(new fromActions.SelectContainers(action.payload));
+      })
+      // mergeMap((action: fromActions.ReselectContainers) => [
+      //   new fromActions.DeselectAllContainers(),
+      //   new fromActions.SelectContainers(action.payload)
+      // ])
     );
 
   @Effect({ dispatch: false })
@@ -78,19 +84,20 @@ export class ContainersEffects {
   deselectContainer = this.actions$
       .ofType(fromActions.DESELECT_CONTAINERS)
       .pipe(
-          map((action: fromActions.SelectContainers) => {
+          map((action: fromActions.DeselectContainers) => {
               this.signalRService.containerSubscribe(action.payload, false);
               const containerId = action.payload[0];
               return new fromActions.RemoveEventsByContainerId(containerId);
           })
       );
 
-  @Effect({ dispatch: false })
+  @Effect({ dispatch : false })
   deselectAllContainer = this.actions$
     .ofType(fromActions.DESELECT_ALL_CONTAINERS)
-    .pipe(map(action => {
-      this.signalRService.removeSubscriptions();
-      return new fromActions.RemoveEvents();
+    .pipe(
+      map(action => {
+        // this.signalRService.removeSubscriptions();
+        // return new fromActions.RemoveEvents();
     }));
 
   signalRConnection() {

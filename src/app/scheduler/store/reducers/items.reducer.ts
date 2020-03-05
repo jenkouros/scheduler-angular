@@ -1,23 +1,15 @@
 import * as fromActions from '../actions/items.action';
 import CustomStore from 'devextreme/data/custom_store';
 import { Item, ItemHierarchy } from '../../models/item.dto';
-
-export interface ItemUIState {
-    popupOpened: boolean;
-}
-
-export interface ItemState {
-    items: Item[];
-    itemsStore: CustomStore | null;
-    selectedItemHierarchy: ItemHierarchy | null;
-    selectedItemHierarchyLoading: boolean;
-    selectedItemHierarchyLoaded: boolean;
-    uiState: ItemUIState;
-}
+import { GridStoreConfiguration } from '../../models/shared.dto';
+import { ItemState } from '../../models/item.store';
+export { ItemState } from '../../models/item.store';
+export { ItemUIState } from '../../models/item.store';
 
 export const initialState: ItemState = {
     items: [],
-    itemsStore: null,
+    loadingItem: null,
+    itemsStoreConfiguration: null,
     selectedItemHierarchy: null,
     selectedItemHierarchyLoaded: false,
     selectedItemHierarchyLoading: false,
@@ -31,7 +23,10 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
         case fromActions.REGISTER_ITEMS_STORE: {
             return {
                 ...state,
-                itemsStore: action.payload
+                itemsStoreConfiguration: {
+                    ...action.payload,
+                    reloadDate: new Date()
+                }
             };
         }
         case fromActions.LOAD_ITEMS_SUCCESS: {
@@ -45,7 +40,10 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
                 ...state,
                 selectedItemHierarchyLoaded: false,
                 selectedItemHierarchyLoading: true,
-                selectedItemHierarchy: null
+                selectedItemHierarchy: null,
+                loadingItem: {
+                    ...action.payload.item
+                }
             };
         }
         case fromActions.LOAD_ITEMHIERARCHY_FAIL: {
@@ -79,7 +77,8 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
                 uiState: {
                     ...state.uiState,
                     popupOpened: false
-                }
+                },
+                loadingItem: null
             };
         }
         default:
