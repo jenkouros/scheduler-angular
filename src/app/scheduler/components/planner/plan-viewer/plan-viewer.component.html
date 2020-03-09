@@ -105,7 +105,7 @@
                                 </tr>
                                 <tr>
                                     <td>{{translate('Quantity')}}</td>
-                                    <th>{{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }} / {{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }}
+                                    <th>{{ plannedEvent.manufacturedQuantity ? plannedEvent.manufacturedQuantity : 0  }}  {{ plannedEvent.unitQuantity }} / {{ plannedEvent.quantity }} {{ plannedEvent.unitQuantity }}
                                       ({{ plannedEvent.manufacturedQuantity * 100 /
                                           (plannedEvent.quantity > 0 ? plannedEvent.quantity : 100 ) | number:'1.0-0' }} %)</th>
                                     <td>{{translate('End')}}</td>
