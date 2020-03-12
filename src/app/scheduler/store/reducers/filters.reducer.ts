@@ -4,7 +4,7 @@ import { Container } from '../../models/container.dto';
 
 export interface FilterState {
     entities: Filter[];
-    selectedEntities: { [id: string]: number[] };
+    selectedEntities: { [id: string]: number[] } | undefined;
     selectedContainers: Container[];
     loading: boolean;
     loaded: boolean;
@@ -12,7 +12,7 @@ export interface FilterState {
 
 export const initialState: FilterState = {
     entities: [],
-    selectedEntities: {},
+    selectedEntities: undefined,
     selectedContainers: [],
     loaded: false,
     loading: false
