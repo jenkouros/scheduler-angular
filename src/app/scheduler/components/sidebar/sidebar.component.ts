@@ -40,7 +40,7 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
       .subscribe(f => {
         this.filterActive = f !== undefined && Object.keys(f).length > 0;
 
-        if (this.filterActive) {
+        if (f !== undefined) {
           localStorage.setItem('selectedFilters', JSON.stringify(f)); // slows down process?
         }
       });
