@@ -6,7 +6,7 @@ export class SearchService {
   getSearchItemsStoreConfiguration(
     idPlan: number,
     search: string,
-    filterDictionary: { [id: string]: number[] }
+    filterDictionary: { [id: string]: number[] } | undefined
     ): GridStoreConfiguration {
 
       const dict = DictionaryHelper.stringify(filterDictionary);
@@ -26,7 +26,7 @@ export class SearchService {
   getSearchPlanItemsStoreConfiguration(
     idPlan: number,
     search: string,
-    filterDictionary: { [id: string]: number[] }
+    filterDictionary: { [id: string]: number[] } | undefined
     ): GridStoreConfiguration {
       const dict = DictionaryHelper.stringify(filterDictionary);
 

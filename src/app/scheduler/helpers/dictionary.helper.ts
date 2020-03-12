@@ -1,5 +1,5 @@
 export class DictionaryHelper {
-  static stringify(dict: { [id: number]: any[] }) {
+  static stringify(dict: { [id: number]: any[] } | undefined) {
     if (!dict) {
       return {
         ids: '',

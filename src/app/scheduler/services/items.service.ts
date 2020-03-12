@@ -36,7 +36,7 @@ export class ItemsService {
 
   getItemsStoreConfiguration(
     idPlan: number,
-    filterDictionary: { [id: string]: number[] }
+    filterDictionary: { [id: string]: number[] } | undefined
   ): GridStoreConfiguration {
     const dict = DictionaryHelper.stringify(filterDictionary);
     return {
