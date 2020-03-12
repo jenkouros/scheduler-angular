@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, OnDestroy, ChangeDetectionStrategy } fro
 import { Router } from '@angular/router';
 import { faClipboardList, faFilter, faCalendarAlt, faSearch, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { appSettings } from '../../../../environments/environment';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Subscription } from 'rxjs';
 import { formatMessage } from 'devextreme/localization';
@@ -36,7 +36,7 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
   faGroup = faLayerGroup;
 
   ngOnInit() {
-    this.filterSubscription = this.store.select(fromStore.getSelectedFilters)
+    this.filterSubscription = this.store.pipe(select(fromStore.getSelectedFilters))
       .subscribe(f => {
         this.filterActive = f !== undefined && Object.keys(f).length > 0;
 
@@ -45,7 +45,7 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
         }
       });
 
-    this.containerFilterSubscription = this.store.select(fromStore.selectFilterContainers)
+    this.containerFilterSubscription = this.store.pipe(select(fromStore.selectFilterContainers))
       .subscribe(f => {
         this.containerFilterActive = f !== null && f.length > 0;
       });
