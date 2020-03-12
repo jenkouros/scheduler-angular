@@ -7,6 +7,8 @@ import * as fromStore from '../../store';
 import { Subscription } from 'rxjs';
 import { formatMessage } from 'devextreme/localization';
 import { AppComponentBase } from '../../../shared/app-component-base';
+import { Filter } from '../../models/filter.dto';
+import { FilterSelect, FilterValueSelect } from '../../models/filter.viewmodel';
 
 
 @Component({
@@ -37,12 +39,29 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
     this.filterSubscription = this.store.select(fromStore.getSelectedFilters)
       .subscribe(f => {
         this.filterActive = f !== undefined && Object.keys(f).length > 0;
+
+        if (this.filterActive) {
+          localStorage.setItem('selectedFilters', JSON.stringify(f)); // slows down process?
+        }
       });
 
     this.containerFilterSubscription = this.store.select(fromStore.selectFilterContainers)
       .subscribe(f => {
         this.containerFilterActive = f !== null && f.length > 0;
       });
+
+    const localFilters = localStorage.getItem('selectedFilters');
+    if (localFilters) {
+      const dict: {[id: number]: number[]} = {};
+      const filters = JSON.parse(localFilters);
+
+      Object.keys(filters)
+        .forEach(function(id) {
+          dict[id] = filters[id];
+        });
+
+      this.store.dispatch(new fromStore.ChangeFilter(dict));
+    }
   }
 
   getScrollHeight(elementRef: ElementRef) {

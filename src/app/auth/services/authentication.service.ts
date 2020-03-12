@@ -35,5 +35,6 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         this.isLoggedIn$.next(false);
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('selctedFilters');
     }
 }
