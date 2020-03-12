@@ -179,14 +179,13 @@ export class EventsService {
     );
   }
 
-  getExcelExportFile(fromDate: Date, toDate: Date): Observable<PlanItemsGetResponse> {
+  getExcelExportFile(fromDate: Date, toDate: Date, containerIds: number[]): Observable<PlanItemsGetResponse> {
 
     const request = <PlanItemGetRequest> {
         timeStart: moment(fromDate).format(),
         timeEnd: moment(toDate).format(),
         idPlan: 1,
-        containers: [48, 49, 55, 60, 42, 2, 3, 4, 5, 6, 7, 8, 9, 39, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-            25, 26, 27, 28, 29, 30, 31, 57, 40, 41, 32, 44, 46, 38, 33, 34, 58, 50, 35, 36, 56, 45, 37, 43]
+        containers: containerIds
     };
     return this.http.post<PlanItemResponseServer>(environment.apiUrl + '/planitems/GetReportDataForExcel', request).pipe(
         map((response) => {

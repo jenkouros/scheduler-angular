@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { ContainerSelect } from '../../../models/container.viewModel';
 import { EventsService } from '../../../services/events.service';
 import * as moment from 'moment';
@@ -9,51 +9,12 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
     selector: 'app-container-group',
-    template: `
-      <button style="padding:9px; color: #084578;" class="btn btn-light" (click)="processClick()">
-        {{ selected ? translate('Remove_Selected') : translate('Select_All') }}
-      </button>
-      <div *ngIf="env.PlanItems_ExcelExport">
-        <button style="padding:9px; margin-left: 4px" class="btn btn-custom-primary" (click)="onExportDataToExcel()">
-          {{translate('Export_To_Excel')}}
-        </button>
-        <dx-popup height="auto" width="70%"
-          class="popup"
-          [width]="650"
-          [height]="260"
-          [showTitle]="true"
-          title="{{translate('Export_Excel_Title')}}"
-          [dragEnabled]="false"
-          [closeOnOutsideClick]="true"
-          [(visible)]="popupVisible">
-          <div *dxTemplate="let data of 'content'">
-          <div style="margin-top: 15px;">
-              <app-field label="{{translate('DateTime_From')}}">
-                      <dx-date-box
-                      [(value)]="dateTimeFrom"
-                          type="datetime">
-                      </dx-date-box>
-              </app-field>
-              <app-field label="{{translate('DateTime_To')}}">
-                          <dx-date-box
-                          [(value)]="dateTimeTo"
-                              type="datetime">
-                          </dx-date-box>
-              </app-field>
-              </div>
-              <div class="text-right" style="margin-top: 20px;">
-                      <button type="button" (click)="onCloseExport()"
-                      class="btn btn-outline-secondary" style="margin-right: 5px;">{{translate('Cancel')}}</button>
-                      <button type="button" (click)="onConfirmExportToExcel()" class="btn btn-success">{{translate('Confirm')}}</button>
-              </div>
-          </div>
-        </dx-popup>
-      </div>
-    `
+    templateUrl: './container-group.component.html'
 })
-export class ContainerGroupComponent extends AppComponentBase implements OnChanges {
+export class ContainerGroupComponent extends AppComponentBase implements OnChanges, OnInit {
 
     @Input() containers: ContainerSelect[];
+    @Input() selectedContainerIds: number[];
     @Output() groupSelect = new EventEmitter<number[]>();
     @Output() groupDeselect = new EventEmitter<number[]>();
     selected = false;
@@ -68,9 +29,13 @@ export class ContainerGroupComponent extends AppComponentBase implements OnChang
 
     constructor(
         private eventsService: EventsService,
-        private excelService: ExcelService
+        private excelService: ExcelService,
     ) {
       super();
+    }
+
+    ngOnInit() {
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -107,7 +72,7 @@ export class ContainerGroupComponent extends AppComponentBase implements OnChang
 
     onConfirmExportToExcel() {
         let data: any[] = new Array();
-        this.eventsService.getExcelExportFile(this.dateTimeFrom, this.dateTimeTo).pipe(map(result => {
+        this.eventsService.getExcelExportFile(this.dateTimeFrom, this.dateTimeTo, this.selectedContainerIds).pipe(map(result => {
           this.dataResult = result;
            data = result.planItems.map(row => ({
             containerId: row.description,

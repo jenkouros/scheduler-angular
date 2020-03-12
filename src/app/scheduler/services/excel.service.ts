@@ -11,6 +11,7 @@ export class ExcelService {
 constructor() { }
 
 createExcel(data: any[]) {
+  console.log(data);
   const header = ['Stroj', 'Koda artikla', 'Nalog', 'Količina', 'Začetni čas priprave',
   'Začetni datum', 'Končni datum', 'Opomba' ];
   const newData = data.map(row => ({
@@ -40,17 +41,20 @@ createExcel(data: any[]) {
     cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
   });
   for (let i = 0; i < newData.length ; i++) {
+      let containerId;
       if (i > 0) {
         if (newData[i].containerId !== newData[i - 1].containerId) {
-          worksheet.addRow([(newData[i].containerId)]);
+          containerId = newData[i].containerId;
         }
       } else {
-        worksheet.addRow([(newData[i].containerId)]);
+        containerId = newData[i].containerId;
     }
     if (newData[i].manufacturedQuantity === null) {
       newData[i].manufacturedQuantity = 0;
     }
-    worksheet.addRow([null,
+    worksheet.addRow(
+      [
+      containerId,
       newData[i].articleCode,
       newData[i].workOrder,
       newData[i].manufacturedQuantity + ' (' + newData[i].quantity + ')',

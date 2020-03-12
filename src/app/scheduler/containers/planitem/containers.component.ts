@@ -18,6 +18,7 @@ import * as fromPlanStore from '../../../plan/store';
     </app-container-item>
     <app-container-group
       [containers]="containers$ | async"
+      [selectedContainerIds]="selectedContainers$ | async"
       (groupSelect)="onSelectContainers($event)"
       (groupDeselect)="onDeselectContainers($event)"
     >
@@ -26,6 +27,7 @@ import * as fromPlanStore from '../../../plan/store';
 })
 export class ContainersComponent implements OnInit {
   containers$: Observable<ContainerSelect[]>;
+  selectedContainers$: Observable<number[]>;
   constructor(
     private store: Store<fromStore.SchedulerState>,
     private planStore: Store<fromPlanStore.SchedulerPlansState>
@@ -37,6 +39,7 @@ export class ContainersComponent implements OnInit {
     });
 
     this.containers$ = this.store.pipe(select(fromStore.getContainerSelectList));
+    this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerIds));
   }
 
   onSelectContainer(containerId: number) {
