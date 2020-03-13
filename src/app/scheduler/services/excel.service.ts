@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Workbook } from 'exceljs';
 import * as moment from 'moment';
 import * as fs from 'file-saver';
+import { PlannedEvent } from '../models/event.model';
 
 
 @Injectable({
@@ -10,16 +11,19 @@ import * as fs from 'file-saver';
 export class ExcelService {
 constructor() { }
 
-createExcel(data: any[]) {
+createExcel(data: PlannedEvent[]) {
   console.log(data);
-  const header = ['Stroj', 'Koda artikla', 'Nalog', 'Količina', 'Začetni čas priprave',
+  const header = ['Stroj', 'Koda artikla', 'PNN', 'Nalog', 'Zap. št./Operacija', 'Količina', 'Začetni čas priprave',
   'Začetni datum', 'Končni datum', 'Opomba' ];
   const newData = data.map(row => ({
   containerId: row.itemName,
   articleCode: row.articleCode,
+  articleName: row.articleName,
+  subItemName: row.subItemName,
   workOrder: row.idItemBatch + '/' + row.idPlan,
   manufacturedQuantity: row.manufacturedQuantity,
   quantity: row.quantity,
+  sequenceNumber: row.sequencePlanItems.findIndex(x => x.code === row.subItemCode) + 1,
   comment: row.description,
   timeStartPreparation: row.timeStartPreparation,
   startDate: row.startDate,
@@ -56,7 +60,9 @@ createExcel(data: any[]) {
       [
       containerId,
       newData[i].articleCode,
+      newData[i].articleName,
       newData[i].workOrder,
+      newData[i].sequenceNumber + '/' + newData[i].subItemName,
       newData[i].manufacturedQuantity + ' (' + newData[i].quantity + ')',
       moment(new Date(newData[i].timeStartPreparation)).format('DD/MM/YYYY HH:MM:SS'),
       moment(new Date(newData[i].startDate)).format('DD/MM/YYYY HH:MM:SS'),
@@ -66,12 +72,14 @@ createExcel(data: any[]) {
 
   worksheet.getColumn(1).width = 25;
   worksheet.getColumn(2).width = 15;
-  worksheet.getColumn(3).width = 15;
+  worksheet.getColumn(3).width = 30;
   worksheet.getColumn(4).width = 15;
-  worksheet.getColumn(5).width = 20;
+  worksheet.getColumn(5).width = 30;
   worksheet.getColumn(6).width = 20;
   worksheet.getColumn(7).width = 20;
-  worksheet.getColumn(8).width = 50;
+  worksheet.getColumn(8).width = 20;
+  worksheet.getColumn(9).width = 20;
+  worksheet.getColumn(10).width = 50;
   worksheet.addRow([]);
 
   worksheet.getColumn(1).font = { bold: true };
