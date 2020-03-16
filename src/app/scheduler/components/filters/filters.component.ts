@@ -32,6 +32,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
     // });
   }
 
+  trackBySelection(index, values: FilterSelect) {
+    return index;
+  }
+
   onFilterChange(id: number, values: number[]) {
     this.store.dispatch(new fromStore.ChangeOneFilter({ id: id, values: values }));
     // if (!remove) {

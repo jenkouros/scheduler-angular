@@ -1,5 +1,5 @@
 
-    <div class="px-3" *ngFor="let filterElement of (filtersState$ | async)">
+    <div class="px-3" *ngFor="let filterElement of (filtersState$ | async); trackBy: trackBySelection">
 
       <h5 class="mt-1">{{ filterElement.name }}</h5>
 

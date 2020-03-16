@@ -33,6 +33,7 @@ set selectedValues(value: number[]) {
 
   onChange(ev) {
     this.selectedValues = this.listView.selectedItemKeys;
+    this.changeSelection.emit([...this.selectedValues]);
   }
 
   syncListSelection() {
@@ -52,9 +53,4 @@ set selectedValues(value: number[]) {
         });
     }
   }
-
-  onClose(ev) {
-    this.changeSelection.emit([...this.selectedValues]);
-  }
-
 }
