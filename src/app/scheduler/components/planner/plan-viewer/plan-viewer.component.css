@@ -1,3 +1,12 @@
+::ng-deep #scheduler .dx-scrollbar-horizontal, ::ng-deep #scheduler .dx-scrollbar-horizontal .dx-scrollable-scroll {
+    height: 12px !important;
+}
+::ng-deep #scheduler .dx-scrollbar-vertical, ::ng-deep #scheduler .dx-scrollbar-vertical .dx-scrollable-scroll {
+    width: 12px !important;
+}
+::ng-deep #scheduler .dx-scrollable-scroll {
+    background-color: rgba(191, 191, 191, 0.6);
+}
 
 ::ng-deep .dx-scheduler-appointment-content{    
     padding: 0px;
