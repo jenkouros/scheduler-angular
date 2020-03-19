@@ -6,6 +6,7 @@ export interface FilterState {
     entities: Filter[];
     selectedEntities: { [id: string]: number[] } | undefined;
     selectedContainers: Container[];
+    recreateOnToggle: boolean;
     loading: boolean;
     loaded: boolean;
 }
@@ -14,6 +15,7 @@ export const initialState: FilterState = {
     entities: [],
     selectedEntities: undefined,
     selectedContainers: [],
+    recreateOnToggle: false,
     loaded: false,
     loading: false
 };
@@ -52,8 +54,10 @@ export function filtersReducer(
                     selected[key] = [...action.payload[key]];
                 }
             }
+            console.log(state);
             return {
                 ...state,
+                recreateOnToggle: !state.recreateOnToggle,
                 selectedEntities: selected
             };
         }

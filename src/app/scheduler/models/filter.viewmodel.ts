@@ -14,6 +14,7 @@ export class FilterSelect extends Filter {
         result.type = filter.type;
         result.values = filter.values;
         result.valuesSelect = filter.values.map(f => FilterValueSelect.createSelect(f, false));
+        result.recreateOnToggle = filter.recreateOnToggle;
         return result;
     }
 

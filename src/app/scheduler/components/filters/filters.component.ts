@@ -33,7 +33,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   trackBySelection(index, values: FilterSelect) {
-    return index;
+    return values.recreateOnToggle;
   }
 
   onFilterChange(id: number, values: number[]) {

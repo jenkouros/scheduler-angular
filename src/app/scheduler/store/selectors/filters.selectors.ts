@@ -28,14 +28,23 @@ export const getFilterCodeList = createSelector(
     }
 );
 
+export const getRecreateOnToggle = createSelector(
+    getFiltersState,
+    (state: fromFeature.FilterState) => {
+        return state.recreateOnToggle;
+    }
+);
+
 export const getFilterSelectList = createSelector(
     getFilterCodeList,
     getSelectedFilters,
-    (filters: Filter[], selectedFilters: { [id: number]: number[] } = {}) => {
+    getRecreateOnToggle,
+    (filters: Filter[], selectedFilters: { [id: number]: number[] } = {}, recreateTag) => {
         if (!filters) {
             return undefined;
         }
         return filters.map(f => {
+            f.recreateOnToggle = recreateTag;
             const filterSelect = FilterSelect.create(f);
             if (selectedFilters[filterSelect.id]) {
                 filterSelect.selectValues(selectedFilters[filterSelect.id]);

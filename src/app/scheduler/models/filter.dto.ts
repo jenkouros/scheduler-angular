@@ -6,6 +6,7 @@ export class Filter implements FilterServer {
     id: number;
     type: string;
     values: FilterValue[];
+    recreateOnToggle: boolean;
 
     static fromServer(filterServer: FilterServer) {
         const result = new Filter();
