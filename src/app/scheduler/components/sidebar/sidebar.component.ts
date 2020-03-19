@@ -5,10 +5,7 @@ import { appSettings } from '../../../../environments/environment';
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Subscription } from 'rxjs';
-import { formatMessage } from 'devextreme/localization';
 import { AppComponentBase } from '../../../shared/app-component-base';
-import { Filter } from '../../models/filter.dto';
-import { FilterSelect, FilterValueSelect } from '../../models/filter.viewmodel';
 
 
 @Component({

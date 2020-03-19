@@ -166,6 +166,15 @@
                   "with": "src/environments/environment.ecm360test.ts"
                 }
               ]
+            },
+            "tiktest": {
+              
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.tiktest.ts"
+                }
+              ]
             }
           }
         },
@@ -201,6 +210,9 @@
             },
             "ecm360test": {
               "browserTarget": "sinapro-scheduler:build:ecm360test"
+            },
+            "tiktest": {
+              "browserTarget": "sinapro-scheduler:build:tiktest"
             }
           }
         },

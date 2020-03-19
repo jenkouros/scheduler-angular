@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { FilterSelect } from '../../../models/filter.viewmodel';
 import { FilterTypeEnum } from '../../../models/filter.enum';
-import { GroupFilter, GroupFilterViewModel } from '../../../models/groupfilter.dto';
+import { GroupFilterViewModel } from '../../../models/groupfilter.dto';
 
 @Component({
   selector: 'app-group-edit',
