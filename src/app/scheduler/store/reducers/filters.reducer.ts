@@ -54,7 +54,6 @@ export function filtersReducer(
                     selected[key] = [...action.payload[key]];
                 }
             }
-            console.log(state);
             return {
                 ...state,
                 recreateOnToggle: !state.recreateOnToggle,

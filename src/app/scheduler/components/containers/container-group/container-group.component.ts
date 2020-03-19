@@ -82,19 +82,11 @@ export class ContainerGroupComponent extends AppComponentBase implements OnChang
             endDate: moment(new Date(row.timeEndExecution)).format('DD/MM/YYYY HH:MM:SS'),
             timeStartPreparation: moment(new Date(row.timeStartPreparation)).format('DD/MM/YYYY HH:MM:SS'),
           }));
-          this.exportExcel(result.planItems);
+          this.excelService.createExcel(result.planItems, this.dateTimeFrom, this.dateTimeTo);
            return {data: data};
       })).toPromise();
         this.popupVisible = false;
     }
-
-    exportExcel(data: any[]) {
-        this.generateExcel(data);
-    }
-
-    generateExcel(data: any[]) {
-        this.excelService.createExcel(data);
-      }
 
     onCloseExport() {
         this.popupVisible = false;
