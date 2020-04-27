@@ -1,6 +1,6 @@
 <!-- <div class="plannerItemContainer"> -->
   <!-- <div class="progressWrapper">
-          <div class="progressInfo">45%</div>          
+          <div class="progressInfo">45%</div>
   </div>                 -->
   <!-- <div class="plannerItem"> -->
     <div class="py-1 pl-2 pr-1 d-flex appointment" [ngClass]="viewName">
@@ -8,7 +8,7 @@
         <div class="d-flex flex-column">
           <div *ngIf="!settings.PlanItem_DisplayOperationFirst">
             <div class="white-text font-weight-bold">
-              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} | 
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} |
               {{ plannerItemData.itemName }}
             </div>
             <div>#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
@@ -18,14 +18,14 @@
               #{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}
             </div>
             <div>
-              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} | 
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} |
               {{ plannerItemData.itemName }}
-            </div>  
-          </div>        
+            </div>
+          </div>
           <div>{{ plannerItemData!.startDate | date:'shortTime' }} - {{ plannerItemData!.endDate | date:'shortTime' }}</div>
         </div>
-      </div> 
-      <div style="font-size: 12px;" class="flex-shrink-1">
+      </div>
+      <div style="font-size: 12px;" class="flex-shrink-1" *ngIf="plannerItemData.idPlanItemStatus !== statusEnum.Virtual">
         <div >
             <span class="badge badge-light text-kolektor" *ngIf="plannerItemData.itemTypeShortName" style="font-size: 11px;" >{{ plannerItemData.itemTypeShortName }}</span>
             <span *ngIf="plannerItemData.itemTypeShortName && plannerItemData.isLocked" class="ml-1"></span>
@@ -51,9 +51,9 @@
   <!-- </div> -->
   <!-- <div class="info pull-right mt-2 mr-2 text-center">
       <div *ngIf="plannerItemData.isLocked"><fa-icon [icon]="faLock"></fa-icon></div>
-      
+
       <div *ngIf="plannerItemData.sequenceWarning"><fa-icon [icon]="faWarning"></fa-icon></div>
       <div *ngIf="plannerItemData.isInNotWorkingHours"><fa-icon [icon]="faExclamation"></fa-icon></div>
   </div> -->
-<!-- 
+<!--
 </div> -->

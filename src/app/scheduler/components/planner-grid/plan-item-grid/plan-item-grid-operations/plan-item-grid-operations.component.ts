@@ -6,37 +6,46 @@ import { LoadContainers } from './../../../../store/actions/containers.action';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { AppState } from './../../../../../store/app.reducers';
-import { PlanGridOperation } from '../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { PlanGridOperation, planGridOperationPriorities, planGridOperationExecution, getplanGridOperationExecutionColor, getplanGridOperationPriorityColor } from '../../../../models/plan-grid-operation.model';
+import { Component, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
 
 
 @Component({
   selector: 'app-plan-item-grid-operations',
   templateUrl: './plan-item-grid-operations.component.html'
 })
-export class PlanItemGridOperationsComponent {
+export class PlanItemGridOperationsComponent implements OnDestroy {
+  planHoursSwitch$: Observable<boolean>;
   @Input() operations: PlanGridOperation[];
   @Input() item: PlanGridItem;
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
   // containers$: Observable<ContainerSelect[]>;
-
+  planHoursSwitchSubscription: Subscription;
+  planHours: boolean;
   @HostListener('dxmousewheel',  ['$event'])
-    onWindowScroll($event) {
-      console.log($event);
-      // $event.preventDefault();
-      // return false;
-  }
+
+  priorities = planGridOperationPriorities;
+  executionStatuses = planGridOperationExecution;
 
   constructor(private store: Store<AppState>) {
+    this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+    this.planHoursSwitchSubscription = this.planHoursSwitch$.subscribe(v => this.planHours = v);
     // store.pipe(select(getSelectedPlanId))
     // .subscribe(id => {
     //   store.dispatch(new LoadContainers());
     // });
     // this.containers$ = store.pipe(select(getContainerSelectList));
 
+  }
+
+  ngOnDestroy() {
+    if (this.planHoursSwitchSubscription) {
+      this.planHoursSwitchSubscription.unsubscribe();
+    }
   }
 
   updateOperation(e) {
@@ -55,6 +64,7 @@ export class PlanItemGridOperationsComponent {
       request.timeStart = updatedOperation.timeStart;
       request.idSubItem = updatedOperation.idSubItem;
       request.idItem = this.item.idItem;
+      request.planDay = !this.planHours;
       this.store.dispatch(new AutoplanItem(request));
     }
 
@@ -71,5 +81,21 @@ export class PlanItemGridOperationsComponent {
 
   }
 
-  applyPlanItemStyles() {}
+  applyCellStyles(e) {
+    if (e.rowType !== 'data') {
+      return;
+    }
+
+    switch (e.columnIndex) {
+
+      case 5: {
+        e.cellElement.style.background = getplanGridOperationExecutionColor(e.data.idUserStatus);
+        break;
+      }
+      case 4: {
+        e.cellElement.style.background = getplanGridOperationPriorityColor(e.data.idPriority);
+        break;
+      }
+    }
+  }
 }

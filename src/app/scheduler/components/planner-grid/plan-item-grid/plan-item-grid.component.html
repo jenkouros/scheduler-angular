@@ -1,20 +1,39 @@
-<app-datebox (change)="setLimitDate($event)" [date]="limitDate$ | async"></app-datebox>
-
+<div style="width: 400px;">
+  <div class="dx-field">
+    <div class="dx-field-label">Planiraj ure</div>
+    <div class="dx-field-value">
+      <dx-check-box
+        (onValueChanged)="plannedHoursSwitch($event)"
+        [value]="planHoursSwitch$ | async"
+      ></dx-check-box>
+    </div>
+  </div>
+  <div class="dx-field">
+    <div class="dx-field-label">Datum od</div>
+    <div class="dx-field-value" style="width: auto;">
+      <app-datebox
+        (change)="setLimitDate($event)"
+        [date]="limitDate$ | async"
+      ></app-datebox>
+    </div>
+  </div>
+</div>
 <app-plan-item-grid-items
   id="itemGridContainer"
   [items]="planItemGrid$ | async"
   [selectedItems]="selectedPlanItemGrid$ | async"
   (selectItem)="onItemSelect($event)"
-  [containers]="containers$ | async">
+  [containers]="containers$ | async"
+>
 </app-plan-item-grid-items>
 
 <dx-load-panel
-    #loadPanel
-    shadingColor="rgba(0,0,0,0.4)"
-    [position]="{ of: '#itemGridContainer' }"
-    [visible]="loading$ | async"
-    [showIndicator]="true"
-    [showPane]="true"
-    [shading]="true"
-    [closeOnOutsideClick]="false"></dx-load-panel>
-
+  #loadPanel
+  shadingColor="rgba(0,0,0,0.4)"
+  [position]="{ of: '#itemGridContainer' }"
+  [visible]="loading$ | async"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+></dx-load-panel>

@@ -9,6 +9,8 @@ import { AppState } from './../../../../store/app.reducers';
 import { Observable, Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
+import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class PlanItemGridComponent {
   loading$: Observable<boolean>;
   limitDateSubscription: Subscription;
   containers$: Observable<ContainerSelect[]>;
+  planHoursSwitch$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
     store.pipe(select(getSelectedPlanId))
@@ -39,6 +42,8 @@ export class PlanItemGridComponent {
     this.selectedPlanItemGrid$ = store.pipe(select(PlanItemGridSelectors.selectedPlanItemGrid));
 
     this.containers$ = store.pipe(select(getContainerSelectList));
+    this.planHoursSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+
   }
 
   onItemSelect(item: PlanItemGrid) {
@@ -48,6 +53,11 @@ export class PlanItemGridComponent {
   setLimitDate(date: Date) {
     this.store.dispatch(new PlanItemGridActions.SetItemLimitDate(date));
   }
+
+  plannedHoursSwitch(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
+  }
+
 
   // test(e, idItem: number) {
   //   console.log(e);

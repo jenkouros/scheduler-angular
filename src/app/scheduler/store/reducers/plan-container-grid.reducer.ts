@@ -20,7 +20,7 @@ export const initialState: PlanContainerGridState = {
   planContainerGrids: [],
   // openedPlanItemGrids: [],
   containerGridLimitDate: loadLimitDate,
-  planHoursSwitch: true
+  planHoursSwitch: false
 };
 
 export function planItemGridReducer (

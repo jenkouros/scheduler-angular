@@ -37,7 +37,7 @@ export interface PlannedEventServer {
     // linkedPlanItems: PlannedEventSimpleServer[];
     linkedItem: LinkedItemServer;
     parentLinkedItems: LinkedItemServer[];
-
+    showParentVirtualPlanItem: boolean;
     itemTypeShortName: string | null;
     extensionDurationInMinutes: number | null;
     allowParallelPlan: boolean;
@@ -49,6 +49,8 @@ export interface LinkedItemServer {
   itemCode: string;
   batchNumber: number;
   linkedPlanItems: PlannedEventSimpleServer[];
+  startDate: string;
+  endDate: string;
 }
 
 export interface PlannedEventSimpleServer {

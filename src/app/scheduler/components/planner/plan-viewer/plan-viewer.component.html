@@ -37,7 +37,7 @@
         [width]="getScrollWidth()"
         [editing]="{ allowAdding: false }"
         [dataSource]="planItemGetReponse.planItems"
-        [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda']"
+        [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda', 'Week plan']"
         [(currentView)]="currentView"
         [groups]="['containerId']"
         [resources]="schedulerResources"
@@ -57,6 +57,13 @@
         appointmentTooltipTemplate="tooltip-template"
         dropDownAppointmentTemplate="appointment-template"
         >
+
+        <!-- <dxi-view
+        type="week"
+        name="Week plan"
+        groupOrientation="vertical"
+        [cellDuration]="1440"
+        [intervalCount]="1"></dxi-view> -->
 
         <div *dxTemplate="let plannedEvent of 'appointment-template'">
             <app-plan-viewer-item [viewName]="currentView" [plannerItemData]="plannedEvent"></app-plan-viewer-item>

@@ -1,5 +1,5 @@
-// const serverUrl = 'http://10.9.22.106:9511';
-const serverUrl = 'http://localhost:55501';
+const serverUrl = 'http://10.9.22.106:9511';
+// const serverUrl = 'http://localhost:55501';
 
 export const environment = {
     locale: 'sr-Latn',
@@ -14,6 +14,7 @@ export const appSettings = {
   Menu_Scheduler: true,
   Menu_Scheduler_Items: true,
   Menu_Scheduler_Planner: true,
+  Menu_Scheduler_GridPlanner: true,
   Menu_Scheduler_Searcher: true,
   Menu_Scheduler_Filters: true,
   Menu_Scheduler_Groups: true,

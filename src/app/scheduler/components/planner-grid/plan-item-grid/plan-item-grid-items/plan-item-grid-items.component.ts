@@ -131,10 +131,10 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
         e.cellElement.style.background = this.getItemPlanStatusColor(this.calculatePlanStatus(e.data));
         break;
       }
-      case 6: {
-        e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.item.itemExecutionStatus);
-        break;
-      }
+      // case 6: {
+      //   e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.item.itemExecutionStatus);
+      //   break;
+      // }
       case 8: {
         e.cellElement.style.background = this.getPriorityColor(e.data.item.priority);
         break;

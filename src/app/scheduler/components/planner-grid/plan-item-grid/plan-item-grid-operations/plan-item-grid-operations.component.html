@@ -1,4 +1,5 @@
 <dx-data-grid
+(onCellPrepared)="applyCellStyles($event)"
   [dataSource]="operations"
   [showBorders]="true"
   [columnAutoWidth]="true"
@@ -8,7 +9,7 @@
     mode="cell"
     [allowUpdating]="true">
   </dxo-editing>
-  <dxi-column dataField="code" caption="Koda" [allowEditing]="false"></dxi-column>
+  <!-- <dxi-column dataField="code" caption="Koda" [allowEditing]="false"></dxi-column> -->
   <dxi-column dataField="name" caption="Naziv"  [allowEditing]="false"></dxi-column>
   <dxi-column dataField="idContainer" caption="Delovno mesto">
   <dxo-lookup
@@ -17,13 +18,24 @@
     valueExpr="id">
   </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="timeStart" dataType="datetime" caption="Začetek"></dxi-column>
-  <dxi-column dataField="timeEnd" dataType="datetime" caption="Konec"></dxi-column>
-  <dxi-column dataField="executionStatus" caption="Izvajanje">
-    <!-- <dxo-lookup
-          [dataSource]="itemExecutionStatuses"
+  <dxi-column dataField="timeStart" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" caption="Začetek"></dxi-column>
+  <dxi-column dataField="timeEnd" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" caption="Konec"></dxi-column>
+
+  <dxi-column dataField="idPriority" caption="Prioriteta" [allowEditing]="true">
+    <dxo-lookup
+          [dataSource]="priorities"
           displayExpr="Name"
           valueExpr="ID">
-        </dxo-lookup> -->
+        </dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="idUserStatus" caption="Izvajanje">
+    <dxo-lookup
+          [dataSource]="executionStatuses"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="userDate" caption="Datum" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="comment" caption="Komentar" [allowEditing]="true"></dxi-column>
+
 </dx-data-grid>

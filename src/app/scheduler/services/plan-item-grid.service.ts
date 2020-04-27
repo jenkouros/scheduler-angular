@@ -38,7 +38,10 @@ export class PlanItemGridService {
       timeExecutionStart: moment(new Date(operation.timeStart)).format(),
       timeExecutionEnd: moment(new Date(operation.timeEnd)).format(),
       planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
-      comment: '',
+      comment: operation.comment,
+      idPriority: operation.idPriority,
+      idUserStatus: operation.idUserStatus,
+      userDate: operation.userDate ? moment(new Date(operation.userDate)).format() : undefined,
       options: {
         enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
       }

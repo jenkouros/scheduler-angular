@@ -1,3 +1,4 @@
+import { PlanItemStatusEnum } from './../../../../models/event.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { faLock, faLockOpen, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { PlannedEvent } from '../../../../models/event.model';
@@ -10,7 +11,7 @@ import { appSettings } from '../../../../../../environments/environment';
 })
 export class PlanViewerItemComponent implements OnInit {
 
-
+  statusEnum = PlanItemStatusEnum;
   settings = appSettings;
   @Input() plannerItemData: PlannedEvent;
   @Input() viewName = '';

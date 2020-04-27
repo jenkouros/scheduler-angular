@@ -183,6 +183,13 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     return styleObject;
   }
 
+  canEdit(planItem: PlannedEvent) {
+    if (planItem.idPlanItemStatus === PlanItemStatusEnum.Virtual) {
+      return false;
+    }
+    return true;
+  }
+
   /** DEVEXTREME EVENT HANDLERS */
   onAppointmentDeleting(e) {
     e.cancel = true;
@@ -191,6 +198,9 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   onAppointmentClick($event) {
     $event.cancel = true;
+    if (!this.canEdit($event.appointmentData)) {
+      return;
+    }
     if ($event.component.__tooltipTimeout) {
       clearTimeout($event.component.__tooltipTimeout);
     }
@@ -204,6 +214,9 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   onAppointmentDblClick($event) {
     $event.cancel = true;
+    if (!this.canEdit($event.appointmentData)) {
+      return;
+    }
     if ($event.component.__tooltipTimeout) {
       clearTimeout($event.component.__tooltipTimeout);
     }
@@ -213,8 +226,11 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   onAppointmentUpdating(e) {
     e.cancel = true;
-    const event: PlannedEvent = e.newData;
 
+    const event: PlannedEvent = e.newData;
+    if (!this.canEdit(event)) {
+      return;
+    }
     const preparationDurationInMinutes = moment(new Date(event.timeStartExecution)).diff(moment(new Date(event.timeStartPreparation)), 'm');
 
     const startDate = new Date(event.startDate);

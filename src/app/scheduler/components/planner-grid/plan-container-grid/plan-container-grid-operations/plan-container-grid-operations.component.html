@@ -1,4 +1,5 @@
 <dx-data-grid
+(onCellPrepared)="applyCellStyles($event)"
   [dataSource]="gridItems"
   [showBorders]="true"
   [columnAutoWidth]="true"
@@ -12,36 +13,41 @@
     mode="cell"
     [allowUpdating]="true">
   </dxo-editing>
-  <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column>
+  <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
   <dxi-column dataField="operation.name" caption="Naziv"  [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="operation.idContainer" caption="Delovno mesto">
+  <dxi-column dataField="operation.idContainer" [showWhenGrouped]="true" caption="Delovno mesto" [groupIndex]="0">
   <dxo-lookup
     [dataSource]="containers"
     displayExpr="code"
     valueExpr="id">
   </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="operation.containerCode" caption="Delovno mesto" [groupIndex]="0"></dxi-column>
+  <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false"></dxi-column>
 
-
-  <dxi-column dataField="item.itemCode" caption="Delovni nalog" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="operation.timeStart" caption="Začetek" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="operation.timeEnd" caption="Konec" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
 
-  <dxi-column dataField="item.priority" caption="Prioriteta" [allowEditing]="true">
+  <dxi-column dataField="operation.idPriority" caption="Prioriteta" [allowEditing]="true">
     <dxo-lookup
           [dataSource]="priorities"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="operation.executionStatus" caption="Izvajanje">
+  <dxi-column dataField="operation.idUserStatus" caption="Izvajanje">
     <dxo-lookup
           [dataSource]="executionStatuses"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="operation.userDate" caption="Datum" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="operation.comment" caption="Komentar" [allowEditing]="true"></dxi-column>
+
     <dxo-pager
         [showPageSizeSelector]="true"
         [allowedPageSizes]="[5, 10, 20,30,50,100]"

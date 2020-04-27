@@ -44,6 +44,9 @@ export interface PlanItemCreateRequest {
     timeExecutionStart: Date | string;
     timeExecutionEnd: Date | string;
     comment?: string;
+    idPriority?: number;
+    idUserStatus?: number;
+    userDate?: Date | string;
     options?: PlanItemCreateRequestOptions;
 }
 
@@ -78,7 +81,8 @@ export class PlanItemsGetResponse {
 
     static fromServer(serverData: PlanItemResponseServer) {
         const result = new PlanItemsGetResponse();
-        result.planItems = serverData.planItems.map(PlannedEvent.fromServer);
+        const planItems = serverData.planItems.map(PlannedEvent.fromServer).map(PlannedEvent.getVirtualLinkedPlanItems);
+        result.planItems = [].concat.apply([], planItems); // serverData.planItems.map(PlannedEvent.fromServer);
         result.notWorkingHoursEvents = serverData.notWorkingHoursEvents.map(PlanSchedule.fromServer);
         return result;
     }
@@ -122,6 +126,7 @@ export class PlannedEvent {
     endDate: Date;
     itemTypeShortName: string | null;
     extensionDurationInMinutes: number | null;
+    showParentVirtualPlanItem: boolean;
 
     color: string;
 
@@ -339,17 +344,21 @@ export class PlannedEvent {
         result.timeStartPreparation = new Date(event.timeStartPreparation);
         result.timeStartExecution = new Date(event.timeStart);
         result.timeEndExecution = new Date(event.timeEnd);
+        // const test = moment(event.timeEnd, 'MM/DD/YYYY HH:mm:ss');
         result.title = event.title;
         result.containers = event.allowedContainers.map(SubItemContainer.fromServer);
         result.isPlanned = true;
         result.isLocked = event.isLocked;
         result.sequencePlanItems = event.sequencePlanItems.map(PlannedEventSimple.fromServer);
+        result.showParentVirtualPlanItem = event.showParentVirtualPlanItem;
         if (event.linkedItem) {
           result.linkedItem = new LinkedItemModel();
           result.linkedItem.batchNumber = event.linkedItem.batchNumber;
           result.linkedItem.idItem = event.linkedItem.idItem;
           result.linkedItem.idItemBatch = event.linkedItem.idItemBatch;
           result.linkedItem.itemCode = event.linkedItem.itemCode;
+          result.linkedItem.startDate = new Date(event.linkedItem.startDate);
+          result.linkedItem.endDate = new Date(event.linkedItem.endDate);
           result.linkedItem.linkedPlanItems = event.linkedItem.linkedPlanItems.map(PlannedEventSimple.fromServer);
         }
         if (event.parentLinkedItems) {
@@ -359,6 +368,8 @@ export class PlannedEvent {
             model.idItem = parentLinkedItem.idItem;
             model.idItemBatch = parentLinkedItem.idItemBatch;
             model.itemCode = parentLinkedItem.itemCode;
+            model.startDate = new Date(parentLinkedItem.startDate);
+            model.endDate = new Date(parentLinkedItem.endDate);
             model.linkedPlanItems = parentLinkedItem.linkedPlanItems.map(PlannedEventSimple.fromServer);
             return model;
           });
@@ -383,6 +394,37 @@ export class PlannedEvent {
         //     event.timeEnd,
         //     [...event.containers]);
     }
+
+    static getVirtualLinkedPlanItems(planItem: PlannedEvent): PlannedEvent[] {
+      const result = [planItem];
+      if (planItem.showParentVirtualPlanItem && planItem.parentLinkedItems && planItem.parentLinkedItems.length > 0) {
+        planItem.parentLinkedItems.forEach(element => {
+
+          result.push(PlannedEvent.createVirtualPlanItem(element, planItem));
+        });
+      }
+
+      return result;
+    }
+
+    static createVirtualPlanItem(linkedModel: LinkedItemModel, planItem: PlannedEvent) {
+      const virtualItem = new PlannedEvent();
+      virtualItem.startDate = linkedModel.startDate;
+      virtualItem.timeStartPreparation = linkedModel.startDate;
+      virtualItem.endDate = linkedModel.endDate;
+      virtualItem.subItemCode = planItem.itemName;
+      // virtualItem.subItemName = linkedModel.itemCode;
+      virtualItem.title = 'Virtual';
+      virtualItem.containerId = planItem.containerId;
+      virtualItem.articleCode = 'Virtual';
+      virtualItem.articleName = 'Virtual';
+      virtualItem.itemCode = linkedModel.itemCode;
+      virtualItem.itemName = linkedModel.itemCode;
+      virtualItem.idPlanItemStatus = PlanItemStatusEnum.Virtual;
+      return virtualItem;
+    }
+
+
 }
 
 export class PlannedEventSimple {
@@ -400,8 +442,10 @@ export class PlannedEventSimple {
         result.name = data.name;
         result.idPrePlanItem = data.idPrePlanItem;
         result.containerCode = data.containerCode;
-        result.timeStartPreparation = data.timeStartPreparation;
-        result.timeEnd = data.timeEnd;
+        result.timeStartPreparation = data.timeStartPreparation
+          ? new Date(data.timeStartPreparation) : null;
+        result.timeEnd = data.timeEnd
+          ? new Date(data.timeEnd) : null;
         result.allowParallelPlan = data.allowParallelPlan;
         return result;
     }
@@ -423,7 +467,8 @@ export enum PlanItemStatusEnum {
     Planned = 5,
     Running = 6,
     Finished = 7,
-    Canceled = 8
+    Canceled = 8,
+    Virtual = 99
 }
 
 export enum PlanItemProgressEnum {
@@ -444,6 +489,8 @@ export class LinkedItemModel {
   itemCode: string;
   batchNumber: number;
   linkedPlanItems: PlannedEventSimple[];
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface PlanItemSearch {
