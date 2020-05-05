@@ -2,7 +2,9 @@ import { Action } from '@ngrx/store';
 import { PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
 import { PlanSchedule } from '../../models/planschedule.dto';
 
-
+export const LOAD_EVENT = '[Events] Load Event';
+export const LOAD_EVENT_SUCCESS = '[Events] Load Event success';
+export const LOAD_EVENT_FAIL = '[Events] Load Event fail';
 export const LOAD_EVENTS = '[Events] Load Events';
 export const LOAD_EVENTS_SUCCESS = '[Events] Load Events success';
 export const LOAD_EVENTS_FAIL = '[Events] Load Events fail';
@@ -14,6 +16,19 @@ export class LoadEvents implements Action {
     constructor(public payload: { containerIds: number[], dateFrom: Date, dateTo: Date }) {
     }
 }
+
+export class LoadEvent implements Action {
+  readonly type = LOAD_EVENT;
+  constructor(public payload: { id: number }) {}
+}
+export class LoadEventSuccess implements Action {
+  readonly type = LOAD_EVENT_SUCCESS;
+  constructor(public payload: { event: PlannedEvent }) {}
+}
+export class LoadEventFail implements Action {
+  readonly type = LOAD_EVENT_FAIL;
+}
+
 export class ReloadEvents implements Action {
     readonly type = RELOAD_EVENTS;
     constructor(public payload: { containerIds: number[] }) {}
@@ -187,6 +202,16 @@ export class SetSchedulerCurrentDate {
     constructor(public payload: Date) {}
 }
 
+export const SHOW_PLANITEM_DETAIL_POPUP = '[Event] Show PlanItem detail popup';
+export const HIDE_PLANITEM_DETAIL_POPUP = '[Event] Hide PlanItem detail popup';
+export class ShowPlanItemDetailPopup implements Action {
+  readonly type = SHOW_PLANITEM_DETAIL_POPUP;
+  constructor(public payload: { id: number }) {}
+}
+export class HidePlanItemDetailPopup implements Action {
+  readonly type = HIDE_PLANITEM_DETAIL_POPUP;
+}
+
 export type EventsAction =
     | LoadEvents
     | LoadEventsSuccess
@@ -220,4 +245,9 @@ export type EventsAction =
     | ClearRealizationTimeUpdateSuggestion
     | GetRealizationTimeUpdateSuggestion
     | GetRealizationTimeUpdateSuggestionSuccess
+    | LoadEvent
+    | LoadEventSuccess
+    | LoadEventFail
+    | ShowPlanItemDetailPopup
+    | HidePlanItemDetailPopup
     ;

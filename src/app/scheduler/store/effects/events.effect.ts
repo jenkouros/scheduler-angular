@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as fromAction from '../actions';
 import {
   switchMap,
@@ -33,6 +33,15 @@ export class EventsEffects {
   ) {}
 
   @Effect()
+  loadEvent$ = this.actions$.ofType(fromAction.LOAD_EVENT).pipe(
+    map((action: fromAction.LoadEvent) => action),
+    switchMap(action => this.eventsService.getEvent(action.payload.id).pipe(
+      map(response => new fromAction.LoadEventSuccess({ event: response})),
+      catchError(error => of(new fromAction.LoadEventFail()))
+    ))
+  );
+
+  @Effect()
   loadEvents$ = this.actions$.ofType(fromAction.LOAD_EVENTS).pipe(
     map((action: fromAction.LoadEvents) => action),
     withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
@@ -61,6 +70,13 @@ export class EventsEffects {
           })
         )
     )
+  );
+
+  @Effect()
+  showEventDetailPopup$ = this.actions$.pipe(
+    ofType(fromAction.SHOW_PLANITEM_DETAIL_POPUP),
+    map((action: fromAction.ShowPlanItemDetailPopup) => action.payload.id),
+    map(id => new fromAction.LoadEvent({id: id}))
   );
 
   @Effect()

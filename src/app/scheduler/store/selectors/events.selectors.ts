@@ -66,3 +66,13 @@ export const getEventsUiState = createSelector(
     getEventsState,
     state => state.uiState
 );
+
+export const getEventDetailFlag = createSelector(
+  getEventsUiState,
+  state => state.eventDetailPopup
+);
+
+export const getSelectedEvent = createSelector(
+  getEventsState,
+  state => state.selectedEvent
+);

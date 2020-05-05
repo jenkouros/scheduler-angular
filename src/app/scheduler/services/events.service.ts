@@ -63,6 +63,12 @@ export class EventsService {
     // );
   }
 
+  getEvent(id: number) {
+    return this.http.post<PlannedEventServer>(environment.apiUrl + `/planitems/GetPlanItem?idPlanItem=${id}`, null).pipe(
+      map(response => PlannedEvent.fromServer(response))
+    );
+  }
+
   createEvent(event: PlannedEvent): Observable<PlannedEvent> {
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: event.idPrePlanItem,

@@ -1,0 +1,42 @@
+<h6>{{translate('Operation')}}</h6>
+<table class="table table-sm">
+    <tr>
+        <td>{{translate('Workorder_Short')}}</td>
+        <th>
+            <div>
+                {{ planItem.itemName }}
+                <span *ngIf="planItem.itemTypeShortName" class="badge badge-secondary">{{ planItem.itemTypeShortName }}</span>
+            </div>
+        </th>
+        <td>{{translate('Preparation')}}</td>
+        <th>{{ planItem.timeStartPreparation | date:'mediumDate' }} {{ planItem.timeStartPreparation | date:'shortTime' }}</th>
+    </tr>
+    <tr>
+        <td>{{translate('Product')}}</td>
+        <th>{{ planItem.articleCode }} - {{ planItem.articleName }}</th>
+        <td>{{translate('Production')}}</td>
+        <th>{{ planItem.timeStartExecution | date:'mediumDate' }} {{ planItem.timeStartExecution | date:'shortTime' }}</th>
+    </tr>
+    <tr>
+        <td>{{translate('Quantity')}}</td>
+        <th>{{ planItem.manufacturedQuantity ? planItem.manufacturedQuantity : 0  }}  {{ planItem.unitQuantity }} / {{ planItem.quantity }} {{ planItem.unitQuantity }}
+          ({{ planItem.manufacturedQuantity * 100 /
+              (planItem.quantity > 0 ? planItem.quantity : 100 ) | number:'1.0-0' }} %)</th>
+        <td>{{translate('End')}}</td>
+        <th>{{ planItem.timeEndExecution | date:'mediumDate' }} {{ planItem.timeEndExecution | date:'shortTime' }}</th>
+    </tr>
+    <tr>
+        <td>{{translate('Status')}}</td>
+        <th><span class="p-1 text-white" [ngStyle]="{'background-color': planItem.color}">{{ planItem.statusDescription }}</span></th>
+        <td>{{translate('Execution_Time')}}</td>
+        <th>
+          {{ planItem.operationDurationString }}
+        </th>
+    </tr>
+    <tr *ngIf="planItem.description">
+        <td>{{translate('Comment')}}</td>
+        <th colspan="3">
+            <div style="white-space: normal;">{{planItem.description}}</div>
+        </th>
+    </tr>
+</table>

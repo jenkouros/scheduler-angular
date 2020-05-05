@@ -1,0 +1,31 @@
+<div class="mb-3">
+  <h4>{{translate('Original_Data')}}</h4>
+  <span class="dx-field">{{ plannedEvent.timeStartPreparation | date:'mediumDate' }} {{ plannedEvent.timeStartPreparation | date:'shortTime' }} -
+      {{ plannedEvent.timeEndExecution | date:'mediumDate' }} {{ plannedEvent.timeEndExecution | date:'shortTime' }}
+  </span>
+</div>
+<div>
+  <h4>{{translate('Solve_Overlaps')}}</h4>
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="movePlanItem" [(ngModel)]="notWorkingHoursResolveMode" checked>
+          <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Move_Operation')}}
+              <strong>
+                  {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeStart | date:'shortTime' }} -
+                  {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.movePlanItem.timeEnd | date:'shortTime' }}
+              </strong>
+          </label>
+      </div>
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="notWorkingHoursUpdateMode" value="extendPlanItem" [(ngModel)]="notWorkingHoursResolveMode">
+          <label class="form-check-label dx-field" for="notWorkingHoursUpdateMode">{{translate('Expand_Workplace')}}
+              <strong>
+                  {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeStart | date:'shortTime' }} -
+                  {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'mediumDate' }} {{ notWorkingHoursUpdateSuggestion!.extendPlanItem.timeEnd | date:'shortTime' }}
+              </strong>
+          </label>
+      </div>
+</div>
+  <div class="float-right">
+      <button class="btn btn-default mr-1" (click)="onClearNotWorkingHoursSuggestion()">{{translate('Cancel')}}</button>
+      <button class="btn btn-success" (click)="onResolveNotWorkingHours()">{{translate('Confirm')}}</button>
+  </div>

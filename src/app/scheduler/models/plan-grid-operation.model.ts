@@ -13,6 +13,7 @@ export interface PlanGridOperation {
   idUserStatus: number;
   userDate: Date;
   comment: string;
+  IdPlanItem: number;
 }
 
 export const planGridOperationPriorities = [

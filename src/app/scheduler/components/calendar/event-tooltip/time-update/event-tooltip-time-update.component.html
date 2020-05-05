@@ -1,0 +1,67 @@
+<h6>{{ translate("Edit_Operation_Sequence") }}</h6>
+<table class="table">
+  <thead>
+    <tr>
+      <th colspan="2">{{ translate("Original_Data") }}</th>
+      <th></th>
+      <th>{{ translate("Suggested_Changes") }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let op of plannedEvent.sequencePlanItems">
+      <td>#{{ op.code }}</td>
+      <td>
+        {{ op.timeStartPreparation | date: "mediumDate" }}
+        {{ op.timeStartPreparation | date: "shortTime" }} -
+        {{ op.timeEnd | date: "mediumDate" }}
+        {{ op.timeEnd | date: "shortTime" }}
+      </td>
+      <td
+        *ngIf="timeUpdateSuggestion[op.idPrePlanItem]"
+        class="alert"
+        [ngClass]="
+          getPlanItemClass(
+            timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus
+          )
+        "
+      >
+        {{
+          timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus
+            | planItemStatusName
+        }}
+      </td>
+      <td *ngIf="!timeUpdateSuggestion[op.idPrePlanItem]"></td>
+      <td>
+        <ng-container
+          *ngIf="
+            timeUpdateSuggestion[op.idPrePlanItem] &&
+            timeUpdateSuggestion[op.idPrePlanItem].planItemMoveStatus !== 1
+          "
+        >
+          {{
+            timeUpdateSuggestion[op.idPrePlanItem].timeStart
+              | date: "mediumDate"
+          }}
+          {{
+            timeUpdateSuggestion[op.idPrePlanItem].timeStart | date: "shortTime"
+          }}
+          -
+          {{
+            timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date: "mediumDate"
+          }}
+          {{
+            timeUpdateSuggestion[op.idPrePlanItem].timeEnd | date: "shortTime"
+          }}
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="float-right">
+  <button class="btn btn-default mr-1" (click)="onClearTimeSuggestion()">
+    {{ translate("Cancel") }}
+  </button>
+  <button class="btn btn-success" (click)="onResolveSequence()">
+    {{ translate("Confirm") }}
+  </button>
+</div>

@@ -1,3 +1,4 @@
+import { HelpersService } from './../../shared/services/helpers.service';
 import { FiltersService } from './filters.service';
 import { ContainersService } from './containers.service';
 import { EventsService } from './events.service';
@@ -18,6 +19,7 @@ export const services: any[] = [
   EventsService,
   PreplanitemsService,
   NotifyService,
+  HelpersService,
   SearchService,
   GroupsService,
   ExcelService,

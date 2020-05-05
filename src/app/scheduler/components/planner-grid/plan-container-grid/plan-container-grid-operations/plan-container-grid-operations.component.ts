@@ -1,12 +1,19 @@
+import { HelpersService } from './../../../../../shared/services/helpers.service';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../../store/app.reducers';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
-import { PlanGridOperation, planGridOperationPriorities, planGridOperationExecution, getplanGridOperationExecutionColor, getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
+import {
+  PlanGridOperation,
+  planGridOperationPriorities,
+  planGridOperationExecution,
+  getplanGridOperationExecutionColor,
+  getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
+import * as PlanItemActions from '../../../../store/actions/events.action';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
@@ -24,13 +31,19 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   @Input() containers: ContainerSelect[];
   selectedKeys: any[] = [];
   refresh = false;
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
   }
 
   priorities = planGridOperationPriorities;
   executionStatuses = planGridOperationExecution;
+
+  showDetails(id: number) {
+    this.store.dispatch(new PlanItemActions.ShowPlanItemDetailPopup({id: id}));
+  }
+
+
 
   updateOperation(e) {
     // this.refresh = true;

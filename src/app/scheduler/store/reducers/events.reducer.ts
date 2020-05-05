@@ -4,6 +4,7 @@ import { PlanSchedule } from '../../models/planschedule.dto';
 
 export interface EventsState {
     entities: {[idContainer: number]: ContainerEvents };
+    selectedEvent: PlannedEvent | null;
     loading: boolean;
     loaded: boolean;
     timeUpdateSuggestion: {[idPrePlanItem: number]: PlannedEventMove} | null;
@@ -16,12 +17,14 @@ export interface EventsState {
         },
         idItemBatchTimeUpdateSuggestion: number | null,
         idPlanItemNotWorkingHoursTimeUpdateSuggestion: number | null,
-        schedulerCurrentDate: Date | null
+        schedulerCurrentDate: Date | null,
+        eventDetailPopup: boolean
     };
 }
 
 export const initialState: EventsState = {
     entities: {},
+    selectedEvent: null,
     loaded: false,
     loading: false,
     timeUpdateSuggestion: null,
@@ -34,7 +37,8 @@ export const initialState: EventsState = {
         },
         idItemBatchTimeUpdateSuggestion: null,
         idPlanItemNotWorkingHoursTimeUpdateSuggestion: null,
-        schedulerCurrentDate: null
+        schedulerCurrentDate: null,
+        eventDetailPopup: false
     }
 };
 
@@ -48,6 +52,33 @@ export function eventsReducer(
                 ...state,
                 loading: true
             };
+        }
+        case fromAction.LOAD_EVENT_SUCCESS: {
+          return {
+            ...state,
+            selectedEvent: action.payload.event
+          };
+        }
+        case fromAction.SHOW_PLANITEM_DETAIL_POPUP: {
+          const uiState = {
+            ...state.uiState,
+            eventDetailPopup: true
+          };
+          return {
+            ...state,
+            uiState: uiState
+          };
+        }
+        case fromAction.HIDE_PLANITEM_DETAIL_POPUP: {
+          const uiState = {
+            ...state.uiState,
+            eventDetailPopup: false
+          };
+          return {
+            ...state,
+            selectedEvent: null,
+            uiState: uiState
+          };
         }
         case fromAction.LOAD_EVENTS_SUCCESS: {
             const events: { [id: number]: ContainerEvents } = { ...state.entities };

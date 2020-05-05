@@ -52,7 +52,6 @@ export class PlanContainerGridComponent {
     this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
   }
 
-
   applyCellStyles(e) {
     if (e.rowType !== 'data') {
       return;

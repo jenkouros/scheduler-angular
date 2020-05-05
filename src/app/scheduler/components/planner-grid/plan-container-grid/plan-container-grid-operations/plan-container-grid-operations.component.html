@@ -1,3 +1,4 @@
+<app-calendar-event-tooltip></app-calendar-event-tooltip>
 <dx-data-grid
 (onCellPrepared)="applyCellStyles($event)"
   [dataSource]="gridItems"
@@ -15,9 +16,15 @@
   </dxo-editing>
   <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
   <dxi-column dataField="operation.name" caption="Naziv"  [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="operation.idContainer" [showWhenGrouped]="true" caption="Delovno mesto" [groupIndex]="0">
+  <dxi-column dataField="operation.idContainer"
+
+    [showWhenGrouped]="true"
+    caption="Delovno mesto"
+    [groupIndex]="0">
   <dxo-lookup
     [dataSource]="containers"
+
+    sort="code"
     displayExpr="code"
     valueExpr="id">
   </dxo-lookup>
@@ -48,6 +55,12 @@
   <dxi-column dataField="operation.userDate" caption="Datum" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="operation.comment" caption="Komentar" [allowEditing]="true"></dxi-column>
 
+  <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column>
+
+
+<div *dxTemplate="let cell of 'showDetailCellTemplate'">
+  <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">Details</a>
+</div>
     <dxo-pager
         [showPageSizeSelector]="true"
         [allowedPageSizes]="[5, 10, 20,30,50,100]"

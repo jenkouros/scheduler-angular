@@ -35,11 +35,12 @@ export function containerReducer(
       };
     }
     case fromAction.LOAD_CONTAINERS_SUCCESS: {
+      var containers = [...action.payload].sort((a, b) => localeCompare(a.code, b.code));
       return {
         ...state,
         loaded: true,
         loading: false,
-        containers: [...action.payload]
+        containers: containers
       };
     }
     case fromAction.SELECT_CONTAINERS: {
@@ -81,6 +82,15 @@ export function containerReducer(
 
     default:
       return state;
+  }
+}
+
+function localeCompare(a: string, b: string) {
+  try {
+    return( a.localeCompare( b, undefined, { numeric: true } ) );
+  } catch (error) {
+    console.warn( 'Extended localeCompare() not supported in this browser.' );
+    return( a.localeCompare( b ) );
   }
 }
 

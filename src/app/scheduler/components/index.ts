@@ -1,3 +1,4 @@
+import { CalendarEventTooltipComponent } from './calendar/event-tooltip/calendar-event-tooltip.component';
 import { PlanContainerGridOperationsComponent } from './planner-grid/plan-container-grid/plan-container-grid-operations/plan-container-grid-operations.component';
 import { PlanViewerLinkedItemsComponent } from './planner/plan-viewer/linked-items/plan-viewer-linked-items.component';
 import { PreplanitemHidePopupComponent } from './preplanitem/preplanitem-hide-popup/preplanitem-hide-popup.component';
@@ -33,6 +34,7 @@ import { PlanItemGridComponent } from './planner-grid/plan-item-grid/plan-item-g
 import { PlanContainerGridComponent } from './planner-grid/plan-container-grid/plan-container-grid.component';
 import { PlanItemGridOperationsComponent } from './planner-grid/plan-item-grid/plan-item-grid-operations/plan-item-grid-operations.component';
 import { PlanItemGridItemsComponent } from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
+import { SequenceOperationListComponent } from './calendar/event-tooltip/sequence-operation-list/event-tooltip-sequence-operations.component';
 
 
 
@@ -72,9 +74,13 @@ export const components: any[] = [
     PlanItemGridOperationsComponent,
     PlanItemGridItemsComponent,
     PlanContainerGridComponent,
-    PlanContainerGridOperationsComponent
+    PlanContainerGridOperationsComponent,
+    CalendarEventTooltipComponent,
+    SequenceOperationListComponent
 ];
 
+export * from './calendar/event-tooltip/sequence-operation-list/event-tooltip-sequence-operations.component';
+export * from './calendar/event-tooltip/calendar-event-tooltip.component';
 export * from './filters/filters.component';
 export * from './groups/group-edit/group-edit.component';
 export * from './groups/group-list/group-list.component';

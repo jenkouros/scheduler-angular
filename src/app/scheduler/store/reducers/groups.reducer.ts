@@ -42,9 +42,10 @@ export function groupsReducer(state: GroupState, action: fromActions.GroupAction
             };
         }
         case fromActions.LOAD_GROUP_CODELIST_CONTAINER_SUCCESS: {
+            const containers = [...action.payload].sort((a, b) => localeCompare(a.code, b.code));
             return {
                 ...state,
-                containers: action.payload
+                containers: containers
             };
         }
         case fromActions.SET_GROUP_EDIT: {
@@ -116,3 +117,13 @@ export function groupsReducer(state: GroupState, action: fromActions.GroupAction
         }
     }
 }
+
+function localeCompare(a: string, b: string) {
+  try {
+    return( a.localeCompare( b, undefined, { numeric: true } ) );
+  } catch (error) {
+    console.warn( 'Extended localeCompare() not supported in this browser.' );
+    return( a.localeCompare( b ) );
+  }
+}
+
