@@ -23,7 +23,7 @@ export class ItemQuickPlanComponent extends AppComponentBase implements OnChange
     @Input() storeConfiguration: GridStoreConfiguration | null;
     @Output() selectItem = new EventEmitter<Item>();
     @Output() hideItem = new EventEmitter<Item>();
-    @ViewChild(DxAutocompleteComponent) autoComplete: DxAutocompleteComponent;
+    @ViewChild(DxAutocompleteComponent, { static:false }) autoComplete: DxAutocompleteComponent;
 
     dataSource: DataSource | null;
     autocompleteValue: string;

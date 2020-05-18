@@ -15,7 +15,7 @@ export class GroupListComponent extends AppComponentBase implements OnInit {
     @Output() groupFilterSelected = new EventEmitter<GroupFilterViewModel>();
     @Output() editGroupFilter = new EventEmitter<GroupFilterViewModel | null>();
     @Output() createGroupFilter = new EventEmitter();
-    @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
+    @ViewChild(DxDataGridComponent, { static:false }) grid: DxDataGridComponent;
     selectedGroup: GroupFilterViewModel | null = null;
 
     constructor(private notifyService: NotifyService) {

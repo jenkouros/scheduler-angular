@@ -9,33 +9,34 @@
     mode="cell"
     [allowUpdating]="true">
   </dxo-editing>
-  <!-- <dxi-column dataField="code" caption="Koda" [allowEditing]="false"></dxi-column> -->
-  <dxi-column dataField="name" caption="Naziv"  [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="idContainer" caption="Delovno mesto">
+  <dxi-column [visible]="false" sortOrder="asc" dataField="code" caption="Koda" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="idContainer" [caption]="translate('Workplace')">
   <dxo-lookup
     [dataSource]="containers"
     displayExpr="code"
     valueExpr="id">
   </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="timeStart" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" caption="Začetek"></dxi-column>
-  <dxi-column dataField="timeEnd" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" caption="Konec"></dxi-column>
+  <dxi-column dataField="timeStart" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" [caption]="translate('Start')"></dxi-column>
+  <dxi-column dataField="timeEnd" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" [caption]="translate('End')"></dxi-column>
 
-  <dxi-column dataField="idPriority" caption="Prioriteta" [allowEditing]="true">
+  <dxi-column dataField="idPriority" [caption]="translate('Priority')" [allowEditing]="true">
     <dxo-lookup
           [dataSource]="priorities"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="idUserStatus" caption="Izvajanje">
+  <dxi-column dataField="idUserStatus" [caption]="translate('Execution')">
     <dxo-lookup
           [dataSource]="executionStatuses"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="userDate" caption="Datum" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
-  <dxi-column dataField="comment" caption="Komentar" [allowEditing]="true"></dxi-column>
+  <dxi-column dataField="userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
+  <dxi-column dataField="isLocked" [caption]="translate('Locked')" dataType="boolean" [allowEditing]="true"></dxi-column>
 
 </dx-data-grid>

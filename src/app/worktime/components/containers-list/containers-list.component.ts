@@ -27,7 +27,7 @@ export class ContainersListComponent implements OnInit {
 
   @Output() selected = new EventEmitter<number[]>();
 
-  @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
+  @ViewChild(DxDataGridComponent, { static:false }) grid: DxDataGridComponent;
   constructor() {}
 
   ngOnInit() {}

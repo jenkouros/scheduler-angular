@@ -30,3 +30,8 @@ export const planHoursSwitch = createSelector(
   getPlanContainerGridState,
   state => state.planHoursSwitch
 );
+
+export const expandAllSwitch = createSelector(
+  getPlanContainerGridState,
+  state => state.expandAllSwitch
+);

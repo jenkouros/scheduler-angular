@@ -28,13 +28,14 @@ import { ContainerGroupComponent } from './containers/container-group/container-
 import { RealizationTimeUpdateComponent } from './planner/realization-timeupdate-popup/realization-timeupdate.component';
 import { FilterContainerComponent } from './filters/filter-container/filter-container.component';
 import { ItemQuickPlanComponent } from './item/item-quick-plan/item-quick-plan.component';
-import { PreplanitemSuggestionPopupComponent } from './preplanitem/preplanitem-suggestion-popup/preplanitem-suggestion-popup.component';
+// import { PreplanitemSuggestionPopupComponent } from './preplanitem/preplanitem-suggestion-popup/preplanitem-suggestion-popup.component';
 import { GroupSelectorComponent } from './groups/group-selector/groupselector.component';
 import { PlanItemGridComponent } from './planner-grid/plan-item-grid/plan-item-grid.component';
 import { PlanContainerGridComponent } from './planner-grid/plan-container-grid/plan-container-grid.component';
 import { PlanItemGridOperationsComponent } from './planner-grid/plan-item-grid/plan-item-grid-operations/plan-item-grid-operations.component';
 import { PlanItemGridItemsComponent } from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
 import { SequenceOperationListComponent } from './calendar/event-tooltip/sequence-operation-list/event-tooltip-sequence-operations.component';
+import { EventTooltipOperationComponent } from './calendar/event-tooltip/operation/event-tooltip-operation.component';
 
 
 
@@ -57,7 +58,7 @@ export const components: any[] = [
     PlanViewerItemComponent,
     PrePlanitemItemComponent,
     PreplanitemDeletePopupComponent,
-    PreplanitemSuggestionPopupComponent,
+    // PreplanitemSuggestionPopupComponent,
     ItemPopupComponent,
     MassLockPopupComponent,
     PlanViewerItemEditComponent,
@@ -76,8 +77,11 @@ export const components: any[] = [
     PlanContainerGridComponent,
     PlanContainerGridOperationsComponent,
     CalendarEventTooltipComponent,
-    SequenceOperationListComponent
+    SequenceOperationListComponent,
+    EventTooltipOperationComponent
 ];
+
+export * from './calendar/event-tooltip/operation/event-tooltip-operation.component';
 
 export * from './calendar/event-tooltip/sequence-operation-list/event-tooltip-sequence-operations.component';
 export * from './calendar/event-tooltip/calendar-event-tooltip.component';

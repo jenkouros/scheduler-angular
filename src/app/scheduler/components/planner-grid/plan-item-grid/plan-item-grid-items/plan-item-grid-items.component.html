@@ -9,8 +9,9 @@
     (onCellPrepared)="applyCellStyles($event)"
     (onRowExpanding)="rowExpanded($event)"
     (onRowCollapsing)="rowCollapsed($event)"
-    (onContentReady)="onContentReady($event)"
-    >
+    (onContentReady)="onContentReady($event)">
+
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-editing
     mode="cell"
     [allowUpdating]="true"></dxo-editing>
@@ -24,7 +25,7 @@
     <dxi-column [allowEditing]="false" dataField="item.quantityMeasurementUnit" caption="EM"></dxi-column>
 
     <dxi-column [allowEditing]="false"
-      caption="Status planiranja"
+      [caption]="translate('Planning_status')"
       [calculateCellValue]="calculatePlanStatus"
     ></dxi-column>
     <!-- <dxi-column dataField="item.itemPlanStatus">
@@ -61,7 +62,7 @@
       </app-plan-item-grid-operations>
 
       <div class="sub-table" *ngIf="planItemGrid.data.packingItems && planItemGrid.data.packingItems.length > 0">
-        <strong class="sub-table-header">Pakirni nalogi</strong>
+        <strong class="sub-table-header">{{translate('Parent_Orders')}}</strong>
         <app-plan-item-grid-items [items]="planItemGrid.data.packingItems"
           [containers]="containers"
           [enableGrouping]="false"
@@ -70,7 +71,7 @@
       </div>
 
       <div class="sub-table" *ngIf="planItemGrid.data.productionItems && planItemGrid.data.productionItems.length > 0">
-        <strong class="sub-table-header">Izdelovalni nalog</strong>
+        <strong class="sub-table-header">{{translate('Linked_Plan_Item')}}</strong>
         <app-plan-item-grid-items [items]="planItemGrid.data.productionItems"
           [containers]="containers"
           [enableGrouping]="false"

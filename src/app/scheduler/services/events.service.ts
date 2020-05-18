@@ -144,9 +144,9 @@ export class EventsService {
     return this.http.delete(environment.apiUrl + '/planitems?idPlanItem=' + event.id);
   }
 
-  toggleLock(event: PlannedEvent) {
-    const url = event.isLocked ? 'unlockItem' : 'lockItem';
-    return this.http.post(environment.apiUrl + '/planitems/' + url, event.id);
+  toggleLock(id: number, isLocked: boolean) {
+    const url = isLocked ? 'unlockItem' : 'lockItem';
+    return this.http.post(environment.apiUrl + '/planitems/' + url, id);
   }
 
   toggleMassLocks(containerIds: number[], fromDate: Date, toDate: Date, lock: boolean) {

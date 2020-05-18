@@ -37,7 +37,7 @@
         [width]="getScrollWidth()"
         [editing]="{ allowAdding: false }"
         [dataSource]="planItemGetReponse.planItems"
-        [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda', 'Week plan']"
+        [views]="['day', 'week', 'month', 'timelineDay', 'timelineWeek', 'timelineMonth','agenda']"
         [(currentView)]="currentView"
         [groups]="['containerId']"
         [resources]="schedulerResources"
@@ -176,6 +176,7 @@
 
                     <app-linked-items
                       *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length"
+                      [smaller]="true"
                       [items]="plannedEvent.parentLinkedItems">
                     </app-linked-items>
                     <!-- <ng-container *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length">

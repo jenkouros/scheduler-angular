@@ -1,14 +1,37 @@
 <app-popup
-  [title]="planItem ? '#'+ planItem.subItemCode + ' ' + planItem.subItemName : 'Loading'"
+  width="800px"
+  height='auto'
+  [hasConfirmBtn]="false"
+  [hasCancelBtn]="false"
+  [title]="planItem ? '#'+ planItem.subItemCode + ' ' + planItem.subItemName : translate('Loading')"
   [visible]="visible"
   [cancelCallback]="hideItemInfo">
+
+  <app-event-tooltip-operation *ngIf="planItem"
+    [planItem]="planItem">
+
+  </app-event-tooltip-operation>
 
   <app-event-tooltip-sequence *ngIf="planItem"
     [sequence]="planItem.sequencePlanItems"
     [selectedIdPrePlanitem]="planItem.idPrePlanItem">
   </app-event-tooltip-sequence>
 
+  <app-linked-items
+    [smaller]="false"
+    *ngIf="planItem && planItem.linkedItem"
+    [items]="[planItem.linkedItem]"
+    [title]="translate('Linked_Plan_Item')">
+  </app-linked-items>
+
+  <app-linked-items
+    *ngIf="planItem && planItem.parentLinkedItems && planItem.parentLinkedItems.length"
+    [items]="planItem.parentLinkedItems">
+  </app-linked-items>
+
 </app-popup>
+
+
 
 
 <!-- <div *dxTemplate="let plannedEvent of 'tooltip-template'">
@@ -49,10 +72,6 @@
               </table>
           </ng-container>
 
-          <app-linked-items
-            *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length"
-            [items]="plannedEvent.parentLinkedItems">
-          </app-linked-items>
 
 
           <dx-button class="mr-2" icon="key" text="{{ plannedEvent.isLocked ? translate('Unlock') : translate('Lock') }}" (onClick)='onToggleLock(plannedEvent)'></dx-button>

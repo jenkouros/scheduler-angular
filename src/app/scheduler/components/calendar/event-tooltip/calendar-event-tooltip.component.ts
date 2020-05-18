@@ -5,17 +5,19 @@ import { Component, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as EventSelectors from '../../../store/selectors/events.selectors';
 import * as EventActions from '../../../store/actions/events.action';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-calendar-event-tooltip',
   templateUrl: './calendar-event-tooltip.component.html'
 })
-export class CalendarEventTooltipComponent implements OnDestroy {
+export class CalendarEventTooltipComponent extends AppComponentBase implements OnDestroy {
   visible$: Observable<boolean>;
   visible = false;
   planItem: PlannedEvent | null = null;
   planItemSubscription: Subscription;
   constructor(private store: Store<AppState>) {
+    super();
     this.visible$ = store.pipe(
       select(EventSelectors.getEventDetailFlag)
     );

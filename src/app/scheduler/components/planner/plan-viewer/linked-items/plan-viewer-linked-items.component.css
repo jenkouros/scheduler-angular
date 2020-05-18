@@ -1,9 +1,13 @@
 .dx-accordion-item-title {
-  padding: 10px 0 0 0;
+  padding: 10px 0 5px 0;
 }
 
 .dx-accordion-item-body {
   padding: 0;
+  /* font-size: .85em; */
+}
+
+.smaller .dx-accordion-item-body {
   font-size: .85em;
 }
 
@@ -11,10 +15,7 @@
   border: 0;
 }
 
-::ng-deep .dx-accordion-wrapper {
+::ng-deep .smaller .dx-accordion-wrapper {
   padding-bottom: 15px;
 }
 
-/* ::ng-deep .dx-accordion-item-closed {
-  margin: 10px 0;
-} */

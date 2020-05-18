@@ -27,7 +27,7 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() enableSearch = true;
   @Input() containers: ContainerSelect[];
   @Output() selectItem = new EventEmitter<PlanItemGrid>();
-  @ViewChild(DxDataGridComponent) grid: DxDataGridComponent;
+  @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
   selectedIndexes: number[] = [];
   selectedKeys: number[] = [];
   refresh = false;

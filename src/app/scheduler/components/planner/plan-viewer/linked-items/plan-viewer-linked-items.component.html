@@ -1,11 +1,12 @@
 <dx-accordion
+  [ngClass]="{'smaller': smaller}"
     [dataSource]="items"
     itemTemplate="item"
     [collapsible]="false"
     [multiple]="false">
 
     <div *dxTemplate="let itemHeader of 'title'">
-        <h6>{{translate('Parent_Order')}} {{ itemHeader.itemCode }}</h6>
+        <h6>{{ title }} {{ itemHeader.itemCode }}</h6>
     </div>
     <div *dxTemplate="let itemData of 'item'">
       <table class="table table-sm">

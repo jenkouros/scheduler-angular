@@ -8,7 +8,7 @@ import { AppComponentBase } from '../../app-component-base';
   styleUrls: ['./popup.component.css']
 })
 export class PopupComponent extends AppComponentBase {
-  @ViewChild(DxPopupComponent) popup: DxPopupComponent;
+  @ViewChild(DxPopupComponent, { static:false }) popup: DxPopupComponent;
 
   @Input() title: string;
   @Input() visible = false;

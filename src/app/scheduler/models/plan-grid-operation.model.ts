@@ -13,7 +13,8 @@ export interface PlanGridOperation {
   idUserStatus: number;
   userDate: Date;
   comment: string;
-  IdPlanItem: number;
+  idPlanItem: number;
+  isLocked: boolean;
 }
 
 export const planGridOperationPriorities = [

@@ -16,6 +16,7 @@ export const PLAN_CONTAINER_GRID_UPDATE = '[PlanContainerGrid] Plan Container Gr
 export const PLAN_CONTAINER_GRID_SET_LIMIT_DATE = '[PlanContainerGrid] Set load Plan Container grid limit date';
 
 export const PLAN_CONTAINER_GRID_PLANHOURS_SWITCH = '[PlanContainerGrid] Set plan container grid planhours switch';
+export const PLAN_CONTAINER_GRID_EXPANDALL_SWITCH = '[PlanContainerGrid] Set plan container grid expand all switch';
 
 export class LoadPlanContainerGrid implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID;
@@ -66,6 +67,12 @@ export class SetPlanHoursSwitch implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetExpandAllSwitch implements Action {
+  readonly type = PLAN_CONTAINER_GRID_EXPANDALL_SWITCH;
+  constructor(public payload: boolean) {}
+}
+
+
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
   | LoadPlanContainerGridFail
@@ -77,4 +84,5 @@ export type PlanContainerGridAction =
   | PlanContainerGridUpdate
   | SetPlanContainerGridLimitDate
   | SetPlanHoursSwitch
+  | SetExpandAllSwitch
   ;

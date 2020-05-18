@@ -56,7 +56,7 @@ export const TOGGLE_MASSLOCK_POPUP_VISIBILITY = '[Event] Toggle mass lock popup 
 
 export class ToggleEventLock implements Action {
     readonly type = TOGGLE_LOCK;
-    constructor(public payload: PlannedEvent) {}
+    constructor(public payload: { id: number, isLocked: boolean }) {}
 }
 export class ToggleMassLockPopup implements Action {
     readonly type = TOGGLE_MASSLOCK_POPUP_VISIBILITY;

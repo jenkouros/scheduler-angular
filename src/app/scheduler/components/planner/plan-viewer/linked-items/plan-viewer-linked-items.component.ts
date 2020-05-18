@@ -9,7 +9,8 @@ import { AppComponentBase } from './../../../../../shared/app-component-base';
 })
 export class PlanViewerLinkedItemsComponent extends AppComponentBase implements OnInit {
   @Input() items: LinkedItemModel[];
-
+  @Input() title = this.translate('Parent_Order');
+  @Input() smaller = false;
   ngOnInit() {
     console.log(this.items);
   }

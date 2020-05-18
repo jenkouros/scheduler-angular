@@ -5,7 +5,7 @@
 }
 
 
-.span-link {
+.span-link, .dx-data-row .cell-link {
     cursor: pointer;
     color: rgb(0, 96, 177) !important;
     font-weight: 500;

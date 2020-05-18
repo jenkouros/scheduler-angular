@@ -8,18 +8,25 @@ import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.m
 import * as moment from 'moment';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
 import { PlanContainerGrid } from '../models/plan-container-grid.model';
+import { Container } from '../models/container.dto';
 
 @Injectable()
 export class PlanContainerGridService {
   constructor(private http: HttpClient) {}
 
-  loadPlanContainerGrid(idPlan: number, limitDate: Date, filterDictionary: { [id: string]: number[] } = {}) {
+  loadPlanContainerGrid(idPlan: number,
+                        limitDate: Date,
+                        filterDictionary: { [id: string]: number[] } = {},
+                        filterContainers: Container[] = []) {
+
+    const containers = filterContainers.map(i => i.id.toString());
     const dict = DictionaryHelper.stringify(filterDictionary);
     const params = {
       'idPlan': idPlan.toString(),
       'ids': dict.ids,
       'values': dict.values,
-      'dateLimit': moment(limitDate).format()
+      'dateLimit': moment(limitDate).format(),
+      'containers': containers
     };
     return this.http.post<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', params);
   }

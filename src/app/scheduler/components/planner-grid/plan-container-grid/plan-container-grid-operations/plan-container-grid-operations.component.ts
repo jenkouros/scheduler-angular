@@ -23,6 +23,7 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 export class PlanContainerGridOperationsComponent extends AppComponentBase {
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
+  expandAllSwitch$: Observable<boolean>;
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
     this.refresh = true;
@@ -31,23 +32,59 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   @Input() containers: ContainerSelect[];
   selectedKeys: any[] = [];
   refresh = false;
+
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+    this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
+    this.sortContainers = this.sortContainers.bind(this);
   }
 
-  priorities = planGridOperationPriorities;
-  executionStatuses = planGridOperationExecution;
+  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
+  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+
+  onCellClick(e) {
+    if (e.rowType === 'data' && e.column.dataField === 'operation.name') {
+      this.showDetails(e.data.operation.idPlanItem);
+    }
+  }
+
 
   showDetails(id: number) {
     this.store.dispatch(new PlanItemActions.ShowPlanItemDetailPopup({id: id}));
   }
 
+  sortContainers(val1, val2) {
+    if (!val1 && val2) {
+      return 1;
+    }
+    if (val1 && !val2) {
+      return -1;
+    }
+    if (!val1 && !val2) {
+      return 0;
+    }
+    const cont1 = this.containers.find(i => i.id === val1);
+    const cont2 = this.containers.find(i => i.id === val2);
+    if (cont1 && cont2) {
+      return this.helpersService.localeCompare(cont1.code, cont2.code);
+    }
+    return -1;
+  }
 
 
   updateOperation(e) {
     // this.refresh = true;
     console.log(e);
+
+    if (e.newData.operation && e.newData.operation.hasOwnProperty('isLocked')) {
+      this.store.dispatch(new PlanItemActions.ToggleEventLock({
+        id: e.oldData.operation.idPlanItem,
+        isLocked: e.oldData.operation.isLocked
+      }));
+      return;
+    }
+
     this.updateItem.emit();
 
     const updatedOperation = {

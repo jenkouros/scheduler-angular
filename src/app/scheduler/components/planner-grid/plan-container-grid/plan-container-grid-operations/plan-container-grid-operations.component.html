@@ -6,25 +6,28 @@
   [columnAutoWidth]="true"
   (onRowUpdating)="updateOperation($event)"
   [allowColumnReordering]="true"
+  (onCellClick)="onCellClick($event)"
   (onRowExpanded)="rowExpanded($event)"
   (onRowCollapsed)="rowCollapsed($event)"
-  (onContentReady)="onContentReady($event)"
-  >
+  (onContentReady)="onContentReady($event)">
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-editing
     mode="cell"
     [allowUpdating]="true">
   </dxo-editing>
   <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
-  <dxi-column dataField="operation.name" caption="Naziv"  [allowEditing]="false"></dxi-column>
+  <!-- <dxi-column cellTemplate="showDetailCellTemplate" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column> -->
+  <dxi-column cssClass="cell-link" dataField="operation.name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
   <dxi-column dataField="operation.idContainer"
-
     [showWhenGrouped]="true"
-    caption="Delovno mesto"
-    [groupIndex]="0">
+    [caption]="translate('Workplace')"
+    [groupIndex]="0"
+    sortOrder="asc"
+    [sortIndex]="0"
+    [sortingMethod]="sortContainers">
   <dxo-lookup
     [dataSource]="containers"
-
-    sort="code"
     displayExpr="code"
     valueExpr="id">
   </dxo-lookup>
@@ -35,31 +38,32 @@
   <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false"></dxi-column>
 
-  <dxi-column dataField="operation.timeStart" caption="Začetek" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
-  <dxi-column dataField="operation.timeEnd" caption="Konec" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column sortOrder="asc" [sortIndex]="1" dataField="operation.timeStart" [caption]="translate('Start')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="operation.timeEnd" [caption]="translate('End')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
 
-  <dxi-column dataField="operation.idPriority" caption="Prioriteta" [allowEditing]="true">
+  <dxi-column dataField="operation.idPriority" [caption]="translate('Priority')" [allowEditing]="true">
     <dxo-lookup
           [dataSource]="priorities"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="operation.idUserStatus" caption="Izvajanje">
+  <dxi-column dataField="operation.idUserStatus" [caption]="translate('Execution')">
     <dxo-lookup
           [dataSource]="executionStatuses"
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="operation.userDate" caption="Datum" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
-  <dxi-column dataField="operation.comment" caption="Komentar" [allowEditing]="true"></dxi-column>
+  <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
+  <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>
 
-  <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column>
+  <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
 
 
 <div *dxTemplate="let cell of 'showDetailCellTemplate'">
-  <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">Details</a>
+  <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">{{cell.data.operation.name}}</a>
 </div>
     <dxo-pager
         [showPageSizeSelector]="true"
@@ -69,6 +73,6 @@
     <dxo-search-panel [visible]="true"></dxo-search-panel>
     <dxo-paging [pageSize]="20"></dxo-paging>
     <dxo-group-panel [visible]="true"></dxo-group-panel>
-    <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+    <dxo-grouping #expand [autoExpandAll]="expandAllSwitch$ | async"></dxo-grouping>
 
 </dx-data-grid>

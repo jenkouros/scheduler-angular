@@ -42,8 +42,8 @@ import * as fromPlanStore from '../../../plan/store';
   >
   </app-preplanitem-hide-popup>
 
-    <app-preplanitem-suggestion-popup>
-        </app-preplanitem-suggestion-popup>
+    <!-- <app-preplanitem-suggestion-popup>
+        </app-preplanitem-suggestion-popup> -->
   `
 })
 export class PreplanItemsComponent implements OnInit {

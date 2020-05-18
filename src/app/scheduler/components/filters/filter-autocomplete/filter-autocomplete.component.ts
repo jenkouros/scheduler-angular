@@ -14,7 +14,7 @@ export class FilterAutocompleteComponent implements OnInit {
   @Input() filterValues: Select[];
   @Input() placeholder: string;
   @Output() changeSelection = new EventEmitter<number[]>();
-  @ViewChild(DxListComponent) listView: DxListComponent;
+  @ViewChild(DxListComponent, { static:false }) listView: DxListComponent;
 
   private _selectedValues: number[] = [];
 

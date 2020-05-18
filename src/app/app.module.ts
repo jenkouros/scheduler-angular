@@ -3,6 +3,8 @@ import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeSl from '@angular/common/locales/sl';
 import localeSr from '@angular/common/locales/sr-Latn';
+import localeEn from '@angular/common/locales/en';
+
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule, MetaReducer } from '@ngrx/store';
@@ -36,13 +38,15 @@ loadMessages(devextremeMessages);
 
  locale(environment.locale);
  switch (environment.locale) {
-   case 'sl': {
-     registerLocaleData(localeSl);
-     break;
-   }
-   case 'sr-Latn': {
-    registerLocaleData(localeSr);
-    break;
+    case 'sl': {
+      registerLocaleData(localeSl);
+      break;
+    } case 'sr-Latn': {
+      registerLocaleData(localeSr);
+      break;
+    } case 'en': {
+      registerLocaleData(localeEn);
+      break;
   }
  }
 

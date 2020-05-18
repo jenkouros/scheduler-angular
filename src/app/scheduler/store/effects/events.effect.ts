@@ -192,7 +192,7 @@ export class EventsEffects {
   @Effect({ dispatch: false })
   toggleLock$ = this.actions$.ofType(fromAction.TOGGLE_LOCK).pipe(
     switchMap((action: fromAction.ToggleEventLock) =>
-      this.eventsService.toggleLock(action.payload).pipe(
+      this.eventsService.toggleLock(action.payload.id, action.payload.isLocked).pipe(
         // map(events => new fromAction.ReloadEvents({ containerIds: [action.payload.containerId] })),
         catchError(error => of(new fromAction.LoadEventsFail()))
       )

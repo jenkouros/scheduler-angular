@@ -36,13 +36,13 @@
 
   <li *ngIf="settings.Menu_Scheduler_GridPlanner" class="nav-item">
     <a class="nav-link" (click)="selected = 'planner-item-grid'" routerLink='planitemgrid' routerLinkActive='active'>
-        <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razpored nalogov
+        <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> {{translate('Scheduling_Workorders')}}
     </a>
   </li>
 
   <li *ngIf="settings.Menu_Scheduler_GridPlanner" class="nav-item">
     <a class="nav-link" (click)="selected = 'planner-container-grid'" routerLink='plancontainergrid' routerLinkActive='active'>
-        <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> Razpored delovnih mest
+        <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> {{translate('Scheduling_Workplaces')}}
     </a>
   </li>
 

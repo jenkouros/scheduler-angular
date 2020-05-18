@@ -1,18 +1,26 @@
 
 <div style="width:400px">
   <div class="dx-field">
-      <div class="dx-field-label">Planiraj ure</div>
+      <div class="dx-field-label">{{translate('Plan_hours')}}</div>
       <div class="dx-field-value">
           <dx-check-box (onValueChanged)="plannedHoursSwitch($event)" [value]="planHoursSwitch$ | async"></dx-check-box>
       </div>
   </div>
 
   <div class="dx-field">
-    <div class="dx-field-label">Datum od</div>
+    <div class="dx-field-label">{{translate('Date_From')}}</div>
     <div class="dx-field-value" style="width:auto;">
       <app-datebox (change)="setLimitDate($event)" [date]="limitDate$ | async"></app-datebox>
     </div>
+  </div>
+
+  <div class="dx-field">
+    <div class="dx-field-label">{{translate('Expand')}}</div>
+    <div class="dx-field-value">
+        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
+    </div>
 </div>
+
 </div>
 
 

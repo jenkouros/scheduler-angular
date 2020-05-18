@@ -10,8 +10,8 @@ export interface PlanItemGridState {
 
 const loadLimitDate = new Date();
 loadLimitDate.setHours(0, 0, 0, 0);
-// loadLimitDate.setMonth(loadLimitDate.getMonth() - 1);
-loadLimitDate.setDate(loadLimitDate.getDate() - 7);
+loadLimitDate.setMonth(loadLimitDate.getMonth() - 6);
+// loadLimitDate.setDate(loadLimitDate.getDate() - 7);
 export const initialState: PlanItemGridState = {
   loading: false,
   planItemGrids: [],

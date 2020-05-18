@@ -33,7 +33,7 @@ export class PlanListComponent implements OnChanges {
   @Output()
   showSimulation = new EventEmitter<number>();
 
-  @ViewChild(DxSelectBoxComponent) selectBox: DxSelectBoxComponent;
+  @ViewChild(DxSelectBoxComponent, { static:false }) selectBox: DxSelectBoxComponent;
 
   editIcon = faPlus;
   deleteIcon = faTrash;

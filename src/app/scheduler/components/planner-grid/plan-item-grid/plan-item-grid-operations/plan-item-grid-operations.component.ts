@@ -11,13 +11,14 @@ import { Component, Input, Output, EventEmitter, HostListener, OnDestroy } from 
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
-
+import * as PlanItemActions from '../../../../store/actions/events.action';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-item-grid-operations',
   templateUrl: './plan-item-grid-operations.component.html'
 })
-export class PlanItemGridOperationsComponent implements OnDestroy {
+export class PlanItemGridOperationsComponent extends AppComponentBase implements OnDestroy {
   planHoursSwitch$: Observable<boolean>;
   @Input() operations: PlanGridOperation[];
   @Input() item: PlanGridItem;
@@ -26,12 +27,11 @@ export class PlanItemGridOperationsComponent implements OnDestroy {
   // containers$: Observable<ContainerSelect[]>;
   planHoursSwitchSubscription: Subscription;
   planHours: boolean;
-  @HostListener('dxmousewheel',  ['$event'])
-
-  priorities = planGridOperationPriorities;
-  executionStatuses = planGridOperationExecution;
+  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
+  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
 
   constructor(private store: Store<AppState>) {
+    super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
     this.planHoursSwitchSubscription = this.planHoursSwitch$.subscribe(v => this.planHours = v);
     // store.pipe(select(getSelectedPlanId))
@@ -50,6 +50,16 @@ export class PlanItemGridOperationsComponent implements OnDestroy {
 
   updateOperation(e) {
     console.log(e);
+    if (e.newData && e.newData.hasOwnProperty('isLocked')) {
+      if (e.oldData.idPlanItem) {
+        this.store.dispatch(new PlanItemActions.ToggleEventLock({
+          id: e.oldData.idPlanItem,
+          isLocked: e.oldData.isLocked
+        }));
+      }
+      return;
+    }
+
     this.updateItem.emit();
 
     const updatedOperation = {

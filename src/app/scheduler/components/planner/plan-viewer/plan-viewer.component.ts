@@ -56,7 +56,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
   @Input() timeUpdateSuggestion: { [idPrePlanItem: number]: PlannedEventMove } | null;
   @Input() notWorkingHoursUpdateSuggestion: PlannedEventNotWorkingHoursMove | null;
   @Input() currentDate: Date = new Date();
-  @ViewChild(DxSchedulerComponent) scheduler: DxSchedulerComponent;
+  @ViewChild(DxSchedulerComponent, { static: false }) scheduler: DxSchedulerComponent;
   @Output() planItemLoad = new EventEmitter<PlanItemsLoadRequest>();
   @Output() planItemCreate = new EventEmitter<PlannedEvent>();
   @Output() planItemUpdate = new EventEmitter<PlannedEvent>();
@@ -111,6 +111,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   ngOnChanges(changes): void {
     if (changes.selectedPreplanItem) {
+      console.log(changes.selectedPreplanItem);
       this.showAvailableContainers(this.selectedPreplanItem, 'allowed');
     }
     if (changes.selectedContainers) {
@@ -683,6 +684,9 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
   }
 
   private showAvailableContainers(item: PreplanItem | null, className: string) {
+    if (!this.scheduler) {
+      return;
+    }
     const elements = (<any>this.scheduler).element.nativeElement.querySelectorAll('th.dx-scheduler-group-header');
 
     for (let i = 0; i < elements.length; i++) {
@@ -704,7 +708,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     }
   }
 
-  private getPlanItemClass(planItemMoveStatus: PlanItemMoveStatusEnum) {
+  getPlanItemClass(planItemMoveStatus: PlanItemMoveStatusEnum) {
     switch (planItemMoveStatus) {
       case PlanItemMoveStatusEnum.Unchanged: {
         return 'alert-primary';

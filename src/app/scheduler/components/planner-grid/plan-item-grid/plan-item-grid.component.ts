@@ -11,13 +11,14 @@ import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 
 
 @Component({
   selector: 'app-plan-item-grid',
   templateUrl: './plan-item-grid.component.html'
 })
-export class PlanItemGridComponent {
+export class PlanItemGridComponent extends AppComponentBase {
   planItemGrid$: Observable<PlanItemGrid[]>;
   selectedPlanItemGrid$: Observable<PlanItemGrid[]>;
   limitDate$: Observable<Date>;
@@ -27,6 +28,7 @@ export class PlanItemGridComponent {
   planHoursSwitch$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
+    super();
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
       store.dispatch(new LoadContainers());

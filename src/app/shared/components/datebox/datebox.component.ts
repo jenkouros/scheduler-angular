@@ -21,7 +21,7 @@ import * as moment from 'moment';
   ]
 })
 export class DateboxComponent implements OnInit, AfterViewInit, ControlValueAccessor {
-  @ViewChild(DxDateBoxComponent) dateBox: DxDateBoxComponent;
+  @ViewChild(DxDateBoxComponent, { static:false }) dateBox: DxDateBoxComponent;
   @Input() date = new Date();
   @Input() type = 'date';
   @Input() max: Date | undefined = undefined;

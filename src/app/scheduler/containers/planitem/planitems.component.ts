@@ -17,39 +17,7 @@ import * as fromPlanStore from '../../../plan/store';
 @Component({
   selector: 'app-planitems',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <app-plan-viewer
-      [currentDate]="currentDate"
-      [selectedPreplanItem]="selectedPrePlanItem$ | async"
-      [selectedContainers]="selectedContainers$ | async"
-      [planItemGetReponse]="planItems$ | async"
-      [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
-      [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
-      (planItemReload)="onPlanItemReload($event)"
-      (removeBlankSpace)="onRemoveBlankSpace($event)"
-      (toggleLock)="onToggleLock($event)"
-      (showMassLockPopup)="onShowMassLockPopup($event)"
-      (planItemLoad)="onPlanItemLoad($event)"
-      (planItemCreate)="onPlanItemCreate($event)"
-      (planItemUpdate)="onPlanItemUpdate($event)"
-      (planItemDelete)="onPlanItemDelete($event)"
-      (getResolveSequenceSuggestion)="onGetResolveSequenceSuggestion($event)"
-      (resolveSequence)="onResolveSequence($event)"
-      (clearTimeSuggestion)="onClearTimeSuggestion()"
-      (getResolveNotWorkingHoursSuggestion)="onGetResolveNotWorkingHoursSuggestion($event)"
-      (resolveNotWorkingHours)="onResolveNotWorkingHours($event)"
-      (clearNotWorkingHoursSuggestion)="onClearNotWorkingHoursSuggestion()"
-      (loadTimeRealizationSuggestion)="onLoadTimeRealizationSuggestion($event)"
-    >
-    </app-plan-viewer>
-    <app-realization-timeupdate-popup
-      [planItems]="(planItems$ | async).planItems"
-      [suggestion]="timeUpdateRealizationSuggestion$ | async"
-      (clearTimeRealizationSuggestion)="onClearTimeRealizationSuggestion()"
-      (resolveTimeRealization)="onResolveRealization($event)"
-    >
-    </app-realization-timeupdate-popup>
-  `
+  templateUrl: './planitems.component.html'
 })
 export class PlanitemsComponent implements OnInit {
   selectedPrePlanItem$: Observable<PreplanItem | null>;
@@ -146,7 +114,7 @@ export class PlanitemsComponent implements OnInit {
   }
 
   onToggleLock(plannedEvent: PlannedEvent) {
-    this.store.dispatch(new fromStore.ToggleEventLock(plannedEvent));
+    this.store.dispatch(new fromStore.ToggleEventLock({id: plannedEvent.id, isLocked: plannedEvent.isLocked}));
   }
 
   onShowMassLockPopup(containerIds: number[]) {

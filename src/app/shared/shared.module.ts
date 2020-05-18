@@ -24,7 +24,7 @@ import { DateboxComponent } from './components/datebox/datebox.component';
     imports: [
         CommonModule,
         FormsModule,
-        NgbModule.forRoot(),
+        NgbModule,
         DxPopupModule,
         DxScrollViewModule,
         DxDateBoxModule,

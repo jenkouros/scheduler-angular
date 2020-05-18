@@ -9,18 +9,21 @@ export interface PlanContainerGridState {
   // openedPlanItemGrids: PlanItemGrid[];
   containerGridLimitDate: Date;
   planHoursSwitch: boolean;
+  expandAllSwitch: boolean;
 }
 
 const loadLimitDate = new Date();
 loadLimitDate.setHours(0, 0, 0, 0);
-// loadLimitDate.setMonth(loadLimitDate.getMonth() - 1);
-loadLimitDate.setDate(loadLimitDate.getDate() - 7);
+loadLimitDate.setMonth(loadLimitDate.getMonth() - 6);
+// loadLimitDate.setDate(loadLimitDate.getDate() - 7);
+
 export const initialState: PlanContainerGridState = {
   loading: false,
   planContainerGrids: [],
   // openedPlanItemGrids: [],
   containerGridLimitDate: loadLimitDate,
-  planHoursSwitch: false
+  planHoursSwitch: false,
+  expandAllSwitch: false
 };
 
 export function planItemGridReducer (
@@ -48,6 +51,13 @@ export function planItemGridReducer (
       };
     }
     case fromAction.UPDATE_CONTAINER_GRID_SUCCESS: {
+      if (!action.payload) {
+        return {
+          ...state,
+          loading: false
+        };
+      }
+
       const updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
         if (!containerGrid.operation.idPrePlanItem) {
           const subItem = action.payload.find(i =>
@@ -112,6 +122,12 @@ export function planItemGridReducer (
       return {
         ...state,
         planHoursSwitch: action.payload
+      };
+    }
+    case fromAction.PLAN_CONTAINER_GRID_EXPANDALL_SWITCH: {
+      return {
+        ...state,
+        expandAllSwitch: action.payload
       };
     }
   }
