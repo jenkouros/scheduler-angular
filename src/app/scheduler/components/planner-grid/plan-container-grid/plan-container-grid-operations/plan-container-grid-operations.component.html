@@ -4,13 +4,20 @@
   [dataSource]="gridItems"
   [showBorders]="true"
   [columnAutoWidth]="true"
+  [customizeExportData]="customizeExportData"
+  (onExporting)="onExporting($event)"
   (onRowUpdating)="updateOperation($event)"
   [allowColumnReordering]="true"
   (onCellClick)="onCellClick($event)"
   (onRowExpanded)="rowExpanded($event)"
   (onRowCollapsed)="rowCollapsed($event)"
   (onContentReady)="onContentReady($event)">
+  
 
+  <dxo-export 
+    [enabled]="true"
+    fileName="export">
+  </dxo-export>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-editing
     mode="cell"
