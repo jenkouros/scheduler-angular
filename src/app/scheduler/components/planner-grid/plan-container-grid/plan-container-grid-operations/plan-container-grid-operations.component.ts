@@ -83,7 +83,6 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
   updateOperation(e) {
     // this.refresh = true;
-    console.log(e);
 
     if (e.newData.operation && e.newData.operation.hasOwnProperty('isLocked')) {
       this.store.dispatch(new PlanItemActions.ToggleEventLock({
@@ -182,4 +181,45 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
       }
     }
   }
+
+  customizeExportData(columns, rows) {
+    // remove records with *NO_CODE* workplace
+    for (let i = rows.length - 1; i >= 0; --i) {
+      if (rows[i].key.hasOwnProperty('operation') && rows[i].key.operation.containerCode != null ) {
+          if (rows[i].key.operation.containerCode.includes('NO_CODE')) {
+              rows.splice(i, 1);
+          }
+        }
+    }
+
+    // select groups/subGroups with no data
+    let tempGroupIndexList: Array<number> = [];
+    let partialTruncateList: Array<number> = [];
+    let truncateList: Array<number> = [];
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].hasOwnProperty('groupIndex')) {
+        partialTruncateList.push(i);
+        if (rows[i].groupIndex >= rows[i + 1].groupIndex) {
+          truncateList = truncateList.concat(partialTruncateList);
+          partialTruncateList = [];
+        }
+      } else {
+        tempGroupIndexList = [];
+        partialTruncateList = [];
+      }
+    }
+    // remove selected
+    for (let i = truncateList.length - 1; i >= 0; --i) {
+      rows.splice(truncateList[i], 1);
+    }
+  }
+}
+
+function findRowIndexWithAttrVal(array, attr: string, value: string): number {
+  for (let i = 0; i < array.length; i += 1) {
+      if (array[i][attr] === value) {
+          return i;
+      }
+  }
+  return -1;
 }
