@@ -1,3 +1,4 @@
+import { PlannedEventSimple } from './../models/event.model';
 import { PlanGridOperation } from '../models/plan-grid-operation.model';
 import { PlanItemGrid } from './../models/plan-item-grid-model';
 import { environment, appSettings } from './../../../environments/environment';
@@ -56,5 +57,24 @@ export class PlanContainerGridService {
     };
     return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
 
+  }
+
+  updatePlanItemSimple(operation: PlannedEventSimple) {
+    const planningItem = <PlanItemCreateRequest>{
+      idPrePlanItem: operation.idPrePlanItem,
+      idContainer: operation.containerId,
+      timePreparationStart: moment(new Date(operation.timeStartPreparation as any)).format(),
+      timeExecutionStart: moment(new Date(operation.timeStartPreparation as any)).format(),
+      timeExecutionEnd: moment(new Date(operation.timeEnd as any)).format(),
+      planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
+      comment: undefined,
+      idPriority: undefined,
+      idUserStatus: undefined,
+      userDate: undefined,
+      options: {
+        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+      }
+    };
+    return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
   }
 }

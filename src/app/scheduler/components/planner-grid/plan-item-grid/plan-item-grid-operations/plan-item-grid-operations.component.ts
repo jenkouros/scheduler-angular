@@ -1,3 +1,4 @@
+import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
 import { AutoplanItem, PlanItemGridUpdate } from './../../../../store/actions/plan-item-grid.action';
 import { PlanGridItem } from '../../../../models/plan-grid-item-model';
 import { getContainerSelectList } from './../../../../store/selectors/containers.selectors';
@@ -75,10 +76,19 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       request.idSubItem = updatedOperation.idSubItem;
       request.idItem = this.item.idItem;
       request.planDay = !this.planHours;
+      request.planLinkedItems = true;
+      request.planSequencePlanItems = true;
       this.store.dispatch(new AutoplanItem(request));
     }
 
     if (updatedOperation.idPrePlanItem) {
+      if (new Date(updatedOperation.timeStart).getTime() > new Date(updatedOperation.timeEnd).getTime()) {
+        updatedOperation.timeEnd = updatedOperation.timeStart;
+      }
+      if (new Date(updatedOperation.timeEnd).getTime() < new Date(updatedOperation.timeStart).getTime()) {
+        updatedOperation.timeStart = updatedOperation.timeEnd;
+      }
+
       this.store.dispatch(new PlanItemGridUpdate(updatedOperation));
 
       // const request = new ItemAutoplanRequest();
@@ -89,6 +99,18 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       // this.store.dispatch(new AutoplanItem(request));
     }
 
+  }
+
+  validatePlanGridRow(e) {
+
+    const event = {
+      ...e.oldData,
+      ...e.newData
+    } as PlanGridOperation;
+
+    const validation = OperationUpdateHelper.validatePlanGridOperation(event);
+    e.isValid = validation.valid;
+    e.errorText = validation.error;
   }
 
   applyCellStyles(e) {

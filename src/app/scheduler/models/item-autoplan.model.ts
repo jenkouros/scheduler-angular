@@ -8,6 +8,8 @@ export class ItemAutoplanRequest {
   timeStart: Date;
   idContainer: number;
   planDay: boolean;
+  planLinkedItems: boolean;
+  planSequencePlanItems: boolean;
 
   toSendFormat() {
     return {
@@ -15,6 +17,8 @@ export class ItemAutoplanRequest {
       IdSubItem: this.idSubItem,
       TimeStart: moment(this.timeStart).format(),
       IdContainer: this.idContainer,
+      PlanLinkedItems: this.planLinkedItems,
+      PlanSequenceItems: this.planSequencePlanItems,
       Options: {
         DayPlan: this.planDay
       }

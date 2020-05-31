@@ -177,7 +177,8 @@
                     <app-linked-items
                       *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length"
                       [smaller]="true"
-                      [items]="plannedEvent.parentLinkedItems">
+                      [items]="plannedEvent.parentLinkedItems"
+                      [selectedIdPlanItem]="plannedEvent.id">
                     </app-linked-items>
                     <!-- <ng-container *ngIf="plannedEvent.parentLinkedItems && plannedEvent.parentLinkedItems.length">
                       <div *ngFor="let parentItem of plannedEvent.parentLinkedItems">

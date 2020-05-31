@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
+import { PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove, PlanItemCreateRequest } from '../../models/event.model';
 import { PlanSchedule } from '../../models/planschedule.dto';
 
 export const LOAD_EVENT = '[Events] Load Event';
@@ -68,12 +68,17 @@ export class MassToggleEventsLock implements Action {
 }
 
 export const CREATE_EVENT = '[Event] Create an event';
+export const CREATE_EVENT_FROM_REQUEST = '[Event] Create an event from request';
 export const CREATE_EVENT_SUCCESS = '[Event] Create an event - success';
 export const CREATE_EVENT_FAIL = '[Event] Create an evenet - fail';
 
 export class CreateEvent implements Action {
     readonly type = CREATE_EVENT;
     constructor(public payload: PlannedEvent) {}
+}
+export class CreateEventFromRequest implements Action {
+  readonly type = CREATE_EVENT_FROM_REQUEST;
+  constructor(public payload: PlanItemCreateRequest) {}
 }
 export class CreateEventSuccess implements Action {
     readonly type = CREATE_EVENT_SUCCESS;
@@ -217,6 +222,7 @@ export type EventsAction =
     | LoadEventsSuccess
     | LoadEventsFail
     | CreateEvent
+    | CreateEventFromRequest
     | CreateEventSuccess
     | CreateEventFail
     | DeleteEvent

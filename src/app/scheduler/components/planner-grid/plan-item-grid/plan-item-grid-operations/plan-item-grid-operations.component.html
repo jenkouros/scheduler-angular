@@ -4,6 +4,7 @@
   [showBorders]="true"
   [columnAutoWidth]="true"
   (onRowUpdating)="updateOperation($event)"
+  (onRowValidating)="validatePlanGridRow($event)"
   >
   <dxo-editing
     mode="cell"

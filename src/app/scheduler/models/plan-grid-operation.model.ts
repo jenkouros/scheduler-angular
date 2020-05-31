@@ -5,7 +5,7 @@ export interface PlanGridOperation {
   isPlanable: boolean;
   sequenceNumber: number;
   idContainer: number;
-  containerCode: string;
+  containerCode: string | null;
   timeEnd: Date;
   timeStart: Date;
   idSubItem: number;

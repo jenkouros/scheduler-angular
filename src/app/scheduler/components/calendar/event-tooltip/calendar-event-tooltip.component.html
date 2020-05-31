@@ -14,19 +14,23 @@
 
   <app-event-tooltip-sequence *ngIf="planItem"
     [sequence]="planItem.sequencePlanItems"
-    [selectedIdPrePlanitem]="planItem.idPrePlanItem">
+    [selectedIdPrePlanitem]="planItem.idPrePlanItem"
+    [selectedIdPlanItem]="planItem.id"
+    [selectedIdItem]="planItem.itemId">
   </app-event-tooltip-sequence>
 
   <app-linked-items
     [smaller]="false"
     *ngIf="planItem && planItem.linkedItem"
     [items]="[planItem.linkedItem]"
+    [selectedIdPlanItem]="planItem.id"
     [title]="translate('Linked_Plan_Item')">
   </app-linked-items>
 
   <app-linked-items
     *ngIf="planItem && planItem.parentLinkedItems && planItem.parentLinkedItems.length"
-    [items]="planItem.parentLinkedItems">
+    [items]="planItem.parentLinkedItems"
+    [selectedIdPlanItem]="planItem.id">
   </app-linked-items>
 
 </app-popup>

@@ -9,7 +9,8 @@
   (onCellClick)="onCellClick($event)"
   (onRowExpanded)="rowExpanded($event)"
   (onRowCollapsed)="rowCollapsed($event)"
-  (onContentReady)="onContentReady($event)">
+  (onContentReady)="onContentReady($event)"
+  (onRowValidating)="validatePlanGridRow($event)">
 
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-editing
@@ -18,7 +19,7 @@
   </dxo-editing>
   <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
   <!-- <dxi-column cellTemplate="showDetailCellTemplate" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column> -->
-  <dxi-column cssClass="cell-link" dataField="operation.name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
+  <dxi-column [showWhenGrouped]="true" cssClass="cell-link" dataField="operation.name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
   <dxi-column dataField="operation.idContainer"
     [showWhenGrouped]="true"
     [caption]="translate('Workplace')"

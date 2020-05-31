@@ -1,3 +1,4 @@
+import { PlannedEventSimple } from './../../models/event.model';
 import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import { Action } from '@ngrx/store';
 import { ItemAutoplanRequest } from '../../models/item-autoplan.model';
@@ -13,6 +14,7 @@ export const UPDATE_CONTAINER_GRID_FAIL = '[PlanContainerGrid] Auto plan Contain
 export const UPDATE_CONTAINER_GRID_SUCCESS = '[PlanContainerGrid] Auto plan Container success';
 // export const PLAN_ITEM_GRID_OPEN = '[PlanContainerGrid] Open Container Item';
 export const PLAN_CONTAINER_GRID_UPDATE = '[PlanContainerGrid] Plan Container Grid Update';
+export const PLAN_CONTAINER_DIALOG_GRID_UPDATE = '[PlanContainerGrid] Plan Container Dialog Grid Update';
 export const PLAN_CONTAINER_GRID_SET_LIMIT_DATE = '[PlanContainerGrid] Set load Plan Container grid limit date';
 
 export const PLAN_CONTAINER_GRID_PLANHOURS_SWITCH = '[PlanContainerGrid] Set plan container grid planhours switch';
@@ -57,6 +59,12 @@ export class PlanContainerGridUpdate implements Action {
   constructor(public payload: PlanGridOperation) {}
 }
 
+export class PlanContainerDialogGridUpdate implements Action {
+  readonly type = PLAN_CONTAINER_DIALOG_GRID_UPDATE;
+  constructor(public payload: {operation: PlannedEventSimple, idPlanItem: number}) {}
+}
+
+
 export class SetPlanContainerGridLimitDate implements Action {
   readonly type = PLAN_CONTAINER_GRID_SET_LIMIT_DATE;
   constructor(public payload: Date) {}
@@ -85,4 +93,5 @@ export type PlanContainerGridAction =
   | SetPlanContainerGridLimitDate
   | SetPlanHoursSwitch
   | SetExpandAllSwitch
+  | PlanContainerDialogGridUpdate
   ;

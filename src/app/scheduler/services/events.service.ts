@@ -69,6 +69,18 @@ export class EventsService {
     );
   }
 
+  createEventFromRequest(request: PlanItemCreateRequest) {
+    return this.http
+    .post<PlannedEventServer>(environment.apiUrl + '/planitems', request, {
+      headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
+    })
+    .pipe(
+      map(response => {
+        return PlannedEvent.fromServer(response);
+      })
+    );
+  }
+
   createEvent(event: PlannedEvent): Observable<PlannedEvent> {
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: event.idPrePlanItem,
@@ -81,15 +93,7 @@ export class EventsService {
         enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
       }
     };
-    return this.http
-      .post<PlannedEventServer>(environment.apiUrl + '/planitems', planningItem, {
-        headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-      })
-      .pipe(
-        map(response => {
-          return PlannedEvent.fromServer(response);
-        })
-      );
+    return this.createEventFromRequest(planningItem);
   }
 
   checkForNotPlannableEvents(idPlanItem: number) {

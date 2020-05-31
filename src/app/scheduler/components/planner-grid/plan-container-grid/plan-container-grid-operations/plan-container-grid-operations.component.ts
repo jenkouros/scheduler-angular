@@ -1,5 +1,10 @@
+import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
+import { PlanItemCreateRequest } from './../../../../models/event.model';
+import { appSettings } from './../../../../../../environments/environment.ecm360test';
+import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
+import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { HelpersService } from './../../../../../shared/services/helpers.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AppState } from './../../../../../store/app.reducers';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
@@ -23,6 +28,8 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 export class PlanContainerGridOperationsComponent extends AppComponentBase {
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
+  planHours: boolean;
+  planHoursSubscription: Subscription;
   expandAllSwitch$: Observable<boolean>;
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
@@ -36,6 +43,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+    this.planHoursSubscription = this.planHoursSwitch$.subscribe(s => this.planHours = s);
     this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
     this.sortContainers = this.sortContainers.bind(this);
   }
@@ -85,27 +93,54 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
       return;
     }
 
-    this.updateItem.emit();
-
     const updatedOperation = {
       ...e.oldData.operation,
       ...e.newData.operation
     } as PlanGridOperation;
 
-    // if (updatedOperation.idSubItem && updatedOperation.idContainer && updatedOperation.timeStart) {
-
-    //   const request = new ItemAutoplanRequest();
-    //   request.idContainer = updatedOperation.idContainer;
-    //   request.timeStart = updatedOperation.timeStart;
-    //   request.idSubItem = updatedOperation.idSubItem;
-    //   request.idItem = this.item.idItem;
-    //   this.store.dispatch(new AutoplanItem(request));
-    // }
-
-    if (updatedOperation.idPrePlanItem && updatedOperation.containerCode) {
+    if (!updatedOperation.idPlanItem) {
+      if (!updatedOperation.idPrePlanItem && updatedOperation.idContainer && updatedOperation.timeStart) {
+        this.updateItem.emit();
+        const request = new ItemAutoplanRequest();
+        request.idSubItem = updatedOperation.idSubItem;
+        request.idContainer = updatedOperation.idContainer;
+        request.timeStart = updatedOperation.timeStart;
+        request.planDay = !this.planHours;
+        request.planLinkedItems = false;
+        request.planSequencePlanItems = false;
+        request.idItem = e.newData.item.idItem;
+        this.store.dispatch(new AutoplanItem(request));
+      } else if (updatedOperation.idPrePlanItem && updatedOperation.idContainer && updatedOperation.timeStart) {
+        this.updateItem.emit();
+        const request = {
+          idPrePlanItem: updatedOperation.idPrePlanItem,
+          idContainer: updatedOperation.idContainer,
+          timePreparationStart: updatedOperation.timeStart,
+          timeExecutionStart: updatedOperation.timeStart,
+          timeExecutionEnd: updatedOperation.timeEnd,
+          options: {
+            enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+          }
+        } as PlanItemCreateRequest;
+        this.store.dispatch(new PlanItemActions.CreateEventFromRequest(request));
+      }
+    } else if (updatedOperation.idPrePlanItem && updatedOperation.containerCode) {
+      this.updateItem.emit();
       this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate(updatedOperation));
     }
 
+  }
+
+  validatePlanGridRow(e) {
+
+    const event = {
+      ...e.oldData.operation,
+      ...e.newData.operation
+    } as PlanGridOperation;
+
+    const validation = OperationUpdateHelper.validatePlanGridOperation(event);
+    e.isValid = validation.valid;
+    e.errorText = validation.error;
   }
 
   rowExpanded(e) {

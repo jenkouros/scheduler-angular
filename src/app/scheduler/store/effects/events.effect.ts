@@ -121,6 +121,21 @@ export class EventsEffects {
     )
   );
 
+
+  @Effect()
+  createEventFromRequest$ = this.actions$.ofType(fromAction.CREATE_EVENT_FROM_REQUEST).pipe(
+    map((action: fromAction.CreateEventFromRequest) => action.payload),
+    switchMap(plannedEvent =>
+      this.eventsService.createEventFromRequest(plannedEvent).pipe(
+        mergeMap(event => [
+          new fromAction.CreateEventSuccess(event),
+          new fromAction.LoadEventSuccess({ event })
+        ]),
+        catchError(error => of(new fromAction.CreateEventFail()))
+      )
+    )
+  );
+
   @Effect({ dispatch: false })
   createEventSuccessCheckNotPlannable$ = this.actions$
     .ofType(fromAction.CREATE_EVENT_SUCCESS)

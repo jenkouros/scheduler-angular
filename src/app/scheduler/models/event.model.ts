@@ -103,6 +103,7 @@ export class PlannedEvent {
     manufactureStartTime: Date | null;
     unitQuantity: string;
     description: string;
+    itemId: number;
     itemCode: string;
     itemName: string;
     articleCode: string;
@@ -335,6 +336,7 @@ export class PlannedEvent {
         result.quantity = event.quantity;
         result.unitQuantity = event.unitQuantity;
         result.description = event.comment;
+        result.itemId = event.itemId;
         result.itemCode = event.itemCode;
         result.itemName = event.itemName;
         result.articleCode = event.articleCode;
@@ -434,7 +436,10 @@ export class PlannedEventSimple {
     timeStartPreparation: Date | null;
     timeEnd: Date | null;
     containerCode: string | null;
+    containerId: number | null;
     allowParallelPlan: boolean;
+    idPlanItem: number | null;
+    idSubItem: number;
 
     static fromServer(data: PlannedEventSimpleServer) {
         const result = new PlannedEventSimple();
@@ -447,6 +452,8 @@ export class PlannedEventSimple {
         result.timeEnd = data.timeEnd
           ? new Date(data.timeEnd) : null;
         result.allowParallelPlan = data.allowParallelPlan;
+        result.containerId = data.containerId;
+        result.idPlanItem = data.idPlanItem;
         return result;
     }
 }

@@ -1,3 +1,5 @@
+import { ContainerSelect } from './../../../models/container.viewmodel';
+import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
 import { AppState } from './../../../../store/app.reducers';
 import { PlannedEvent } from './../../../models/event.model';
 import { Observable, Subscription } from 'rxjs';
@@ -16,6 +18,7 @@ export class CalendarEventTooltipComponent extends AppComponentBase implements O
   visible = false;
   planItem: PlannedEvent | null = null;
   planItemSubscription: Subscription;
+
   constructor(private store: Store<AppState>) {
     super();
     this.visible$ = store.pipe(

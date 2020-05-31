@@ -20,6 +20,7 @@ export interface PlannedEventServer {
     manufacturedQuantity: number;
     manufactureStartTime: Date;
     comment: string;
+    itemId: number;
     itemCode: string;
     itemName: string;
     articleCode: string;
@@ -57,8 +58,10 @@ export interface PlannedEventSimpleServer {
     idPrePlanItem: number;
     code: string;
     name: string;
+    idPlanItem: number | null;
     timeStartPreparation: Date | null;
     timeEnd: Date | null;
     containerCode: string | null;
+    containerId: number | null;
     allowParallelPlan: boolean;
 }
