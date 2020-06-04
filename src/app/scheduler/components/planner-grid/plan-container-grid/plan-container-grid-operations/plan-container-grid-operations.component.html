@@ -1,5 +1,5 @@
 <app-calendar-event-tooltip></app-calendar-event-tooltip>
-<dx-data-grid
+<dx-data-grid #grid
 (onCellPrepared)="applyCellStyles($event)"
   [dataSource]="gridItems"
   [showBorders]="true"
@@ -25,6 +25,7 @@
   <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
   <!-- <dxi-column cellTemplate="showDetailCellTemplate" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column> -->
   <dxi-column cssClass="cell-link" dataField="operation.name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
+  
   <dxi-column dataField="operation.idContainer"
     [showWhenGrouped]="true"
     [caption]="translate('Workplace')"
@@ -59,7 +60,7 @@
           [dataSource]="executionStatuses"
           displayExpr="Name"
           valueExpr="ID">
-        </dxo-lookup>
+    </dxo-lookup>
   </dxi-column>
   <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>

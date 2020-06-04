@@ -5,7 +5,7 @@ import { AppState } from './../../../../store/app.reducers';
 import { ContainerSelect } from './../../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../../models/plan-container-grid.model';
 import { Component } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
@@ -22,6 +22,8 @@ export class PlanContainerGridComponent extends AppComponentBase {
   loading$: Observable<boolean>;
   planHoursSwitch$: Observable<boolean>;
   expandAllSwitch$: Observable<boolean>;
+  unplannedSwitch$: Observable<boolean>;
+  runningSwitch$: Observable<boolean>;
   limitDateSubscription: Subscription;
   containers$: Observable<ContainerSelect[]>;
 
@@ -34,15 +36,16 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.loading$ = this.store.pipe(select(PlanContainerGridSelectors.loader));
     this.planHoursSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
     this.expandAllSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
+    this.unplannedSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.unplannedSwitch));
+    this.runningSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.runningSwitch));
     this.limitDate$ = store.pipe(select(PlanContainerGridSelectors.limitContainerGridLoadDate));
     this.planContainerGrid$ = store.pipe(select(PlanContainerGridSelectors.getPlanContainerGrid));
     this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid()));
-
-
     // this.selectedPlanItemGrid$ = store.pipe(select(PlanContainerGridSelectors.selectedPlanItemGrid));
 
     this.containers$ = store.pipe(select(getContainerSelectList));
   }
+
 
   // onItemSelect(item: PlanContainerGrid) {
   //   this.store.dispatch(new PlanItemGridActions.PlanItemGridOpen(item));
@@ -51,12 +54,17 @@ export class PlanContainerGridComponent extends AppComponentBase {
   setLimitDate(date: Date) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridLimitDate(date));
   }
-
   plannedHoursSwitch(e) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
   }
   expandAllSwitch(e) {
     this.store.dispatch(new PlanContainerGridActions.SetExpandAllSwitch(e.value));
+  }
+  unplannedSwitch(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetUnplannedSwitch(e.value));
+  }
+  runningSwitch(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetRuninngSwitch(e.value));
   }
 
   applyCellStyles(e) {

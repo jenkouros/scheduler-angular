@@ -9,21 +9,27 @@ import {
   planGridOperationExecution,
   getplanGridOperationExecutionColor,
   getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, AfterViewChecked } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
 import * as PlanItemActions from '../../../../store/actions/events.action';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
+import { DxDataGridComponent } from 'devextreme-angular';
+import dxDataGrid from 'devextreme/ui/data_grid';
 
 @Component({
   selector: 'app-plan-container-grid-operations',
   templateUrl: './plan-container-grid-operations.component.html'
 })
-export class PlanContainerGridOperationsComponent extends AppComponentBase {
+export class PlanContainerGridOperationsComponent extends AppComponentBase implements AfterViewInit, AfterViewChecked {
+
+  @ViewChild(DxDataGridComponent, {static: true}) gridComponent: DxDataGridComponent;
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   expandAllSwitch$: Observable<boolean>;
+  unplannedSwitch$: Observable<boolean>;
+  unplannedSwitch: boolean;
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
     this.refresh = true;
@@ -32,23 +38,38 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   @Input() containers: ContainerSelect[];
   selectedKeys: any[] = [];
   refresh = false;
+  grid: dxDataGrid;
+
+  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
+  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
 
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
     this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
+    this.unplannedSwitch$ = store.pipe(select(PlanContainerGridSelectors.unplannedSwitch));
+    this.unplannedSwitch$.subscribe(hide => {
+      this.unplannedSwitch = hide;
+      filterGrid(this.grid, ['operation.containerCode', 'notcontains', 'NO_CODE'], hide);
+    });
     this.sortContainers = this.sortContainers.bind(this);
   }
 
-  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
-  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+  ngAfterViewInit() {
+    this.grid = this.gridComponent.instance;
+  }
+
+  ngAfterViewChecked() {
+    // filterGrid(this.grid, ['operation.containerCode', 'notcontains', 'NO_CODE'], this.unplannedHide);
+  }
+
+
 
   onCellClick(e) {
     if (e.rowType === 'data' && e.column.dataField === 'operation.name') {
       this.showDetails(e.data.operation.idPlanItem);
     }
   }
-
 
   showDetails(id: number) {
     this.store.dispatch(new PlanItemActions.ShowPlanItemDetailPopup({id: id}));
@@ -72,8 +93,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     return -1;
   }
 
-
-  updateOperation(e) {
+    updateOperation(e) {
     // this.refresh = true;
 
     if (e.newData.operation && e.newData.operation.hasOwnProperty('isLocked')) {
@@ -121,6 +141,9 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
   onContentReady(e) {
     console.log('onContentReady');
+    filterGrid(this.grid, ['operation.containerCode', 'notcontains', 'NO_CODE'], this.unplannedSwitch);
+
+    // this.grid = e.component;
     if (this.refresh) {
       this.selectedKeys.forEach(key => {
         e.component.expandRow([key]);
@@ -177,6 +200,18 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     for (let i = truncateList.length - 1; i >= 0; --i) {
       rows.splice(truncateList[i], 1);
     }
+  }
+}
+
+function filterGrid(grid: dxDataGrid, dxFilter: string[], filterOut: boolean) {
+  if (!grid) {
+    return;
+  }
+
+  if (filterOut) {
+    grid.filter(dxFilter);
+  } else if (grid.getCombinedFilter() != null) {
+    grid.filter(null);
   }
 }
 

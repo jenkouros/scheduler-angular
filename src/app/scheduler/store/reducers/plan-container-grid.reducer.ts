@@ -1,4 +1,3 @@
-import { limitContainerGridLoadDate } from './../selectors/plan-container-grid.selectors';
 import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import * as fromAction from '../actions/plan-container-grid.action';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
@@ -10,6 +9,8 @@ export interface PlanContainerGridState {
   containerGridLimitDate: Date;
   planHoursSwitch: boolean;
   expandAllSwitch: boolean;
+  unplannedSwitch: boolean;
+  runningSwitch: boolean;
 }
 
 const loadLimitDate = new Date();
@@ -23,7 +24,9 @@ export const initialState: PlanContainerGridState = {
   // openedPlanItemGrids: [],
   containerGridLimitDate: loadLimitDate,
   planHoursSwitch: false,
-  expandAllSwitch: false
+  expandAllSwitch: false,
+  unplannedSwitch: false,
+  runningSwitch: false
 };
 
 export function planItemGridReducer (
@@ -128,6 +131,18 @@ export function planItemGridReducer (
       return {
         ...state,
         expandAllSwitch: action.payload
+      };
+    }
+    case fromAction.PLAN_CONTAINER_GRID_UNPLANNED_SWITCH: {
+      return {
+        ...state,
+        unplannedSwitch: action.payload
+      };
+    }
+    case fromAction.PLAN_CONTAINER_GRID_RUNNING_SWITCH: {
+      return {
+        ...state,
+        runningSwitch: action.payload
       };
     }
   }

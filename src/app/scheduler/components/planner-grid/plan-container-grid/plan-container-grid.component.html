@@ -1,5 +1,5 @@
-
-<div style="width:400px">
+<!-- <div style="width: 100%;"> -->
+<div style="width:400px;">
   <div class="dx-field">
       <div class="dx-field-label">{{translate('Plan_hours')}}</div>
       <div class="dx-field-value">
@@ -21,15 +21,22 @@
     </div>
   </div>
 
-  <!-- <div class="dx-field">
-    <div class="dx-field-label">{{translate('Export_To_Excel')}}</div>
+  <div class="dx-field">
+    <div class="dx-field-label">{{translate('Unplanned_FilterOut')}}</div>
     <div class="dx-field-value">
-        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
+        <dx-check-box (onValueChanged)="unplannedSwitch($event)"[value]="unplannedSwitch$ | async"></dx-check-box>
     </div>
-  </div> -->
+  </div>
+
+  <div class="dx-field">
+    <div class="dx-field-label">{{translate('Show_Running_Operations')}}</div>
+    <div class="dx-field-value">
+        <dx-check-box (onValueChanged)="runningSwitch($event)"[value]="runningSwitch$ | async"></dx-check-box>
+    </div>
+  </div>
 
 </div>
-
+<!-- </div> -->
 
 <div style="margin-bottom: 10px;"></div>
 
