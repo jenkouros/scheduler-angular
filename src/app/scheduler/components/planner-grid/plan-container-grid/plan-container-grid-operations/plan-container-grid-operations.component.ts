@@ -14,7 +14,7 @@ import {
   planGridOperationExecution,
   getplanGridOperationExecutionColor,
   getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
@@ -24,35 +24,21 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 @Component({
   selector: 'app-plan-container-grid-operations',
   templateUrl: './plan-container-grid-operations.component.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanContainerGridOperationsComponent extends AppComponentBase {
-  // @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
   planHoursSubscription: Subscription;
   expandAllSwitch$: Observable<boolean>;
-  // gridDataSource: DataSource;
-
-
 
   @Input() set datasource(grid: PlanContainerGrid[]) {
-    // this.gridItems = grid;
-
-    // this.gridDataSource = new DataSource({
-    //   store: grid,
-
-    //   // store: grid,
-    //   reshapeOnPush: true
-    // });
     this.gridItems = grid;
     this.refresh = true;
   }
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
-  selectedKeys: any[] = [];
   refresh = false;
 
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
@@ -157,30 +143,6 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     e.errorText = validation.error;
   }
 
-  rowExpanded(e) {
-    this.selectedKeys.push(e.key[0]);
-    // e.component.expandAll();
-    // console.log(e.component.getRowIndexByKey(e.key));
-  }
-
-  rowCollapsed(e) {
-    const idx = this.selectedKeys.indexOf(e.key[0]);
-    this.selectedKeys.splice(idx, 1);
-    console.log(this.selectedKeys);
-  }
-
-  onContentReady(e) {
-    console.log('onContentReady');
-    // console.log(this.dataGrid.instance);
-
-    // if (this.refresh) {
-    //   this.selectedKeys.forEach(key => {
-    //     e.component.expandRow([key]);
-    //     this.refresh = false;
-    //   });
-    // }
-  }
-
   applyCellStyles(e) {
     if (e.rowType !== 'data') {
       return;
@@ -230,13 +192,4 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
       rows.splice(truncateList[i], 1);
     }
   }
-}
-
-function findRowIndexWithAttrVal(array, attr: string, value: string): number {
-  for (let i = 0; i < array.length; i += 1) {
-      if (array[i][attr] === value) {
-          return i;
-      }
-  }
-  return -1;
 }
