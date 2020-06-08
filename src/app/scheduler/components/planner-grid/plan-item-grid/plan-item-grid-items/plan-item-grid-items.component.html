@@ -6,10 +6,7 @@
     [allowColumnReordering]="true"
     [masterDetail]="{ enabled: true, template: 'detail', autoExpandAll: false }"
     [showBorders]="true"
-    (onCellPrepared)="applyCellStyles($event)"
-    (onRowExpanding)="rowExpanded($event)"
-    (onRowCollapsing)="rowCollapsed($event)"
-    (onContentReady)="onContentReady($event)">
+    (onCellPrepared)="applyCellStyles($event)">
 
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-editing

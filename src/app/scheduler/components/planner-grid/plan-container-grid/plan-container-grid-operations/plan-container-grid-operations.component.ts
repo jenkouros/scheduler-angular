@@ -35,11 +35,9 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
-    this.refresh = true;
   }
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
-  refresh = false;
 
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
@@ -83,8 +81,6 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
 
   updateOperation(e) {
-    // this.refresh = true;
-
     if (e.newData.operation && e.newData.operation.hasOwnProperty('isLocked')) {
       this.store.dispatch(new PlanItemActions.ToggleEventLock({
         id: e.oldData.operation.idPlanItem,

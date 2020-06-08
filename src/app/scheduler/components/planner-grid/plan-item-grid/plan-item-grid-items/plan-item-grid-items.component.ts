@@ -28,9 +28,7 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() containers: ContainerSelect[];
   @Output() selectItem = new EventEmitter<PlanItemGrid>();
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
-  selectedIndexes: number[] = [];
-  selectedKeys: number[] = [];
-  refresh = false;
+  // refresh = false;
 
   priorities = [
     { ID: 0, Name: 'Normalna' },
@@ -51,50 +49,12 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
     console.log('ctor');
   }
 
-  rowCollapsed(e) {
-    // const idx = this.selectedIndexes.indexOf(this.grid.instance.getRowIndexByKey(e.key));
-    // this.selectedIndexes.splice(idx, 1);
-
-    const idx = this.selectedKeys.indexOf(e.key);
-    this.selectedKeys.splice(idx, 1);
-
-    // console.log(this.selectedIndexes);
-    console.log(this.selectedKeys);
-  }
-
-  rowExpanded(e) {
-    // this.selectedIndexes.push(this.grid.instance.getRowIndexByKey(e.key));
-    this.selectedKeys.push(e.key);
-    // console.log(this.selectedIndexes);
-    console.log(this.selectedKeys);
-
-
-  }
-
   selectionChanged(e) {
     console.log('selectionchanged: ' + e);
   }
+
   updateItem() {
-    this.refresh = true;
-  }
-
-
-  onContentReady(e) {
-    console.log('onContentReady');
-    if (this.refresh) {
-      this.selectedKeys.forEach(key => {
-        // const key = e.component.getKeyByRowIndex(idx);
-        console.log(key);
-        e.component.expandRow(key);
-        this.refresh = false;
-      });
-      // this.selectedIndexes.forEach(idx => {
-      //   const key = e.component.getKeyByRowIndex(idx);
-      //   console.log(key);
-      //   e.component.expandRow(key);
-      //   this.refresh = false;
-      // });
-    }
+    // this.refresh = true;
   }
 
   calculatePlanStatus(data: PlanItemGrid) {
