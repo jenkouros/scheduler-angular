@@ -14,7 +14,7 @@ import {
   planGridOperationExecution,
   getplanGridOperationExecutionColor,
   getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
@@ -23,15 +23,30 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-container-grid-operations',
-  templateUrl: './plan-container-grid-operations.component.html'
+  templateUrl: './plan-container-grid-operations.component.html',
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanContainerGridOperationsComponent extends AppComponentBase {
+  // @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
   planHoursSubscription: Subscription;
   expandAllSwitch$: Observable<boolean>;
+  // gridDataSource: DataSource;
+
+
+
   @Input() set datasource(grid: PlanContainerGrid[]) {
+    // this.gridItems = grid;
+
+    // this.gridDataSource = new DataSource({
+    //   store: grid,
+
+    //   // store: grid,
+    //   reshapeOnPush: true
+    // });
     this.gridItems = grid;
     this.refresh = true;
   }
@@ -156,12 +171,14 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
   onContentReady(e) {
     console.log('onContentReady');
-    if (this.refresh) {
-      this.selectedKeys.forEach(key => {
-        e.component.expandRow([key]);
-        this.refresh = false;
-      });
-    }
+    // console.log(this.dataGrid.instance);
+
+    // if (this.refresh) {
+    //   this.selectedKeys.forEach(key => {
+    //     e.component.expandRow([key]);
+    //     this.refresh = false;
+    //   });
+    // }
   }
 
   applyCellStyles(e) {
