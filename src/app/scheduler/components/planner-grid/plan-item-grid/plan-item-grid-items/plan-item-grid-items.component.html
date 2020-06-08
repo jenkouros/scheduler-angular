@@ -8,13 +8,12 @@
     [showBorders]="true"
     (onCellPrepared)="applyCellStyles($event)">
 
+    <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_item_grid_items_DevExtremeStorage"></dxo-state-storing>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
-    <dxo-editing
-    mode="cell"
-    [allowUpdating]="true"></dxo-editing>
+    <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
 
     <!-- <dxi-column dataField="item.idItem"></dxi-column> -->
-
+  
     <dxi-column [allowEditing]="false" dataField="item.itemCode" caption="{{translate('Workorder')}}"></dxi-column>
     <dxi-column [allowEditing]="false" dataField="item.articleCode" caption="{{translate('Code_2')}}"></dxi-column>
     <dxi-column [allowEditing]="false" dataField="item.articleName" caption="{{translate('Name')}}"></dxi-column>
