@@ -1,5 +1,5 @@
 import { AppState } from './../../../store/app.reducers';
-import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
+import { switchMap, map, catchError, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as fromActions from '../actions/plan-container-grid.action';
@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { PlanContainerGridService } from '../../services/plan-container-grid.service';
 import * as eventActions from '../actions/events.action';
+import * as containerGridActions from '../actions/plan-container-grid.action';
 
 @Injectable()
 export class PlanContainerGridEffect {
@@ -66,7 +67,10 @@ export class PlanContainerGridEffect {
   updateDialogPlanItem$ = this.actions$.ofType(fromActions.PLAN_CONTAINER_DIALOG_GRID_UPDATE).pipe(
     switchMap((action: fromActions.PlanContainerDialogGridUpdate) =>
       this.planContainerGridService.updatePlanItemSimple(action.payload.operation).pipe(
-        map(items => new eventActions.LoadEvent({ id: action.payload.idPlanItem })),
+        mergeMap(items => [
+          new eventActions.LoadEvent({ id: action.payload.idPlanItem }),
+          new containerGridActions.HideUpdatePlanGridOperationDialog()
+        ]),
         catchError(error => of(new fromActions.UpdateContainerGridFail()))
       )
     ));

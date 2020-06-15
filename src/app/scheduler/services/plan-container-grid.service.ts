@@ -40,6 +40,9 @@ export class PlanContainerGridService {
   // }
 
   updatePlanItem(operation: PlanGridOperation) {
+    const options = operation.options ? operation.options : {};
+    options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
+
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: operation.idPrePlanItem,
       idContainer: operation.idContainer,
@@ -51,15 +54,15 @@ export class PlanContainerGridService {
       idPriority: operation.idPriority,
       idUserStatus: operation.idUserStatus,
       userDate: operation.userDate ? moment(new Date(operation.userDate)).format() : undefined,
-      options: {
-        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
-      }
+      options: options
     };
     return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
 
   }
 
   updatePlanItemSimple(operation: PlannedEventSimple) {
+    const options = operation.options ? operation.options : {};
+    options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: operation.idPrePlanItem,
       idContainer: operation.containerId,
@@ -71,9 +74,7 @@ export class PlanContainerGridService {
       idPriority: undefined,
       idUserStatus: undefined,
       userDate: undefined,
-      options: {
-        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
-      }
+      options: options
     };
     return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
   }

@@ -13,7 +13,9 @@ import {
   planGridOperationPriorities,
   planGridOperationExecution,
   getplanGridOperationExecutionColor,
-  getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
+  getplanGridOperationPriorityColor,
+  PlanGridOperationChange,
+  OperationChangeOriginEnum} from './../../../../models/plan-grid-operation.model';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
@@ -31,6 +33,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   planHours: boolean;
   planHoursSubscription: Subscription;
   expandAllSwitch$: Observable<boolean>;
+  timeUpdateDialog$: Observable<PlanGridOperationChange | undefined>;
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
     this.refresh = true;
@@ -46,6 +49,8 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     this.planHoursSubscription = this.planHoursSwitch$.subscribe(s => this.planHours = s);
     this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
     this.sortContainers = this.sortContainers.bind(this);
+    this.timeUpdateDialog$ = store.pipe(select(PlanContainerGridSelectors.getUpdateTimeDialogData));
+
   }
 
   priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
@@ -97,6 +102,21 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
       ...e.newData.operation
     } as PlanGridOperation;
 
+    if (e.oldData.operation && e.oldData.operation.idPrePlanItem &&
+        (e.newData.operation.hasOwnProperty('timeStart') || e.newData.operation.hasOwnProperty('timeEnd'))) {
+          // show popup
+          this.store.dispatch(new PlanContainerGridActions.ShowUpdatePlanGridOperationDialog({
+            oldTimeEnd: e.oldData.operation.timeEnd,
+            oldTimeStart: e.oldData.operation.timeStart,
+            timeChange: e.newData.operation,
+            operation: updatedOperation,
+            changeOrigin: OperationChangeOriginEnum.ContainerGrid
+          }));
+          return;
+    }
+
+
+    // debugger; // check else if pogoj
     if (!updatedOperation.idPlanItem) {
       if (!updatedOperation.idPrePlanItem && updatedOperation.idContainer && updatedOperation.timeStart) {
         this.updateItem.emit();
@@ -168,14 +188,13 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     if (e.rowType !== 'data') {
       return;
     }
+    switch (e.column.dataField) {
 
-    switch (e.columnIndex) {
-
-      case 11: {
+      case 'operation.idUserStatus': {
         e.cellElement.style.background = getplanGridOperationExecutionColor(e.data.operation.idUserStatus);
         break;
       }
-      case 10: {
+      case 'operation.idPriority': {
         e.cellElement.style.background = getplanGridOperationPriorityColor(e.data.operation.idPriority);
         break;
       }

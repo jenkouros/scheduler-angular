@@ -82,6 +82,9 @@ export class EventsService {
   }
 
   createEvent(event: PlannedEvent): Observable<PlannedEvent> {
+    const options = event.options ? event.options : {};
+    options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
+
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: event.idPrePlanItem,
       idContainer: event.containerId,
@@ -89,9 +92,7 @@ export class EventsService {
       timeExecutionStart: moment(event.timeStartExecution).format(),
       timeExecutionEnd: moment(event.timeEndExecution).format(),
       comment: event.description,
-      options: {
-        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
-      }
+      options: options
     };
     return this.createEventFromRequest(planningItem);
   }
@@ -104,6 +105,9 @@ export class EventsService {
   }
 
   updateEvent(event: PlannedEvent) {
+    const options = event.options ? event.options : {};
+    options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
+
     const planningItem = <PlanItemPutRequest>{
       idPlanItem: event.id,
       idContainer: event.containerId,
@@ -112,9 +116,7 @@ export class EventsService {
       timeExecutionEnd: moment(new Date(event.timeEndExecution)).format(),
       planItemMoveStatus: PlanItemMoveStatusEnum.Moved,
       comment: event.description,
-      options: {
-        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
-      }
+      options: options
     };
     return this.http.put(environment.apiUrl + '/planitems', planningItem);
   }

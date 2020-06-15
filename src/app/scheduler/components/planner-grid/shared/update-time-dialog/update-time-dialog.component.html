@@ -1,0 +1,45 @@
+<app-popup
+  height='auto'
+  width='600px'
+  [hasConfirmBtn]="true"
+  [hasCancelBtn]="true"
+  title="Sprememba časa"
+  [visible]="visible"
+  [confirmCallback]="onSubmit"
+  [cancelCallback]="onCancel"
+  >
+
+<div [formGroup]="form">
+  <div class="dx-fieldset">
+    <div class="dx-field">
+        <div class="dx-field-label">Operacija</div>
+        <div class="dx-field-value">
+            <dx-radio-group
+              displayExpr="text"
+              valueExpr="id"
+              [items]="planItemChangeOptions"
+              formControlName="planItemChange">
+            </dx-radio-group>
+        </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Pripni nadaljne operacije</div>
+      <div class="dx-field-value">
+        <dx-check-box formControlName="itemChange"></dx-check-box>
+          <!-- <dx-radio-group
+            displayExpr="text"
+            valueExpr="id"
+            [items]="itemChangeOptions"
+            [value]="itemChangeOptions[0].id">
+          </dx-radio-group> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- <div *ngIf="changeData">
+    {{ changeData.operation.code }}
+  </div> -->
+
+
+</app-popup>

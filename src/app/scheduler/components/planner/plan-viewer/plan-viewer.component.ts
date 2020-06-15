@@ -44,6 +44,7 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 })
 export class PlanViewerComponent extends AppComponentBase implements AfterViewInit, OnChanges {
   @Input() selectedPreplanItem: PreplanItem | null = null;
+  @Input() containers: ContainerSelect[] = [];
   @Input() selectedContainers: ContainerSelect[] = [];
   @Input()
   planItemGetReponse: {
@@ -232,7 +233,21 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     if (!this.canEdit(event)) {
       return;
     }
-    const preparationDurationInMinutes = moment(new Date(event.timeStartExecution)).diff(moment(new Date(event.timeStartPreparation)), 'm');
+
+    if (e.newData.allDay) {
+      const oldPreparationDate = new Date(e.oldData.startDate);
+      event.startDate = new Date(event.startDate);
+      event.startDate.setHours(oldPreparationDate.getHours());
+      event.startDate.setMinutes(oldPreparationDate.getMinutes());
+
+      const oldEndDate = new Date(e.oldData.endDate);
+      event.endDate = new Date(event.endDate);
+      event.endDate.setHours(oldEndDate.getHours());
+      event.endDate.setMinutes(oldEndDate.getMinutes());
+    }
+
+    // const preparationDurationInMinutes = moment(new Date(event.timeStartExecution)).diff(moment(new Date(event.startDate)), 'm');
+    const preparationDurationInMinutes = moment(new Date(e.oldData.timeStartExecution)).diff(moment(new Date(e.oldData.startDate)), 'm');
 
     const startDate = new Date(event.startDate);
     event.timeStartPreparation = startDate;

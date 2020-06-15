@@ -1,11 +1,11 @@
-<app-popup 
+<app-popup
   [validToConfirm]="planItemEditForm.valid"
   title="{{ translate('Edit_Operation') }}"
   [confirmCallback]="onFormSubmit"
   [cancelCallback]="onFormHide"
-  [visible]="visible" 
-  [width]="'550px'" 
-  [height]="'680px'">
+  [visible]="visible"
+  [width]="'550px'"
+  [height]="'720px'">
   <div *ngIf="planItem">
     <form [formGroup]="planItemEditForm">
       <app-field label="{{ translate('Operation') }}" [isStatic]="true">
@@ -22,15 +22,15 @@
           <!-- [value]="planItem!.containerId" -->
         <dx-select-box
           [items]="containers"
-          displayExpr="container.displayExpression"
-          valueExpr="container.id"
+          displayExpr="title"
+          valueExpr="id"
           formControlName="idContainer"
         ></dx-select-box>
       </app-field>
       <app-field label="{{ translate('Preparation_Start') }}">
-        <app-datebox 
-          type="datetime" 
-          formControlName="preparationStartTime" 
+        <app-datebox
+          type="datetime"
+          formControlName="preparationStartTime"
           [max]="executionStartTimeControl.value">
         </app-datebox>
       </app-field>
@@ -43,8 +43,8 @@
         </app-field>
       </div>
       <app-field label="{{ translate('Execution_Start') }}">
-        <app-datebox 
-          type="datetime" 
+        <app-datebox
+          type="datetime"
           formControlName="executionStartTime"
           [max]="executionEndTimeControl.value"
           [min]="preparationStartTimeControl.value">
@@ -60,12 +60,18 @@
       </div>
 
       <app-field label="{{ translate('Execution_End') }}">
-        <app-datebox 
-          type="datetime" 
+        <app-datebox
+          type="datetime"
           formControlName="executionEndTime"
           [min]="executionStartTimeControl.value">
         </app-datebox>
       </app-field>
+
+
+        <app-field label="{{ translate('Apply_Non_working_time') }}" [isStatic]="true">
+          <dx-check-box formControlName="applyNonworkingTime"></dx-check-box>
+        </app-field>
+
       <!-- {{ planItemEditForm.invalid }} <br>
       {{ planItemEditForm.controls['preparationStartTime'].value }} <br>
       {{ planItemEditForm.controls['executionStartTime'].value }} <br>

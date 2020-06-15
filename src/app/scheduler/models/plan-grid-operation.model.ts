@@ -1,3 +1,5 @@
+import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
+
 export interface PlanGridOperation {
   idPrePlanItem: number;
   code: string;
@@ -15,6 +17,25 @@ export interface PlanGridOperation {
   comment: string;
   idPlanItem: number;
   isLocked: boolean;
+  options?: PlanItemCreateRequestOptions;
+}
+
+export interface PlanGridOperationChange {
+  oldTimeStart: Date;
+  oldTimeEnd: Date;
+  timeChange: {
+    timeEnd?: Date;
+    timeStart?: Date
+  };
+  operation: PlanGridOperation | PlannedEventSimple;
+  changeOrigin: OperationChangeOriginEnum;
+  planItemId?: number;
+}
+
+export enum OperationChangeOriginEnum {
+  ContainerGrid,
+  InfoDialog,
+  ItemGrid
 }
 
 export const planGridOperationPriorities = [

@@ -32,24 +32,19 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   selectedKeys: number[] = [];
   refresh = false;
 
-  priorities = [
-    { ID: 0, Name: 'Normalna' },
-    { ID: 1, Name: 'Nizka' },
-    { ID: 2, Name: 'Visoka' }
-  ];
+  // priorities = [
+  //   { ID: 0, Name: 'Normalna' },
+  //   { ID: 1, Name: 'Nizka' },
+  //   { ID: 2, Name: 'Visoka' }
+  // ];
 
-  executionStatuses = [
-    { ID: 0, Name: 'Ni podatka' },
-    { ID: 1, Name: 'Planiran' },
-    { ID: 2, Name: 'V izvajanju' },
-    { ID: 3, Name: 'Končan' },
-    { ID: 4, Name: 'V zastoju' }
-  ];
-
-  constructor() {
-    super();
-    console.log('ctor');
-  }
+  // executionStatuses = [
+  //   { ID: 0, Name: 'Ni podatka' },
+  //   { ID: 1, Name: 'Planiran' },
+  //   { ID: 2, Name: 'V izvajanju' },
+  //   { ID: 3, Name: 'Končan' },
+  //   { ID: 4, Name: 'V zastoju' }
+  // ];
 
   rowCollapsed(e) {
     // const idx = this.selectedIndexes.indexOf(this.grid.instance.getRowIndexByKey(e.key));
@@ -125,47 +120,34 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
     if (e.rowType !== 'data') {
       return;
     }
-
-    switch (e.columnIndex) {
-      case 6: {
+    if (!e.column.dataField && e.column.calculateCellValue) {
         e.cellElement.style.background = this.getItemPlanStatusColor(this.calculatePlanStatus(e.data));
-        break;
-      }
-      // case 6: {
-      //   e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.item.itemExecutionStatus);
-      //   break;
-      // }
-      case 8: {
-        e.cellElement.style.background = this.getPriorityColor(e.data.item.priority);
-        break;
-      }
     }
   }
 
-  applyPlanItemStyles(e) {
-    if (e.rowType !== 'data') {
-      return;
-    }
+  // applyPlanItemStyles(e) {
+  //   if (e.rowType !== 'data') {
+  //     return;
+  //   }
+  //   switch (e.columnIndex) {
+  //     case 1: {
+  //       e.cellElement.style.background = this.getContainerColor(e.data.containerCode);
+  //       break;
+  //     }
+  //     case 4: {
+  //       e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.executionStatus);
+  //       break;
+  //     }
+  //   }
+  // }
 
-    switch (e.columnIndex) {
-      case 1: {
-        e.cellElement.style.background = this.getContainerColor(e.data.containerCode);
-        break;
-      }
-      case 4: {
-        e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.executionStatus);
-        break;
-      }
-    }
-  }
-
-  getItemExecutionStatusColor(id) {
-    if (id === 1) {
-      return '#ccfbcc';
-    } else if (id === 2) {
-      return '#d6d6d6';
-    }
-  }
+  // getItemExecutionStatusColor(id) {
+  //   if (id === 1) {
+  //     return '#ccfbcc';
+  //   } else if (id === 2) {
+  //     return '#d6d6d6';
+  //   }
+  // }
 
   getItemPlanStatusColor(id) {
     if (id === 'Lansiran') {
@@ -183,10 +165,10 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
     }
   }
 
-  getContainerColor(id) {
-    if (id === 5) {
-      return '#fbe8cc';
-    }
-  }
+  // getContainerColor(id) {
+  //   if (id === 5) {
+  //     return '#fbe8cc';
+  //   }
+  // }
 }
 

@@ -34,7 +34,7 @@
     [sortingMethod]="sortContainers">
   <dxo-lookup
     [dataSource]="containers"
-    displayExpr="code"
+    displayExpr="displayName"
     valueExpr="id">
   </dxo-lookup>
   </dxi-column>
@@ -82,3 +82,5 @@
     <dxo-grouping #expand [autoExpandAll]="expandAllSwitch$ | async"></dxo-grouping>
 
 </dx-data-grid>
+
+<app-update-time-dialog [changeData]="timeUpdateDialog$ | async" [visible]="timeUpdateDialog$ | async"></app-update-time-dialog>

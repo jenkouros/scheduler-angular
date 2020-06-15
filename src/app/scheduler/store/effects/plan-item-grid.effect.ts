@@ -1,8 +1,9 @@
 import { AppState } from './../../../store/app.reducers';
-import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
+import { switchMap, map, catchError, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as fromActions from '../actions/plan-item-grid.action';
+import * as containerGridActions from '../actions/plan-container-grid.action';
 import { of } from 'rxjs';
 import { PlanItemGridService } from '../../services/plan-item-grid.service';
 import { Store, select } from '@ngrx/store';
@@ -46,7 +47,10 @@ export class PlanItemGridEffect {
   autoplanItem$ = this.actions$.ofType(fromActions.AUTOPLAN_ITEM).pipe(
     switchMap((action: fromActions.AutoplanItem) =>
       this.planItemGridService.autoplan(action.payload).pipe(
-        map(items => new fromActions.UpdateItemGridSuccess(items)),
+        mergeMap(items => [
+          new containerGridActions.HideUpdatePlanGridOperationDialog(),
+          new fromActions.UpdateItemGridSuccess(items)
+        ]),
         catchError(error => of(new fromActions.AutoplanItemFail()))
       )
     ));
@@ -55,7 +59,10 @@ export class PlanItemGridEffect {
   updateplanItem$ = this.actions$.ofType(fromActions.PLAN_ITEM_GRID_UPDATE).pipe(
     switchMap((action: fromActions.PlanItemGridUpdate) =>
       this.planItemGridService.updatePlanItem(action.payload).pipe(
-        map(items => new fromActions.UpdateItemGridSuccess(items)),
+        mergeMap(items => [
+          new containerGridActions.HideUpdatePlanGridOperationDialog(),
+          new fromActions.UpdateItemGridSuccess(items)
+        ]),
         catchError(error => of(new fromActions.AutoplanItemFail()))
       )
     ));

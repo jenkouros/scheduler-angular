@@ -35,3 +35,8 @@ export const expandAllSwitch = createSelector(
   getPlanContainerGridState,
   state => state.expandAllSwitch
 );
+
+export const getUpdateTimeDialogData = createSelector(
+  getPlanContainerGridState,
+  state => state.updateTimeDialogData
+);

@@ -168,7 +168,8 @@
         "Parent_Orders": "Pakirni nalogi",
         "Scheduling_Workorders": "Razpored nalogov",
         "Scheduling_Workplaces": "Razpored delovnih mest",
-        "Expand": "Razširi vse"
+        "Expand": "Razširi vse",
+        "Apply_Non_working_time": "Upoštevaj nedelovni čas"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -339,7 +340,8 @@
         "Parent_Orders": "Nalogi za pakovanje",
         "Scheduling_Workorders": "Razpored naloga",
         "Scheduling_Workplaces": "Razpored radnih mesta",
-        "Expand": "Proširi sve"
+        "Expand": "Proširi sve",
+        "Apply_Non_working_time": "Uzeti u obzir neradno vreme"
     },
     "en": {
       "Add": "Add",
@@ -510,7 +512,8 @@
       "Parent_Orders": "Packing orders",
       "Scheduling_Workorders": "Scheduling orders",
       "Scheduling_Workplaces": "Scheduling workplaces",
-      "Expand": "Expand all"
+      "Expand": "Expand all",
+      "Apply_Non_working_time": "Apply nonworking time"
   }
 
 }

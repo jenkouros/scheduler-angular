@@ -22,6 +22,7 @@ import * as fromPlanStore from '../../../plan/store';
 export class PlanitemsComponent implements OnInit {
   selectedPrePlanItem$: Observable<PreplanItem | null>;
   selectedContainers$: Observable<ContainerSelect[]>;
+  containers$: Observable<ContainerSelect[]>;
   planItems$: Observable<{
     planItems: PlannedEvent[];
     notWorkingHoursEvents: { [idContainer: number]: PlanSchedule[] };
@@ -48,6 +49,7 @@ export class PlanitemsComponent implements OnInit {
 
     this.selectedPrePlanItem$ = this.store.pipe(select(fromStore.getSelectedPrePlanItem));
     this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
+    this.containers$ = this.store.pipe(select(fromStore.getContainerSelectList));
     this.planItems$ = this.store.pipe(select(fromStore.getEvents));
 
     // this.selectedContainers$.subscribe(containers => {

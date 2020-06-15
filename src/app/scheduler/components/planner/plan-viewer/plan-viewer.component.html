@@ -277,6 +277,7 @@
 </div>
 
 <app-plan-viewer-item-edit
+    [containerSelect]="containers"
     [visible]="planItemEditMode"
     [planItem]="planItemEditing"
     (planItemUpdate)="updateAppointment($event)"

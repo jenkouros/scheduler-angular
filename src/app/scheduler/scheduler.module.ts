@@ -37,7 +37,8 @@ import {
     DxPopupModule,
     DxDateBoxModule,
     DxAccordionModule,
-    DxLoadPanelModule
+    DxLoadPanelModule,
+    DxSwitchModule
 } from 'devextreme-angular';
 
 import { ContainersEffects } from './store/effects/containers.effect';
@@ -83,7 +84,8 @@ import { GroupSelectComponent } from './containers';
         DxPopupModule,
         DxDateBoxModule,
         DxAccordionModule,
-        DxLoadPanelModule
+        DxLoadPanelModule,
+        DxSwitchModule
     ],
     exports: [
       GroupSelectComponent

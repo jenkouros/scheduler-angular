@@ -2,7 +2,7 @@ import { PlannedEventSimple } from './../../models/event.model';
 import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import { Action } from '@ngrx/store';
 import { ItemAutoplanRequest } from '../../models/item-autoplan.model';
-import { PlanGridOperation } from '../../models/plan-grid-operation.model';
+import { PlanGridOperation, PlanGridOperationChange } from '../../models/plan-grid-operation.model';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 
 export const LOAD_PLAN_CONTAINER_GRID = '[PlanContainerGrid] Load Plan Container Grid';
@@ -10,8 +10,8 @@ export const LOAD_PLAN_CONTAINER_GRID_SUCCESS = '[PlanContainerGrid] Load Plan C
 export const LOAD_PLAN_CONTAINER_GRID_FAIL = '[PlanContainerGrid] Load Plan Container Grid Fail';
 
 // export const AUTOPLAN_ITEM = '[PlanContainerGrid] Auto plan Container Grid';
-export const UPDATE_CONTAINER_GRID_FAIL = '[PlanContainerGrid] Auto plan Container Grid fail';
-export const UPDATE_CONTAINER_GRID_SUCCESS = '[PlanContainerGrid] Auto plan Container success';
+export const UPDATE_CONTAINER_GRID_FAIL = '[PlanContainerGrid] Plan Container Grid Update fail';
+export const UPDATE_CONTAINER_GRID_SUCCESS = '[PlanContainerGrid] Plan Container Grid Update success';
 // export const PLAN_ITEM_GRID_OPEN = '[PlanContainerGrid] Open Container Item';
 export const PLAN_CONTAINER_GRID_UPDATE = '[PlanContainerGrid] Plan Container Grid Update';
 export const PLAN_CONTAINER_DIALOG_GRID_UPDATE = '[PlanContainerGrid] Plan Container Dialog Grid Update';
@@ -19,6 +19,9 @@ export const PLAN_CONTAINER_GRID_SET_LIMIT_DATE = '[PlanContainerGrid] Set load 
 
 export const PLAN_CONTAINER_GRID_PLANHOURS_SWITCH = '[PlanContainerGrid] Set plan container grid planhours switch';
 export const PLAN_CONTAINER_GRID_EXPANDALL_SWITCH = '[PlanContainerGrid] Set plan container grid expand all switch';
+
+export const PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Show Time Update Dialog';
+export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Hide Time Update Dialog';
 
 export class LoadPlanContainerGrid implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID;
@@ -80,6 +83,14 @@ export class SetExpandAllSwitch implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class ShowUpdatePlanGridOperationDialog implements Action {
+  readonly type = PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG;
+  constructor(public payload: PlanGridOperationChange) {}
+}
+
+export class HideUpdatePlanGridOperationDialog implements Action {
+  readonly type = PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG;
+}
 
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
@@ -94,4 +105,6 @@ export type PlanContainerGridAction =
   | SetPlanHoursSwitch
   | SetExpandAllSwitch
   | PlanContainerDialogGridUpdate
+  | ShowUpdatePlanGridOperationDialog
+  | HideUpdatePlanGridOperationDialog
   ;

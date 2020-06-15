@@ -36,6 +36,7 @@ import { PlanItemGridOperationsComponent } from './planner-grid/plan-item-grid/p
 import { PlanItemGridItemsComponent } from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid-items.component';
 import { SequenceOperationListComponent } from './calendar/event-tooltip/sequence-operation-list/event-tooltip-sequence-operations.component';
 import { EventTooltipOperationComponent } from './calendar/event-tooltip/operation/event-tooltip-operation.component';
+import { UpdateTimeDialogComponent } from './planner-grid/shared/update-time-dialog/update-time-dialog.component';
 
 
 
@@ -78,7 +79,8 @@ export const components: any[] = [
     PlanContainerGridOperationsComponent,
     CalendarEventTooltipComponent,
     SequenceOperationListComponent,
-    EventTooltipOperationComponent
+    EventTooltipOperationComponent,
+    UpdateTimeDialogComponent
 ];
 
 export * from './calendar/event-tooltip/operation/event-tooltip-operation.component';
@@ -120,3 +122,4 @@ export * from './planner-grid/plan-item-grid/plan-item-grid-items/plan-item-grid
 
 export * from './planner-grid/plan-container-grid/plan-container-grid.component';
 export * from './planner-grid/plan-container-grid/plan-container-grid-operations/plan-container-grid-operations.component';
+export * from './planner-grid/shared/update-time-dialog/update-time-dialog.component';

@@ -1,6 +1,8 @@
+import { appSettings } from './../../../../../../environments/environment.ecm360test';
+import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { PlannedEvent } from '../../../../models/event.model';
+import { PlannedEvent, PlanItemPutRequestOptions } from '../../../../models/event.model';
 import { SubItemContainer } from '../../../../models/subitem.dto';
 import { Validators } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
@@ -21,6 +23,7 @@ import { startWith, pairwise } from 'rxjs/operators';
 export class PlanViewerItemEditComponent extends AppComponentBase implements OnInit, OnChanges, OnDestroy {
   @Input() planItem: PlannedEvent | null;
   @Input() visible: false;
+  @Input() containerSelect: ContainerSelect[];
   @Output() planItemUpdate = new EventEmitter<PlannedEvent>();
   @Output() planItemCreate = new EventEmitter<PlannedEvent>();
   @Output() popupClose = new EventEmitter();
@@ -32,16 +35,25 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
   preparationDuration = 0;
   executionDuration = 0;
 
-  get containers(): SubItemContainer[] {
-    return this.planItem ? this.planItem.containers : [];
+  get containers(): {id: number, title: string}[] {
+    if (appSettings.PlanItem_EnablePlanningOnAllWorkplaces) {
+      return this.containerSelect.map(i => ({ id: i.id, title: i.displayExpression }));
+    }
+
+    return this.planItem
+      ? this.planItem.containers.map(i => ({ id: i.container.id, title: i.container.displayExpression }))
+      : [];
   }
   get selectedContainer(): SubItemContainer | undefined {
-    if (!this.containers || !this.planItem) {
+    if (!this.planItem || !this.planItem.containers) {
       return undefined;
     }
     const containerId = this.planItem ? this.planItem.containerId : -1;
+    const subItemContainer = this.planItem.containers.find(i => i.container.id === containerId);
+    if (subItemContainer) { return subItemContainer; }
 
-    return this.containers.find(i => i.container.id === containerId);
+    return this.planItem.containers[0];
+    // return this.containers.find(i => i.container.id === containerId);
   }
 
   constructor(private fb: FormBuilder) {
@@ -72,7 +84,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
         isExecutionTimeLocked: [''],
         preparationDuration: [''],
         executionDuration: [''],
-        comment: ['']
+        comment: [''],
+        applyNonworkingTime: [true]
       },
       {
         validator: [
@@ -100,7 +113,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
         new Date(planItem ? planItem.timeStartExecution : new Date()),
         new Date(planItem ? planItem.timeEndExecution : new Date())
       )),
-      'comment': planItem ? planItem.description : ''
+      'comment': planItem ? planItem.description : '',
+      'applyNonworkingTime': true
     });
     this.onFormChanges();
   }
@@ -159,6 +173,9 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
     this.planItem.timeStartExecution = value.executionStartTime;
     this.planItem.timeEndExecution = value.executionEndTime;
     this.planItem.description = value.comment;
+    this.planItem.options = {
+      skipNonWorkingTimeMove: !value.applyNonworkingTime
+    } as PlanItemPutRequestOptions;
     if (this.planItem.isPlanned) {
       this.planItemUpdate.emit(this.planItem);
     } else {

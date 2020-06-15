@@ -35,6 +35,8 @@ export interface PlanItemPutRequestOptions {
     fixPlanItem?: boolean;
     ignoreStatusLimitation?: boolean;
     enablePlanningOnAllWorkplaces?: boolean;
+    skipNonWorkingTimeMove?: boolean;
+    snapFurtherItems?: boolean;
 }
 
 export interface PlanItemCreateRequest {
@@ -50,8 +52,8 @@ export interface PlanItemCreateRequest {
     options?: PlanItemCreateRequestOptions;
 }
 
-export interface PlanItemCreateRequestOptions {
-    enablePlanningOnAllWorkplaces?: boolean;
+export interface PlanItemCreateRequestOptions extends PlanItemPutRequestOptions {
+    // enablePlanningOnAllWorkplaces?: boolean;
 }
 
 export interface PlannedEventMove {
@@ -129,6 +131,7 @@ export class PlannedEvent {
     extensionDurationInMinutes: number | null;
     showParentVirtualPlanItem: boolean;
 
+    options: PlanItemPutRequestOptions;
     color: string;
 
     get timeEndExecution() {
@@ -440,6 +443,7 @@ export class PlannedEventSimple {
     allowParallelPlan: boolean;
     idPlanItem: number | null;
     idSubItem: number;
+    options?: PlanItemCreateRequestOptions;
 
     static fromServer(data: PlannedEventSimpleServer) {
         const result = new PlannedEventSimple();

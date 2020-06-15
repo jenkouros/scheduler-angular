@@ -7,13 +7,14 @@ import { LoadContainers } from './../../../../store/actions/containers.action';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { AppState } from './../../../../../store/app.reducers';
-import { PlanGridOperation, planGridOperationPriorities, planGridOperationExecution, getplanGridOperationExecutionColor, getplanGridOperationPriorityColor } from '../../../../models/plan-grid-operation.model';
+import { PlanGridOperation, planGridOperationPriorities, planGridOperationExecution, getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperationChange } from '../../../../models/plan-grid-operation.model';
 import { Component, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
 import * as PlanItemActions from '../../../../store/actions/events.action';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
+import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 
 @Component({
   selector: 'app-plan-item-grid-operations',
@@ -30,11 +31,15 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
   planHours: boolean;
   priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
   executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+  timeUpdateDialog$: Observable<PlanGridOperationChange | undefined>;
+
 
   constructor(private store: Store<AppState>) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
     this.planHoursSwitchSubscription = this.planHoursSwitch$.subscribe(v => this.planHours = v);
+    this.timeUpdateDialog$ = store.pipe(select(PlanContainerGridSelectors.getUpdateTimeDialogData));
+
     // store.pipe(select(getSelectedPlanId))
     // .subscribe(id => {
     //   store.dispatch(new LoadContainers());
@@ -68,6 +73,21 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       ...e.newData
     } as PlanGridOperation;
 
+    if (e.oldData && e.oldData.idPrePlanItem &&
+      (e.newData.hasOwnProperty('timeStart') || e.newData.hasOwnProperty('timeEnd'))) {
+        // show popup
+        this.store.dispatch(new PlanContainerGridActions.ShowUpdatePlanGridOperationDialog({
+          oldTimeEnd: e.oldData.timeEnd,
+          oldTimeStart: e.oldData.timeStart,
+          timeChange: e.newData,
+          operation: updatedOperation,
+          changeOrigin: OperationChangeOriginEnum.ItemGrid
+        }));
+        return;
+  }
+
+
+
     if (updatedOperation.idSubItem && updatedOperation.idContainer && updatedOperation.timeStart) {
 
       const request = new ItemAutoplanRequest();
@@ -79,6 +99,7 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       request.planLinkedItems = true;
       request.planSequencePlanItems = true;
       this.store.dispatch(new AutoplanItem(request));
+      return;
     }
 
     if (updatedOperation.idPrePlanItem) {
@@ -118,13 +139,13 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       return;
     }
 
-    switch (e.columnIndex) {
+    switch (e.column.dataField) {
 
-      case 5: {
+      case 'idUserStatus': {
         e.cellElement.style.background = getplanGridOperationExecutionColor(e.data.idUserStatus);
         break;
       }
-      case 4: {
+      case 'idPriority': {
         e.cellElement.style.background = getplanGridOperationPriorityColor(e.data.idPriority);
         break;
       }

@@ -1,3 +1,4 @@
+import { OperationChangeOriginEnum } from './../../../../models/plan-grid-operation.model';
 import { appSettings } from './../../../../../../environments/environment.ecm360test';
 import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
 
@@ -43,6 +44,22 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
       ...e.oldData,
       ...e.newData
     } as PlannedEventSimple;
+
+    if (e.oldData && e.oldData.idPrePlanItem &&
+      (e.newData.hasOwnProperty('timeStart') || e.newData.hasOwnProperty('timeEnd'))) {
+        // show popup
+        this.store.dispatch(new PlanContainerGridActions.ShowUpdatePlanGridOperationDialog({
+          oldTimeEnd: e.oldData.timeEnd,
+          oldTimeStart: e.oldData.timeStartPreparation,
+          timeChange: e.newData,
+          operation: updatedOperation,
+          changeOrigin: OperationChangeOriginEnum.InfoDialog,
+          planItemId: this.selectedIdPlanItem
+        }));
+        return;
+  }
+
+
 
     if (!updatedOperation.idPlanItem) {
       if (!updatedOperation.idPrePlanItem && updatedOperation.containerId && updatedOperation.timeStartPreparation) {
