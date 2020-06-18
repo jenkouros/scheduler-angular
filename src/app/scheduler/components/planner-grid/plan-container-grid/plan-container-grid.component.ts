@@ -27,6 +27,10 @@ export class PlanContainerGridComponent extends AppComponentBase {
 
   constructor(private store: Store<AppState>) {
     super();
+    this.expandAllSwitchEvent = this.expandAllSwitchEvent.bind(this);
+    this.plannHoursSwitchEvent = this.plannHoursSwitchEvent.bind(this);
+    this.setLimitDate = this.setLimitDate.bind(this);
+
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
       store.dispatch(new LoadContainers());
@@ -52,10 +56,10 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridLimitDate(date));
   }
 
-  plannedHoursSwitch(e) {
+  plannHoursSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
   }
-  expandAllSwitch(e) {
+  expandAllSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetExpandAllSwitch(e.value));
   }
 

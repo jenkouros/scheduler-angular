@@ -1,35 +1,29 @@
-
-<div style="width:400px">
-  <div class="dx-field">
-      <div class="dx-field-label">{{translate('Plan_hours')}}</div>
-      <div class="dx-field-value">
-          <dx-check-box (onValueChanged)="plannedHoursSwitch($event)" [value]="planHoursSwitch$ | async"></dx-check-box>
-      </div>
-  </div>
-
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Date_From')}}</div>
-    <div class="dx-field-value" style="width:auto;">
-      <app-datebox (change)="setLimitDate($event)" [date]="limitDate$ | async"></app-datebox>
-    </div>
-  </div>
-
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Expand')}}</div>
-    <div class="dx-field-value">
-        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
-    </div>
-  </div>
-
-  <!-- <div class="dx-field">
-    <div class="dx-field-label">{{translate('Export_To_Excel')}}</div>
-    <div class="dx-field-value">
-        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
-    </div>
-  </div> -->
-
-</div>
-
+<dx-toolbar>
+  <dxi-item location="auto" 
+    widget="dxButton" 
+    locateInMenu="never">
+    <div *dxTemplate>
+      <div>{{translate('Date_From')}}</div>
+    </div>        
+  </dxi-item>
+  <dxi-item location="auto" 
+    widget="dxDateBox"
+    locateInMenu="auto"  
+    [options]="{ value:limitDate$ | async, onValueChanged: setLimitDate }">
+  </dxi-item>
+  
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
+  </dxi-item>
+  
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
+  </dxi-item>
+</dx-toolbar>
 
 <div style="margin-bottom: 10px;"></div>
 
