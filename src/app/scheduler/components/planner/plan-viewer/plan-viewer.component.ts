@@ -256,6 +256,9 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
       .add(preparationDurationInMinutes, 'm')
       .toDate();
 
+    event.options = {
+      snapFurtherItems: true
+    };
     this.planItemUpdate.emit(event);
   }
 

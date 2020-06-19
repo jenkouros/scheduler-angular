@@ -169,7 +169,11 @@
         "Scheduling_Workorders": "Razpored nalogov",
         "Scheduling_Workplaces": "Razpored delovnih mest",
         "Expand": "Razširi vse",
-        "Apply_Non_working_time": "Upoštevaj nedelovni čas"
+        "Apply_Non_working_time": "Upoštevaj nedelovni čas",
+        "SnapForwardOperations": "Pripni nadaljne operacije",
+        "ChangeOperationDuration": "Spremeni trajanje operacije",
+        "MoveOperation": "Prestavi operacijo",
+        "TimeChange": "Sprememba časa"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -341,7 +345,11 @@
         "Scheduling_Workorders": "Razpored naloga",
         "Scheduling_Workplaces": "Razpored radnih mesta",
         "Expand": "Proširi sve",
-        "Apply_Non_working_time": "Uzeti u obzir neradno vreme"
+        "Apply_Non_working_time": "Uzeti u obzir neradno vreme",
+        "SnapForwardOperations": "Priložite dalje operacije",
+        "ChangeOperationDuration": "Promenite trajanje operacije",
+        "MoveOperation": "Pomeri operacijo",
+        "TimeChange": "Promena vremena"
     },
     "en": {
       "Add": "Add",
@@ -513,7 +521,12 @@
       "Scheduling_Workorders": "Scheduling orders",
       "Scheduling_Workplaces": "Scheduling workplaces",
       "Expand": "Expand all",
-      "Apply_Non_working_time": "Apply nonworking time"
+      "Apply_Non_working_time": "Apply nonworking time",
+      "SnapForwardOperations": "Snap forward operations",
+      "ChangeOperationDuration": "Change operation's duration",
+      "MoveOperation": "Move operation",
+      "TimeChange": "Time change"
+
   }
 
 }

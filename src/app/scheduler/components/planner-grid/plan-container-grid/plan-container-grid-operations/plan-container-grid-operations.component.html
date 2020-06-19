@@ -8,15 +8,10 @@
   (onRowUpdating)="updateOperation($event)"
   [allowColumnReordering]="true"
   (onCellClick)="onCellClick($event)"
-  (onRowExpanded)="rowExpanded($event)"
-  (onRowCollapsed)="rowCollapsed($event)"
-  (onContentReady)="onContentReady($event)"
   (onRowValidating)="validatePlanGridRow($event)">
 
-  <dxo-export
-    [enabled]="true"
-    fileName="export">
-  </dxo-export>
+  <dxo-export [enabled]="true" fileName="export"></dxo-export>
+  <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-editing
     mode="cell"
@@ -61,6 +56,7 @@
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="operation.itemExecutionStatus.operationName" caption="STATUS"></dxi-column>
   <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
   <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>

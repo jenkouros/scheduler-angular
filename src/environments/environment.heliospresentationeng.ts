@@ -1,5 +1,4 @@
-const serverUrl = 'http://10.9.22.106:9111';
-// const serverUrl = 'http://localhost:55501';
+const serverUrl = 'http://10.9.22.106:15001';
 
 export const environment = {
     locale: 'en',

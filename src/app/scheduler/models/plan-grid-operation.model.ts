@@ -1,6 +1,12 @@
 import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
 
+export interface ItemExecutionStatus {
+  operationName: string;
+  status: number;
+}
+
 export interface PlanGridOperation {
+  itemExecutionStatus: ItemExecutionStatus;
   idPrePlanItem: number;
   code: string;
   name: string;

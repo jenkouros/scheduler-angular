@@ -7,12 +7,13 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanItemGridActions from '../../../../store/actions/plan-item-grid.action';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-update-time-dialog',
   templateUrl: './update-time-dialog.component.html'
 })
-export class UpdateTimeDialogComponent {
+export class UpdateTimeDialogComponent extends AppComponentBase {
   @Input() visible: boolean;
   changeData: PlanGridOperationChange;
   @Input('changeData') set model(data: PlanGridOperationChange) {
@@ -21,29 +22,39 @@ export class UpdateTimeDialogComponent {
     }
 
     this.changeData  = data;
-    let timeStart = 0;
-    let timeEnd = 0;
+    const now = new Date();
+    let timeStart: Date = now;
+    let timeEnd: Date = now;
 
 
     switch (this.changeData.changeOrigin) {
       case OperationChangeOriginEnum.ContainerGrid:
       case OperationChangeOriginEnum.ItemGrid: {
         const operation = data.operation as PlanGridOperation;
-        timeEnd = new Date(operation.timeEnd).getTime();
-        timeStart = new Date(operation.timeStart).getTime();
+        timeEnd = new Date(operation.timeEnd);
+        timeStart = new Date(operation.timeStart);
         break;
       }
       case OperationChangeOriginEnum.InfoDialog: {
         const operation = data.operation as PlannedEventSimple;
         if (operation.timeStartPreparation && operation.timeEnd) {
-          timeEnd = new Date(operation.timeEnd).getTime();
-          timeStart = new Date(operation.timeStartPreparation).getTime();
+          timeEnd = new Date(operation.timeEnd);
+          timeStart = new Date(operation.timeStartPreparation);
         }
         break;
       }
     }
 
-    if (timeEnd < timeStart) {
+    this.planItemChangeAllOptions[0].start = timeStart;
+    this.planItemChangeAllOptions[0].end = timeEnd;
+
+    const moveDates = this.getMoveDates();
+    if (moveDates.start && moveDates.end) {
+      this.planItemChangeAllOptions[1].start = moveDates.start;
+      this.planItemChangeAllOptions[1].end = moveDates.end;
+    }
+
+    if (timeEnd.getTime() < timeStart.getTime()) {
       this.planItemChangeOptions = this.planItemChangeAllOptions.filter(i => i.id !== 1);
       this.form.patchValue({
         planItemChange: 2
@@ -55,17 +66,22 @@ export class UpdateTimeDialogComponent {
   form: FormGroup;
 
   planItemChangeAllOptions = [
-    { id: 1, text: 'Spremeni trajanje operacije' },
-    { id: 2, text: 'Prestavi - ohrani trajanje operacije' },
+    {
+      id: 1,
+      text: this.translate('ChangeOperationDuration'),
+      start: undefined as Date | undefined,
+      end: undefined as Date | undefined },
+    {
+      id: 2,
+      text: this.translate('MoveOperation'),
+      start: undefined as Date | undefined,
+      end: undefined as Date | undefined
+    },
   ];
-  planItemChangeOptions: {id: number, text: string}[] = [];
-
-  itemChangeOptions = [
-    { id: 1, text: 'Pripni nadaljne operacije' },
-    { id: 2, text: 'Ohrani nadaljne operacije' }
-  ];
+  planItemChangeOptions: {id: number, text: string, start: Date | undefined, end: Date | undefined}[] = [];
 
   constructor(private store: Store<AppState>) {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
 
@@ -75,25 +91,27 @@ export class UpdateTimeDialogComponent {
     });
   }
 
-  onSubmit() {
-    this.changeData.operation.options = {
-      snapFurtherItems: this.form.value.itemChange
+  getMoveDates() {
+    const result = {
+      start: undefined as Date | undefined,
+      end: undefined as Date | undefined
     };
 
-    if (this.form.value.planItemChange === 2) {
-      const diff = new Date(this.changeData.oldTimeEnd).getTime() - new Date(this.changeData.oldTimeStart).getTime();
+    const diff = new Date(this.changeData.oldTimeEnd).getTime() - new Date(this.changeData.oldTimeStart).getTime();
       if (this.changeData.timeChange.timeEnd) {
         switch (this.changeData.changeOrigin) {
           case OperationChangeOriginEnum.ContainerGrid:
           case OperationChangeOriginEnum.ItemGrid: {
             const operation = this.changeData.operation as PlanGridOperation;
-            operation.timeStart = new Date(new Date(operation.timeEnd).getTime() - diff);
+            result.end = new Date(operation.timeEnd);
+            result.start = new Date(new Date(operation.timeEnd).getTime() - diff);
             break;
           }
           case OperationChangeOriginEnum.InfoDialog: {
             const operation = this.changeData.operation as PlannedEventSimple;
             if (operation.timeEnd) {
-              operation.timeStartPreparation = new Date(new Date(operation.timeEnd).getTime() - diff);
+              result.end = new Date(operation.timeEnd);
+              result.start = new Date(new Date(operation.timeEnd).getTime() - diff);
             }
             break;
           }
@@ -103,14 +121,43 @@ export class UpdateTimeDialogComponent {
           case OperationChangeOriginEnum.ContainerGrid:
           case OperationChangeOriginEnum.ItemGrid: {
             const operation = this.changeData.operation as PlanGridOperation;
-            operation.timeEnd = new Date(new Date(operation.timeStart).getTime() + diff);
+            result.start = new Date(operation.timeStart);
+            result.end = new Date(new Date(operation.timeStart).getTime() + diff);
             break;
           }
           case OperationChangeOriginEnum.InfoDialog: {
             const operation = this.changeData.operation as PlannedEventSimple;
             if (operation.timeStartPreparation) {
-              operation.timeEnd = new Date(new Date(operation.timeStartPreparation).getTime() + diff);
+              result.start = new Date(operation.timeStartPreparation);
+              result.end = new Date(new Date(operation.timeStartPreparation).getTime() + diff);
             }
+            break;
+          }
+        }
+      }
+      return result;
+  }
+
+  onSubmit() {
+    this.changeData.operation.options = {
+      snapFurtherItems: this.form.value.itemChange
+    };
+
+    if (this.form.value.planItemChange === 2) {
+      const moveDates = this.getMoveDates();
+      if (moveDates.end && moveDates.start) {
+        switch (this.changeData.changeOrigin) {
+          case OperationChangeOriginEnum.ContainerGrid:
+          case OperationChangeOriginEnum.ItemGrid: {
+            const operation = this.changeData.operation as PlanGridOperation;
+            operation.timeStart = moveDates.start;
+            operation.timeEnd = moveDates.end;
+            break;
+          }
+          case OperationChangeOriginEnum.InfoDialog: {
+            const operation = this.changeData.operation as PlannedEventSimple;
+            operation.timeStartPreparation = moveDates.start;
+            operation.timeEnd = moveDates.end;
             break;
           }
         }
@@ -136,15 +183,5 @@ export class UpdateTimeDialogComponent {
   onCancel() {
     this.store.dispatch(new PlanContainerGridActions.HideUpdatePlanGridOperationDialog());
   }
-
-  // initForm() {
-  //   this.form = new FormGroup({
-  //   })
-  // }
-
-  // updateForm() {
-  //   if (!this.change) { return; }
-
-  // }
 
 }

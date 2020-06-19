@@ -5,7 +5,7 @@
   [cancelCallback]="onFormHide"
   [visible]="visible"
   [width]="'550px'"
-  [height]="'720px'">
+  [height]="'750px'">
   <div *ngIf="planItem">
     <form [formGroup]="planItemEditForm">
       <app-field label="{{ translate('Operation') }}" [isStatic]="true">
@@ -70,6 +70,9 @@
 
         <app-field label="{{ translate('Apply_Non_working_time') }}" [isStatic]="true">
           <dx-check-box formControlName="applyNonworkingTime"></dx-check-box>
+        </app-field>
+        <app-field label="{{ translate('SnapForwardOperations') }}" [isStatic]="true">
+          <dx-check-box formControlName="snapForwardPlanItems"></dx-check-box>
         </app-field>
 
       <!-- {{ planItemEditForm.invalid }} <br>

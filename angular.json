@@ -124,6 +124,24 @@
                 }
               ]
             },
+            "heliospresentationeng": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.heliospresentationeng.ts"
+                }
+              ]
+            },
+
             "heliosproductioneng": {
               "optimization": true,
               "outputHashing": "all",
@@ -221,6 +239,9 @@
             },
             "heliosproductioneng": {
               "browserTarget": "sinapro-scheduler:build:heliosproductioneng"
+            },
+            "heliospresentationeng": {
+              "browserTarget": "sinapro-scheduler:build:heliospresentationeng"
             },
             "heliosproductionsrb": {
               "browserTarget": "sinapro-scheduler:build:heliosproductionsrb"

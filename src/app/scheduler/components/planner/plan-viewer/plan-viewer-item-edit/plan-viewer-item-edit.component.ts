@@ -85,7 +85,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
         preparationDuration: [''],
         executionDuration: [''],
         comment: [''],
-        applyNonworkingTime: [true]
+        applyNonworkingTime: [false],
+        snapForwardPlanItems: [true]
       },
       {
         validator: [
@@ -114,7 +115,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
         new Date(planItem ? planItem.timeEndExecution : new Date())
       )),
       'comment': planItem ? planItem.description : '',
-      'applyNonworkingTime': true
+      'applyNonworkingTime': false,
+      'snapForwardPlanItems': true
     });
     this.onFormChanges();
   }
@@ -174,7 +176,8 @@ export class PlanViewerItemEditComponent extends AppComponentBase implements OnI
     this.planItem.timeEndExecution = value.executionEndTime;
     this.planItem.description = value.comment;
     this.planItem.options = {
-      skipNonWorkingTimeMove: !value.applyNonworkingTime
+      skipNonWorkingTimeMove: !value.applyNonworkingTime,
+      snapFurtherItems: value.snapForwardPlanItems
     } as PlanItemPutRequestOptions;
     if (this.planItem.isPlanned) {
       this.planItemUpdate.emit(this.planItem);

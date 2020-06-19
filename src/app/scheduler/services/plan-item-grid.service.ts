@@ -31,6 +31,9 @@ export class PlanItemGridService {
   }
 
   updatePlanItem(operation: PlanGridOperation) {
+    const options = operation.options ? operation.options : {};
+    options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
+
     const planningItem = <PlanItemCreateRequest>{
       idPrePlanItem: operation.idPrePlanItem,
       idContainer: operation.idContainer,
@@ -42,9 +45,7 @@ export class PlanItemGridService {
       idPriority: operation.idPriority,
       idUserStatus: operation.idUserStatus,
       userDate: operation.userDate ? moment(new Date(operation.userDate)).format() : undefined,
-      options: {
-        enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
-      }
+      options: options
     };
     return this.http.put<PlanItemGrid[]>(environment.apiUrl + '/planitemgrid', planningItem);
 

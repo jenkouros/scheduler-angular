@@ -25,23 +25,22 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-container-grid-operations',
-  templateUrl: './plan-container-grid-operations.component.html'
+  templateUrl: './plan-container-grid-operations.component.html',
 })
 export class PlanContainerGridOperationsComponent extends AppComponentBase {
+
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
   planHoursSubscription: Subscription;
   expandAllSwitch$: Observable<boolean>;
   timeUpdateDialog$: Observable<PlanGridOperationChange | undefined>;
+
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
-    this.refresh = true;
   }
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
-  selectedKeys: any[] = [];
-  refresh = false;
 
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
@@ -87,8 +86,6 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
 
 
   updateOperation(e) {
-    // this.refresh = true;
-
     if (e.newData.operation && e.newData.operation.hasOwnProperty('isLocked')) {
       this.store.dispatch(new PlanItemActions.ToggleEventLock({
         id: e.oldData.operation.idPlanItem,
@@ -162,34 +159,16 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     e.errorText = validation.error;
   }
 
-  rowExpanded(e) {
-    this.selectedKeys.push(e.key[0]);
-    // e.component.expandAll();
-    // console.log(e.component.getRowIndexByKey(e.key));
-  }
-
-  rowCollapsed(e) {
-    const idx = this.selectedKeys.indexOf(e.key[0]);
-    this.selectedKeys.splice(idx, 1);
-    console.log(this.selectedKeys);
-  }
-
-  onContentReady(e) {
-    console.log('onContentReady');
-    if (this.refresh) {
-      this.selectedKeys.forEach(key => {
-        e.component.expandRow([key]);
-        this.refresh = false;
-      });
-    }
-  }
-
   applyCellStyles(e) {
     if (e.rowType !== 'data') {
       return;
     }
     switch (e.column.dataField) {
-
+      case 'operation.itemExecutionStatus.operationName': {
+        if (!e.data.operation.itemExecutionStatus) { return; }
+        e.cellElement.style.background = getplanGridOperationExecutionColor(e.data.operation.itemExecutionStatus.status);
+        break;
+      }
       case 'operation.idUserStatus': {
         e.cellElement.style.background = getplanGridOperationExecutionColor(e.data.operation.idUserStatus);
         break;
@@ -232,13 +211,4 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
       rows.splice(truncateList[i], 1);
     }
   }
-}
-
-function findRowIndexWithAttrVal(array, attr: string, value: string): number {
-  for (let i = 0; i < array.length; i += 1) {
-      if (array[i][attr] === value) {
-          return i;
-      }
-  }
-  return -1;
 }

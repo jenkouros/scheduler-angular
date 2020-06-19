@@ -3,7 +3,7 @@
   width='600px'
   [hasConfirmBtn]="true"
   [hasCancelBtn]="true"
-  title="Sprememba časa"
+  [title]="translate('TimeChange')"
   [visible]="visible"
   [confirmCallback]="onSubmit"
   [cancelCallback]="onCancel"
@@ -12,18 +12,22 @@
 <div [formGroup]="form">
   <div class="dx-fieldset">
     <div class="dx-field">
-        <div class="dx-field-label">Operacija</div>
+        <div class="dx-field-label">{{ translate('Operation') }}</div>
         <div class="dx-field-value">
             <dx-radio-group
-              displayExpr="text"
+              itemTemplate="radio"
               valueExpr="id"
               [items]="planItemChangeOptions"
               formControlName="planItemChange">
+                <div *dxTemplate="let data of 'radio'">
+                  {{ data.text }} <br>
+                  <strong *ngIf="data.start">{{ data.start | date }} - {{ data.end | date }}</strong>
+                </div>
             </dx-radio-group>
         </div>
     </div>
     <div class="dx-field">
-      <div class="dx-field-label">Pripni nadaljne operacije</div>
+      <div class="dx-field-label">{{ translate('SnapForwardOperations') }}</div>
       <div class="dx-field-value">
         <dx-check-box formControlName="itemChange"></dx-check-box>
           <!-- <dx-radio-group
