@@ -5,8 +5,13 @@ export interface ItemExecutionStatus {
   status: number;
 }
 
+export interface LinkedItemExecutionStatus {
+  status: number;
+}
+
 export interface PlanGridOperation {
   itemExecutionStatus: ItemExecutionStatus;
+  linkedItemExecutionStatus: LinkedItemExecutionStatus;
   idPrePlanItem: number;
   code: string;
   name: string;

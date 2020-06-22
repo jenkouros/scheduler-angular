@@ -1,3 +1,4 @@
+import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
 import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
 import { PlanItemCreateRequest } from './../../../../models/event.model';
 import { appSettings } from './../../../../../../environments/environment.ecm360test';
@@ -49,6 +50,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
     this.sortContainers = this.sortContainers.bind(this);
     this.timeUpdateDialog$ = store.pipe(select(PlanContainerGridSelectors.getUpdateTimeDialogData));
+    this.translate = this.translate.bind(this);
 
   }
 
@@ -177,6 +179,12 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
         e.cellElement.style.background = getplanGridOperationPriorityColor(e.data.operation.idPriority);
         break;
       }
+      case 'operation.linkedItemExecutionStatus.status': {
+        if (LinkedItemStatusEnum.Finished === e.data.operation.linkedItemExecutionStatus.status) {
+          e.cellElement.style.background = '#d6d6d6';
+        }
+        break;
+      }
     }
   }
 
@@ -210,5 +218,11 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
     for (let i = truncateList.length - 1; i >= 0; --i) {
       rows.splice(truncateList[i], 1);
     }
+  }
+
+  getLinkedItemsStatus = (row) => {
+    return row.operation.linkedItemExecutionStatus && row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
+      ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
+      : '';
   }
 }

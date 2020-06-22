@@ -46,7 +46,7 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
     } as PlannedEventSimple;
 
     if (e.oldData && e.oldData.idPrePlanItem &&
-      (e.newData.hasOwnProperty('timeStart') || e.newData.hasOwnProperty('timeEnd'))) {
+      (e.newData.hasOwnProperty('timeStartPreparation') || e.newData.hasOwnProperty('timeEnd'))) {
         // show popup
         this.store.dispatch(new PlanContainerGridActions.ShowUpdatePlanGridOperationDialog({
           oldTimeEnd: e.oldData.timeEnd,

@@ -160,9 +160,10 @@
         "Workplaces": "Delovna mesta",
         "Yes": "Da",
 
+
         "Priority": "Prioriteta",
         "Execution": "Izvajanje",
-        "Locked": "Zaklenjena",
+        "Locked": "Zaklen.",
         "Plan_hours": "Planiraj ure",
         "Planning_status": "Status planiranja",
         "Parent_Orders": "Pakirni nalogi",
@@ -173,7 +174,12 @@
         "SnapForwardOperations": "Pripni nadaljne operacije",
         "ChangeOperationDuration": "Spremeni trajanje operacije",
         "MoveOperation": "Prestavi operacijo",
-        "TimeChange": "Sprememba časa"
+        "TimeChange": "Sprememba časa",
+        "LinkedItemsStatus_0": "",
+        "LinkedItemsStatus_1": "Ni končan",
+        "LinkedItemsStatus_2": "Končano",
+        "Filling": "Polnenje",
+        "OrderStatus": "Status naloga"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -349,7 +355,12 @@
         "SnapForwardOperations": "Priložite dalje operacije",
         "ChangeOperationDuration": "Promenite trajanje operacije",
         "MoveOperation": "Pomeri operacijo",
-        "TimeChange": "Promena vremena"
+        "TimeChange": "Promena vremena",
+        "LinkedItemsStatus_0": "N/A",
+        "LinkedItemsStatus_1": "Ni končan",
+        "LinkedItemsStatus_2": "Završeno",
+        "Filling": "Punjenje",
+        "OrderStatus": "Status naloga"
     },
     "en": {
       "Add": "Add",
@@ -525,7 +536,12 @@
       "SnapForwardOperations": "Snap forward operations",
       "ChangeOperationDuration": "Change operation's duration",
       "MoveOperation": "Move operation",
-      "TimeChange": "Time change"
+      "TimeChange": "Time change",
+      "LinkedItemsStatus_0": "",
+      "LinkedItemsStatus_1": "Not finished",
+      "LinkedItemsStatus_2": "Finished",
+      "Filling": "Filling",
+      "OrderStatus": "Order status"
 
   }
 

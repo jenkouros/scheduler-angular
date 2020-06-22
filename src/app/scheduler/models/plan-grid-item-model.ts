@@ -11,3 +11,9 @@ export interface PlanGridItem {
   itemExecutionStatus: number;
   priority: number;
 }
+
+export enum LinkedItemStatusEnum {
+  NoData = 0,
+  NotFinished = 1,
+  Finished = 2
+}

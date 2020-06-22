@@ -56,26 +56,34 @@
           valueExpr="ID">
         </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="operation.itemExecutionStatus.operationName" caption="STATUS"></dxi-column>
   <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
   <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>
+  <dxi-column dataField="operation.itemExecutionStatus.operationName" [caption]="translate('OrderStatus')"></dxi-column>
+  <dxi-column dataField="operation.linkedItemExecutionStatus.status" [calculateCellValue]="getLinkedItemsStatus" [caption]="translate('Filling')"></dxi-column>
 
   <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
 
+  <div *dxTemplate="let cell of 'linkedItemsStatusCellTemplate'">
+    {{ cell.data.operation.linkedItemExecutionStatus.status }}
+    {{ cell.data.operation.itemExecutionStatus
+       ? translate("LinkedItemsStatus_" + cell.data.operation.linkedItemExecutionStatus.status)
+       : ''
+    }}
+  </div>
 
-<div *dxTemplate="let cell of 'showDetailCellTemplate'">
-  <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">{{cell.data.operation.name}}</a>
-</div>
-    <dxo-pager
-        [showPageSizeSelector]="true"
-        [allowedPageSizes]="[5, 10, 20,30,50,100]"
-        [showInfo]="true">
-    </dxo-pager>
-    <dxo-search-panel [visible]="true"></dxo-search-panel>
-    <dxo-paging [pageSize]="20"></dxo-paging>
-    <dxo-group-panel [visible]="true"></dxo-group-panel>
-    <dxo-grouping #expand [autoExpandAll]="expandAllSwitch$ | async"></dxo-grouping>
+  <div *dxTemplate="let cell of 'showDetailCellTemplate'">
+    <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">{{cell.data.operation.name}}</a>
+  </div>
+  <dxo-pager
+      [showPageSizeSelector]="true"
+      [allowedPageSizes]="[5, 10, 20,30,50,100]"
+      [showInfo]="true">
+  </dxo-pager>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+  <dxo-paging [pageSize]="20"></dxo-paging>
+  <dxo-group-panel [visible]="true"></dxo-group-panel>
+  <dxo-grouping #expand [autoExpandAll]="expandAllSwitch$ | async"></dxo-grouping>
 
 </dx-data-grid>
 
