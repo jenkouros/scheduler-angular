@@ -1,41 +1,19 @@
-<!-- <div style="width: 400px;">
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Plan_hours')}}</div>
-    <div class="dx-field-value">
-      <dx-check-box
-        (onValueChanged)="plannedHoursSwitchEvent($event)"
-        [value]="planHoursSwitch$ | async"
-      ></dx-check-box>
-    </div>
-  </div>
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Date_From')}}</div>
-    <div class="dx-field-value" style="width: auto;">
-      <app-datebox
-        (change)="setLimitDate($event)"
-        [date]="limitDate$ | async"
-      ></app-datebox>
-    </div>
-  </div>
-</div> -->
-
-<dx-toolbar>
-  <dxi-item location="auto" 
-    widget="dxButton" 
-    locateInMenu="never">
-    <div *dxTemplate>
-      <div>{{translate('Date_From')}}</div>
-    </div>        
-  </dxi-item>
-  <dxi-item location="auto" 
-    widget="dxDateBox"
-    locateInMenu="auto"  
-    [options]="{ value: limitDate$ | async, onValueChanged: setLimitDate }">
+<dx-toolbar class="toolbar-custom">
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never">
+    <div>{{translate('Date_From')}}</div>
   </dxi-item>
 
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never" cssClass="toolbar-item-custom">
+    <app-datebox
+      (change)="setLimitDate($event)"
+      [date]="limitDate$ | async">
+    </app-datebox>
+  </dxi-item>
+  
   <dxi-item location="auto" 
     widget="dxCheckBox" 
-    locateInMenu="auto" 
+    locateInMenu="auto"
+    cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
   </dxi-item>
 </dx-toolbar>

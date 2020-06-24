@@ -1,0 +1,9 @@
+::ng-deep .toolbar-item-custom {
+    padding-right:30px !important;
+}
+
+.toolbar-custom {
+    border-bottom: 1px solid lightgray; 
+    padding-bottom: 3px;
+    margin-bottom: 10px;
+}

@@ -16,7 +16,8 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-item-grid',
-  templateUrl: './plan-item-grid.component.html'
+  templateUrl: './plan-item-grid.component.html',
+  styleUrls: ['../shared/planner-grid.component.css']
 })
 export class PlanItemGridComponent extends AppComponentBase {
   planItemGrid$: Observable<PlanItemGrid[]>;

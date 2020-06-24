@@ -13,7 +13,8 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-container-grid',
-  templateUrl: './plan-container-grid.component.html'
+  templateUrl: './plan-container-grid.component.html',
+  styleUrls: ['../shared/planner-grid.component.css']
 })
 export class PlanContainerGridComponent extends AppComponentBase {
   planContainerGrid$: Observable<PlanContainerGrid[]>;

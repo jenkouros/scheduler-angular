@@ -1,31 +1,29 @@
-<dx-toolbar>
-  <dxi-item location="auto" 
-    widget="dxButton" 
-    locateInMenu="never">
-    <div *dxTemplate>
-      <div>{{translate('Date_From')}}</div>
-    </div>        
+<dx-toolbar class="toolbar-custom">
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never">
+    <div>{{translate('Date_From')}}</div>
   </dxi-item>
-  <dxi-item location="auto" 
-    widget="dxDateBox"
-    locateInMenu="auto"  
-    [options]="{ value:limitDate$ | async, onValueChanged: setLimitDate }">
+
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never" cssClass="toolbar-item-custom">
+    <app-datebox
+      (change)="setLimitDate($event)"
+      [date]="limitDate$ | async">
+    </app-datebox>
   </dxi-item>
-  
+
   <dxi-item location="auto" 
     widget="dxCheckBox" 
     locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
   </dxi-item>
-  
+
   <dxi-item location="auto" 
     widget="dxCheckBox" 
     locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
     [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
   </dxi-item>
 </dx-toolbar>
-
-<div style="margin-bottom: 10px;"></div>
 
 <app-plan-container-grid-operations
   id="operationGridContainer"
