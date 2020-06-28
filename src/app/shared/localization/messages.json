@@ -168,7 +168,9 @@
         "Parent_Orders": "Pakirni nalogi",
         "Scheduling_Workorders": "Razpored nalogov",
         "Scheduling_Workplaces": "Razpored delovnih mest",
-        "Expand": "Razširi vse"
+        "Expand": "Razširi vse",
+        "Workorders_In_Progress": "Nalogi v izvajanju",
+        "Current_Workorders": "Aktualni nalogi"
     },
     "sr-Latn": {
         "Add":	"Dodaj",

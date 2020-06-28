@@ -23,6 +23,20 @@
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
   </dxi-item>
+
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Workorders_In_Progress'), value:inProcessWoSwitch$ | async, onValueChanged: inProcessWoSwitchEvent }">
+  </dxi-item>
+
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Current_Workorders'), value:currentWoSwitch$ | async, onValueChanged: currentWoSwitchEvent }">
+  </dxi-item>
 </dx-toolbar>
 
 <app-plan-container-grid-operations

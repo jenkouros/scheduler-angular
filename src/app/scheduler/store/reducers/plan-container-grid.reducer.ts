@@ -10,6 +10,8 @@ export interface PlanContainerGridState {
   containerGridLimitDate: Date;
   planHoursSwitch: boolean;
   expandAllSwitch: boolean;
+  inProgressWoSwitch: boolean;
+  currentWoSwitch: boolean;
 }
 
 const loadLimitDate = new Date();
@@ -23,7 +25,9 @@ export const initialState: PlanContainerGridState = {
   // openedPlanItemGrids: [],
   containerGridLimitDate: loadLimitDate,
   planHoursSwitch: false,
-  expandAllSwitch: false
+  expandAllSwitch: false,
+  inProgressWoSwitch: false,
+  currentWoSwitch: false
 };
 
 export function planItemGridReducer (
@@ -130,6 +134,21 @@ export function planItemGridReducer (
         expandAllSwitch: action.payload
       };
     }
+
+    case fromAction.PLAN_CONTAINER_GRID_INPROGRESSWO_SWITCH: {
+      return {
+        ...state,
+        inProgressWoSwitch: action.payload
+      };
+    }
+
+    case fromAction.PLAN_CONTAINER_GRID_CURRENT_SWITCH: {
+      return {
+        ...state,
+        currentWoSwitch: action.payload
+      };
+    }
+
   }
 
   return state;

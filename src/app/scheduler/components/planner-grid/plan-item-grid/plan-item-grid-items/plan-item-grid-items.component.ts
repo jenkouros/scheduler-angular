@@ -48,7 +48,6 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
 
   constructor() {
     super();
-    console.log('ctor');
   }
 
   rowCollapsed(e) {

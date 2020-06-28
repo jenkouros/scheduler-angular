@@ -35,3 +35,13 @@ export const expandAllSwitch = createSelector(
   getPlanContainerGridState,
   state => state.expandAllSwitch
 );
+
+export const inProcessWoSwitch = createSelector(
+  getPlanContainerGridState,
+  state => state.inProgressWoSwitch
+);
+
+export const currentWoSwitch = createSelector(
+  getPlanContainerGridState,
+  state => state.currentWoSwitch
+);

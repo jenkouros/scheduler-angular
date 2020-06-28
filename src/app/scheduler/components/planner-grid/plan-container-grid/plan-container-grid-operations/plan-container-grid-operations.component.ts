@@ -14,7 +14,7 @@ import {
   planGridOperationExecution,
   getplanGridOperationExecutionColor,
   getplanGridOperationPriorityColor } from './../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
@@ -25,12 +25,21 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
   selector: 'app-plan-container-grid-operations',
   templateUrl: './plan-container-grid-operations.component.html'
 })
-export class PlanContainerGridOperationsComponent extends AppComponentBase {
+export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnDestroy {
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
   planHoursSubscription: Subscription;
+  subscriptions: Subscription[] = [];
   expandAllSwitch$: Observable<boolean>;
+  inProcessWoSwitch$: Observable<boolean>;
+  currentWoSwitch$: Observable<boolean>;
+
+  timeStartFilterOperation: any = 'contains';
+  timeStartFilterValue: any = new Date();
+  timeEndFilterOperation: any;
+  timeEndFilterValue: any;
+
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
     this.refresh = true;
@@ -43,13 +52,56 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase {
   constructor(private store: Store<AppState>, private helpersService: HelpersService) {
     super();
     this.planHoursSwitch$ = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
-    this.planHoursSubscription = this.planHoursSwitch$.subscribe(s => this.planHours = s);
+    this.subscriptions.push(this.planHoursSwitch$.subscribe(s => this.planHours = s));
     this.expandAllSwitch$ = store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
+    this.inProcessWoSwitch$ = store.pipe(select(PlanContainerGridSelectors.inProcessWoSwitch));
+    this.subscriptions.push(this.inProcessWoSwitch$.subscribe(s => {
+      if (s) {
+        this.setTimeFilter('<=', '>=');
+      } else {
+        this.setTimeFilter('', '', true);
+      }
+    }));
+    this.currentWoSwitch$ = store.pipe(select(PlanContainerGridSelectors.currentWoSwitch));
+    this.subscriptions.push(this.currentWoSwitch$.subscribe(s => {
+      if (s) {
+        this.setTimeFilter('>=', '<=');
+      } else {
+        this.setTimeFilter('', '', true);
+      }
+    }));
     this.sortContainers = this.sortContainers.bind(this);
   }
 
   priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
   executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+
+  // filterValue: Array<any> = ['item.itemCode', '<>', '44088904'];
+  // applyFilter (filterExpression) {
+  //     this.filterValue = filterExpression;
+  // }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+
+  setTimeFilter(timeStartOperator, timeEndOperator, reset = false) {
+    if (reset) {
+      this.timeStartFilterOperation = null;
+      this.timeStartFilterValue = null;
+      this.timeEndFilterOperation = null;
+      this.timeEndFilterValue = null;
+      return;
+    }
+
+    const now = new Date();
+    this.timeStartFilterOperation = timeStartOperator;
+        this.timeStartFilterValue = now;
+        this.timeEndFilterOperation = timeEndOperator;
+        this.timeEndFilterValue = now;
+  }
+
 
   onCellClick(e) {
     if (e.rowType === 'data' && e.column.dataField === 'operation.name') {
