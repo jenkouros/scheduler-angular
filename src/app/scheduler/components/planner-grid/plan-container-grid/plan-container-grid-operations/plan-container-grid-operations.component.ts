@@ -65,7 +65,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     this.currentWoSwitch$ = store.pipe(select(PlanContainerGridSelectors.currentWoSwitch));
     this.subscriptions.push(this.currentWoSwitch$.subscribe(s => {
       if (s) {
-        this.setTimeFilter('>=', '<=');
+        this.setTimeFilter('', '>=');
       } else {
         this.setTimeFilter('', '', true);
       }
@@ -96,10 +96,10 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     }
 
     const now = new Date();
-    this.timeStartFilterOperation = timeStartOperator;
-        this.timeStartFilterValue = now;
-        this.timeEndFilterOperation = timeEndOperator;
-        this.timeEndFilterValue = now;
+    this.timeStartFilterOperation = timeStartOperator ? timeStartOperator : null;
+    this.timeStartFilterValue = timeStartOperator ? now : null;
+    this.timeEndFilterOperation = timeEndOperator ? timeEndOperator : null;
+    this.timeEndFilterValue = timeEndOperator ? now : null;
   }
 
 

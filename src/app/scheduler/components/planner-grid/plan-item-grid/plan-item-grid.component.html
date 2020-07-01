@@ -9,12 +9,12 @@
       [date]="limitDate$ | async">
     </app-datebox>
   </dxi-item>
-  
-  <dxi-item location="auto" 
-    widget="dxCheckBox" 
+
+  <dxi-item location="auto"
+    widget="dxCheckBox"
     locateInMenu="auto"
     cssClass="toolbar-item-custom"
-    [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
+    [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannedHoursSwitchEvent }">
   </dxi-item>
 </dx-toolbar>
 
