@@ -6,6 +6,13 @@ import { PlanGridOperation } from '../../models/plan-grid-operation.model';
 export const LOAD_PLAN_ITEM_GRID = '[PlanItemGrid] Load Plan Item Grid';
 export const LOAD_PLAN_ITEM_GRID_SUCCESS = '[PlanItemGrid] Load Plan Item Grid Success';
 export const LOAD_PLAN_ITEM_GRID_FAIL = '[PlanItemGrid] Load Plan Item Grid Fail';
+
+export const CLEAR_PLAN_ITEM_GRID_WITHID = '[PlanItemGrid] Clear Plan Item Grid with ID';
+export const LOAD_PLAN_ITEM_GRID_WITHID = '[PlanItemGrid] Load Plan Item Grid with ID';
+export const LOAD_PLAN_ITEM_GRID_WITHID_SUCCESS = '[PlanItemGrid] Load Plan Item Grid with ID success';
+export const LOAD_PLAN_ITEM_GRID_WITHID_FAIL = '[PlanItemGrid] Load Plan Item Grid with ID fail';
+
+
 export const AUTOPLAN_ITEM = '[PlanItemGrid] Auto plan item';
 export const AUTOPLAN_ITEM_FAIL = '[PlanItemGrid] Auto plan item fail';
 export const UPDATE_ITEM_GRID_SUCCESS = '[PlanItemGrid] Plan Item Grid Update success';
@@ -57,6 +64,24 @@ export class SetItemLimitDate implements Action {
   constructor(public payload: Date) {}
 }
 
+export class ClearPlanItemGridWithId implements Action {
+  readonly type = CLEAR_PLAN_ITEM_GRID_WITHID;
+}
+
+export class LoadPlanItemGridWithId implements Action {
+  readonly type = LOAD_PLAN_ITEM_GRID_WITHID;
+  constructor(public payload: number) {}
+}
+
+export class LoadPlanItemGridWithIdSuccess implements Action {
+  readonly type = LOAD_PLAN_ITEM_GRID_WITHID_SUCCESS;
+  constructor(public payload: PlanItemGrid) {}
+}
+
+export class LoadPlanItemGridWithIdFail implements Action {
+  readonly type = LOAD_PLAN_ITEM_GRID_WITHID_FAIL;
+}
+
 export type PlanItemGridAction =
   | LoadPlanItemGrid
   | LoadPlanItemGridFail
@@ -67,4 +92,8 @@ export type PlanItemGridAction =
   | PlanItemGridOpen
   | PlanItemGridUpdate
   | SetItemLimitDate
+  | LoadPlanItemGridWithId
+  | LoadPlanItemGridWithIdSuccess
+  | LoadPlanItemGridWithIdFail
+  | ClearPlanItemGridWithId
   ;

@@ -6,6 +6,10 @@ export interface PlanItemGridState {
   planItemGrids: PlanItemGrid[];
   openedPlanItemGrids: PlanItemGrid[];
   itemLimitDate: Date;
+  planItemGridPopup: {
+    loading: boolean;
+    planItemGrid: PlanItemGrid | undefined;
+  };
 }
 
 const loadLimitDate = new Date();
@@ -16,7 +20,11 @@ export const initialState: PlanItemGridState = {
   loading: false,
   planItemGrids: [],
   openedPlanItemGrids: [],
-  itemLimitDate: loadLimitDate
+  itemLimitDate: loadLimitDate,
+  planItemGridPopup: {
+    loading: false,
+    planItemGrid: undefined
+  }
 };
 
 export function planItemGridReducer (
@@ -52,10 +60,22 @@ export function planItemGridReducer (
         return itemGrid;
       });
 
+      let itemDialogData = state.planItemGridPopup.planItemGrid;
+      if (itemDialogData) {
+        const item = action.payload.find(i => i.item.idItem === itemDialogData!.item.idItem);
+        if (item) {
+          itemDialogData = item;
+        }
+      }
+
       return {
         ...state,
         planItemGrids: updatedGridItems,
-        loading: false
+        loading: false,
+        planItemGridPopup: {
+          ...state,
+          planItemGrid: itemDialogData
+        }
       };
     }
 
@@ -93,6 +113,45 @@ export function planItemGridReducer (
       return {
         ...state,
         itemLimitDate: action.payload
+      };
+    }
+
+    case fromAction.LOAD_PLAN_ITEM_GRID_WITHID_SUCCESS: {
+      return {
+        ...state,
+        planItemGridPopup: {
+          ...state.planItemGridPopup,
+          loading: false,
+          planItemGrid: action.payload
+        }
+      };
+    }
+    case fromAction.LOAD_PLAN_ITEM_GRID_WITHID: {
+      return {
+        ...state,
+        planItemGridPopup: {
+          ...state.planItemGridPopup,
+          loading: true
+        }
+      };
+    }
+    case fromAction.LOAD_PLAN_ITEM_GRID_WITHID_FAIL: {
+      return {
+        ...state,
+        planItemGridPopup: {
+          ...state.planItemGridPopup,
+          loading: false
+        }
+      };
+    }
+    case fromAction.CLEAR_PLAN_ITEM_GRID_WITHID: {
+      return {
+        ...state,
+        planItemGridPopup: {
+          ...state.planItemGridPopup,
+          loading: false,
+          planItemGrid: undefined
+        }
       };
     }
   }

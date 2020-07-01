@@ -1,19 +1,19 @@
 <dx-data-grid
-[columnAutoWidth]="true"
+    [columnAutoWidth]="true"
     id="plan-item-grid-container"
     [dataSource]="items"
     [keyExpr]="'item.idItem'"
     [allowColumnReordering]="true"
-    [masterDetail]="{ enabled: true, template: 'detail', autoExpandAll: false }"
+    [masterDetail]="{ enabled: true, template: 'detail', autoExpandAll: expandDetails }"
     [showBorders]="true"
     (onCellPrepared)="applyCellStyles($event)">
 
     <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_item_grid_items_DevExtremeStorage"></dxo-state-storing>
-    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-filter-row [visible]="enableSearch"></dxo-filter-row>
     <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
 
     <!-- <dxi-column dataField="item.idItem"></dxi-column> -->
-  
+
     <dxi-column [allowEditing]="false" dataField="item.itemCode" caption="{{translate('Workorder')}}"></dxi-column>
     <dxi-column [allowEditing]="false" dataField="item.articleCode" caption="{{translate('Code_2')}}"></dxi-column>
     <dxi-column [allowEditing]="false" dataField="item.articleName" caption="{{translate('Name')}}"></dxi-column>
@@ -49,29 +49,34 @@
     <!-- <dxi-column [allowEditing]="false" dataField="item.lastUpdate" dataType="datetime"></dxi-column> -->
 
     <div *dxTemplate="let planItemGrid of 'detail'">
-
+      <div class="operations">
       <app-plan-item-grid-operations
+        [refreshContainerGrid]="refreshContainerGrid"
         (updateItem)="updateItem()"
         [operations]="planItemGrid.data.operations"
         [item]="planItemGrid.data.item"
         [containers]="containers">
       </app-plan-item-grid-operations>
-
+    </div>
       <div class="sub-table" *ngIf="planItemGrid.data.packingItems && planItemGrid.data.packingItems.length > 0">
         <strong class="sub-table-header">{{translate('Parent_Orders')}}</strong>
         <app-plan-item-grid-items [items]="planItemGrid.data.packingItems"
+          [refreshContainerGrid]="refreshContainerGrid"
           [containers]="containers"
           [enableGrouping]="false"
           [enableSearch]="false"
+          [expandDetails]="true"
           ></app-plan-item-grid-items>
       </div>
 
       <div class="sub-table" *ngIf="planItemGrid.data.productionItems && planItemGrid.data.productionItems.length > 0">
         <strong class="sub-table-header">{{translate('Linked_Plan_Item')}}</strong>
         <app-plan-item-grid-items [items]="planItemGrid.data.productionItems"
+          [refreshContainerGrid]="refreshContainerGrid"
           [containers]="containers"
           [enableGrouping]="false"
           [enableSearch]="false"
+          [expandDetails]="true"
           ></app-plan-item-grid-items>
       </div>
   </div>

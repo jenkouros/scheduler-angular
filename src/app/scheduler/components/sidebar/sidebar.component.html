@@ -35,13 +35,13 @@
   </li>
 
   <li *ngIf="settings.Menu_Scheduler_GridPlanner" class="nav-item">
-    <a class="nav-link" (click)="selected = 'planner-item-grid'" routerLink='planitemgrid' routerLinkActive='active'>
+    <a class="nav-link" (click)="selected = 'planitemgrid'" routerLink='planitemgrid' routerLinkActive='active'>
         <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> {{translate('Scheduling_Workorders')}}
     </a>
   </li>
 
   <li *ngIf="settings.Menu_Scheduler_GridPlanner" class="nav-item">
-    <a class="nav-link" (click)="selected = 'planner-container-grid'" routerLink='plancontainergrid' routerLinkActive='active'>
+    <a class="nav-link" (click)="selected = 'plancontainergrid'" routerLink='plancontainergrid' routerLinkActive='active'>
         <fa-icon class="mr-3" size="lg" [icon]="faPlanItems"></fa-icon> {{translate('Scheduling_Workplaces')}}
     </a>
   </li>
@@ -51,7 +51,7 @@
         <fa-icon class="mr-3" size="lg" [icon]="faSearch"></fa-icon> {{translate("Search_Engine")}}
     </a>
   </li>
-  <li><div class="mx-3 mt-2"><container-item-quick-plan></container-item-quick-plan></div></li>
+  <li><div class="mx-3 mt-2"><container-item-quick-plan [path]="selected"></container-item-quick-plan></div></li>
   <li><hr class="mb-1 mt-2"></li>
   <li *ngIf="settings.Menu_Scheduler_Planner">
 

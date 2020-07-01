@@ -12,37 +12,15 @@ import { normalize } from 'path';
 })
 export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() items: PlanItemGrid[];
-  // datasource;
-  // @Input() set items(items: PlanItemGrid[]) {
-  //   this.datasource = {
-  //     store: {
-  //       data: items,
-  //       key: 'item.idItem',
-  //       type: 'array'
-  //     }
-  //   };
-  // }
   @Input() selectedItems: PlanItemGrid[] = [];
   @Input() enableGrouping = true;
   @Input() enableSearch = true;
   @Input() containers: ContainerSelect[];
   @Output() selectItem = new EventEmitter<PlanItemGrid>();
+  @Input() expandDetails = false;
+  @Input() refreshContainerGrid = false;
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
-  // refresh = false;
 
-  // priorities = [
-  //   { ID: 0, Name: 'Normalna' },
-  //   { ID: 1, Name: 'Nizka' },
-  //   { ID: 2, Name: 'Visoka' }
-  // ];
-
-  // executionStatuses = [
-  //   { ID: 0, Name: 'Ni podatka' },
-  //   { ID: 1, Name: 'Planiran' },
-  //   { ID: 2, Name: 'V izvajanju' },
-  //   { ID: 3, Name: 'Končan' },
-  //   { ID: 4, Name: 'V zastoju' }
-  // ];
 
   selectionChanged(e) {
     console.log('selectionchanged: ' + e);
@@ -85,30 +63,6 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
     }
   }
 
-  // applyPlanItemStyles(e) {
-  //   if (e.rowType !== 'data') {
-  //     return;
-  //   }
-  //   switch (e.columnIndex) {
-  //     case 1: {
-  //       e.cellElement.style.background = this.getContainerColor(e.data.containerCode);
-  //       break;
-  //     }
-  //     case 4: {
-  //       e.cellElement.style.background = this.getItemExecutionStatusColor(e.data.executionStatus);
-  //       break;
-  //     }
-  //   }
-  // }
-
-  // getItemExecutionStatusColor(id) {
-  //   if (id === 1) {
-  //     return '#ccfbcc';
-  //   } else if (id === 2) {
-  //     return '#d6d6d6';
-  //   }
-  // }
-
   getItemPlanStatusColor(id) {
     if (id === 'Lansiran') {
       return '';
@@ -124,11 +78,5 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
       return '#ff8383';
     }
   }
-
-  // getContainerColor(id) {
-  //   if (id === 5) {
-  //     return '#fbe8cc';
-  //   }
-  // }
 }
 

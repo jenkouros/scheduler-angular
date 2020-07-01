@@ -24,6 +24,8 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
 
   constructor(private router: Router, private store: Store<fromStore.SchedulerState>) {
     super();
+    const path = this.router.url.split('/');
+    this.selected = path.length > 0 ? path[path.length - 1] : '';
    }
 
   faItems = faClipboardList;

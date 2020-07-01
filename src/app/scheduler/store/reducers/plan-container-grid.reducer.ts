@@ -62,21 +62,34 @@ export function planItemGridReducer (
         };
       }
 
-      const updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
+      const items = [...action.payload];
+      let updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
         if (!containerGrid.operation.idPrePlanItem) {
           const subItem = action.payload.find(i =>
             i.operation.idSubItem === containerGrid.operation.idSubItem);
-          if (subItem) { return subItem; }
+          if (subItem) {
+            const idx = items.findIndex(i =>
+              i.operation.idSubItem === containerGrid.operation.idSubItem);
+            if (idx > -1) { items.splice(idx, 1); }
+            return subItem;
+          }
           return containerGrid;
         }
 
         const operation = action.payload.find(i =>
           i.operation.idPrePlanItem === containerGrid.operation.idPrePlanItem);
         if (operation) {
+          const idx = items.findIndex(i =>
+            i.operation.idPrePlanItem === containerGrid.operation.idPrePlanItem);
+          if (idx > -1) { items.splice(idx, 1); }
           return operation;
         }
         return containerGrid;
       });
+
+      if (items.length > 0) {
+        updatedGridItems = updatedGridItems.concat(items);
+      }
 
       return {
         ...state,

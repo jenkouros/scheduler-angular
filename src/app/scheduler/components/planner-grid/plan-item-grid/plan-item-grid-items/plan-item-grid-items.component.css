@@ -9,6 +9,9 @@
 
 .sub-table {
   margin-top: 12px;
+  margin-left: 20px;
+  margin-right: 15px;
+
 }
 
 .sub-table-header {
@@ -16,4 +19,6 @@
 }
 
 
-
+.operations {
+  margin-left: 10px;
+}

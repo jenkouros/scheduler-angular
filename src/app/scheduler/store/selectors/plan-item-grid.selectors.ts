@@ -25,3 +25,8 @@ export const loader = createSelector(
   getPlanItemGridState,
   state => state.loading
 );
+
+export const getPlanGridItemDialogData = createSelector(
+  getPlanItemGridState,
+  state => state.planItemGridPopup.planItemGrid
+);

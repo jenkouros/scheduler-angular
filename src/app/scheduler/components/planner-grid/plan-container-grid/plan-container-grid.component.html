@@ -38,8 +38,9 @@
   [datasource]="planContainerGrid$ | async"
   [containers]="containers$ | async"
 >
-
 </app-plan-container-grid-operations>
+
+<app-plan-item-grid-dialog [containers]="containers$ | async"></app-plan-item-grid-dialog>
 
 <dx-load-panel
     #loadPanel

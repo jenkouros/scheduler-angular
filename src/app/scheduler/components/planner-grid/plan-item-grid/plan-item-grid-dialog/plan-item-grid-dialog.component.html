@@ -1,0 +1,24 @@
+<app-popup
+  [hasCancelBtn]="false"
+  [hasConfirmBtn]="false"
+  [cancelCallback]="closeDialog"
+  [visible]="(planItemGrid$ | async)"
+  [title]="translate('Plan_Workorder') + ' ' + ((planItemGrid$ | async) ? (planItemGrid$ | async)!.item.itemCode : '')"
+
+>
+  <div *ngIf="planItemGrid$ | async as planItemGrid; else loading">
+    <app-plan-item-grid-items
+      [refreshContainerGrid]="true"
+      id="itemGridContainer"
+      [items]="[planItemGrid$ | async]"
+      [containers]="containers"
+      [expandDetails]="true"
+      [enableSearch]="false"
+      [enableGrouping]="false"
+    >
+    </app-plan-item-grid-items>
+  </div>
+  <ng-template #loading>Loading...</ng-template>
+</app-popup>
+
+

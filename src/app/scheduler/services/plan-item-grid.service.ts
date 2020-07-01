@@ -1,3 +1,4 @@
+import { PlanContainerGrid } from './../models/plan-container-grid.model';
 import { PlanGridOperation } from '../models/plan-grid-operation.model';
 import { PlanItemGrid } from './../models/plan-item-grid-model';
 import { environment, appSettings } from './../../../environments/environment';
@@ -7,6 +8,8 @@ import { ItemAutoplanRequest } from '../models/item-autoplan.model';
 import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
 import * as moment from 'moment';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
+import { Container } from '../models/container.dto';
+import { PlanItemContainerGridModel } from '../models/plan-item-container-grid.model';
 
 @Injectable()
 export class PlanItemGridService {
@@ -23,10 +26,18 @@ export class PlanItemGridService {
     return this.http.post<PlanItemGrid[]>(environment.apiUrl + '/planitemgrid', params);
   }
 
-  autoplan(autoplanRequest: ItemAutoplanRequest) {
-    return this.http.post<PlanItemGrid[]>(
+  loadPlanItemGridWithId(idItem) {
+    return this.http.get<PlanItemGrid>(environment.apiUrl +
+      `/planitemgrid/GetPlanItemGridWithId?idItem=${idItem}&idPlan=1` );
+  }
+
+  autoplan(autoplanRequest: ItemAutoplanRequest,
+    filterDictionary: { [id: string]: number[] } = {},
+    filterContainers: Container[] = []) {
+
+    return this.http.post<PlanItemContainerGridModel>(
       environment.apiUrl + '/planitemgrid/autoplanitem',
-      autoplanRequest.toSendFormat()
+      autoplanRequest.toSendFormat(filterDictionary, filterContainers)
     );
   }
 

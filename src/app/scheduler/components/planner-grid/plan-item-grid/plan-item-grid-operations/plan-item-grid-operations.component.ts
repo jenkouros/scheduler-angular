@@ -26,6 +26,7 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
   @Input() item: PlanGridItem;
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
+  @Input() refreshContainerGrid = false;
   // containers$: Observable<ContainerSelect[]>;
   planHoursSwitchSubscription: Subscription;
   planHours: boolean;
@@ -98,6 +99,7 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       request.planDay = !this.planHours;
       request.planLinkedItems = true;
       request.planSequencePlanItems = true;
+      request.returnOperationGridModel = this.refreshContainerGrid;
       this.store.dispatch(new AutoplanItem(request));
       return;
     }

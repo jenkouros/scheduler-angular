@@ -22,8 +22,8 @@ import * as PlanItemActions from '../../../../store/actions/events.action';
 })
 export class SequenceOperationListComponent extends AppComponentBase implements OnDestroy {
   @Input() sequence: PlannedEventSimple[] = [];
-  @Input() selectedIdPrePlanitem: number;
-  @Input() selectedIdPlanItem: number;
+  @Input() selectedIdPrePlanitem: number | undefined;
+  @Input() selectedIdPlanItem: number | undefined;
   @Input() selectedIdItem: number;
   containers$: Observable<ContainerSelect[]>;
 
@@ -57,7 +57,7 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
           planItemId: this.selectedIdPlanItem
         }));
         return;
-  }
+    }
 
 
 
@@ -91,7 +91,7 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
       if (OperationUpdateHelper.isPlannedEventSimpleValidToUpdate(updatedOperation)) {
         this.store.dispatch(new PlanContainerGridActions.PlanContainerDialogGridUpdate({
           operation: updatedOperation,
-          idPlanItem: this.selectedIdPlanItem
+          idPlanItem: this.selectedIdPlanItem ? this.selectedIdPlanItem : updatedOperation.idPlanItem
         }));
       }
     }
