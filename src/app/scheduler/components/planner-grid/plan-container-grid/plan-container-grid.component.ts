@@ -13,7 +13,8 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-container-grid',
-  templateUrl: './plan-container-grid.component.html'
+  templateUrl: './plan-container-grid.component.html',
+  styleUrls: ['../shared/planner-grid.component.css']
 })
 export class PlanContainerGridComponent extends AppComponentBase {
   planContainerGrid$: Observable<PlanContainerGrid[]>;
@@ -22,11 +23,19 @@ export class PlanContainerGridComponent extends AppComponentBase {
   loading$: Observable<boolean>;
   planHoursSwitch$: Observable<boolean>;
   expandAllSwitch$: Observable<boolean>;
+  inProcessWoSwitch$: Observable<boolean>;
+  currentWoSwitch$: Observable<boolean>;
   limitDateSubscription: Subscription;
   containers$: Observable<ContainerSelect[]>;
 
   constructor(private store: Store<AppState>) {
     super();
+    this.expandAllSwitchEvent = this.expandAllSwitchEvent.bind(this);
+    this.plannHoursSwitchEvent = this.plannHoursSwitchEvent.bind(this);
+    this.inProcessWoSwitchEvent = this.inProcessWoSwitchEvent.bind(this);
+    this.currentWoSwitchEvent = this.currentWoSwitchEvent.bind(this);
+    this.setLimitDate = this.setLimitDate.bind(this);
+
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
       store.dispatch(new LoadContainers());
@@ -34,6 +43,8 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.loading$ = this.store.pipe(select(PlanContainerGridSelectors.loader));
     this.planHoursSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
     this.expandAllSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.expandAllSwitch));
+    this.inProcessWoSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.inProcessWoSwitch));
+    this.currentWoSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.currentWoSwitch));
     this.limitDate$ = store.pipe(select(PlanContainerGridSelectors.limitContainerGridLoadDate));
     this.planContainerGrid$ = store.pipe(select(PlanContainerGridSelectors.getPlanContainerGrid));
     this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid()));
@@ -52,11 +63,17 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridLimitDate(date));
   }
 
-  plannedHoursSwitch(e) {
+  plannHoursSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
   }
-  expandAllSwitch(e) {
+  expandAllSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetExpandAllSwitch(e.value));
+  }
+  inProcessWoSwitchEvent(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetInProgressWoSwitch(e.value));
+  }
+  currentWoSwitchEvent(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetCurrentWoSwitch(e.value));
   }
 
 }

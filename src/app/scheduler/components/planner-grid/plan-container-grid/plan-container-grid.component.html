@@ -1,37 +1,43 @@
+<dx-toolbar class="toolbar-custom">
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never">
+    <div>{{translate('Date_From')}}</div>
+  </dxi-item>
 
-<div style="width:400px">
-  <div class="dx-field">
-      <div class="dx-field-label">{{translate('Plan_hours')}}</div>
-      <div class="dx-field-value">
-          <dx-check-box (onValueChanged)="plannedHoursSwitch($event)" [value]="planHoursSwitch$ | async"></dx-check-box>
-      </div>
-  </div>
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never" cssClass="toolbar-item-custom">
+    <app-datebox
+      (change)="setLimitDate($event)"
+      [date]="limitDate$ | async">
+    </app-datebox>
+  </dxi-item>
 
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Date_From')}}</div>
-    <div class="dx-field-value" style="width:auto;">
-      <app-datebox (change)="setLimitDate($event)" [date]="limitDate$ | async"></app-datebox>
-    </div>
-  </div>
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
+  </dxi-item>
 
-  <div class="dx-field">
-    <div class="dx-field-label">{{translate('Expand')}}</div>
-    <div class="dx-field-value">
-        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
-    </div>
-  </div>
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
+  </dxi-item>
 
-  <!-- <div class="dx-field">
-    <div class="dx-field-label">{{translate('Export_To_Excel')}}</div>
-    <div class="dx-field-value">
-        <dx-check-box (onValueChanged)="expandAllSwitch($event)" [value]="expandAllSwitch$ | async"></dx-check-box>
-    </div>
-  </div> -->
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Workorders_In_Progress'), value:inProcessWoSwitch$ | async, onValueChanged: inProcessWoSwitchEvent }">
+  </dxi-item>
 
-</div>
-
-
-<div style="margin-bottom: 10px;"></div>
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
+    cssClass="toolbar-item-custom"
+    [options]="{ text: translate('Current_Workorders'), value:currentWoSwitch$ | async, onValueChanged: currentWoSwitchEvent }">
+  </dxi-item>
+</dx-toolbar>
 
 <app-plan-container-grid-operations
   id="operationGridContainer"

@@ -39,8 +39,22 @@
   <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false"></dxi-column>
 
-  <dxi-column sortOrder="asc" [sortIndex]="1" dataField="operation.timeStart" [caption]="translate('Start')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
-  <dxi-column dataField="operation.timeEnd" [caption]="translate('End')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column 
+    sortOrder="asc" 
+    [sortIndex]="1" 
+    dataField="operation.timeStart"
+    [caption]="translate('Start')"
+    [(selectedFilterOperation)] = "timeStartFilterOperation"
+    [(filterValue)]="timeStartFilterValue"
+    [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
+  </dxi-column>
+  <dxi-column 
+    dataField="operation.timeEnd" 
+    [caption]="translate('End')"
+    [(selectedFilterOperation)] = "timeEndFilterOperation"
+    [(filterValue)]="timeEndFilterValue"
+    [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
+  </dxi-column>
 
   <dxi-column dataField="operation.idPriority" [caption]="translate('Priority')" [allowEditing]="true">
     <dxo-lookup

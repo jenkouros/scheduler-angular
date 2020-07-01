@@ -179,7 +179,9 @@
         "LinkedItemsStatus_1": "Ni končan",
         "LinkedItemsStatus_2": "Končano",
         "Filling": "Polnenje",
-        "OrderStatus": "Status naloga"
+        "OrderStatus": "Status naloga",
+        "Workorders_In_Progress": "Nalogi v izvajanju",
+        "Current_Workorders": "Aktualni nalogi"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -360,7 +362,9 @@
         "LinkedItemsStatus_1": "Ni končan",
         "LinkedItemsStatus_2": "Završeno",
         "Filling": "Punjenje",
-        "OrderStatus": "Status naloga"
+        "OrderStatus": "Status naloga",
+        "Workorders_In_Progress": "Radni nalogi u toku",
+        "Current_Workorders": "Stvarni radni nalogi"
     },
     "en": {
       "Add": "Add",
@@ -541,7 +545,9 @@
       "LinkedItemsStatus_1": "Not finished",
       "LinkedItemsStatus_2": "Finished",
       "Filling": "Filling",
-      "OrderStatus": "Order status"
+      "OrderStatus": "Order status",
+      "Workorders_In_Progress": "Workorders in progress",
+      "Current_Workorders": "Current workorders"
 
   }
 

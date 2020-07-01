@@ -41,3 +41,12 @@ export const getUpdateTimeDialogData = createSelector(
   state => state.updateTimeDialogData
 );
 
+export const inProcessWoSwitch = createSelector(
+  getPlanContainerGridState,
+  state => state.inProgressWoSwitch
+);
+
+export const currentWoSwitch = createSelector(
+  getPlanContainerGridState,
+  state => state.currentWoSwitch
+);

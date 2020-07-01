@@ -16,7 +16,8 @@ import { AppComponentBase } from '../../../../shared/app-component-base';
 
 @Component({
   selector: 'app-plan-item-grid',
-  templateUrl: './plan-item-grid.component.html'
+  templateUrl: './plan-item-grid.component.html',
+  styleUrls: ['../shared/planner-grid.component.css']
 })
 export class PlanItemGridComponent extends AppComponentBase {
   planItemGrid$: Observable<PlanItemGrid[]>;
@@ -29,6 +30,9 @@ export class PlanItemGridComponent extends AppComponentBase {
 
   constructor(private store: Store<AppState>) {
     super();
+    this.plannedHoursSwitchEvent = this.plannedHoursSwitchEvent.bind(this);
+    this.setLimitDate = this.setLimitDate.bind(this);
+
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
       store.dispatch(new LoadContainers());
@@ -56,7 +60,7 @@ export class PlanItemGridComponent extends AppComponentBase {
     this.store.dispatch(new PlanItemGridActions.SetItemLimitDate(date));
   }
 
-  plannedHoursSwitch(e) {
+  plannedHoursSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanHoursSwitch(e.value));
   }
 

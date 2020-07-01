@@ -19,6 +19,8 @@ export const PLAN_CONTAINER_GRID_SET_LIMIT_DATE = '[PlanContainerGrid] Set load 
 
 export const PLAN_CONTAINER_GRID_PLANHOURS_SWITCH = '[PlanContainerGrid] Set plan container grid planhours switch';
 export const PLAN_CONTAINER_GRID_EXPANDALL_SWITCH = '[PlanContainerGrid] Set plan container grid expand all switch';
+export const PLAN_CONTAINER_GRID_INPROGRESSWO_SWITCH = '[PlanContainerGrid] Set plan container grid in progress wo switch';
+export const PLAN_CONTAINER_GRID_CURRENT_SWITCH = '[PlanContainerGrid] Set plan container grid current wo switch';
 
 export const PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Show Time Update Dialog';
 export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Hide Time Update Dialog';
@@ -91,6 +93,16 @@ export class ShowUpdatePlanGridOperationDialog implements Action {
 export class HideUpdatePlanGridOperationDialog implements Action {
   readonly type = PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG;
 }
+export class SetInProgressWoSwitch implements Action {
+  readonly type = PLAN_CONTAINER_GRID_INPROGRESSWO_SWITCH;
+  constructor(public payload: boolean) {}
+}
+
+export class SetCurrentWoSwitch implements Action {
+  readonly type = PLAN_CONTAINER_GRID_CURRENT_SWITCH;
+  constructor(public payload: boolean) {}
+}
+
 
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
@@ -107,4 +119,6 @@ export type PlanContainerGridAction =
   | PlanContainerDialogGridUpdate
   | ShowUpdatePlanGridOperationDialog
   | HideUpdatePlanGridOperationDialog
+  | SetInProgressWoSwitch
+  | SetCurrentWoSwitch
   ;

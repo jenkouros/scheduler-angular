@@ -22,6 +22,24 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
 
 
+  // rowCollapsed(e) {
+  //   // const idx = this.selectedIndexes.indexOf(this.grid.instance.getRowIndexByKey(e.key));
+  //   // this.selectedIndexes.splice(idx, 1);
+
+  //   const idx = this.selectedKeys.indexOf(e.key);
+  //   this.selectedKeys.splice(idx, 1);
+
+  //   // console.log(this.selectedIndexes);
+  //   console.log(this.selectedKeys);
+  // }
+
+  // rowExpanded(e) {
+  //   // this.selectedIndexes.push(this.grid.instance.getRowIndexByKey(e.key));
+  //   this.selectedKeys.push(e.key);
+  //   // console.log(this.selectedIndexes);
+  //   console.log(this.selectedKeys);
+  // }
+
   selectionChanged(e) {
     console.log('selectionchanged: ' + e);
   }
