@@ -1,6 +1,6 @@
 import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
 import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
-import { PlanItemCreateRequest } from './../../../../models/event.model';
+import { PlanItemCreateRequest, PlanItemStatusEnum } from './../../../../models/event.model';
 import { appSettings } from './../../../../../../environments/environment.ecm360test';
 import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
@@ -232,6 +232,28 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       case 'operation.linkedItemExecutionStatus.status': {
         if (LinkedItemStatusEnum.Finished === e.data.operation.linkedItemExecutionStatus.status) {
           e.cellElement.style.background = '#d6d6d6';
+        }
+        break;
+      }
+      case 'operation.timeStart': {
+        const date = new Date();
+        const status = e.data.operation.idUserStatus;
+        const startDate = new Date(e.data.operation.timeStart);
+        if ((!status || status === 1) && date.getTime() > startDate.getTime()) {
+          e.cellElement.style.background = '#ffc694';
+          break;
+        }
+
+        break;
+      }
+      case 'operation.timeEnd': {
+        const date = new Date();
+        const status = e.data.operation.idUserStatus;
+        const endDate = new Date(e.data.operation.timeEnd);
+        if ((status !== 3 && status !== 5) &&
+            date.getTime() > endDate.getTime()) {
+              e.cellElement.style.background = '#ffc694';
+              break;
         }
         break;
       }
