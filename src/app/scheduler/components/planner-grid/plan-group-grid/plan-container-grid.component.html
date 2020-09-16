@@ -1,7 +1,3 @@
-<!-- <div class="appToolbarContainer">
-  <app-process-toolbar (selectAction)="onToolbarAction($event)" [toolbar]="toolbar"></app-process-toolbar>
-</div> -->
-
 <dx-toolbar class="toolbar-custom">
   <dxi-item location="auto" widget="dxButton" locateInMenu="never">
     <div>{{translate('Date_From')}}</div>
@@ -14,30 +10,30 @@
     </app-datebox>
   </dxi-item>
 
-  <dxi-item location="auto"
-    widget="dxCheckBox"
-    locateInMenu="auto"
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
   </dxi-item>
 
-  <dxi-item location="auto"
-    widget="dxCheckBox"
-    locateInMenu="auto"
+  <dxi-item location="auto" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
   </dxi-item>
 
-  <dxi-item location="after"
-    widget="dxCheckBox"
-    locateInMenu="auto"
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Workorders_In_Progress'), value:inProcessWoSwitch$ | async, onValueChanged: inProcessWoSwitchEvent }">
   </dxi-item>
 
-  <dxi-item location="after"
-    widget="dxCheckBox"
-    locateInMenu="auto"
+  <dxi-item location="after" 
+    widget="dxCheckBox" 
+    locateInMenu="auto" 
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Current_Workorders'), value:currentWoSwitch$ | async, onValueChanged: currentWoSwitchEvent }">
   </dxi-item>

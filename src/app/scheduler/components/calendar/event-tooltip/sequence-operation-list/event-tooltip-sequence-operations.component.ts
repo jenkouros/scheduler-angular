@@ -51,7 +51,10 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
         this.store.dispatch(new PlanContainerGridActions.ShowUpdatePlanGridOperationDialog({
           oldTimeEnd: e.oldData.timeEnd,
           oldTimeStart: e.oldData.timeStartPreparation,
-          timeChange: e.newData,
+          timeChange: {
+            timeStart: e.newData.timeStartPreparation,
+            timeEnd: e.newData.timeEnd
+          },
           operation: updatedOperation,
           changeOrigin: OperationChangeOriginEnum.InfoDialog,
           planItemId: this.selectedIdPlanItem

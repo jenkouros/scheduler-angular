@@ -139,8 +139,11 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
   }
 
   onSubmit() {
+    // this.changeData.operation.options = { }
+
     this.changeData.operation.options = {
-      snapFurtherItems: this.form.value.itemChange
+      snapFurtherItems: this.form.value.itemChange,
+      isUserDurationChange: this.form.value.planItemChange === 1
     };
 
     if (this.form.value.planItemChange === 2) {

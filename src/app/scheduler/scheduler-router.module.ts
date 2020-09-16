@@ -1,3 +1,4 @@
+import { PlanGroupComponent } from './components/planner-grid/plan-group-grid/plan-group/plan-group.component';
 import { PlanContainerGridComponent } from './components/planner-grid/plan-container-grid/plan-container-grid.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,6 +12,7 @@ const schedulerRoutes: Routes = [
         { path: 'groups', component: GroupIndexComponent },
         { path: 'groupselector', component: GroupSelectComponent },
         { path: 'planitems', component: ItemsComponent },
+        // { path: 'planitemgrid', component: PlanGroupComponent },
         { path: 'planitemgrid', component: PlanItemGridComponent },
         { path: 'plancontainergrid', component: PlanContainerGridComponent },
         { path: 'planner', component: PlannerComponent },

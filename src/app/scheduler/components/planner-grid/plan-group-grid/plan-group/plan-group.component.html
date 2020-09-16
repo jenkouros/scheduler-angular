@@ -1,0 +1,28 @@
+<dx-data-grid
+  [dataSource]="model"
+  [masterDetail]="{enabled: true, template: 'detail'}"
+  [showBorders]="true"
+  >
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column [allowEditing]="false" dataField="groupName"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="groupCode"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="quantityPlan"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="timePlan"></dxi-column>
+
+  <dxi-column [allowEditing]="false" dataField="stock"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="quantityPlanned"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="timePlanned"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="produced"></dxi-column>
+  <dxi-column [allowEditing]="false" dataField="timeUsed"></dxi-column>
+
+  <div *dxTemplate="let planItemGrid of 'detail'">
+    <app-plan-item-grid-items
+      [items]="getItems(planItemGrid.data.groupCode)"
+      [containers]="containers$ | async"
+    >
+    </app-plan-item-grid-items>
+  </div>
+
+</dx-data-grid>

@@ -1,4 +1,3 @@
-import { ToolbarGroup, Toolbar, ToolbarItem, ToolbarItemStateEnum, ToolbarItemActionEnum, ToolbarItemTypeEnum } from './../../../../shared/components/toolbar/toolbar.model';
 import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
 import { LoadContainers } from './../../../store/actions/containers.action';
 import { getSelectedPlanId } from './../../../../plan/store/selectors/plans.selector';
@@ -11,13 +10,12 @@ import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
 import { AppComponentBase } from '../../../../shared/app-component-base';
-import { PlanContainerGridActionEnum } from './plan-container-grid-action.model';
 
-@Component({
-  selector: 'app-plan-container-grid',
-  templateUrl: './plan-container-grid.component.html',
-  styleUrls: ['../shared/planner-grid.component.css']
-})
+// @Component({
+//   selector: 'app-plan-container-grid',
+//   templateUrl: './plan-container-grid.component.html',
+//   styleUrls: ['../shared/planner-grid.component.css']
+// })
 export class PlanContainerGridComponent extends AppComponentBase {
   planContainerGrid$: Observable<PlanContainerGrid[]>;
   // selectedPlanItemGrid$: Observable<PlanItemGrid[]>;
@@ -29,7 +27,6 @@ export class PlanContainerGridComponent extends AppComponentBase {
   currentWoSwitch$: Observable<boolean>;
   limitDateSubscription: Subscription;
   containers$: Observable<ContainerSelect[]>;
-  toolbar: Toolbar;
 
   constructor(private store: Store<AppState>) {
     super();
@@ -38,7 +35,6 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.inProcessWoSwitchEvent = this.inProcessWoSwitchEvent.bind(this);
     this.currentWoSwitchEvent = this.currentWoSwitchEvent.bind(this);
     this.setLimitDate = this.setLimitDate.bind(this);
-    this.toolbar = this.createToolbar();
 
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
@@ -78,76 +74,6 @@ export class PlanContainerGridComponent extends AppComponentBase {
   }
   currentWoSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetCurrentWoSwitch(e.value));
-  }
-
-  createToolbar() {
-    return {
-      groups: [
-        {
-          location: 'before',
-          items: [
-            {
-              iconClass: '',
-              altText: 'Datum od',
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.ItemsFromDate,
-              type: ToolbarItemTypeEnum.date,
-              value: false,
-            },
-          ]
-        },
-        {
-          location: 'center',
-          items: [
-            {
-              iconClass: '',
-              altText: this.translate('Plan_hours'),
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.PlanHours,
-              type: ToolbarItemTypeEnum.toggle,
-              value: false
-            },
-            {
-              iconClass: '',
-              altText: 'Vrivanje',
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.Inserting,
-              type: ToolbarItemTypeEnum.toggle,
-              value: false
-            }
-          ] as ToolbarItem[]
-        },
-        {
-          location: 'after',
-          items: [
-            {
-              iconClass: '',
-              altText: this.translate('Expand'),
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.ExpandAll,
-              type: ToolbarItemTypeEnum.toggle,
-              value: false
-            },
-            {
-              iconClass: '',
-              altText: this.translate('Workorders_In_Progress'),
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.ExecutingItems,
-              type: ToolbarItemTypeEnum.toggle,
-              value: false
-            },
-            {
-              iconClass: '',
-              altText: this.translate('Current_Workorders'),
-              state: ToolbarItemStateEnum.visible,
-              actionId: PlanContainerGridActionEnum.CurrentItems,
-              type: ToolbarItemTypeEnum.toggle,
-              value: false
-            }
-          ]
-        }
-      ] as ToolbarGroup[]
-    } as Toolbar;
   }
 
 }

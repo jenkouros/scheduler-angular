@@ -1,0 +1,105 @@
+<app-calendar-event-tooltip></app-calendar-event-tooltip>
+<dx-data-grid
+(onCellPrepared)="applyCellStyles($event)"
+  [dataSource]="gridItems"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+  [customizeExportData]="customizeExportData"
+  (onRowUpdating)="updateOperation($event)"
+  [allowColumnReordering]="true"
+  (onCellClick)="onCellClick($event)"
+  [allowColumnResizing]="true"
+  (onRowValidating)="validatePlanGridRow($event)">
+
+  <dxo-export [enabled]="true" fileName="export"></dxo-export>
+  <!-- <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing> -->
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-editing
+    mode="cell"
+    [allowUpdating]="true">
+  </dxo-editing>
+  <!-- <dxi-column dataField="operation.code" caption="Koda" [allowEditing]="false"></dxi-column> -->
+  <!-- <dxi-column cellTemplate="showDetailCellTemplate" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column> -->
+  <dxi-column [showWhenGrouped]="true" cssClass="cell-link" dataField="operation.name" [caption]="translate('Name')"  [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="operation.idContainer"
+    [showWhenGrouped]="true"
+    [caption]="translate('Workplace')"
+    [groupIndex]="0"
+    sortOrder="asc"
+    [sortIndex]="0"
+    [sortingMethod]="sortContainers">
+  <dxo-lookup
+    [dataSource]="containers"
+    displayExpr="displayName"
+    valueExpr="id">
+  </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false"></dxi-column>
+
+  <dxi-column
+    sortOrder="asc"
+    [sortIndex]="1"
+    dataField="operation.timeStart"
+    [caption]="translate('Start')"
+    [(selectedFilterOperation)] = "timeStartFilterOperation"
+    [(filterValue)]="timeStartFilterValue"
+    [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
+  </dxi-column>
+  <dxi-column
+    dataField="operation.timeEnd"
+    [caption]="translate('End')"
+    [(selectedFilterOperation)] = "timeEndFilterOperation"
+    [(filterValue)]="timeEndFilterValue"
+    [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
+  </dxi-column>
+
+  <dxi-column dataField="operation.idPriority" [caption]="translate('Priority')" [allowEditing]="true">
+    <dxo-lookup
+          [dataSource]="priorities"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="operation.idUserStatus" [caption]="translate('Execution')">
+    <dxo-lookup
+          [dataSource]="executionStatuses"
+          displayExpr="Name"
+          valueExpr="ID">
+        </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
+  <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
+  <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>
+  <dxi-column dataField="operation.itemExecutionStatus.operationName" [caption]="translate('OrderStatus')"></dxi-column>
+  <dxi-column dataField="operation.linkedItemExecutionStatus.status" [calculateCellValue]="getLinkedItemsStatus" [caption]="translate('Filling')"></dxi-column>
+
+  <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
+
+  <div *dxTemplate="let cell of 'linkedItemsStatusCellTemplate'">
+    {{ cell.data.operation.linkedItemExecutionStatus.status }}
+    {{ cell.data.operation.itemExecutionStatus
+       ? translate("LinkedItemsStatus_" + cell.data.operation.linkedItemExecutionStatus.status)
+       : ''
+    }}
+  </div>
+
+  <div *dxTemplate="let cell of 'showDetailCellTemplate'">
+    <a class="span-link" (click)="showDetails(cell.data.operation.idPlanItem)">{{cell.data.operation.name}}</a>
+  </div>
+  <dxo-pager
+      [showPageSizeSelector]="true"
+      [allowedPageSizes]="[5, 10, 20,30,50,100]"
+      [showInfo]="true">
+  </dxo-pager>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+  <dxo-paging [pageSize]="20"></dxo-paging>
+  <dxo-group-panel [visible]="true"></dxo-group-panel>
+  <dxo-grouping #expand [autoExpandAll]="expandAllSwitch$ | async"></dxo-grouping>
+
+</dx-data-grid>
+
+<app-update-time-dialog [changeData]="timeUpdateDialog$ | async" [visible]="timeUpdateDialog$ | async"></app-update-time-dialog>

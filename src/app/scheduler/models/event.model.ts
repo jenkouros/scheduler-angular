@@ -37,6 +37,7 @@ export interface PlanItemPutRequestOptions {
     enablePlanningOnAllWorkplaces?: boolean;
     skipNonWorkingTimeMove?: boolean;
     snapFurtherItems?: boolean;
+    isUserDurationChange?: boolean;
 }
 
 export interface PlanItemCreateRequest {
