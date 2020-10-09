@@ -1,6 +1,7 @@
 .text-box-group-row {
     border: none;
     background-color: transparent;
+    max-height: 1.3em;
     border-radius: 4px;
     color: dodgerblue;
     width: auto;
