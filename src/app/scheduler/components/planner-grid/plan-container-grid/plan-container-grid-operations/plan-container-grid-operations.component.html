@@ -10,6 +10,16 @@
   (onCellClick)="onCellClick($event)"
   [allowColumnResizing]="true"
   (onRowValidating)="validatePlanGridRow($event)">
+  <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
+
+  <dxo-summary>
+    <dxi-group-item
+      column="operation.idContainer"
+      summaryType="count"
+      [showInGroupFooter]="false"
+      [alignByColumn]="false">
+    </dxi-group-item>
+  </dxo-summary>
 
   <dxo-export [enabled]="true" fileName="export"></dxo-export>
   <!-- <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing> -->
@@ -27,6 +37,7 @@
     [groupIndex]="0"
     sortOrder="asc"
     [sortIndex]="0"
+    groupCellTemplate="groupTemplate"
     [sortingMethod]="sortContainers">
   <dxo-lookup
     [dataSource]="containers"
@@ -34,6 +45,22 @@
     valueExpr="id">
   </dxo-lookup>
   </dxi-column>
+
+  <div *dxTemplate="let itemData of 'groupTemplate'">  
+    {{itemData.text}} ({{itemData.summaryItems[0].value}}) 
+
+    <input class="text-box-group-row" type="text" placeholder="{{translate('Edit')}}" value="{{getContainerComment(itemData.value)}}" (change)="onGroupRowEdit($event, itemData)">
+
+    <!-- <select class="text-box-group-row">
+      <option *ngFor="let item of containerOptions" [ngValue] = item.id>{{item.label}}</option>
+    </select> -->
+
+    <!-- <dx-text-box
+      value={{itemData.data.aggregates[1]}}
+      valueChangeEvent="keyup"
+      [maxLength]="40"
+    ></dx-text-box> -->
+  </div>  
   <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false"></dxi-column>

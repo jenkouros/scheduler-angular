@@ -7,6 +7,7 @@ export class ContainerSettings {
 
 export class Container {
     id: number;
+    comment: string;
     code: string;
     name: string;
     containerSettings: ContainerSettings;
@@ -19,6 +20,7 @@ export class Container {
         result.name = containerServer.name;
         result.id = containerServer.idContainer;
         result.code = containerServer.code;
+        result.comment = containerServer.comment;
         if (containerServer.settings) {
           result.containerSettings = new ContainerSettings();
           result.containerSettings.allowParalellWorkWithinContainer = containerServer.settings.allowParalellWorkWithinContainer;

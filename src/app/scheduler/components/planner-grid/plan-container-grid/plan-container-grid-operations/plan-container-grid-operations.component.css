@@ -1,0 +1,25 @@
+.text-box-group-row {
+    border: none;
+    background-color: transparent;
+    border-radius: 4px;
+    color: dodgerblue;
+    width: auto;
+    font-weight: bold;
+}
+
+.text-box-group-row:placeholder-shown{
+    display: none;
+}
+
+.text-box-group-row::placeholder{
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.text-box-group-row:focus {
+    border: solid #ccc 0.5px;
+    background-color: white;
+}
+
+::ng-deep .dx-group-row :hover .text-box-group-row {
+    display: inline;
+}

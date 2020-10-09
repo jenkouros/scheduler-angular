@@ -44,6 +44,17 @@ export class ContainersEffects {
     })
   );
 
+  @Effect()
+    updateContainer$ = this.actions$.ofType(fromActions.UPDATE_CONTAINER).pipe(
+      switchMap((action: fromActions.UpdateContainer) =>
+        this.containersService
+          .updateContainer(action.payload)
+          .pipe(
+            map(item => new fromActions.UpdateContainerSuccess(item)),
+            catchError(error => of(new fromActions.LoadContainersFail()))
+        )
+      ));
+
   @Effect({ dispatch: false })
   removeContainersBlankSpace = this.actions$
     .ofType(fromActions.REMOVE_CONTAINERS_BLANKSPACE)

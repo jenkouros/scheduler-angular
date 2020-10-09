@@ -35,12 +35,43 @@ export function containerReducer(
       };
     }
     case fromAction.LOAD_CONTAINERS_SUCCESS: {
-      var containers = [...action.payload].sort((a, b) => localeCompare(a.code, b.code));
+      const containers = [...action.payload].sort((a, b) => localeCompare(a.code, b.code));
       return {
         ...state,
         loaded: true,
         loading: false,
         containers: containers
+      };
+    }
+    case fromAction.UPDATE_CONTAINER_SUCCESS: {
+      if (!action.payload) {
+        return {
+          ...state,
+          loading: false,
+          loaded: false
+        };
+      }
+
+      const updatedContainers = state.containers.map((container, index) => {
+        if (container.id === action.payload.id) {
+            container.comment = action.payload.comment;
+        }
+        return container;
+      });
+
+      return {
+        ...state,
+        containers: updatedContainers,
+        loading: false,
+        loaded: true
+      };
+    }
+
+    case fromAction.UPDATE_CONTAINER: {
+      return {
+        ...state,
+        loading: true,
+        loaded: false
       };
     }
     case fromAction.SELECT_CONTAINERS: {
