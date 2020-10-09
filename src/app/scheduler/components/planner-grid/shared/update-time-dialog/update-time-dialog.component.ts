@@ -88,6 +88,7 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
     this.form = new FormGroup({
       planItemChange: new FormControl(1),
       itemChange: new FormControl(true),
+      fixPlanItem: new FormControl(true)
     });
   }
 
@@ -143,7 +144,10 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
 
     this.changeData.operation.options = {
       snapFurtherItems: this.form.value.itemChange,
-      isUserDurationChange: this.form.value.planItemChange === 1
+      isUserDurationChange: this.form.value.planItemChange === 1,
+      fixPlanItem: this.form.value.fixPlanItem
+      // dayPlan
+
     };
 
     if (this.form.value.planItemChange === 2) {

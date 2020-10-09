@@ -6,6 +6,7 @@
   (onRowUpdating)="updateOperation($event)"
   (onRowValidating)="validatePlanGridRow($event)"
   >
+  <dxo-load-panel [enabled]="loader"></dxo-load-panel>
   <dxo-editing
     mode="cell"
     [allowUpdating]="true">

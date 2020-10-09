@@ -3,6 +3,7 @@ import { GridStoreConfiguration } from './shared.dto';
 
 export interface ItemUIState {
     popupOpened: boolean;
+    createItemPopupOpened: boolean;
 }
 
 export interface ItemState {
@@ -13,4 +14,5 @@ export interface ItemState {
     selectedItemHierarchyLoading: boolean;
     selectedItemHierarchyLoaded: boolean;
     uiState: ItemUIState;
+    lastCreatedItemId: number | null;
 }

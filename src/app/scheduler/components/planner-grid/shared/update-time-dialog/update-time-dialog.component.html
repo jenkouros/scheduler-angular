@@ -30,16 +30,18 @@
       <div class="dx-field-label">{{ translate('SnapForwardOperations') }}</div>
       <div class="dx-field-value">
         <dx-check-box formControlName="itemChange"></dx-check-box>
-          <!-- <dx-radio-group
-            displayExpr="text"
-            valueExpr="id"
-            [items]="itemChangeOptions"
-            [value]="itemChangeOptions[0].id">
-          </dx-radio-group> -->
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">{{ translate('Fix_Plan_Item') }}</div>
+      <div class="dx-field-value">
+        <dx-check-box formControlName="fixPlanItem"></dx-check-box>
       </div>
     </div>
   </div>
 </div>
+
+
 
   <!-- <div *ngIf="changeData">
     {{ changeData.operation.code }}

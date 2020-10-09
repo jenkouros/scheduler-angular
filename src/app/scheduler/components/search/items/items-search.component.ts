@@ -1,3 +1,4 @@
+import { ApplicationFacadeService } from './../../../../store/application/application-facade.service';
 import { Component, Input, OnChanges } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { GridStoreConfiguration } from '../../../models/shared.dto';
@@ -12,7 +13,7 @@ export class ItemsSearchComponent extends AppComponentBase implements OnChanges 
     @Input() searchItemStoreConfiguration: GridStoreConfiguration | null;
     store: CustomStore | null;
 
-    constructor() {
+    constructor(private applicationFacade: ApplicationFacadeService) {
         super();
       }
 
@@ -20,5 +21,9 @@ export class ItemsSearchComponent extends AppComponentBase implements OnChanges 
         this.store = this.searchItemStoreConfiguration
             ? createStore(this.searchItemStoreConfiguration)
             : null;
+            if (this.store) {
+              this.store.on('loading', () => this.applicationFacade.setLoader(true));
+              this.store.on('loaded', () => this.applicationFacade.setLoader(false));
+            }
     }
 }

@@ -19,6 +19,7 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @Output() selectItem = new EventEmitter<PlanItemGrid>();
   @Input() expandDetails = false;
   @Input() refreshContainerGrid = false;
+  @Input() loader = false;
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
 
 

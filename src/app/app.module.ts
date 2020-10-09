@@ -1,9 +1,12 @@
+import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeSl from '@angular/common/locales/sl';
 import localeSr from '@angular/common/locales/sr-Latn';
 import localeEn from '@angular/common/locales/en';
+import localeDe from '@angular/common/locales/de';
+
 
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
@@ -29,6 +32,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { PlanModule } from './plan/plan.module';
 import { JwtInterceptor, ErrorInterceptor } from './auth/helpers';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DxLoadPanelModule, DxLoadIndicatorModule } from 'devextreme-angular';
 
 // Set locale according the browser language
 loadMessages(messagesCustom);
@@ -47,7 +52,10 @@ loadMessages(devextremeMessages);
     } case 'en': {
       registerLocaleData(localeEn);
       break;
-  }
+    } case 'de': {
+      registerLocaleData(localeDe);
+      break;
+    }
  }
 
 
@@ -61,6 +69,7 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
   imports: [
     BrowserModule,
     // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRouterModule,
     PlanModule,
@@ -70,7 +79,10 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [
       stateKey: 'router'
     }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
-    FontAwesomeModule
+    FontAwesomeModule,
+    CoreModule, // .forRoot()
+    DxLoadPanelModule,
+    DxLoadIndicatorModule
   ],
   providers: [
     SignalRService,

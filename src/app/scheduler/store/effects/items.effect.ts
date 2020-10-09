@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, tap, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { SchedulerState } from '../reducers';
 import { ItemsService } from '../../services/items.service';
 import * as fromActions from '../actions';
@@ -53,6 +53,20 @@ export class ItemsEffects {
       return this.itemService.hideItem(idPlan, itemId).pipe(
         map(_ => new fromActions.LoadItems()),
         catchError(error => of(new fromActions.LoadItemHierarchyFail()))
+      );
+    })
+  );
+
+  @Effect()
+  createItem$ = this.actions$.ofType(fromActions.CREATE_ITEM).pipe(
+    map((action: fromActions.CreateItem) => action.payload),
+    withLatestFrom(
+      this.store.pipe(select(state => state.scheduler.filters.selectedEntities)),
+      this.store.pipe(select(state => state.plan.items.selectedId))
+    ),
+    switchMap(([createItemInput, filters, plan]) => {
+      return this.itemService.createItem(createItemInput, filters).pipe(
+        map(item => new fromActions.CreateItemSuccess({ itemId: item.id }))
       );
     })
   );

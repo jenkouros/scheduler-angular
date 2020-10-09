@@ -1,3 +1,4 @@
+import { ApplicationFacadeService } from './store/application/application-facade.service';
 import { Component, OnInit } from '@angular/core';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
 import { appSettings } from '../environments/environment';
@@ -33,7 +34,9 @@ export class AppComponent extends AppComponentBase implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthenticationService) {
+  loader$ = this.applicationFacade.loader$;
+
+  constructor(private authService: AuthenticationService, private applicationFacade: ApplicationFacadeService) {
     super();
   }
 
@@ -43,6 +46,8 @@ export class AppComponent extends AppComponentBase implements OnInit {
       this.isLoggedIn = val;
 
     });
+
+    this.loader$.subscribe(i => console.log(i));
   }
 
 

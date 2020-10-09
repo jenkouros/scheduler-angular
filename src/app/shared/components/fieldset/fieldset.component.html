@@ -1,2 +1,13 @@
-<div *ngIf="header" class="dx-fieldset-header">{{ header }}</div>
+<div class="row" *ngIf="header">
+  <div class="col-8 dx-fieldset-header">{{ header }}</div>
+  <div class="col-4 text-right" *ngIf='actionTitle'>
+    <dx-button
+      style="margin-bottom: 15px"
+      stylingMode="contained"
+      [text]="actionTitle"
+      [type]="actionType"
+      (click)="onActionClick()"
+    >
+  </dx-button></div>
+</div>
 <ng-content></ng-content>

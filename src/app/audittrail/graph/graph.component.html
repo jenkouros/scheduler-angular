@@ -1,0 +1,64 @@
+<div>{{ auditGroup.createTime | date:'medium' }}</div>
+<ngx-graph
+  [view]="[1600, 400]"
+  [links]="auditGroup.edges"
+  [nodes]="auditGroup.nodes"
+  [draggingEnabled]="false"
+  [autoCenter]="true"
+  [autoZoom]="true"
+>
+
+<!-- https://stackblitz.com/edit/angular-ngx-graph-defs-example?file=src%2Fapp%2Fapp.component.ts tukaj najdeš vse settingse za graph-->
+<ng-template #defsTemplate>
+  <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+    <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+  </svg:marker>
+</ng-template>
+<ng-template #linkTemplate let-link>
+  <svg:g class="edge">
+    <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+  </svg:g>
+</ng-template>
+<ng-template #nodeTemplate let-node>
+
+    <svg:g class="node">
+        <svg:rect (click)="openNode(node.data.idItem)"
+          [attr.width]="node.dimension.width + 10"
+          [attr.height]="node.dimension.height"
+          [attr.fill]="node.data.idItem !== initialItemId ? '#fafafa' : '#d7bbdc'"
+          rx="10"
+          ry="10"
+          stroke="black"
+          stroke-width="2"
+        />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 3">
+        {{node.data.codeItem}}
+      </svg:text>
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height * 2 / 3">
+          {{node.label}}
+        </svg:text>
+
+      <ng-container *ngFor="let tag of node.data.tags;let i = index">
+        <svg:rect (click)="log(tag.data)"
+          [attr.width]="150"
+          [attr.height]="30"
+          [attr.y] = "node.dimension.height"
+          [attr.x] = "155 * i + 10"
+          [attr.fill]="'#bbbbbb'"
+          rx="5"
+          ry="5"
+          stroke="black"
+          stroke-width="2">
+        </svg:rect>
+        <svg:text alignment-baseline="center"
+          [attr.x]="155 * i + 20"
+          [attr.y]="node.dimension.height + 20">
+          {{changeType[tag.type]}}
+        </svg:text>
+      </ng-container>
+    </svg:g>
+
+
+</ng-template>
+</ngx-graph>
+

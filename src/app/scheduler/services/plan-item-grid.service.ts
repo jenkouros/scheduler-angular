@@ -41,11 +41,15 @@ export class PlanItemGridService {
     );
   }
 
-  updatePlanItem(operation: PlanGridOperation) {
+  updatePlanItem(operation: PlanGridOperation,
+    filterDictionary: { [id: string]: number[] } = {},
+    filterContainers: Container[] = []) {
+
     const options = operation.options ? operation.options : {};
     options.enablePlanningOnAllWorkplaces = appSettings.PlanItem_EnablePlanningOnAllWorkplaces;
 
-    const planningItem = <PlanItemCreateRequest>{
+
+    const planningItemCreateRequest = <PlanItemCreateRequest>{
       idPrePlanItem: operation.idPrePlanItem,
       idContainer: operation.idContainer,
       timePreparationStart: moment(new Date(operation.timeStart)).format(),
@@ -58,7 +62,19 @@ export class PlanItemGridService {
       userDate: operation.userDate ? moment(new Date(operation.userDate)).format() : undefined,
       options: options
     };
-    return this.http.put<PlanItemGrid[]>(environment.apiUrl + '/planitemgrid', planningItem);
+
+
+    const containers = filterContainers.map(i => i.id.toString());
+    const dict = DictionaryHelper.stringify(filterDictionary);
+
+    planningItemCreateRequest.filter = {
+      Ids: dict.ids,
+      Values: dict.values,
+      Containers: containers
+    };
+
+    planningItemCreateRequest.returnOperationGridModel = true;
+    return this.http.put<PlanItemContainerGridModel>(environment.apiUrl + '/planitemgrid', planningItemCreateRequest);
 
   }
 }

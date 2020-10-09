@@ -42,6 +42,11 @@ export const getSelectedItemHierarchy = createSelector(
     }
 );
 
+export const getCreatedItemId = createSelector(
+  getItemsState,
+  state => state.lastCreatedItemId
+);
+
 export const getItemUiState = createSelector(
     getItemsState,
     state => state.uiState

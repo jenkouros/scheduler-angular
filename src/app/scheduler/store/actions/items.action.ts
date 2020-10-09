@@ -1,3 +1,4 @@
+import { CreateItemInput } from './../../components/item/item-create/item-create.model';
 import { ItemAutoplanRequest } from './../../models/item-autoplan.model';
 import { Action } from '@ngrx/store';
 import { PaginationResponse } from '../../../shared/shared.model';
@@ -16,7 +17,23 @@ export const LOAD_ITEMHIERARCHY_SUCCESS = '[Item] Load selected plan item hierar
 export const SHOW_ITEM_POPUP = '[Item] Show plan item popup';
 export const HIDE_ITEM_POPUP = '[Item] Hide plan item popup';
 
+export const SHOW_CREATE_ITEM_POPUP = '[Item] Show create plan item popup';
+export const HIDE_CREATE_ITEM_POPUP = '[Item] Hide create plan item popup';
 export const HIDE_ITEM = '[Item] Hide item';
+
+export const CREATE_ITEM = '[Item] Create item';
+export const CREATE_ITEM_SUCCESS = '[Item] Create item success';
+
+
+export class CreateItem implements Action {
+  readonly type = CREATE_ITEM;
+  constructor(public payload: CreateItemInput) {}
+}
+
+export class CreateItemSuccess implements Action {
+  readonly type = CREATE_ITEM_SUCCESS;
+  constructor(public payload: { itemId: number }) {}
+}
 
 
 
@@ -66,6 +83,13 @@ export class HideItemPopup implements Action {
     readonly type = HIDE_ITEM_POPUP;
 }
 
+export class ShowCreateItemPopup implements Action {
+  readonly type = SHOW_CREATE_ITEM_POPUP;
+}
+
+export class HideCreateItemPopup implements Action {
+  readonly type = HIDE_CREATE_ITEM_POPUP;
+}
 
 
 export type ItemActions =
@@ -78,5 +102,8 @@ export type ItemActions =
     | LoadItemHierarchySuccess
     | ShowItemPopup
     | HideItemPopup
-
+    | ShowCreateItemPopup
+    | HideCreateItemPopup
+    | CreateItemSuccess
+    | CreateItem
 ;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -9,10 +9,17 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
 export class FieldsetComponent implements OnInit {
   @Input() header: string | null;
   @HostBinding('class.dx-fieldset') hostClass = true;
+  @Input() actionTitle: string;
+  @Input() actionType = 'Normal';
+  @Output() actionClick = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onActionClick() {
+    this.actionClick.emit();
   }
 
 }

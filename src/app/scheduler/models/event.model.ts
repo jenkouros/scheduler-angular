@@ -51,6 +51,8 @@ export interface PlanItemCreateRequest {
     idUserStatus?: number;
     userDate?: Date | string;
     options?: PlanItemCreateRequestOptions;
+    filter?: any;
+    returnOperationGridModel?: boolean;
 }
 
 export interface PlanItemCreateRequestOptions extends PlanItemPutRequestOptions {

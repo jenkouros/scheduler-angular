@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { FieldsetComponent } from './components/fieldset/fieldset.component';
 import { FieldComponent } from './components/fieldset/field/field.component';
 import { PopupComponent } from './components/popup/popup.component';
-import { DxPopupModule, DxScrollViewModule, DxDateBoxModule, DxValidatorModule, DxValidationSummaryModule, DxCheckBoxModule, DxToolbarModule } from 'devextreme-angular';
+import { DxPopupModule, DxScrollViewModule, DxDateBoxModule, DxValidatorModule, DxValidationSummaryModule, DxCheckBoxModule, DxToolbarModule, DxButtonModule } from 'devextreme-angular';
 import { DateboxComponent } from './components/datebox/datebox.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
@@ -33,7 +33,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         DxValidatorModule,
         DxValidationSummaryModule,
         DxCheckBoxModule,
-        DxToolbarModule
+        DxToolbarModule,
+        DxButtonModule
     ],
     declarations: [
         LoaderComponent,

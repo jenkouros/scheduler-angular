@@ -31,4 +31,5 @@ export interface GridStoreConfiguration {
     loadParams?: Object;
     key?: string;
     reloadDate?: Date;
+    errorHandler?: any;
 }

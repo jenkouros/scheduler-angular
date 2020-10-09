@@ -1,0 +1,76 @@
+<app-popup
+  height="600px"
+  width="500px"
+  [title]="translate('Plan_Workorder')"
+  [visible]="(uiState$ | async) && (uiState$ | async).createItemPopupOpened"
+  [cancelCallback]="close"
+  [confirmCallback]="submitItem"
+  [validToConfirm]="form.valid"
+>
+  <div [formGroup]="form">
+    <dx-validation-group #targetGroup>
+      <app-fieldset header="Nalog">
+        <app-field [label]="translate('Code')">
+          <dx-text-box formControlName="code">
+            <dx-validator>
+              <dxi-validation-rule
+                type="required"
+                [message]="translate('Required_Field')"
+              >
+              </dxi-validation-rule>
+            </dx-validator>
+          </dx-text-box>
+        </app-field>
+      </app-fieldset>
+<hr>
+      <app-fieldset
+        [header]="translate('Operations')"
+        [actionTitle]="translate('Add')"
+        (actionClick)="addSubItem()">
+        <!-- <dx-scroll-view height="420px"> -->
+          <div
+            formArrayName="subItems"
+            style="margin-bottom: 15px"
+            *ngFor="
+              let subItem of getSubItemFormArray().controls;
+              let i = index
+            "
+          >
+            <div class="operation-group" [formGroupName]="i">
+              <app-field [label]="translate('Operation') + ' ' + (i + 1)">
+                <dx-button *ngIf="i !== 0"
+                  stylingMode="contained"
+                  [text]="translate('Delete')"
+                  type="normal"
+                  (click)="deleteSubItem(i)"
+                ></dx-button>
+              </app-field>
+              <app-field [label]="translate('Code')">
+                <dx-text-box formControlName="code">
+                  <dx-validator>
+                    <dxi-validation-rule
+                      type="required"
+                      [message]="translate('Required_Field')"
+                    >
+                    </dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </app-field>
+              <app-field [label]="translate('Name')">
+                <dx-text-box formControlName="name">
+                  <dx-validator>
+                    <dxi-validation-rule
+                      type="required"
+                      [message]="translate('Required_Field')"
+                    >
+                    </dxi-validation-rule>
+                  </dx-validator>
+                </dx-text-box>
+              </app-field>
+            </div>
+          </div>
+        <!-- </dx-scroll-view> -->
+      </app-fieldset>
+    </dx-validation-group>
+  </div>
+</app-popup>

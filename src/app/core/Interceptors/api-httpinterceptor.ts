@@ -1,3 +1,4 @@
+import { ApplicationFacadeService } from './../../store/application/application-facade.service';
 import { HttpInterceptor, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
 import { HttpRequest } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
@@ -9,22 +10,35 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiHttpInterceptor implements HttpInterceptor {
+  requestCounter = 0;
   constructor(
     private notifyService: NotifyService,
+    private applicationFacade: ApplicationFacadeService,
     private router: Router) {}
 
+
+  // setLoader(add: boolean) {
+  //   this.requestCounter = this.requestCounter + (add ? 1 : -1);
+  //   this.requestCounter = Math.max(0, this.requestCounter);
+  //   this.applicationFacade.setLoader(this.requestCounter > 0);
+  // }
+  setLoader(add: boolean) {
+    this.applicationFacade.setLoader(add);
+  }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const interceptObservable = new Subject<HttpEvent<any>>();
     const modifiedRequest = request;
     // add auth, culture, ...
     // this.normalizeRequestHeaders(request);
+    this.setLoader(true);
 
     next.handle(modifiedRequest).subscribe(
       (event: HttpEvent<any>) => {
         this.handleSuccessResponse(event, interceptObservable);
       },
       (err) => {
+        this.setLoader(false);
         if (err.status === 401) {
           this.router.navigate(['/auth']);
         } else {
@@ -45,6 +59,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     interceptObservable: Subject<HttpEvent<any>>
   ) {
     if (event instanceof HttpResponse) {
+      this.setLoader(false);
       if (event.body && event.body.status && event.body.code) {
         const body = <ApiResponse<any>>event.body;
         const modifiedResponse = this.handleResponse(event, body);

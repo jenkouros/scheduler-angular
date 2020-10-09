@@ -14,8 +14,10 @@ export const initialState: ItemState = {
     selectedItemHierarchyLoaded: false,
     selectedItemHierarchyLoading: false,
     uiState: {
-        popupOpened: false
-    }
+        popupOpened: false,
+        createItemPopupOpened: false
+    },
+    lastCreatedItemId: null
 };
 
 export function itemsReducer(state = initialState, action: fromActions.ItemActions): ItemState {
@@ -80,6 +82,31 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
                 },
                 loadingItem: null
             };
+        }
+        case fromActions.SHOW_CREATE_ITEM_POPUP: {
+          return {
+              ...state,
+              uiState: {
+                  ...state.uiState,
+                  createItemPopupOpened: true
+              }
+          };
+        }
+        case fromActions.HIDE_CREATE_ITEM_POPUP: {
+            return {
+                ...state,
+                uiState: {
+                    ...state.uiState,
+                    createItemPopupOpened: false
+                },
+                loadingItem: null
+            };
+        }
+        case fromActions.CREATE_ITEM_SUCCESS: {
+          return {
+            ...state,
+            lastCreatedItemId: action.payload.itemId
+          };
         }
         default:
             return state;

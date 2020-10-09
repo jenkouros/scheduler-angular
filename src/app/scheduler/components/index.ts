@@ -1,3 +1,4 @@
+import { ItemCreateComponent } from './item/item-create/item-create.component';
 import { PlanGroupComponent } from './planner-grid/plan-group-grid/plan-group/plan-group.component';
 import { PlanItemGridDialogComponent } from './planner-grid/plan-item-grid/plan-item-grid-dialog/plan-item-grid-dialog.component';
 import { CalendarEventTooltipComponent } from './calendar/event-tooltip/calendar-event-tooltip.component';
@@ -84,7 +85,8 @@ export const components: any[] = [
     EventTooltipOperationComponent,
     UpdateTimeDialogComponent,
     PlanItemGridDialogComponent,
-    PlanGroupComponent
+    PlanGroupComponent,
+    ItemCreateComponent
 ];
 
 export * from './calendar/event-tooltip/operation/event-tooltip-operation.component';
@@ -129,3 +131,4 @@ export * from './planner-grid/plan-container-grid/plan-container-grid.component'
 export * from './planner-grid/plan-container-grid/plan-container-grid-operations/plan-container-grid-operations.component';
 export * from './planner-grid/shared/update-time-dialog/update-time-dialog.component';
 export * from './planner-grid/plan-item-grid/plan-item-grid-dialog/plan-item-grid-dialog.component';
+export * from './item/item-create/item-create.component';

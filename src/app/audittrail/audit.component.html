@@ -1,0 +1,10 @@
+<div style="width: 1600px; height: 900px;" *ngIf="model">
+  {{ model.itemId }}
+
+  <div *ngFor="let auditGroup of model.auditGroups">
+    <app-graph [auditGroup]="auditGroup" [initialItemId]="model.itemId"></app-graph>
+    <hr>
+  </div>
+
+
+</div>

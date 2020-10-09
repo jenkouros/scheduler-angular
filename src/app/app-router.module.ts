@@ -9,6 +9,7 @@ const appRoutes: Routes = [
     { path: '', redirectTo: '/scheduler/planitems', pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'scheduler', loadChildren: () => import('./scheduler/scheduler.module').then(m => m.SchedulerModule), canActivate: [AuthGuard]},
     { path: 'timetables', loadChildren: () => import('./worktime/worktime.module').then(m => m.WorktimeModule), canActivate: [AuthGuard]},
+    { path: 'audit', loadChildren: () => import('./audittrail/audit.module').then(m => m.AuditModule), canActivate: [AuthGuard]},
     { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
     { path: '**', redirectTo: '/scheduler/planitems' }
 ];

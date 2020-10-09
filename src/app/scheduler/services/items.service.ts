@@ -1,3 +1,4 @@
+import { ItemServer, ItemBasicServer } from './../models/server/item.servermodel';
 import { ItemAutoplanRequest } from './../models/item-autoplan.model';
 import { Injectable } from '@angular/core';
 
@@ -8,11 +9,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
 import { ItemHierarchyServer } from '../models/server/item.servermodel';
-import { ItemHierarchy } from '../models/item.dto';
+import { ItemHierarchy, Item } from '../models/item.dto';
 import { map, catchError } from 'rxjs/operators';
 import { GridStoreConfiguration } from '../models/shared.dto';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
 import { PlanItemGrid } from '../models/plan-item-grid-model';
+import { CreateItemInput } from '../components/item/item-create/item-create.model';
 
 export class Test {
   constructor(private id: string, private value: number) {}
@@ -51,7 +53,7 @@ export class ItemsService {
   }
 
   getItemHierarchy(itemId): Observable<ItemHierarchy> {
-    return this.http.get<ItemHierarchyServer>(environment.apiUrl + '/items?idItem=' + itemId).pipe(
+    return this.http.get<ItemHierarchyServer>(environment.apiUrl + '/items/getItemStructure?idItem=' + itemId).pipe(
       map(response => {
         return ItemHierarchy.fromServer(response);
       })
@@ -63,6 +65,14 @@ export class ItemsService {
       environment.apiUrl + `/items/hideItem?idPlan=${idPlan}&idItem=${itemId}`,
       null
     );
+  }
+
+  createItem(createInput: CreateItemInput, filterDictionary: {[id: string]: number[]} | undefined) {
+    const dict = DictionaryHelper.stringify(filterDictionary);
+    createInput.filterIds = dict.ids;
+    createInput.filterValues = dict.values;
+    return this.http.post<ItemBasicServer>(
+      environment.apiUrl + `/items/createItem`, createInput);
   }
 
 

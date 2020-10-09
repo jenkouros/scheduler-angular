@@ -45,7 +45,8 @@ export class ItemPopupComponent extends AppComponentBase implements OnChanges {
 
       this.createPreplanItemsForm.patchValue({
         batchQuantity: this.itemHierarchy.itemHierarchy.quantityBatch,
-        batchCount: Math.ceil(this.itemHierarchy.itemHierarchy.quantity / this.itemHierarchy.itemHierarchy.quantityBatch),
+        batchCount: Math.max(1,
+          Math.ceil(this.itemHierarchy.itemHierarchy.quantity / Math.max(this.itemHierarchy.itemHierarchy.quantityBatch, 1))),
         idAlternative: this.itemHierarchy.itemHierarchy.alternatives.length > 0
           ? this.itemHierarchy.itemHierarchy.alternatives[0].id
           : ''

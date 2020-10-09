@@ -22,6 +22,11 @@ export interface ItemProgressServer {
     quantityPlanned: number;
 }
 
+export interface ItemBasicServer {
+  code: string;
+  id: number;
+}
+
 export interface ItemHierarchyServer {
     id: number;
     code: string;

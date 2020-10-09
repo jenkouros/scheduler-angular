@@ -27,6 +27,9 @@
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Expand'), value:expandAllSwitch$ | async, onValueChanged: expandAllSwitchEvent }">
   </dxi-item>
+  <!-- <dxi-item location="auto" widget="dxButton" locateInMenu="never"
+  [options]="{ text: translate('Add_WorkOrder'), onClick: openCreateItemPopup }">
+</dxi-item> -->
 
   <dxi-item location="after"
     widget="dxCheckBox"
@@ -51,8 +54,7 @@
 </app-plan-container-grid-operations>
 
 <app-plan-item-grid-dialog [containers]="containers$ | async"></app-plan-item-grid-dialog>
-
-<dx-load-panel
+<!-- <dx-load-panel
     #loadPanel
     shadingColor="rgba(0,0,0,0.4)"
     [position]="{ of: '#operationGridContainer' }"
@@ -60,4 +62,4 @@
     [showIndicator]="true"
     [showPane]="true"
     [shading]="true"
-    [closeOnOutsideClick]="false"></dx-load-panel>
+    [closeOnOutsideClick]="false"></dx-load-panel> -->

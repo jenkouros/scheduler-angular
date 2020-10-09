@@ -1,3 +1,4 @@
+import { ApplicationFacadeService } from './../../../../store/application/application-facade.service';
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { PlanItemSearch } from '../../../models/event.model';
@@ -14,7 +15,7 @@ export class PlanItemsSearchComponent extends AppComponentBase implements OnChan
     store: CustomStore | null;
     @Output() openInScheduler = new EventEmitter<{dateStart: Date, idContainer: number}>();
 
-    constructor() {
+    constructor(private applicationFacade: ApplicationFacadeService) {
         super();
       }
 
@@ -26,6 +27,10 @@ export class PlanItemsSearchComponent extends AppComponentBase implements OnChan
         this.store = this.searchPlanItemStoreConfiguration
             ? createStore(this.searchPlanItemStoreConfiguration)
             : null;
+        if (this.store) {
+          this.store.on('loading', () => this.applicationFacade.setLoader(true));
+          this.store.on('loaded', () => this.applicationFacade.setLoader(false));
+        }
     }
 
 }

@@ -10,9 +10,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
+import * as ItemActions from '../../../store/actions/items.action';
 import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 import { AppComponentBase } from '../../../../shared/app-component-base';
-
+import * as ItemSelectors from '../../../store/selectors/items.selectors';
 
 @Component({
   selector: 'app-plan-item-grid',
@@ -49,7 +50,18 @@ export class PlanItemGridComponent extends AppComponentBase {
 
     this.containers$ = store.pipe(select(getContainerSelectList));
     this.planHoursSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.planHoursSwitch));
+    this.openCreateItemPopup = this.openCreateItemPopup.bind(this);
 
+    this.store.pipe(select(ItemSelectors.getCreatedItemId)).subscribe(id => {
+        if (id) {
+          console.log(id);
+          this.store.dispatch(new PlanItemGridActions.LoadPlanItemGrid());
+        }
+      });
+  }
+
+  openCreateItemPopup() {
+    this.store.dispatch(new ItemActions.ShowCreateItemPopup());
   }
 
   onItemSelect(item: PlanItemGrid) {

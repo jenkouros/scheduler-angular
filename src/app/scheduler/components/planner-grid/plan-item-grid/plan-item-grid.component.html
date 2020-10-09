@@ -16,6 +16,10 @@
     cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannedHoursSwitchEvent }">
   </dxi-item>
+
+  <dxi-item location="auto" widget="dxButton" locateInMenu="never"
+    [options]="{ text: translate('Add_WorkOrder'), onClick: openCreateItemPopup }">
+  </dxi-item>
 </dx-toolbar>
 
 <app-plan-item-grid-items
@@ -27,7 +31,7 @@
 >
 </app-plan-item-grid-items>
 
-<dx-load-panel
+<!-- <dx-load-panel
   #loadPanel
   shadingColor="rgba(0,0,0,0.4)"
   [position]="{ of: '#itemGridContainer' }"
@@ -36,6 +40,7 @@
   [showPane]="true"
   [shading]="true"
   [closeOnOutsideClick]="false"
-></dx-load-panel>
+></dx-load-panel> -->
 
 
+<app-item-create></app-item-create>

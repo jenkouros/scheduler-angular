@@ -181,7 +181,9 @@
         "Filling": "Polnenje",
         "OrderStatus": "Status naloga",
         "Workorders_In_Progress": "Nalogi v izvajanju",
-        "Current_Workorders": "Aktualni nalogi"
+        "Current_Workorders": "Aktualni nalogi",
+        "Fix_Plan_Item": "Vrivanje",
+        "Add_WorkOrder": "Dodaj delovni nalog"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -364,7 +366,9 @@
         "Filling": "Punjenje",
         "OrderStatus": "Status naloga",
         "Workorders_In_Progress": "Radni nalogi u toku",
-        "Current_Workorders": "Stvarni radni nalogi"
+        "Current_Workorders": "Stvarni radni nalogi",
+        "Fix_Plan_Item": "Gurnuti",
+        "Add_WorkOrder": "Dodaj radni nalog"
     },
     "en": {
       "Add": "Add",
@@ -547,7 +551,9 @@
       "Filling": "Filling",
       "OrderStatus": "Order status",
       "Workorders_In_Progress": "Workorders in progress",
-      "Current_Workorders": "Current workorders"
+      "Current_Workorders": "Current workorders",
+      "Fix_Plan_Item": "Push in",
+      "Add_WorkOrder": "Add working order"
 
   }
 

@@ -27,6 +27,7 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];
   @Input() refreshContainerGrid = false;
+  @Input() loader = false;
   // containers$: Observable<ContainerSelect[]>;
   planHoursSwitchSubscription: Subscription;
   planHours: boolean;

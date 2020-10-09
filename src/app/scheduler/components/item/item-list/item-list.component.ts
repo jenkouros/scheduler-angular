@@ -1,6 +1,10 @@
+import { HttpClient } from '@angular/common/http';
+import { ApplicationFacadeService } from './../../../../store/application/application-facade.service';
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 import CustomStore from 'devextreme/data/custom_store';
+
 import DataSource from 'devextreme/data/data_source';
 import { Item } from '../../../models/item.dto';
 import { GridStoreConfiguration } from '../../../models/shared.dto';
@@ -23,6 +27,10 @@ export class ItemListComponent extends AppComponentBase implements OnChanges {
   settings = appSettings;
   dataSource: DataSource | null;
 
+  constructor(private applicationFacade: ApplicationFacadeService, private http: HttpClient) {
+    super();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.storeConfiguration) {
       if (!this.storeConfiguration) {
@@ -30,15 +38,19 @@ export class ItemListComponent extends AppComponentBase implements OnChanges {
         return;
       }
 
-      // if (!this.dataSource) {
         const customStore = createStore(this.storeConfiguration);
-        customStore.on('loaded', (data) => this.loadedItems.emit(data));
+
+        customStore.on('loaded', (data) => {
+          this.loadedItems.emit(data);
+          this.applicationFacade.setLoader(false);
+        });
+        customStore.on('loading', () => this.applicationFacade.setLoader(true));
         this.dataSource = new DataSource(customStore);
-      // } else {
-      //   this.dataSource.reload();
-      // }
+
     }
   }
+
+
 
   onSelectItem(item: Item) {
     if (item) {

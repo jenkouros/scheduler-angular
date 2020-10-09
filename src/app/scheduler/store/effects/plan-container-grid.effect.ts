@@ -68,7 +68,8 @@ export class PlanContainerGridEffect {
     switchMap((action: fromActions.PlanContainerDialogGridUpdate) =>
       this.planContainerGridService.updatePlanItemSimple(action.payload.operation).pipe(
         mergeMap(items => [
-          new eventActions.LoadEvent({ id: action.payload.idPlanItem }),
+          new fromActions.UpdateContainerGridSuccess(items),
+          // new eventActions.LoadEvent({ id: action.payload.idPlanItem }),
           new containerGridActions.HideUpdatePlanGridOperationDialog()
         ]),
         catchError(error => of(new fromActions.UpdateContainerGridFail()))

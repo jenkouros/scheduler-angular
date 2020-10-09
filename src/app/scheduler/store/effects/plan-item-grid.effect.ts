@@ -1,3 +1,4 @@
+import { ApplicationFacadeService } from './../../../store/application/application-facade.service';
 import { AppState } from './../../../store/app.reducers';
 import { switchMap, map, catchError, withLatestFrom, mergeMap } from 'rxjs/operators';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -14,7 +15,8 @@ export class PlanItemGridEffect {
   constructor(
     private actions$: Actions,
     private planItemGridService: PlanItemGridService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private applicationFacade: ApplicationFacadeService
   ) {}
 
   // @Effect()
@@ -35,12 +37,19 @@ export class PlanItemGridEffect {
       this.store.pipe(select(state => state.plan.items.selectedId)),
       this.store.pipe(select(state => state.scheduler.planItemGrid.itemLimitDate))
     ),
-    switchMap(([action, filters, idPlan, limitDate]) =>
-      this.planItemGridService.loadPlanItemGrid(idPlan, limitDate, filters.selectedEntities).pipe(
-        map(event => new fromActions.LoadPlanItemGridSuccess(event)),
-        catchError(error => of(new fromActions.LoadPlanItemGridFail()))
-      )
-    )
+    switchMap(([action, filters, idPlan, limitDate]) => {
+      this.applicationFacade.setLoader(true);
+      return this.planItemGridService.loadPlanItemGrid(idPlan, limitDate, filters.selectedEntities).pipe(
+        map(event => {
+          this.applicationFacade.setLoader(false);
+          return new fromActions.LoadPlanItemGridSuccess(event);
+        }),
+        catchError(error => {
+          this.applicationFacade.setLoader(true);
+          return of(new fromActions.LoadPlanItemGridFail());
+        })
+      );
+    })
   );
 
 
@@ -78,11 +87,16 @@ export class PlanItemGridEffect {
 
   @Effect()
   updateplanItem$ = this.actions$.ofType(fromActions.PLAN_ITEM_GRID_UPDATE).pipe(
-    switchMap((action: fromActions.PlanItemGridUpdate) =>
-      this.planItemGridService.updatePlanItem(action.payload).pipe(
+    map((action: fromActions.PlanItemGridUpdate) => action),
+    withLatestFrom(
+      this.store.pipe(select(state => state.scheduler.filters))
+    ),
+    switchMap(([action, filters]) =>
+      this.planItemGridService.updatePlanItem(action.payload, filters.selectedEntities, filters.selectedContainers).pipe(
         mergeMap(items => [
+          new containerGridActions.UpdateContainerGridSuccess(items.planContainerGridModel),
           new containerGridActions.HideUpdatePlanGridOperationDialog(),
-          new fromActions.UpdateItemGridSuccess(items)
+          new fromActions.UpdateItemGridSuccess(items.planItemGridModel)
         ]),
         catchError(error => of(new fromActions.AutoplanItemFail()))
       )

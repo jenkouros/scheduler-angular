@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 import { Observable, Subscription } from 'rxjs';
 import { ItemHierarchyViewModel } from '../../models/item.viewmodel';
@@ -26,9 +26,11 @@ export class ItemComponent implements OnInit {
     constructor(private store: Store<fromStore.SchedulerState>) {}
 
     ngOnInit(): void {
-        this.uiState$ = this.store
-            .select(fromStore.getItemUiState);
-        this.hierarchy$ = this.store.select(fromStore.getSelectedItemHierarchy);
+        this.uiState$ = this.store.pipe(
+            select(fromStore.getItemUiState));
+        this.hierarchy$ = this.store.pipe(select(fromStore.getSelectedItemHierarchy));
+
+        this.hierarchy$.subscribe(i => console.log(i));
     }
 
     // ngOnDestroy(): void {

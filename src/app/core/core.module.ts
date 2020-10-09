@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { ApplicationFacadeService } from './../store/application/application-facade.service';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiHttpInterceptor } from './Interceptors/api-httpinterceptor';
-import { SharedModule } from '../shared/shared.module';
 import { NotifyService } from '../shared/services/notify.service';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     imports: [
@@ -10,9 +11,24 @@ import { NotifyService } from '../shared/services/notify.service';
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ApiHttpInterceptor, multi: true },
-        NotifyService
+        NotifyService,
+        ApplicationFacadeService
     ]
 })
 export class CoreModule {
 
 }
+
+// @NgModule({})
+// export class CoreModule {
+//   static forRoot(): ModuleWithProviders {
+//     return {
+//       ngModule: CoreModule,
+//       providers: [
+//         { provide: HTTP_INTERCEPTORS, useClass: ApiHttpInterceptor, multi: true },
+//         NotifyService,
+//         ApplicationFacadeService
+//       ]
+//     };
+//   }
+// }

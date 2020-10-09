@@ -12,6 +12,7 @@ import * as PlanContainerGridSelectors from '../../../store/selectors/plan-conta
 import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
 import { AppComponentBase } from '../../../../shared/app-component-base';
 import { PlanContainerGridActionEnum } from './plan-container-grid-action.model';
+import * as ItemActions from '../../../store/actions/items.action';
 
 @Component({
   selector: 'app-plan-container-grid',
@@ -38,6 +39,7 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.inProcessWoSwitchEvent = this.inProcessWoSwitchEvent.bind(this);
     this.currentWoSwitchEvent = this.currentWoSwitchEvent.bind(this);
     this.setLimitDate = this.setLimitDate.bind(this);
+    this.openCreateItemPopup = this.openCreateItemPopup.bind(this);
     this.toolbar = this.createToolbar();
 
     store.pipe(select(getSelectedPlanId))
@@ -62,7 +64,9 @@ export class PlanContainerGridComponent extends AppComponentBase {
   // onItemSelect(item: PlanContainerGrid) {
   //   this.store.dispatch(new PlanItemGridActions.PlanItemGridOpen(item));
   // }
-
+  openCreateItemPopup() {
+    this.store.dispatch(new ItemActions.ShowCreateItemPopup());
+  }
   setLimitDate(date: Date) {
     this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridLimitDate(date));
   }
