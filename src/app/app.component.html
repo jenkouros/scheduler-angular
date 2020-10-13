@@ -1,8 +1,8 @@
 <!-- <nav class="navbar navbar-dark bg-kolektor fixed-top"> -->
 
-<nav class="navbar navbar-expand navbar-dark bg-kolektor fixed-top py-0">
+<nav class="navbar navbar-expand navbar-dark fixed-top py-0" [ngClass]="mode === 'test' ? 'bg-test' : 'bg-kolektor'">
   <span class="navbar-brand mb-0 h1 text-kolektor-light">
-    <span>SinaproScheduler </span>
+    <span>SinaproScheduler </span><span *ngIf="mode === 'test'">TEST</span>
   </span>
 
   <button

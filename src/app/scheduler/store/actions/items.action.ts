@@ -23,6 +23,7 @@ export const HIDE_ITEM = '[Item] Hide item';
 
 export const CREATE_ITEM = '[Item] Create item';
 export const CREATE_ITEM_SUCCESS = '[Item] Create item success';
+export const CREATE_ITEM_FAIL = '[Item] Create item fail';
 
 
 export class CreateItem implements Action {
@@ -35,7 +36,9 @@ export class CreateItemSuccess implements Action {
   constructor(public payload: { itemId: number }) {}
 }
 
-
+export class CreateItemFail implements Action {
+  readonly type = CREATE_ITEM_FAIL;
+}
 
 export class LoadItems implements Action {
     readonly type = LOAD_ITEMS;

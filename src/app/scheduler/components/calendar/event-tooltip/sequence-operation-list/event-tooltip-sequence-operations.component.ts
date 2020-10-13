@@ -83,7 +83,8 @@ export class SequenceOperationListComponent extends AppComponentBase implements 
           timeExecutionStart: updatedOperation.timeStartPreparation,
           timeExecutionEnd: updatedOperation.timeStartPreparation,
           options: {
-            enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+            enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces,
+            dayPlan: !this.planHours
           }
         } as PlanItemCreateRequest;
         this.store.dispatch(new PlanItemActions.CreateEventFromRequest(request));

@@ -18,6 +18,11 @@
 .bg-kolektor {
    background-color: #1f5684;
 }
+
+.bg-test {
+  background-color: #3c3b3b;
+}
+
 .bg-kolektor-primary {
     color: rgb(0, 96, 177);
 }

@@ -1,19 +1,22 @@
+import { Subscription } from 'rxjs';
 import { PlannedEventSimple } from './../../../../models/event.model';
 import { AppState } from './../../../../../store/app.reducers';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { PlanGridOperationChange, OperationChangeOriginEnum, PlanGridOperation } from './../../../../models/plan-grid-operation.model';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanItemGridActions from '../../../../store/actions/plan-item-grid.action';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
 
+import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
+
 @Component({
   selector: 'app-update-time-dialog',
   templateUrl: './update-time-dialog.component.html'
 })
-export class UpdateTimeDialogComponent extends AppComponentBase {
+export class UpdateTimeDialogComponent extends AppComponentBase implements OnDestroy {
   @Input() visible: boolean;
   changeData: PlanGridOperationChange;
   @Input('changeData') set model(data: PlanGridOperationChange) {
@@ -64,6 +67,8 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
     }
   }
   form: FormGroup;
+  dayPlan = true;
+  dayPlanSubscription: Subscription;
 
   planItemChangeAllOptions = [
     {
@@ -84,6 +89,8 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
     super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
+
+    this.dayPlanSubscription = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch)).subscribe(v => this.dayPlan = !v);
 
     this.form = new FormGroup({
       planItemChange: new FormControl(1),
@@ -145,7 +152,8 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
     this.changeData.operation.options = {
       snapFurtherItems: this.form.value.itemChange,
       isUserDurationChange: this.form.value.planItemChange === 1,
-      fixPlanItem: this.form.value.fixPlanItem
+      fixPlanItem: this.form.value.fixPlanItem,
+      dayPlan: this.dayPlan
       // dayPlan
 
     };
@@ -191,4 +199,9 @@ export class UpdateTimeDialogComponent extends AppComponentBase {
     this.store.dispatch(new PlanContainerGridActions.HideUpdatePlanGridOperationDialog());
   }
 
+  ngOnDestroy() {
+    if (this.dayPlanSubscription) {
+      this.dayPlanSubscription.unsubscribe();
+    }
+  }
 }

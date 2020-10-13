@@ -66,7 +66,10 @@ export class ItemsEffects {
     ),
     switchMap(([createItemInput, filters, plan]) => {
       return this.itemService.createItem(createItemInput, filters).pipe(
-        map(item => new fromActions.CreateItemSuccess({ itemId: item.id }))
+        map(item => item
+          ? new fromActions.CreateItemSuccess({ itemId: item.id })
+          : new fromActions.CreateItemFail()
+          )
       );
     })
   );

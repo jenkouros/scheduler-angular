@@ -1,7 +1,7 @@
 import { ApplicationFacadeService } from './store/application/application-facade.service';
 import { Component, OnInit } from '@angular/core';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
-import { appSettings } from '../environments/environment';
+import { appSettings, environment } from '../environments/environment';
 import { AuthenticationService } from './auth/services';
 import { AppComponentBase } from '../app/shared/app-component-base';
 
@@ -20,6 +20,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
   title = 'app';
   env = appSettings;
   isLoggedIn = false;
+  mode = environment.mode;
 
   navigation: Nav[] = [
     {

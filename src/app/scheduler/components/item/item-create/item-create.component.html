@@ -2,7 +2,7 @@
   height="600px"
   width="500px"
   [title]="translate('Plan_Workorder')"
-  [visible]="(uiState$ | async) && (uiState$ | async).createItemPopupOpened"
+  [visible]="(uiState$ | async) && (uiState$ | async)!.createItemPopupOpened"
   [cancelCallback]="close"
   [confirmCallback]="submitItem"
   [validToConfirm]="form.valid"

@@ -5,7 +5,8 @@ export const environment = {
     production: true,
     apiUrl: `${serverUrl}/api`,
     signalRUrl: `${serverUrl}/containershub`,
-    parallelOperations: true
+    parallelOperations: true,
+    mode: 'prod'
 };
 
 export const appSettings = {

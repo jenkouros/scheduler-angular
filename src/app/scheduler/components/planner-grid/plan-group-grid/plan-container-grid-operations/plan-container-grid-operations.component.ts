@@ -187,7 +187,8 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
           timeExecutionStart: updatedOperation.timeStart,
           timeExecutionEnd: updatedOperation.timeEnd,
           options: {
-            enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces
+            enablePlanningOnAllWorkplaces: appSettings.PlanItem_EnablePlanningOnAllWorkplaces,
+            dayPlan: !this.planHours
           }
         } as PlanItemCreateRequest;
         this.store.dispatch(new PlanItemActions.CreateEventFromRequest(request));

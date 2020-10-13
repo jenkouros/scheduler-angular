@@ -9,7 +9,6 @@
         <h6>{{ title }} {{ itemHeader.itemCode }}</h6>
     </div>
     <div *dxTemplate="let itemData of 'item'">
-
       <dx-data-grid
       (onRowUpdating)="updateOperation($event)"
       [showColumnHeaders]="false"

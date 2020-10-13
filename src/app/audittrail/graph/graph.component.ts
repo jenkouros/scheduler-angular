@@ -20,5 +20,5 @@ export class GraphComponent implements OnInit {
   log(data: string) {
     console.log(data);
   }
-  openNode() {}
+  openNode(idItem: number) {}
 }
