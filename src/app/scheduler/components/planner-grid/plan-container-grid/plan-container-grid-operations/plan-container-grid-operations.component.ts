@@ -20,6 +20,7 @@ import {
 import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
+import * as ContainersAction from '../../../../store/actions/containers.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
 import * as PlanItemActions from '../../../../store/actions/events.action';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
@@ -27,6 +28,7 @@ import { AppComponentBase } from '../../../../../shared/app-component-base';
 @Component({
   selector: 'app-plan-container-grid-operations',
   templateUrl: './plan-container-grid-operations.component.html',
+  styleUrls: ['./plan-container-grid-operations.component.css']
 })
 export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnDestroy {
   gridItems: PlanContainerGrid[] = [];
@@ -297,5 +299,14 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     return row.operation.linkedItemExecutionStatus && row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
       ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
       : '';
+  }
+
+  onGroupRowEdit(e, item) {
+    this.store.dispatch(new ContainersAction.UpdateContainer({idContainer: item.value, comment: e.target.value}));
+  }
+
+  getContainerComment(idContainer) {
+    const container = this.containers.find(c => c.id === idContainer);
+    return container ? container.comment : '';
   }
 }

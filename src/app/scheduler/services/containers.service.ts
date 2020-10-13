@@ -5,9 +5,8 @@ import { ContainerServer } from '../models/server/container.servermodel';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Container } from '../models/container.dto';
 import { environment } from '../../../environments/environment';
-import { ApiResponseResult, ApiResponse } from '../../shared/shared.model';
-import { switchMap, map, catchError } from 'rxjs/operators';
-import { ContainerEvents } from '../models/event.model';
+import { map, catchError } from 'rxjs/operators';
+import { ContainerEvents, ContainerPutRequest } from '../models/event.model';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
 
 @Injectable()
@@ -51,6 +50,11 @@ export class ContainersService {
             minFromDate,
             maxToDate
         };
-
     }
+
+    updateContainer(request: ContainerPutRequest) {
+        return this.http.put<ContainerServer>(environment.apiUrl + '/containers', request).pipe(
+            map(container => Container.fromServer(container))
+        );
+      }
 }

@@ -524,6 +524,11 @@ export interface PlanItemSearch {
     statusName: string;
 }
 
+export interface ContainerPutRequest {
+    idContainer: number;
+    comment: string;
+  }
+
 function colorMapper(planItemStatus: PlanItemStatusEnum) {
     switch (planItemStatus) {
         case PlanItemStatusEnum.Running:

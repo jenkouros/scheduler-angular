@@ -1,9 +1,12 @@
 import { Action } from '@ngrx/store';
 import { Container } from '../../models/container.dto';
+import { ContainerPutRequest } from '../../models/event.model';
 
 export const LOAD_CONTAINERS = '[Containers] Load containers';
 export const LOAD_CONTAINERS_FAIL = '[Containers] Load containers Fail';
 export const LOAD_CONTAINERS_SUCCESS = '[Containers] Load containers Success';
+export const UPDATE_CONTAINER = '[Containers] Update container';
+export const UPDATE_CONTAINER_SUCCESS = '[Containers] Update container Success';
 export const SELECT_CONTAINERS = '[Containers] Select containers';
 export const DESELECT_CONTAINERS = '[Containers] Deselect containers';
 export const RESELECT_CONTAINERS = '[Containers] Reselect containers';
@@ -28,6 +31,14 @@ export class LoadContainersFail implements Action {
 export class LoadContainersSuccess implements Action {
     readonly type = LOAD_CONTAINERS_SUCCESS;
     constructor(public payload: Container[]) {}
+}
+export class UpdateContainer implements Action {
+  readonly type = UPDATE_CONTAINER;
+  constructor(public payload: ContainerPutRequest) {}
+}
+export class UpdateContainerSuccess implements Action {
+  readonly type = UPDATE_CONTAINER_SUCCESS;
+  constructor(public payload: Container) {}
 }
 export class SelectContainers implements Action {
     readonly type = SELECT_CONTAINERS;
@@ -58,6 +69,8 @@ export type ContainersAction
     = LoadContainers
     | LoadContainersFail
     | LoadContainersSuccess
+    | UpdateContainer
+    | UpdateContainerSuccess
     | SelectContainers
     | DeselectContainers
     | ReselectContainers
