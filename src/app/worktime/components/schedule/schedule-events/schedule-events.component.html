@@ -16,7 +16,7 @@
   <!--<dxi-column alignment="center" [allowFiltering]="false" dataField="" cellTemplate="selectCellTemplate" [width]="100"></dxi-column>-->
 
   <div *dxTemplate="let cell of 'timeTableType'">
-    {{ cell.displayValue === 1 ? "delovni" : "nedelovni" }}
+    {{ cell.displayValue === 1 ? translate('Working') : translate('NotWorking') }}
   </div>
 
   <div *dxTemplate="let cell of 'rruleTemplate'">

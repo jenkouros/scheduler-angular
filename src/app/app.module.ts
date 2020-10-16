@@ -4,6 +4,7 @@ import { registerLocaleData } from '@angular/common';
 import localeSl from '@angular/common/locales/sl';
 import localeSr from '@angular/common/locales/sr-Latn';
 import localeEn from '@angular/common/locales/en';
+import localeDe from '@angular/common/locales/de';
 
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
@@ -47,7 +48,10 @@ loadMessages(devextremeMessages);
     } case 'en': {
       registerLocaleData(localeEn);
       break;
-  }
+    } case 'de': {
+      registerLocaleData(localeDe);
+      break;
+    }
  }
 
 
