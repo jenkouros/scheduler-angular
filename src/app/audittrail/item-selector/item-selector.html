@@ -1,0 +1,9 @@
+<dx-autocomplete
+  [(value)]="autocompleteValue"
+  placeholder="Delovni nalog"
+  [dataSource]="dataSource"
+  valueExpr="code"
+  (onItemClick)="onItemClick($event)"
+  (onEnterKey)="log($event)">
+</dx-autocomplete>
+

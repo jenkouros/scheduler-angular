@@ -1,18 +1,15 @@
-import { SharedModule } from './../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { CoreModule } from '../core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule, CanActivate, Routes } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { JwtInterceptor } from '../auth/helpers';
-import * as fromServices from './services';
-import { AuditComponent } from './audit.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
+import { DxAutocompleteModule } from 'devextreme-angular';
+import { JwtInterceptor } from '../auth/helpers';
+import { CoreModule } from '../core/core.module';
+import { AuditComponent } from './audit.component';
 import { GraphComponent } from './graph/graph.component';
+import { ItemSelectorComponent } from './item-selector/item-selector';
+import * as fromServices from './services';
 
 const routes: Routes = [
   {
@@ -24,14 +21,17 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AuditComponent,
-    GraphComponent
+    GraphComponent,
+    ItemSelectorComponent
   ],
   imports: [
     CoreModule,
     CommonModule,
     HttpClientModule,
     RouterModule.forChild(routes),
-    NgxGraphModule
+    NgxGraphModule,
+
+    DxAutocompleteModule
 
   ],
   providers: [

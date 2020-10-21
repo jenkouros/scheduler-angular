@@ -46,8 +46,8 @@
   </dxo-lookup>
   </dxi-column>
 
-  <div *dxTemplate="let itemData of 'groupTemplate'">  
-    {{itemData.text}} ({{itemData.summaryItems[0].value}}) 
+  <div *dxTemplate="let itemData of 'groupTemplate'">
+    {{itemData.text}} ({{itemData.summaryItems[0].value}})
 
     <input class="text-box-group-row" type="text" placeholder="{{translate('Edit')}}" value="{{getContainerComment(itemData.value)}}" (change)="onGroupRowEdit($event, itemData)">
 
@@ -60,7 +60,7 @@
       valueChangeEvent="keyup"
       [maxLength]="40"
     ></dx-text-box> -->
-  </div>  
+  </div>
   <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false"></dxi-column>
   <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false"></dxi-column>
@@ -119,7 +119,7 @@
   </div>
   <dxo-pager
       [showPageSizeSelector]="true"
-      [allowedPageSizes]="[5, 10, 20,30,50,100,200,500]"
+      [allowedPageSizes]="[10,20,50,100,200,500]"
       [showInfo]="true">
   </dxo-pager>
   <dxo-search-panel [visible]="true"></dxo-search-panel>

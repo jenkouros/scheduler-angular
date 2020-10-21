@@ -1,20 +1,17 @@
-import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
-import { AutoplanItem, PlanItemGridUpdate } from './../../../../store/actions/plan-item-grid.action';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 import { PlanGridItem } from '../../../../models/plan-grid-item-model';
-import { getContainerSelectList } from './../../../../store/selectors/containers.selectors';
-import { getSelectedPlanId } from './../../../../../plan/store/selectors/plans.selector';
-import { LoadContainers } from './../../../../store/actions/containers.action';
+import { getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationExecution, planGridOperationPriorities } from '../../../../models/plan-grid-operation.model';
+import * as PlanItemActions from '../../../../store/actions/events.action';
+import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
+import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
+import { AppState } from './../../../../../store/app.reducers';
+import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
 import { ContainerSelect } from './../../../../models/container.viewmodel';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
-import { AppState } from './../../../../../store/app.reducers';
-import { PlanGridOperation, planGridOperationPriorities, planGridOperationExecution, getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperationChange } from '../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
-import * as PlanItemActions from '../../../../store/actions/events.action';
-import { AppComponentBase } from '../../../../../shared/app-component-base';
-import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
+import { AutoplanItem, PlanItemGridUpdate } from './../../../../store/actions/plan-item-grid.action';
 
 @Component({
   selector: 'app-plan-item-grid-operations',
@@ -74,6 +71,11 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       ...e.oldData,
       ...e.newData
     } as PlanGridOperation;
+
+    updatedOperation.options = {
+      dayPlan: !this.planHours,
+      fixPlanItem: true
+    };
 
     if (e.oldData && e.oldData.idPrePlanItem &&
       (e.newData.hasOwnProperty('timeStart') || e.newData.hasOwnProperty('timeEnd'))) {

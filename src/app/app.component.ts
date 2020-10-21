@@ -1,9 +1,8 @@
-import { ApplicationFacadeService } from './store/application/application-facade.service';
 import { Component, OnInit } from '@angular/core';
-import { HubConnectionBuilder, LogLevel, HubConnection } from '@aspnet/signalr';
+import { AppComponentBase } from '../app/shared/app-component-base';
 import { appSettings, environment } from '../environments/environment';
 import { AuthenticationService } from './auth/services';
-import { AppComponentBase } from '../app/shared/app-component-base';
+import { ApplicationFacadeService } from './store/application/application-facade.service';
 
 interface Nav {
   link: string;
@@ -31,6 +30,11 @@ export class AppComponent extends AppComponentBase implements OnInit {
     {
       link: '/timetables',
       name: this.translate('Machine_Schedule'),
+      exact: false
+    },
+    {
+      link: '/audit',
+      name: 'Spremembe',
       exact: false
     }
   ];

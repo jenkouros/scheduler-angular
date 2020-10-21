@@ -1,7 +1,7 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuditModel } from './model/audit.model';
 import { AuditService } from './services/audit.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   templateUrl: './audit.component.html'
@@ -20,7 +20,6 @@ export class AuditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getData(59781);
   }
 
   ngOnDestroy() {

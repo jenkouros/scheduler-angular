@@ -1,5 +1,5 @@
-import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import * as fromAction from '../actions/plan-item-grid.action';
+import { PlanItemGrid } from './../../models/plan-item-grid-model';
 
 export interface PlanItemGridState {
   loading: boolean;
@@ -73,7 +73,7 @@ export function planItemGridReducer (
         planItemGrids: updatedGridItems,
         loading: false,
         planItemGridPopup: {
-          ...state,
+          ...state.planItemGridPopup,
           planItemGrid: itemDialogData
         }
       };

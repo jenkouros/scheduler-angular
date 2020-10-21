@@ -1,10 +1,17 @@
-<div style="width: 1600px; height: 900px;" *ngIf="model">
-  {{ model.itemId }}
 
-  <div *ngFor="let auditGroup of model.auditGroups">
-    <app-graph [auditGroup]="auditGroup" [initialItemId]="model.itemId"></app-graph>
-    <hr>
+
+<div style="width: 1600px; height: 700px; padding:20px;">
+  <div style="width:550px; margin-bottom: 20px;">
+    <h5>Zgodovina sprememb</h5>
+    <app-item-selector (selectItem)="getData($event.idItem)"></app-item-selector>
   </div>
+  <ng-container *ngIf="model">
+    <div *ngFor="let auditGroup of model.auditGroups">
+      <app-graph (nodeClicked)="getData($event)" [auditGroup]="auditGroup" [initialItemId]="model.itemId"></app-graph>
+      <hr>
+    </div>
+  </ng-container>
+
 
 
 </div>

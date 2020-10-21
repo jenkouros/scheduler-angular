@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AuditGroup } from '../model/audit.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuditChangeEnum } from '../model/audit-change-type.model';
+import { AuditGroup } from '../model/audit.model';
 
 @Component({
   selector: 'app-graph',
@@ -10,6 +10,7 @@ import { AuditChangeEnum } from '../model/audit-change-type.model';
 export class GraphComponent implements OnInit {
   @Input() auditGroup: AuditGroup;
   @Input() initialItemId: number;
+  @Output() nodeClicked = new EventEmitter<number>();
   changeType = AuditChangeEnum;
 
   constructor() { }
@@ -20,5 +21,7 @@ export class GraphComponent implements OnInit {
   log(data: string) {
     console.log(data);
   }
-  openNode(idItem: number) {}
+  openNode(idItem: number) {
+    this.nodeClicked.emit(idItem);
+  }
 }
