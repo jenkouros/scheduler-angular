@@ -1,39 +1,35 @@
-import { CoreModule } from './core/core.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
 import localeSl from '@angular/common/locales/sl';
 import localeSr from '@angular/common/locales/sr-Latn';
-import localeEn from '@angular/common/locales/en';
-import localeDe from '@angular/common/locales/de';
-
-
-
-// import { ServiceWorkerModule } from '@angular/service-worker';
-import { StoreModule, MetaReducer } from '@ngrx/store';
-import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { SchedulerModule } from './scheduler/scheduler.module';
-import { environment } from '../environments/environment';
-
-import { AppComponent } from './app.component';
-import { AppRouterModule } from './app-router.module';
-import { EffectsModule } from '@ngrx/effects';
-import { initialReducerMap, CustomSerializer, AppState } from './store/app.reducers';
-import { effects } from './store';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
-import { locale, loadMessages } from 'devextreme/localization';
-import 'devextreme-intl';
-import devextremeMessages from './shared/localization/sl-sr.json';
-import messagesCustom from './shared/localization/messages.json';
-import { SignalRService } from './scheduler/services/signalr.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { storeFreeze } from 'ngrx-store-freeze';
-import { PlanModule } from './plan/plan.module';
-import { JwtInterceptor, ErrorInterceptor } from './auth/helpers';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DxLoadPanelModule, DxLoadIndicatorModule } from 'devextreme-angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+// import { ServiceWorkerModule } from '@angular/service-worker';
+import { MetaReducer, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { DxLoadIndicatorModule, DxLoadPanelModule } from 'devextreme-angular';
+import 'devextreme-intl';
+import { loadMessages, locale } from 'devextreme/localization';
+import { environment } from '../environments/environment';
+import { AppRouterModule } from './app-router.module';
+import { AppComponent } from './app.component';
+import { ErrorInterceptor, JwtInterceptor } from './auth/helpers';
+import { CoreModule } from './core/core.module';
+import { PlanModule } from './plan/plan.module';
+import { SignalRService } from './scheduler/services/signalr.service';
+import messagesCustom from './shared/localization/messages.json';
+import devextremeMessages from './shared/localization/sl-sr.json';
+import { effects } from './store';
+import { AppState, CustomSerializer, initialReducerMap } from './store/app.reducers';
+
+
+
 
 // Set locale according the browser language
 loadMessages(messagesCustom);

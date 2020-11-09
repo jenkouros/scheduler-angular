@@ -1,5 +1,6 @@
 import { RRule, Weekday, Frequency, Options } from 'rrule';
-// import { Language } from '../../../../node_modules/rrule/dist/esm/nlp/i18n';
+import { Language } from 'rrule/dist/esm/src/nlp/i18n';
+import { environment } from '../../../environments/environment';
 
 export class RecurrenceRule {
   static Parse(rfcString): any {
@@ -85,13 +86,9 @@ export class RecurrenceRule {
   }
 }
 
-export function getTextById(id: string) {
-  // Return pt. string, default to english.
-  return slovenianStrings[id] || id;
-}
 
-export const slovenian /*: Language*/ = {
-  dayNames: ['nedeljo', 'ponedeljek', 'torek', 'sreda', 'četrtek', 'petek', 'soboto'],
+const slSet /*: Language*/ = {
+  dayNames: ['nedeljo', 'ponedeljek', 'torek', 'sredo', 'četrtek', 'petek', 'soboto'],
   monthNames: [
     'januar',
     'februar'
@@ -100,9 +97,29 @@ export const slovenian /*: Language*/ = {
   tokens: {}
   // `tokens` are only needed for `RRule.fromText`
 };
+const enSet /*: Language*/ = {
+  dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  monthNames: [
+    'januar',
+    'februar'
+    // …
+  ],
+  tokens: {}
+  // `tokens` are only needed for `RRule.fromText`
+};
+const deSet /*: Language*/ = {
+  dayNames: ['Sontag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+  monthNames: [
+    'Januar',
+    'Februar'
+    // …
+  ],
+  tokens: {}
+  // `tokens` are only needed for `RRule.fromText`
+};
 
 // Strings
-const slovenianStrings = {
+const slStrings = {
   every: 'vsak',
   day: 'dan',
   days: 'dnevi',
@@ -127,3 +144,91 @@ const slovenianStrings = {
   sunday: 'nedelja'
   // …
 };
+const enStrings = {
+  every: 'every',
+  day: 'day',
+  days: 'days',
+  week: 'week',
+  weeks: 'weeks',
+  on: 'on',
+  weekday: 'weekday',
+  at: 'at',
+  first: 'first',
+  second: 'second',
+  third: 'third',
+  last: 'last',
+  for: 'for',
+  'time(s)': 'time',
+  until: 'until',
+  monday: 'Monday',
+  tuesday: 'Tuesday',
+  wednesday: 'Wednesday',
+  thursday: 'Thursday',
+  friday: 'Friday',
+  saturday: 'Saturday',
+  sunday: 'Sunday'
+  // …
+};
+const deStrings = {
+  every: 'jeder',
+  day: 'tag',
+  days: 'tage',
+  week: 'woche',
+  weeks: 'woche',
+  on: 'am',
+  weekday: 'wochentag',
+  at: 'um',
+  first: 'zuerst',
+  second: 'zweite',
+  third: 'dritte',
+  last: 'letzte',
+  for: 'zum',
+  'time(s)': 'zeit',
+  until: 'bis um',
+  monday: 'Montag',
+  tuesday: 'Dienstag',
+  wednesday: 'Mittwoch',
+  thursday: 'Donnerstag',
+  friday: 'Freitag',
+  saturday: 'Samstag',
+  sunday: 'Sonntag'
+  // …
+};
+
+export class RRhelper {
+  private _locale: string;
+  languageSet: Language;
+
+  constructor(locale: string) {
+    this._locale = locale;
+    this.languageSet = this.getLanguageSet();
+  }
+
+  getTextById(id: string) {
+    switch (environment.locale) {
+      case 'sl': {
+        return slStrings[id] || id;
+      }
+      case 'de': {
+        return deStrings[id] || id;
+      }
+      default: {
+        return enStrings[id] || id;
+      }
+    }
+  }
+
+  private getLanguageSet(): Language {
+    switch (this._locale) {
+      case 'sl': {
+        return slSet;
+      }
+      case 'de': {
+        return deSet;
+      }
+      default: {
+        return enSet;
+      }
+    }
+  }
+}

@@ -54,7 +54,7 @@ export class CalendarsComponent extends AppComponentBase implements OnInit, Afte
   generatePopupVisible$: Observable<boolean>;
   height: number;
 
-  @ViewChild(DxScrollViewComponent, { static:false })
+  @ViewChild(DxScrollViewComponent, { static: false })
   scrollbar: DxScrollViewComponent;
 
   constructor(
@@ -88,7 +88,7 @@ export class CalendarsComponent extends AppComponentBase implements OnInit, Afte
       {
         location: 'after',
         widget: 'dxButton',
-        locateInMenu: 'never',
+        locateInMenu: 'auto',
 
         options: {
           icon: 'refresh',
