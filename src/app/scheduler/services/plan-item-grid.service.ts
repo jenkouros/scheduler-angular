@@ -1,27 +1,27 @@
-import { PlanContainerGrid } from './../models/plan-container-grid.model';
-import { PlanGridOperation } from '../models/plan-grid-operation.model';
-import { PlanItemGrid } from './../models/plan-item-grid-model';
-import { environment, appSettings } from './../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ItemAutoplanRequest } from '../models/item-autoplan.model';
-import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
 import * as moment from 'moment';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
 import { Container } from '../models/container.dto';
+import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
+import { ItemAutoplanRequest } from '../models/item-autoplan.model';
+import { PlanGridOperation } from '../models/plan-grid-operation.model';
 import { PlanItemContainerGridModel } from '../models/plan-item-container-grid.model';
+import { appSettings, environment } from './../../../environments/environment';
+import { PlanItemGrid } from './../models/plan-item-grid-model';
 
 @Injectable()
 export class PlanItemGridService {
   constructor(private http: HttpClient) {}
 
-  loadPlanItemGrid(idPlan: number, limitDate: Date, filterDictionary: { [id: string]: number[] } = {}) {
+  loadPlanItemGrid(idPlan: number, limitDate: Date, filterDictionary: { [id: string]: number[] } = {}, showArchive = false) {
     const dict = DictionaryHelper.stringify(filterDictionary);
     const params = {
       'idPlan': idPlan.toString(),
       'ids': dict.ids,
       'values': dict.values,
-      'dateLimit': moment(limitDate).format()
+      'dateLimit': moment(limitDate).format(),
+      'showArchive': showArchive
     };
     return this.http.post<PlanItemGrid[]>(environment.apiUrl + '/planitemgrid', params);
   }

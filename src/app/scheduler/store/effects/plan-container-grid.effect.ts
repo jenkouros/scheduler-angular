@@ -1,13 +1,12 @@
-import { AppState } from './../../../store/app.reducers';
-import { switchMap, map, catchError, withLatestFrom, mergeMap } from 'rxjs/operators';
-import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as fromActions from '../actions/plan-container-grid.action';
+import { Actions, Effect } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { Store, select } from '@ngrx/store';
+import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { PlanContainerGridService } from '../../services/plan-container-grid.service';
-import * as eventActions from '../actions/events.action';
-import * as containerGridActions from '../actions/plan-container-grid.action';
+import * as fromEventActions from '../actions/events.action';
+import * as fromActions from '../actions/plan-container-grid.action';
+import { AppState } from './../../../store/app.reducers';
 
 @Injectable()
 export class PlanContainerGridEffect {
@@ -33,11 +32,13 @@ export class PlanContainerGridEffect {
     withLatestFrom(
       this.store.pipe(select(state => state.scheduler.filters)),
       this.store.pipe(select(state => state.plan.items.selectedId)),
-      this.store.pipe(select(state => state.scheduler.planContainerGrid.containerGridLimitDate))
+      this.store.pipe(select(state => state.scheduler.planContainerGrid.containerGridLimitDate)),
+      this.store.pipe(select(state => state.scheduler.planContainerGrid.showArchiveSwitch))
     ),
-    switchMap(([action, filters, idPlan, limitDate]) =>
+    switchMap(([action, filters, idPlan, limitDate, showArchive]) =>
 
-      this.planContainerGridService.loadPlanContainerGrid(idPlan, limitDate, filters.selectedEntities, filters.selectedContainers).pipe(
+      this.planContainerGridService.loadPlanContainerGrid(
+        idPlan, limitDate, filters.selectedEntities, filters.selectedContainers, showArchive).pipe(
         map(event => new fromActions.LoadPlanContainerGridSuccess(event)),
         catchError(error => of(new fromActions.LoadPlanContainerGridFail()))
       )
@@ -56,8 +57,9 @@ export class PlanContainerGridEffect {
 
   @Effect()
   updateplanItem$ = this.actions$.ofType(fromActions.PLAN_CONTAINER_GRID_UPDATE).pipe(
-    switchMap((action: fromActions.PlanContainerGridUpdate) =>
-      this.planContainerGridService.updatePlanItem(action.payload).pipe(
+    map((action: fromActions.PlanContainerGridUpdate) => action.payload),
+    switchMap(payload =>
+      this.planContainerGridService.updatePlanItem(payload).pipe(
         map(items => new fromActions.UpdateContainerGridSuccess(items)),
         catchError(error => of(new fromActions.UpdateContainerGridFail()))
       )
@@ -69,8 +71,8 @@ export class PlanContainerGridEffect {
       this.planContainerGridService.updatePlanItemSimple(action.payload.operation).pipe(
         mergeMap(items => [
           new fromActions.UpdateContainerGridSuccess(items),
-          // new eventActions.LoadEvent({ id: action.payload.idPlanItem }),
-          new containerGridActions.HideUpdatePlanGridOperationDialog()
+          new fromEventActions.LoadEvent({ id: action.payload.idPlanItem }),
+          new fromActions.HideUpdatePlanGridOperationDialog()
         ]),
         catchError(error => of(new fromActions.UpdateContainerGridFail()))
       )

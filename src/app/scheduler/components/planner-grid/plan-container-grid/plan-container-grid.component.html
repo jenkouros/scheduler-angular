@@ -18,6 +18,13 @@
     widget="dxCheckBox"
     locateInMenu="auto"
     cssClass="toolbar-item-custom"
+    [options]="{ text: 'Arhiv', value:showArchiveSwitch$ | async, onValueChanged: showArchiveSwitchEvent }">
+  </dxi-item>
+
+  <dxi-item location="auto"
+    widget="dxCheckBox"
+    locateInMenu="auto"
+    cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannHoursSwitchEvent }">
   </dxi-item>
 
@@ -30,6 +37,7 @@
   <!-- <dxi-item location="auto" widget="dxButton" locateInMenu="never"
   [options]="{ text: translate('Add_WorkOrder'), onClick: openCreateItemPopup }">
 </dxi-item> -->
+
 
   <dxi-item location="after"
     widget="dxCheckBox"
@@ -47,6 +55,7 @@
 </dx-toolbar>
 
 <app-plan-container-grid-operations
+  [editable]="!(showArchiveSwitch$ | async)"
   id="operationGridContainer"
   [datasource]="planContainerGrid$ | async"
   [containers]="containers$ | async"

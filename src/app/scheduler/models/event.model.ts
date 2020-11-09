@@ -1,11 +1,10 @@
-import { PlannedEventServer, PlannedEventSimpleServer, PlanItemResponseServer } from '../models/server/plannedevent.servermodel';
-import { PreplanItem } from './preplanitem.dto';
-import { SubItemContainerServer } from './server/preplanitem.servermodel';
-import { SubItemContainer } from './subitem.dto';
-import { PlanSchedule } from './planschedule.dto';
 import * as moment from 'moment';
 import { environment } from '../../../environments/environment';
 import { TimeHelper } from '../helpers/time.helper';
+import { PlanItemResponseServer, PlannedEventServer, PlannedEventSimpleServer } from '../models/server/plannedevent.servermodel';
+import { PlanSchedule } from './planschedule.dto';
+import { PreplanItem } from './preplanitem.dto';
+import { SubItemContainer } from './subitem.dto';
 
 export interface ContainerEvents {
     events: PlannedEvent[];
@@ -39,6 +38,7 @@ export interface PlanItemPutRequestOptions {
     snapFurtherItems?: boolean;
     isUserDurationChange?: boolean;
     dayPlan?: boolean;
+    containerMoveSync?: boolean;
 }
 
 export interface PlanItemCreateRequest {

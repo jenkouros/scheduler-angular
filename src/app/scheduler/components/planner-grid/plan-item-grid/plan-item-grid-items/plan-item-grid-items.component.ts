@@ -1,9 +1,8 @@
-import { ContainerSelect } from './../../../../models/container.viewmodel';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { PlanItemGrid } from './../../../../models/plan-item-grid-model';
-import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
-import { normalize } from 'path';
+import { ContainerSelect } from './../../../../models/container.viewmodel';
+import { PlanItemGrid } from './../../../../models/plan-item-grid-model';
 
 @Component({
   selector: 'app-plan-item-grid-items',
@@ -12,6 +11,7 @@ import { normalize } from 'path';
 })
 export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() items: PlanItemGrid[];
+  @Input() editable = false;
   @Input() selectedItems: PlanItemGrid[] = [];
   @Input() enableGrouping = true;
   @Input() enableSearch = true;

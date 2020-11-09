@@ -1,9 +1,7 @@
-import { PlannedEventSimple } from './../../models/event.model';
-import { PlanItemGrid } from './../../models/plan-item-grid-model';
 import { Action } from '@ngrx/store';
-import { ItemAutoplanRequest } from '../../models/item-autoplan.model';
-import { PlanGridOperation, PlanGridOperationChange } from '../../models/plan-grid-operation.model';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
+import { PlanGridOperation, PlanGridOperationChange } from '../../models/plan-grid-operation.model';
+import { PlannedEventSimple } from './../../models/event.model';
 
 export const LOAD_PLAN_CONTAINER_GRID = '[PlanContainerGrid] Load Plan Container Grid';
 export const LOAD_PLAN_CONTAINER_GRID_SUCCESS = '[PlanContainerGrid] Load Plan Container Grid Success';
@@ -18,6 +16,7 @@ export const PLAN_CONTAINER_DIALOG_GRID_UPDATE = '[PlanContainerGrid] Plan Conta
 export const PLAN_CONTAINER_GRID_SET_LIMIT_DATE = '[PlanContainerGrid] Set load Plan Container grid limit date';
 
 export const PLAN_CONTAINER_GRID_PLANHOURS_SWITCH = '[PlanContainerGrid] Set plan container grid planhours switch';
+export const PLAN_CONTAINER_GRID_SHOWARCHIVE_SWITCH = '[PlanContainerGrid] Set plan container grid show archive switch';
 export const PLAN_CONTAINER_GRID_EXPANDALL_SWITCH = '[PlanContainerGrid] Set plan container grid expand all switch';
 export const PLAN_CONTAINER_GRID_INPROGRESSWO_SWITCH = '[PlanContainerGrid] Set plan container grid in progress wo switch';
 export const PLAN_CONTAINER_GRID_CURRENT_SWITCH = '[PlanContainerGrid] Set plan container grid current wo switch';
@@ -103,6 +102,11 @@ export class SetCurrentWoSwitch implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetShowArchiveSwitch implements Action {
+  readonly type = PLAN_CONTAINER_GRID_SHOWARCHIVE_SWITCH;
+  constructor(public payload: boolean) {}
+}
+
 
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
@@ -121,4 +125,5 @@ export type PlanContainerGridAction =
   | HideUpdatePlanGridOperationDialog
   | SetInProgressWoSwitch
   | SetCurrentWoSwitch
+  | SetShowArchiveSwitch
   ;

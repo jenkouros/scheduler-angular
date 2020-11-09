@@ -1,23 +1,29 @@
-import { Subscription } from 'rxjs';
-import { PlannedEventSimple } from './../../../../models/event.model';
-import { AppState } from './../../../../../store/app.reducers';
-import { Store, select } from '@ngrx/store';
-import { PlanGridOperationChange, OperationChangeOriginEnum, PlanGridOperation } from './../../../../models/plan-grid-operation.model';
 import { Component, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-
+import { FormControl, FormGroup } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanItemGridActions from '../../../../store/actions/plan-item-grid.action';
-import { AppComponentBase } from '../../../../../shared/app-component-base';
-
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
+import { AppState } from './../../../../../store/app.reducers';
+import { PlannedEventSimple } from './../../../../models/event.model';
+import { OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange } from './../../../../models/plan-grid-operation.model';
+
+
 
 @Component({
   selector: 'app-update-time-dialog',
   templateUrl: './update-time-dialog.component.html'
 })
 export class UpdateTimeDialogComponent extends AppComponentBase implements OnDestroy {
-  @Input() visible: boolean;
+  visible: boolean;
+  @Input('visible') set popupVisible(data: boolean) {
+    this.visible = data;
+    if (!this.visible) {
+      this.resetForm();
+    }
+  }
   changeData: PlanGridOperationChange;
   @Input('changeData') set model(data: PlanGridOperationChange) {
     if (!data) {
@@ -95,7 +101,14 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
     this.form = new FormGroup({
       planItemChange: new FormControl(1),
       itemChange: new FormControl(true),
-      fixPlanItem: new FormControl(true)
+      fixPlanItem: new FormControl(true),
+      containerMoveSync: new FormControl(false)
+    });
+  }
+
+  resetForm() {
+    this.form.patchValue({
+      containerMoveSync: false
     });
   }
 
@@ -153,7 +166,8 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
       snapFurtherItems: this.form.value.itemChange,
       isUserDurationChange: this.form.value.planItemChange === 1,
       fixPlanItem: this.form.value.fixPlanItem,
-      dayPlan: this.dayPlan
+      dayPlan: this.dayPlan,
+      containerMoveSync: this.form.value.containerMoveSync
       // dayPlan
 
     };

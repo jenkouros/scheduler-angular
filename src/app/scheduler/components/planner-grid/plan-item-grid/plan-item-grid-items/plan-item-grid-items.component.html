@@ -10,7 +10,7 @@
 
     <!-- <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_item_grid_items_DevExtremeStorage"></dxo-state-storing> -->
     <dxo-filter-row [visible]="enableSearch"></dxo-filter-row>
-    <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
+    <dxo-editing mode="cell" [allowUpdating]="editable"></dxo-editing>
     <dxo-load-panel [enabled]="loader"></dxo-load-panel>
     <!-- <dxi-column dataField="item.idItem"></dxi-column> -->
 
@@ -56,7 +56,8 @@
         [operations]="planItemGrid.data.operations"
         [item]="planItemGrid.data.item"
         [containers]="containers"
-        [loader]="loader">
+        [loader]="loader"
+        [editable]="editable">
       </app-plan-item-grid-operations>
     </div>
       <div class="sub-table" *ngIf="planItemGrid.data.packingItems && planItemGrid.data.packingItems.length > 0">
@@ -67,6 +68,7 @@
           [enableGrouping]="false"
           [enableSearch]="false"
           [expandDetails]="true"
+          [editable]="editable"
           ></app-plan-item-grid-items>
       </div>
 
@@ -78,6 +80,7 @@
           [enableGrouping]="false"
           [enableSearch]="false"
           [expandDetails]="true"
+          [editable]="editable"
           ></app-plan-item-grid-items>
       </div>
   </div>

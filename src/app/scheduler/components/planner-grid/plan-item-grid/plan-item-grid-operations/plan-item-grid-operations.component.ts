@@ -20,6 +20,7 @@ import { AutoplanItem, PlanItemGridUpdate } from './../../../../store/actions/pl
 export class PlanItemGridOperationsComponent extends AppComponentBase implements OnDestroy {
   planHoursSwitch$: Observable<boolean>;
   @Input() operations: PlanGridOperation[];
+  @Input() editable = false;
   @Input() item: PlanGridItem;
   @Output() updateItem = new EventEmitter();
   @Input() containers: ContainerSelect[];

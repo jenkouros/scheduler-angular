@@ -1,8 +1,6 @@
-import { limitContainerGridLoadDate } from './../selectors/plan-container-grid.selectors';
-import { PlanItemGrid } from './../../models/plan-item-grid-model';
-import * as fromAction from '../actions/plan-container-grid.action';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 import { PlanGridOperationChange } from '../../models/plan-grid-operation.model';
+import * as fromAction from '../actions/plan-container-grid.action';
 
 export interface PlanContainerGridState {
   loading: boolean;
@@ -11,6 +9,7 @@ export interface PlanContainerGridState {
   containerGridLimitDate: Date;
   planHoursSwitch: boolean;
   expandAllSwitch: boolean;
+  showArchiveSwitch: boolean;
   updateTimeDialogData: PlanGridOperationChange | undefined;
   inProgressWoSwitch: boolean;
   currentWoSwitch: boolean;
@@ -30,7 +29,8 @@ export const initialState: PlanContainerGridState = {
   expandAllSwitch: false,
   updateTimeDialogData: undefined,
   inProgressWoSwitch: false,
-  currentWoSwitch: false
+  currentWoSwitch: false,
+  showArchiveSwitch: false
 };
 
 export function planItemGridReducer (
@@ -67,7 +67,7 @@ export function planItemGridReducer (
       }
 
       const items = [...action.payload];
-      let updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
+      const updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
         if (!containerGrid.operation.idPrePlanItem) {
           const subItem = action.payload.find(i =>
             i.operation.idSubItem === containerGrid.operation.idSubItem);
@@ -91,9 +91,10 @@ export function planItemGridReducer (
         return containerGrid;
       });
 
-      if (items.length > 0) {
-        updatedGridItems = updatedGridItems.concat(items);
-      }
+      // ADD NEW OPERATIONS - comment: don't add because filter
+      // if (items.length > 0) {
+      //  updatedGridItems = updatedGridItems.concat(items);
+      // }
 
       return {
         ...state,
@@ -145,6 +146,12 @@ export function planItemGridReducer (
       return {
         ...state,
         planHoursSwitch: action.payload
+      };
+    }
+    case fromAction.PLAN_CONTAINER_GRID_SHOWARCHIVE_SWITCH: {
+      return {
+        ...state,
+        showArchiveSwitch: action.payload
       };
     }
     case fromAction.PLAN_CONTAINER_GRID_EXPANDALL_SWITCH: {

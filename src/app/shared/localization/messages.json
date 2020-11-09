@@ -183,7 +183,8 @@
         "Workorders_In_Progress": "Nalogi v izvajanju",
         "Current_Workorders": "Aktualni nalogi",
         "Fix_Plan_Item": "Vrivanje",
-        "Add_WorkOrder": "Dodaj delovni nalog"
+        "Add_WorkOrder": "Dodaj delovni nalog",
+        "ContainerSyncMove": "Pripni operacije delovnega mesta"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -368,7 +369,8 @@
         "Workorders_In_Progress": "Radni nalogi u toku",
         "Current_Workorders": "Stvarni radni nalogi",
         "Fix_Plan_Item": "Gurnuti",
-        "Add_WorkOrder": "Dodaj radni nalog"
+        "Add_WorkOrder": "Dodaj radni nalog",
+        "ContainerSyncMove": "Priložite operacije radnog mesta"
     },
     "en": {
       "Add": "Add",
@@ -553,7 +555,8 @@
       "Workorders_In_Progress": "Workorders in progress",
       "Current_Workorders": "Current workorders",
       "Fix_Plan_Item": "Push in",
-      "Add_WorkOrder": "Add working order"
+      "Add_WorkOrder": "Add working order",
+      "ContainerSyncMove": "Snap workplace's operations"
 
   }
 

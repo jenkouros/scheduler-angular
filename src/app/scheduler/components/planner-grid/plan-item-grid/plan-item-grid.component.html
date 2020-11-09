@@ -14,6 +14,13 @@
     widget="dxCheckBox"
     locateInMenu="auto"
     cssClass="toolbar-item-custom"
+    [options]="{ text: 'Arhiv', value:showArchiveSwitch$ | async, onValueChanged: showArchiveSwitchEvent }">
+  </dxi-item>
+
+  <dxi-item location="auto"
+    widget="dxCheckBox"
+    locateInMenu="auto"
+    cssClass="toolbar-item-custom"
     [options]="{ text: translate('Plan_hours'), value:planHoursSwitch$ | async, onValueChanged: plannedHoursSwitchEvent }">
   </dxi-item>
 
@@ -28,6 +35,7 @@
   [selectedItems]="selectedPlanItemGrid$ | async"
   (selectItem)="onItemSelect($event)"
   [containers]="containers$ | async"
+  [editable]="!(showArchiveSwitch$ | async)"
 >
 </app-plan-item-grid-items>
 

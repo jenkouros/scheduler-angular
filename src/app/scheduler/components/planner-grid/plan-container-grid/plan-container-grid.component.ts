@@ -1,18 +1,18 @@
-import { ToolbarGroup, Toolbar, ToolbarItem, ToolbarItemStateEnum, ToolbarItemActionEnum, ToolbarItemTypeEnum } from './../../../../shared/components/toolbar/toolbar.model';
-import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
-import { LoadContainers } from './../../../store/actions/containers.action';
+import { Component } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { AppComponentBase } from '../../../../shared/app-component-base';
+import * as ItemActions from '../../../store/actions/items.action';
+import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
+import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 import { getSelectedPlanId } from './../../../../plan/store/selectors/plans.selector';
+import { Toolbar, ToolbarGroup, ToolbarItem, ToolbarItemStateEnum, ToolbarItemTypeEnum } from './../../../../shared/components/toolbar/toolbar.model';
 import { AppState } from './../../../../store/app.reducers';
 import { ContainerSelect } from './../../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../../models/plan-container-grid.model';
-import { Component } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
-import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
-import { AppComponentBase } from '../../../../shared/app-component-base';
+import { LoadContainers } from './../../../store/actions/containers.action';
+import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
 import { PlanContainerGridActionEnum } from './plan-container-grid-action.model';
-import * as ItemActions from '../../../store/actions/items.action';
 
 @Component({
   selector: 'app-plan-container-grid',
@@ -31,6 +31,7 @@ export class PlanContainerGridComponent extends AppComponentBase {
   limitDateSubscription: Subscription;
   containers$: Observable<ContainerSelect[]>;
   toolbar: Toolbar;
+  showArchiveSwitch$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
     super();
@@ -40,7 +41,9 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.currentWoSwitchEvent = this.currentWoSwitchEvent.bind(this);
     this.setLimitDate = this.setLimitDate.bind(this);
     this.openCreateItemPopup = this.openCreateItemPopup.bind(this);
+    this.showArchiveSwitchEvent = this.showArchiveSwitchEvent.bind(this);
     this.toolbar = this.createToolbar();
+    this.showArchiveSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.showArchiveSwitch));
 
     store.pipe(select(getSelectedPlanId))
     .subscribe(id => {
@@ -82,6 +85,11 @@ export class PlanContainerGridComponent extends AppComponentBase {
   }
   currentWoSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetCurrentWoSwitch(e.value));
+  }
+
+  showArchiveSwitchEvent(e) {
+    this.store.dispatch(new PlanContainerGridActions.SetShowArchiveSwitch(e.value));
+    this.store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid());
   }
 
   createToolbar() {

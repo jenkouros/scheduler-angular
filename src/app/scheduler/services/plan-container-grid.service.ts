@@ -1,15 +1,13 @@
-import { PlannedEventSimple } from './../models/event.model';
-import { PlanGridOperation } from '../models/plan-grid-operation.model';
-import { PlanItemGrid } from './../models/plan-item-grid-model';
-import { environment, appSettings } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ItemAutoplanRequest } from '../models/item-autoplan.model';
-import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
 import * as moment from 'moment';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
-import { PlanContainerGrid } from '../models/plan-container-grid.model';
 import { Container } from '../models/container.dto';
+import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
+import { PlanContainerGrid } from '../models/plan-container-grid.model';
+import { PlanGridOperation } from '../models/plan-grid-operation.model';
+import { appSettings, environment } from './../../../environments/environment';
+import { PlannedEventSimple } from './../models/event.model';
 
 @Injectable()
 export class PlanContainerGridService {
@@ -18,7 +16,8 @@ export class PlanContainerGridService {
   loadPlanContainerGrid(idPlan: number,
                         limitDate: Date,
                         filterDictionary: { [id: string]: number[] } = {},
-                        filterContainers: Container[] = []) {
+                        filterContainers: Container[] = [],
+                        showArchive: boolean = false) {
 
     const containers = filterContainers.map(i => i.id.toString());
     const dict = DictionaryHelper.stringify(filterDictionary);
@@ -27,7 +26,8 @@ export class PlanContainerGridService {
       'ids': dict.ids,
       'values': dict.values,
       'dateLimit': moment(limitDate).format(),
-      'containers': containers
+      'containers': containers,
+      'showArchive': showArchive
     };
     return this.http.post<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', params);
   }
