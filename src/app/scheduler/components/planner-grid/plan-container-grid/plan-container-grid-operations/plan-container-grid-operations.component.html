@@ -10,7 +10,6 @@
   (onCellClick)="onCellClick($event)"
   [allowColumnResizing]="true"
   (onRowValidating)="validatePlanGridRow($event)">
-  <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
 
   <dxo-summary>
     <dxi-group-item
@@ -22,7 +21,8 @@
   </dxo-summary>
 
   <dxo-export [enabled]="true" fileName="export"></dxo-export>
-  <!-- <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing> -->
+  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+  <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-editing
     mode="cell"
