@@ -1,3 +1,4 @@
+import { translate } from '../../shared/app-component-base';
 import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
 
 export interface ItemExecutionStatus {
@@ -9,9 +10,15 @@ export interface LinkedItemExecutionStatus {
   status: number;
 }
 
+export interface ParentLinkedItemStatus {
+  status: number;
+  containerCode: string;
+}
+
 export interface PlanGridOperation {
   itemExecutionStatus: ItemExecutionStatus;
   linkedItemExecutionStatus: LinkedItemExecutionStatus;
+  parentLinkedItemStatus: ParentLinkedItemStatus;
   idPrePlanItem: number;
   code: string;
   name: string;
@@ -50,18 +57,18 @@ export enum OperationChangeOriginEnum {
 }
 
 export const planGridOperationPriorities = [
-    { ID: 0, Name: 'Normalna' },
-    { ID: 1, Name: 'Nizka' },
-    { ID: 2, Name: 'Visoka' }
+    { ID: 0, Name: translate('normal') },
+    { ID: 1, Name: translate('low') },
+    { ID: 2, Name: translate('high') }
   ];
 
   export const planGridOperationExecution = [
-  { ID: 1, Name: 'Planiran' },
-  { ID: 2, Name: 'V izvajanju' },
-  { ID: 3, Name: 'Končan' },
-  { ID: 4, Name: 'V zastoju' },
-  { ID: 5, Name: 'Preklican' },
-  { ID: 6, Name: 'V niansiranju' }
+  { ID: 1, Name: translate('PlanItemStatus1') },
+  { ID: 2, Name: translate('PlanItemStatus2') },
+  { ID: 3, Name: translate('PlanItemStatus3') },
+  { ID: 4, Name: translate('PlanItemStatus4') },
+  { ID: 5, Name: translate('PlanItemStatus5') },
+  { ID: 6, Name: translate('PlanItemStatus6') }
 ];
 
 export function getplanGridOperationExecutionColor(id) {

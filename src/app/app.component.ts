@@ -34,7 +34,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
     },
     {
       link: '/audit',
-      name: 'Spremembe',
+      name: this.translate('Changes'),
       exact: false
     }
   ];

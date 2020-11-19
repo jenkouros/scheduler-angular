@@ -12,3 +12,10 @@ export abstract class AppComponentBase {
     }
 }
 
+export function translate(message: string) {
+  const mess = formatMessage(message, '');
+  if (mess === '') {
+      return '#' + message + '#';
+  }
+  return mess;
+}

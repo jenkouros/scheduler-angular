@@ -1,6 +1,6 @@
 <dx-autocomplete
   [(value)]="autocompleteValue"
-  placeholder="Delovni nalog"
+  [placeholder]="translate('Workorder')"
   [dataSource]="dataSource"
   valueExpr="code"
   (onItemClick)="onItemClick($event)"

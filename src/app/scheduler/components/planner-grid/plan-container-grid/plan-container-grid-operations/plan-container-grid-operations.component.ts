@@ -229,6 +229,16 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       case 'operation.linkedItemExecutionStatus.status': {
         if (LinkedItemStatusEnum.Finished === e.data.operation.linkedItemExecutionStatus.status) {
           e.cellElement.style.background = '#d6d6d6';
+        } else if (LinkedItemStatusEnum.Running === e.data.operation.linkedItemExecutionStatus.status) {
+          e.cellElement.style.background = '#ccfbcc';
+        }
+        break;
+      }
+      case 'operation.parentLinkedItemStatus.containerCode': {
+        if (LinkedItemStatusEnum.Finished === e.data.operation.parentLinkedItemStatus.status) {
+          e.cellElement.style.background = '#d6d6d6';
+        } else if (LinkedItemStatusEnum.Running === e.data.operation.parentLinkedItemStatus.status) {
+          e.cellElement.style.background = '#ccfbcc';
         }
         break;
       }
@@ -290,9 +300,17 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   }
 
   getLinkedItemsStatus = (row) => {
-    return row.operation.linkedItemExecutionStatus && row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
-      ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
-      : '';
+    if (!row.operation.linkedItemExecutionStatus) { return ''; }
+
+    switch (row.operation.linkedItemExecutionStatus.status) {
+      case LinkedItemStatusEnum.Finished:
+      case LinkedItemStatusEnum.Running:
+        return this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status);
+    }
+    return '';
+    // return row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
+    //   ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
+    //   : '';
   }
 
   onGroupRowEdit(e, item) {

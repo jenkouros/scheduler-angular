@@ -22,6 +22,10 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() loader = false;
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
 
+  constructor() {
+    super();
+    this.calculatePlanStatus = this.calculatePlanStatus.bind(this);
+  }
 
   // rowCollapsed(e) {
   //   // const idx = this.selectedIndexes.indexOf(this.grid.instance.getRowIndexByKey(e.key));
@@ -59,18 +63,18 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
         continue;
       }
       if (operation.containerCode.includes('NO_CODE')) {
-        return 'Delno planiran';
+        return this.translate('ItemStatus2');
       }
 
     }
     if (emptyCount === data.operations.length) {
-      return 'Lansiran';
+      return this.translate('ItemStatus1');
     }
     if (emptyCount === 0) {
-      return 'Dokončno planiran';
+      return this.translate('ItemStatus3');
     }
 
-    return 'Delno planiran';
+    return this.translate('ItemStatus2');
   }
 
   applyCellStyles(e) {
@@ -83,11 +87,12 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   }
 
   getItemPlanStatusColor(id) {
-    if (id === 'Lansiran') {
+    // debugger;
+    if (id === this.translate('ItemStatus1')) {
       return '';
-    } else if (id === 'Delno planiran') {
+    } else if (id === this.translate('ItemStatus2')) {
       return '#fbe8cc';
-    } else if (id === 'Dokončno planiran') {
+    } else if (id === this.translate('ItemStatus3')) {
       return '#d6d6d6';
     }
   }

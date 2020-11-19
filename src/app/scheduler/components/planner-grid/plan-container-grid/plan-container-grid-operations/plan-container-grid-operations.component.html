@@ -102,7 +102,11 @@
   <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
   <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>
   <dxi-column dataField="operation.itemExecutionStatus.operationName" [caption]="translate('OrderStatus')"></dxi-column>
-  <dxi-column dataField="operation.linkedItemExecutionStatus.status" [calculateCellValue]="getLinkedItemsStatus" [caption]="translate('Filling')"></dxi-column>
+  <dxi-column dataField="operation.linkedItemExecutionStatus.status"
+    [calculateCellValue]="getLinkedItemsStatus"
+    [caption]="translate('Filling')"></dxi-column>
+    <dxi-column dataField="operation.parentLinkedItemStatus.containerCode"
+    [caption]="translate('Filling')"></dxi-column>
 
   <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
 

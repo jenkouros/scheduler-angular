@@ -1,28 +1,21 @@
-import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
-import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
-import { PlanItemCreateRequest, PlanItemStatusEnum } from './../../../../models/event.model';
-import { appSettings } from './../../../../../../environments/environment.ecm360test';
-import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
-import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
-import { HelpersService } from './../../../../../shared/services/helpers.service';
+import { EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { AppState } from './../../../../../store/app.reducers';
-import { ContainerSelect } from './../../../../models/container.viewmodel';
-import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
-import {
-  PlanGridOperation,
-  planGridOperationPriorities,
-  planGridOperationExecution,
-  getplanGridOperationExecutionColor,
-  getplanGridOperationPriorityColor,
-  PlanGridOperationChange,
-  OperationChangeOriginEnum} from './../../../../models/plan-grid-operation.model';
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { AppComponentBase } from '../../../../../shared/app-component-base';
+import * as PlanItemActions from '../../../../store/actions/events.action';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
-import * as PlanItemActions from '../../../../store/actions/events.action';
-import { AppComponentBase } from '../../../../../shared/app-component-base';
+import { appSettings } from './../../../../../../environments/environment.ecm360test';
+import { HelpersService } from './../../../../../shared/services/helpers.service';
+import { AppState } from './../../../../../store/app.reducers';
+import { OperationUpdateHelper } from './../../../../helpers/operation-update.helper';
+import { ContainerSelect } from './../../../../models/container.viewmodel';
+import { PlanItemCreateRequest } from './../../../../models/event.model';
+import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
+import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
+import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
+import { getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationExecution, planGridOperationPriorities } from './../../../../models/plan-grid-operation.model';
+import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
 
 // @Component({
 //   selector: 'app-plan-container-grid-operations',
@@ -233,6 +226,8 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       case 'operation.linkedItemExecutionStatus.status': {
         if (LinkedItemStatusEnum.Finished === e.data.operation.linkedItemExecutionStatus.status) {
           e.cellElement.style.background = '#d6d6d6';
+        } else if (LinkedItemStatusEnum.Running === e.data.operation.linkedItemExecutionStatus.status) {
+          e.cellElement.style.background = '#ccfbcc';
         }
         break;
       }
@@ -294,8 +289,17 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   }
 
   getLinkedItemsStatus = (row) => {
-    return row.operation.linkedItemExecutionStatus && row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
-      ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
-      : '';
+    if (!row.operation.linkedItemExecutionStatus) { return ''; }
+
+    switch (row.operation.linkedItemExecutionStatus.status) {
+      case LinkedItemStatusEnum.Finished:
+      case LinkedItemStatusEnum.Running:
+        return this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status);
+    }
+    return '';
+
+    // return row.operation.linkedItemExecutionStatus && row.operation.linkedItemExecutionStatus.status === LinkedItemStatusEnum.Finished
+    //   ? this.translate('LinkedItemsStatus_' + row.operation.linkedItemExecutionStatus.status)
+    //   : '';
   }
 }
