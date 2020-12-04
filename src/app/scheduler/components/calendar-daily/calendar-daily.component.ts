@@ -298,7 +298,8 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
       this.onAppointmentRemove(e);
   }
 
-  toggleGroupTooltip(containerId: number) {
+  toggleGroupTooltip(data: any, containerId: number) {
+    console.log(data);
     if (this.groupTooltipsState[containerId]) {
       this.groupTooltipsState[containerId] = false;
     } else if (this.containerTooltips[containerId]) {

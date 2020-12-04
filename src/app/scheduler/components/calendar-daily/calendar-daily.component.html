@@ -69,14 +69,16 @@
 
       <div *dxTemplate="let data of 'headerTemplate'">
           <i
-            (mouseenter)="toggleGroupTooltip(data.id)"
-            (mouseleave)="toggleGroupTooltip(data.id)"
+            (mouseenter)="toggleGroupTooltip(data, data.id)"
+            (mouseleave)="toggleGroupTooltip(data, data.id)"
             [id]="'group-' + data.id">
             {{data.text}}
           </i>
           <div>
-            matej dej dropdown!
+            {{ data.data.comment }}
+            matej dej data!
           </div>
+
           <dx-tooltip
             [visible]="isTooltipGroupVisible(data.id)"
                 [target]="'#group-' + data.id"
