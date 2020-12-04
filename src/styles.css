@@ -96,3 +96,22 @@ hr.hrline {
     background-color: black !important;
     color: white;
 }
+
+@media print {
+  main {
+    margin-left: 0 !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+
+  #section-to-print, #section-to-print * {
+    visibility: visible;
+  }
+  #section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+

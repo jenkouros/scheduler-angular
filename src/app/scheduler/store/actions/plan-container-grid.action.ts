@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { CalendarFilter } from '../../models/calendar-filter.model';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 import { PlanGridOperation, PlanGridOperationChange } from '../../models/plan-grid-operation.model';
 import { PlannedEventSimple } from './../../models/event.model';
@@ -26,6 +27,7 @@ export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] 
 
 export class LoadPlanContainerGrid implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID;
+  constructor(public payload: CalendarFilter | undefined) {}
 }
 
 export class LoadPlanContainerGridSuccess implements Action {
@@ -45,7 +47,7 @@ export class LoadPlanContainerGridFail implements Action {
 
 export class UpdateContainerGridSuccess implements Action {
   readonly type = UPDATE_CONTAINER_GRID_SUCCESS;
-  constructor(public payload: PlanContainerGrid[]) {}
+  constructor(public payload: {data: PlanContainerGrid[], allowAdd: boolean}) {}
 }
 
 
@@ -60,7 +62,7 @@ export class UpdateContainerGridFail implements Action {
 
 export class PlanContainerGridUpdate implements Action {
   readonly type = PLAN_CONTAINER_GRID_UPDATE;
-  constructor(public payload: PlanGridOperation) {}
+  constructor(public payload: { operation: PlanGridOperation, allowAdd: boolean }) {}
 }
 
 export class PlanContainerDialogGridUpdate implements Action {

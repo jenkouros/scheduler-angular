@@ -1,12 +1,10 @@
-import { throwError as observableThrowError, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import { PreplanitemServer, PreplanitemSuggestionServer } from '../models/server/preplanitem.servermodel';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { catchError, map } from 'rxjs/operators';
-import { PreplanItem, PreplanItemRequest, PrePlanItemSuggestion } from '../models/preplanitem.dto';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
+import { PreplanItem, PreplanItemRequest, PrePlanItemSuggestion } from '../models/preplanitem.dto';
+import { PreplanitemServer, PreplanitemSuggestionServer } from '../models/server/preplanitem.servermodel';
 
 @Injectable()
 export class PreplanitemsService {
@@ -55,9 +53,13 @@ export class PreplanitemsService {
     );
   }
 
-  createPreplanitems(idPlan: number, requestModel: PreplanItemRequest) {
-    return this.http.post(environment.apiUrl + `/preplanitems?idPlan=${idPlan}`, requestModel, {
-      headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*' })
-    });
+  createPreplanitems(
+    idPlan: number,
+    requestModel: PreplanItemRequest,
+    subItemPlannableState: {id: number, value: boolean}[]) {
+
+      requestModel.subItemPlannableState = subItemPlannableState;
+      return this.http.post(environment.apiUrl + `/preplanitems?idPlan=${idPlan}`,
+        requestModel);
   }
 }

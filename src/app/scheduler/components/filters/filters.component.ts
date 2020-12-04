@@ -1,10 +1,9 @@
-import { Component, OnInit, ElementRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromStore from '../../store';
 import { Observable, Subscription } from 'rxjs';
 import { FilterTypeEnum } from '../../models/filter.enum';
 import { FilterSelect } from '../../models/filter.viewmodel';
-import { Container } from '../../models/container.dto';
+import * as fromStore from '../../store';
 
 @Component({
   selector: 'app-filters',
@@ -49,7 +48,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromStore.GetSearchItemsStore(''));
     this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
     this.store.dispatch(new fromStore.LoadPlanItemGrid());
-    this.store.dispatch(new fromStore.LoadPlanContainerGrid());
+    this.store.dispatch(new fromStore.LoadPlanContainerGrid(undefined));
 
   }
 

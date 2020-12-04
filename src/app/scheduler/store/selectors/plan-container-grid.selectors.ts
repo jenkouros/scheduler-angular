@@ -55,3 +55,8 @@ export const currentWoSwitch = createSelector(
   getPlanContainerGridState,
   state => state.currentWoSwitch
 );
+
+export const planDate = createSelector(
+  getPlanContainerGridState,
+  state => state.planDate
+);

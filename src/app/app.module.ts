@@ -14,7 +14,6 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { DxLoadIndicatorModule, DxLoadPanelModule } from 'devextreme-angular';
-import 'devextreme-intl';
 import { loadMessages, locale } from 'devextreme/localization';
 import { environment } from '../environments/environment';
 import { AppRouterModule } from './app-router.module';

@@ -191,7 +191,11 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       }
     } else if (updatedOperation.idPrePlanItem && updatedOperation.containerCode) {
       this.updateItem.emit();
-      this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate(updatedOperation));
+      this.store.dispatch(
+        new PlanContainerGridActions.PlanContainerGridUpdate({
+          operation: updatedOperation,
+          allowAdd: false
+        }));
     }
 
   }

@@ -1,5 +1,6 @@
 import { translate } from '../../shared/app-component-base';
 import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
+import { PreplanItem } from './preplanitem.dto';
 
 export interface ItemExecutionStatus {
   operationName: string;
@@ -20,6 +21,7 @@ export interface PlanGridOperation {
   linkedItemExecutionStatus: LinkedItemExecutionStatus;
   parentLinkedItemStatus: ParentLinkedItemStatus;
   idPrePlanItem: number;
+  status: number;
   code: string;
   name: string;
   isPlanable: boolean;
@@ -36,6 +38,18 @@ export interface PlanGridOperation {
   idPlanItem: number;
   isLocked: boolean;
   options?: PlanItemCreateRequestOptions;
+}
+
+export class PlanGridOperationHelper {
+  static createFromPrePlanItem(preplanItem: PreplanItem, start: Date, end: Date, idContainer: number) {
+    return {
+      timeEnd: end,
+      timeStart: start,
+      idContainer: idContainer,
+      idPrePlanItem: preplanItem.id,
+      idSubItem: preplanItem.subItem.id
+    } as PlanGridOperation;
+  }
 }
 
 export interface PlanGridOperationChange {

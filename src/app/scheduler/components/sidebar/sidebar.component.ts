@@ -1,11 +1,11 @@
-import { Component, OnInit, ElementRef, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faClipboardList, faFilter, faCalendarAlt, faSearch, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
-import { appSettings } from '../../../../environments/environment';
-import { Store, select } from '@ngrx/store';
-import * as fromStore from '../../store';
+import { faCalendarAlt, faClipboardList, faFilter, faLayerGroup, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { appSettings } from '../../../../environments/environment';
 import { AppComponentBase } from '../../../shared/app-component-base';
+import * as fromStore from '../../store';
 
 
 @Component({
@@ -76,7 +76,7 @@ export class SidebarComponent extends AppComponentBase implements OnInit, OnDest
     this.store.dispatch(new fromStore.GetSearchItemsStore(''));
     this.store.dispatch(new fromStore.GetSearchPlanItemsStore(''));
     this.store.dispatch(new fromStore.LoadPlanItemGrid());
-    this.store.dispatch(new fromStore.LoadPlanContainerGrid());
+    this.store.dispatch(new fromStore.LoadPlanContainerGrid(undefined));
   }
 
   ngOnDestroy() {

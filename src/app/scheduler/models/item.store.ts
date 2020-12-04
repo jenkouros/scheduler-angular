@@ -15,4 +15,5 @@ export interface ItemState {
     selectedItemHierarchyLoaded: boolean;
     uiState: ItemUIState;
     lastCreatedItemId: number | null;
+    subItemPlannableState: {id: number, value: boolean}[];
 }

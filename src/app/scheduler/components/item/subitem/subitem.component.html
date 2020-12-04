@@ -1,6 +1,9 @@
 <div class="card text-dark" [ngClass]="subItem.plannable ? 'bg-kolektor-light' : ''">
     <div class="card-body p-2">
         <h6 class="card-title mb-1">{{ subItem.code }} - {{ subItem.name }}</h6>
+        <dx-check-box class="plannable-checkbox"
+          (onValueChanged)="toggleIsPlannable($event)"
+          [value]="subItem.plannable"></dx-check-box>
         <div class="card-text" *ngIf="subItem.plannable">
             <table>
                 <thead></thead>

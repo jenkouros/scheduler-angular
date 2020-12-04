@@ -1,14 +1,14 @@
-import { Container } from './container.dto';
-import { PreplanitemServer, PreplanitemBasicServer, SubItemContainerServer, PreplanitemSuggestionServer } from './server/preplanitem.servermodel';
-import { MeasurementUnit, Product } from './shared.dto';
 import { SubItem } from './item.dto';
-import { SubItemContainer } from './subitem.dto';
 import { ItemBatch } from './itembatch.dto';
+import { PreplanitemBasicServer, PreplanitemServer, PreplanitemSuggestionServer } from './server/preplanitem.servermodel';
+import { MeasurementUnit, Product } from './shared.dto';
+import { SubItemContainer } from './subitem.dto';
 
 export class PreplanItemRequest {
     idAlternative: number;
     batchCount: number;
     batchQuantity: number;
+    subItemPlannableState: {id: number, value: boolean}[];
 }
 
 export class PreplanItem {

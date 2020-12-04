@@ -1,10 +1,6 @@
-import * as fromActions from '../actions/items.action';
-import CustomStore from 'devextreme/data/custom_store';
-import { Item, ItemHierarchy } from '../../models/item.dto';
-import { GridStoreConfiguration } from '../../models/shared.dto';
 import { ItemState } from '../../models/item.store';
-export { ItemState } from '../../models/item.store';
-export { ItemUIState } from '../../models/item.store';
+import * as fromActions from '../actions/items.action';
+export { ItemState, ItemUIState } from '../../models/item.store';
 
 export const initialState: ItemState = {
     items: [],
@@ -17,7 +13,8 @@ export const initialState: ItemState = {
         popupOpened: false,
         createItemPopupOpened: false
     },
-    lastCreatedItemId: null
+    lastCreatedItemId: null,
+    subItemPlannableState: []
 };
 
 export function itemsReducer(state = initialState, action: fromActions.ItemActions): ItemState {
@@ -108,6 +105,27 @@ export function itemsReducer(state = initialState, action: fromActions.ItemActio
             lastCreatedItemId: action.payload.itemId
           };
         }
+        case fromActions.RESET_SUB_ITEM_PLANNABLE_STATE: {
+          return {
+            ...state,
+            subItemPlannableState: []
+          };
+        }
+        case fromActions.TOGGLE_SUB_ITEM_PLANNABLE: {
+          const items = [...state.subItemPlannableState];
+          const idx = items.findIndex(i => i.id === action.payload.id);
+          if (idx > -1) {
+            items[idx] = {...action.payload};
+          } else {
+            items.push({...action.payload});
+          }
+          return {
+            ...state,
+            subItemPlannableState: items
+          };
+
+        }
+
         default:
             return state;
     }

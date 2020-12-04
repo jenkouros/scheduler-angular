@@ -1,53 +1,24 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { StoreModule } from '@ngrx/store';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { DxAccordionModule, DxAutocompleteModule, DxButtonModule, DxCheckBoxModule, DxDataGridModule, DxDateBoxModule, DxDraggableModule, DxDropDownBoxModule, DxFormModule, DxLinearGaugeModule, DxListModule, DxLoadPanelModule, DxNumberBoxModule, DxPopupModule, DxProgressBarModule, DxRadioGroupModule, DxSchedulerModule, DxScrollViewModule, DxSelectBoxModule, DxSwitchModule, DxTagBoxModule, DxTemplateModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule, DxTooltipModule, DxTreeViewModule, DxValidationGroupModule, DxValidationSummaryModule, DxValidatorModule } from 'devextreme-angular';
+import { JwtInterceptor } from '../auth/helpers';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { SchedulerRouterModule } from './scheduler-router.module';
-import { reducers, effects } from './store';
 import * as fromComponents from './components';
-import * as fromContainers from './containers';
-import {FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import * as fromServices from './services';
-import {
-    DxButtonModule,
-    DxTemplateModule,
-    DxDataGridModule,
-    DxSchedulerModule,
-    DxLinearGaugeModule,
-    DxSelectBoxModule,
-    DxTextBoxModule,
-    DxFormModule,
-    DxCheckBoxModule,
-    DxScrollViewModule,
-    DxNumberBoxModule,
-    DxValidatorModule,
-    DxValidationSummaryModule,
-    DxProgressBarModule,
-    DxTextAreaModule,
-    DxRadioGroupModule,
-    DxDropDownBoxModule,
-    DxListModule,
-    DxTreeViewModule,
-    DxTagBoxModule,
-    DxAutocompleteModule,
-    DxPopupModule,
-    DxDateBoxModule,
-    DxAccordionModule,
-    DxLoadPanelModule,
-    DxSwitchModule,
-    DxToolbarModule,
-    DxValidationGroupModule
-} from 'devextreme-angular';
-
-import { ContainersEffects } from './store/effects/containers.effect';
-import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
 import { PlanItemStatusPipe } from './components/planner/plan-viewer/planitemstatus.pipe';
-import { JwtInterceptor } from '../auth/helpers';
+import { PreplanitemDraggableDirective } from './components/preplanitem/preplanitem-item/preplanitem-dxdraggable.directive';
+import * as fromContainers from './containers';
 import { GroupSelectComponent } from './containers';
+import { SchedulerRouterModule } from './scheduler-router.module';
+import * as fromServices from './services';
+import { effects, facades, reducers } from './store';
+import { ContainersEffects } from './store/effects/containers.effect';
+
 
 @NgModule({
     imports: [
@@ -89,7 +60,10 @@ import { GroupSelectComponent } from './containers';
         DxLoadPanelModule,
         DxSwitchModule,
         DxToolbarModule,
-        DxValidationGroupModule
+        DxValidationGroupModule,
+        DxTooltipModule,
+        DxDraggableModule
+
     ],
     exports: [
       GroupSelectComponent
@@ -102,6 +76,7 @@ import { GroupSelectComponent } from './containers';
     ],
     providers: [
         ...fromServices.services,
+        ...facades,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
     ]
 })

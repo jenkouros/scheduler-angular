@@ -19,7 +19,7 @@
       [alignByColumn]="false">
     </dxi-group-item>
   </dxo-summary>
-
+  <dxo-load-panel [enabled]="false"></dxo-load-panel>
   <dxo-export [enabled]="true" fileName="export"></dxo-export>
   <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
   <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing>
@@ -106,7 +106,7 @@
     [calculateCellValue]="getLinkedItemsStatus"
     [caption]="translate('Filling')"></dxi-column>
     <dxi-column dataField="operation.parentLinkedItemStatus.containerCode"
-    [caption]="translate('Filling')"></dxi-column>
+    [caption]="translate('Production')"></dxi-column>
 
   <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
 

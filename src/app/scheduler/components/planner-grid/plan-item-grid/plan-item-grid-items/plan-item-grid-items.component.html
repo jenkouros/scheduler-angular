@@ -51,6 +51,7 @@
     <div *dxTemplate="let planItemGrid of 'detail'">
       <div class="operations">
       <app-plan-item-grid-operations
+        [baseItemId]="baseItemId"
         [refreshContainerGrid]="refreshContainerGrid"
         (updateItem)="updateItem()"
         [operations]="planItemGrid.data.operations"
@@ -69,6 +70,7 @@
           [enableSearch]="false"
           [expandDetails]="true"
           [editable]="editable"
+          [baseItemId]="planItemGrid.data.item.idItem"
           ></app-plan-item-grid-items>
       </div>
 
@@ -81,6 +83,7 @@
           [enableSearch]="false"
           [expandDetails]="true"
           [editable]="editable"
+          [baseItemId]="planItemGrid.data.item.idItem"
           ></app-plan-item-grid-items>
       </div>
   </div>

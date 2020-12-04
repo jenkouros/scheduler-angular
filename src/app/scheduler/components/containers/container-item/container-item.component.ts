@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../../../store';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContainerSelect } from '../../../models/container.viewModel';
+import { appSettings } from './../../../../../environments/environment';
 
 @Component({
   selector: 'app-container-item',
@@ -14,6 +12,7 @@ export class ContainerItemComponent implements OnInit {
   @Input() container: ContainerSelect;
   @Output() selectContainer = new EventEmitter<number>();
   @Output() deselectContainer = new EventEmitter<number>();
+  environment = appSettings;
   constructor() { }
 
   ngOnInit() {

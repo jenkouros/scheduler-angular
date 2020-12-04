@@ -1,15 +1,14 @@
-import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
-import { LoadContainers } from './../../../store/actions/containers.action';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { AppComponentBase } from '../../../../shared/app-component-base';
+import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
+import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
 import { getSelectedPlanId } from './../../../../plan/store/selectors/plans.selector';
 import { AppState } from './../../../../store/app.reducers';
 import { ContainerSelect } from './../../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../../models/plan-container-grid.model';
-import { Component } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import * as PlanContainerGridSelectors from '../../../store/selectors/plan-container-grid.selectors';
-import * as PlanContainerGridActions from '../../../store/actions/plan-container-grid.action';
-import { AppComponentBase } from '../../../../shared/app-component-base';
+import { LoadContainers } from './../../../store/actions/containers.action';
+import { getContainerSelectList } from './../../../store/selectors/containers.selectors';
 
 // @Component({
 //   selector: 'app-plan-container-grid',
@@ -47,7 +46,7 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.currentWoSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.currentWoSwitch));
     this.limitDate$ = store.pipe(select(PlanContainerGridSelectors.limitContainerGridLoadDate));
     this.planContainerGrid$ = store.pipe(select(PlanContainerGridSelectors.getPlanContainerGrid));
-    this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid()));
+    this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid(undefined)));
 
 
     // this.selectedPlanItemGrid$ = store.pipe(select(PlanContainerGridSelectors.selectedPlanItemGrid));

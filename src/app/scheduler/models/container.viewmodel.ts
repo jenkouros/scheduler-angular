@@ -4,6 +4,7 @@ import { Select } from './select.model';
 export class ContainerSelect extends Container implements Select {
     selected: boolean;
     displayName: string;
+    text: string;
     static create(container: Container) {
         const result = new ContainerSelect();
         result.id = container.id;
@@ -13,6 +14,7 @@ export class ContainerSelect extends Container implements Select {
         result.containerSettings = container.containerSettings;
         result.selected = false;
         result.displayName = container.displayExpression;
+        result.text = container.code;
         result.containerSettings = container.containerSettings;
         return result;
     }

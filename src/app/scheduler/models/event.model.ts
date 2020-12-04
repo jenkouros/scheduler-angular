@@ -39,6 +39,7 @@ export interface PlanItemPutRequestOptions {
     isUserDurationChange?: boolean;
     dayPlan?: boolean;
     containerMoveSync?: boolean;
+    idBaseItem?: number;
 }
 
 export interface PlanItemCreateRequest {

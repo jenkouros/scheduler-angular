@@ -1,12 +1,12 @@
-import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ItemHierarchyViewModel } from '../../../models/item.viewmodel';
-import { NgForm, FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
-import { ItemHierarchyAlternative } from '../../../models/item.dto';
-import { PreplanItemRequest } from '../../../models/preplanitem.dto';
-import { FormValidators } from '../../../../shared/validators/form.validators';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { appSettings } from '../../../../../environments/environment';
-import { ItemUIState } from '../../../models/item.store';
 import { AppComponentBase } from '../../../../shared/app-component-base';
+import { FormValidators } from '../../../../shared/validators/form.validators';
+import { ItemHierarchyAlternative } from '../../../models/item.dto';
+import { ItemUIState } from '../../../models/item.store';
+import { ItemHierarchyViewModel } from '../../../models/item.viewmodel';
+import { PreplanItemRequest } from '../../../models/preplanitem.dto';
 
 @Component({
   selector: 'app-item-popup',

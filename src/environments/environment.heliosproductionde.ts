@@ -22,8 +22,10 @@ export const appSettings = {
   Item_EnableHiddingItems: false,
   Item_EnableBatchPlanning: false,
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
-  PlanItem_DisplayArticleCode: false,  // article name otherwise
+  PlanItem_DisplayArticleCode: true,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
   PlanItems_ExcelExport: false,
-  Planning_multiplyTimeWithQuantityFactor: true
+  Planning_multiplyTimeWithQuantityFactor: true,
+
+  Planning_calendar_showContainerDescription: false
 };

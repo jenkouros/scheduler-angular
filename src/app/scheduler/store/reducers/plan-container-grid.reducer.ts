@@ -13,6 +13,7 @@ export interface PlanContainerGridState {
   updateTimeDialogData: PlanGridOperationChange | undefined;
   inProgressWoSwitch: boolean;
   currentWoSwitch: boolean;
+  planDate: Date;
 }
 
 const loadLimitDate = new Date();
@@ -30,7 +31,8 @@ export const initialState: PlanContainerGridState = {
   updateTimeDialogData: undefined,
   inProgressWoSwitch: false,
   currentWoSwitch: false,
-  showArchiveSwitch: false
+  showArchiveSwitch: false,
+  planDate: new Date()
 };
 
 export function planItemGridReducer (
@@ -66,10 +68,10 @@ export function planItemGridReducer (
         };
       }
 
-      const items = [...action.payload];
-      const updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
+      const items = [...action.payload.data];
+      let updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
         if (!containerGrid.operation.idPrePlanItem) {
-          const subItem = action.payload.find(i =>
+          const subItem = action.payload.data.find(i =>
             i.operation.idSubItem === containerGrid.operation.idSubItem);
           if (subItem) {
             const idx = items.findIndex(i =>
@@ -80,7 +82,7 @@ export function planItemGridReducer (
           return containerGrid;
         }
 
-        const operation = action.payload.find(i =>
+        const operation = action.payload.data.find(i =>
           i.operation.idPrePlanItem === containerGrid.operation.idPrePlanItem);
         if (operation) {
           const idx = items.findIndex(i =>
@@ -92,9 +94,9 @@ export function planItemGridReducer (
       });
 
       // ADD NEW OPERATIONS - comment: don't add because filter
-      // if (items.length > 0) {
-      //  updatedGridItems = updatedGridItems.concat(items);
-      // }
+      if (action.payload.allowAdd && items.length > 0) {
+       updatedGridItems = updatedGridItems.concat(items);
+      }
 
       return {
         ...state,
@@ -186,7 +188,6 @@ export function planItemGridReducer (
         currentWoSwitch: action.payload
       };
     }
-
   }
 
   return state;

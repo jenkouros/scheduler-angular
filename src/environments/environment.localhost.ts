@@ -3,7 +3,7 @@ const serverUrl = 'http://localhost:55501';
 // const serverUrl = 'http://localhost:9999';
 
 export const environment = {
-    locale: 'sl',
+    locale: 'de',
     production: false,
     apiUrl: `${serverUrl}/api`,
     signalRUrl: `${serverUrl}/containershub`,
@@ -41,8 +41,9 @@ export const appSettings = {
   Item_EnableHiddingItems: true,
   Item_EnableBatchPlanning: false,
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
-  PlanItem_DisplayArticleCode: false,  // article name otherwise
+  PlanItem_DisplayArticleCode: true,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
   PlanItems_ExcelExport: true,
-  Planning_multiplyTimeWithQuantityFactor: true
+  Planning_multiplyTimeWithQuantityFactor: true,
+  Planning_calendar_showContainerDescription: false
 };

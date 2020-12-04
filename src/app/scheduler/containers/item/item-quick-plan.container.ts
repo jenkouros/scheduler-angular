@@ -1,16 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromStore from '../../store';
 import { Observable } from 'rxjs';
-import { GridStoreConfiguration } from '../../models/shared.dto';
 import { Item } from '../../models/item.dto';
+import { GridStoreConfiguration } from '../../models/shared.dto';
+import * as fromStore from '../../store';
 
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'container-item-quick-plan',
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-        <app-item-quick-plan *ngIf="path === 'planner'"
+        <app-item-quick-plan *ngIf="path === 'planner' || path === 'daily'"
             (selectItem)="onSelectItem($event)"
             [storeConfiguration]="itemsStoreConfiguration$ | async">
         </app-item-quick-plan>

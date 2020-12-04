@@ -167,7 +167,10 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
       isUserDurationChange: this.form.value.planItemChange === 1,
       fixPlanItem: this.form.value.fixPlanItem,
       dayPlan: this.dayPlan,
-      containerMoveSync: this.form.value.containerMoveSync
+      containerMoveSync: this.form.value.containerMoveSync,
+      idBaseItem: this.changeData.operation.options
+        ? this.changeData.operation.options.idBaseItem
+        : undefined
       // dayPlan
 
     };
@@ -195,7 +198,10 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
 
     switch (this.changeData.changeOrigin) {
       case OperationChangeOriginEnum.ContainerGrid:
-        this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate(this.changeData.operation as PlanGridOperation));
+        this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate({
+          operation: this.changeData.operation as PlanGridOperation,
+          allowAdd: false
+        }));
         break;
       case OperationChangeOriginEnum.InfoDialog:
         this.store.dispatch(new PlanContainerGridActions.PlanContainerDialogGridUpdate({
