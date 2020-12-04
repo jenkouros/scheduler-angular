@@ -1,0 +1,110 @@
+<div id="section-to-print">
+<app-containers></app-containers>
+
+
+<!-- <button (click)="printScreen()">Print</button> -->
+
+
+  <div class="card" *ngIf="!containers || containers.length === 0">
+    <div class="card-body">
+        {{translate('Choose_Workplace')}}
+    </div>
+  </div>
+  <div #calendar class="myDivToPrint">
+    <dx-scheduler *ngIf="containers && containers.length"
+      [firstDayOfWeek]="1"
+      [useDropDownViewSwitcher]="false"
+      [currentView]="'Work week plan'"
+      id="scheduler"
+      [groups]="['operation.idContainer']"
+      [showCurrentTimeIndicator]="false"
+      [showAllDayPanel]="true"
+      [dataSource]="appointments"
+      [currentDate]="currentDate$ | async"
+      [editing]="true"
+      (onAppointmentUpdating)="onAppointmentUpdating($event)"
+      (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
+      (onOptionChanged)="onOptionChanged($event)"
+      appointmentTemplate="appointment-template"
+      appointmentTooltipTemplate="tooltip-template"
+      (onAppointmentRendered) = "renderAppointment($event)"
+      [views]="['Week hours plan']"
+      endDateExpr="operation.timeEnd"
+      startDateExpr="operation.timeStart"
+      [crossScrollingEnabled]="true"
+      resourceCellTemplate="headerTemplate"
+      >
+      <dxi-view
+        type="week"
+        name="Week plan"
+        groupOrientation="vertical"
+        [cellDuration]="1440"
+        [intervalCount]="1"
+        maxAppointmentsPerCell="3"></dxi-view>
+
+      <dxi-view
+        type="workWeek"
+        name="2 Work week plan"
+        groupOrientation="vertical"
+        [cellDuration]="1440"
+        [intervalCount]="2"
+        maxAppointmentsPerCell="3"></dxi-view>
+
+      <dxi-view
+        type="workWeek"
+        name="Work week plan"
+        groupOrientation="vertical"
+        [cellDuration]="1440"
+        [intervalCount]="1"
+        maxAppointmentsPerCell="3"></dxi-view>
+
+
+
+      <dxi-resource
+        [dataSource]="containers"
+        fieldExpr="operation.idContainer"
+        label="Container"
+        [useColorAsDefault]="true"
+        [allowMultiple]="false"></dxi-resource>
+
+      <div *dxTemplate="let data of 'headerTemplate'">
+          <i
+            (mouseenter)="toggleGroupTooltip(data.id)"
+            (mouseleave)="toggleGroupTooltip(data.id)"
+            [id]="'group-' + data.id">
+            {{data.text}}
+          </i>
+          <div>
+            matej dej dropdown!
+          </div>
+          <dx-tooltip
+            [visible]="isTooltipGroupVisible(data.id)"
+                [target]="'#group-' + data.id"
+                [closeOnOutsideClick]="false">
+                <div *dxTemplate="let dataT = data of 'content'">
+                    {{ getTooltipDescription(data.id) }}
+                </div>
+            </dx-tooltip>
+      </div>
+
+      <div *dxTemplate="let model of 'appointment-template'">
+        <!-- <span>{{ model.appointmentData.operation.name }}</span> -->
+        <app-event [plannerItemData]="model.appointmentData"></app-event>
+        <!-- <app-event [planTask]="model.appointmentData"></app-event> -->
+      </div>
+      <div *dxTemplate="let model of 'tooltip-template'">
+        <span>tooltip</span>
+        <!-- <app-event-tooltip [editable]="editable" (deletePlanTask)="onCalendarRemove(model.appointmentData)" [planTask]="model.appointmentData"></app-event-tooltip> -->
+      </div>
+
+
+      <dxo-appointment-dragging
+      group="draggingGroupName"
+      [onAdd]="onAppointmentAdd">
+    </dxo-appointment-dragging>
+
+    </dx-scheduler>
+  </div>
+
+</div>
+<!-- <app-event-info-dialog></app-event-info-dialog> -->

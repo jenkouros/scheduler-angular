@@ -1,0 +1,34 @@
+
+/*
+.progressWrapper {
+    background: rgb(219, 218, 218);
+    text-align: center;
+    
+  }
+  .progressInfo {
+    background: grey;
+    height: 100%;
+    text-align: center;
+    height: 45%;
+  }
+  ::ng-deep .plannerItem {
+    background: transparent;
+    grid-row: span 2;    
+ }
+
+::ng-deep .status {
+    background: green; 
+    height: 100%;
+   
+}
+*/
+::ng-deep .plannerItemContainer{
+    display: grid;
+    height: 100%;
+    width: 100%;   
+    grid-template-columns: 1fr minmax(0px, 25px);
+    grid-template-rows: 1fr;
+  }
+ 
+ 
+ 
