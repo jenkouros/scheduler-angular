@@ -44,6 +44,21 @@ export class ContainersEffects {
     })
   );
 
+
+  @Effect()
+  loadStatuses$ = this.actions$.ofType(fromActions.LOAD_CONTAINER_STATUSES).pipe(
+      switchMap(action => {
+          return this.containersService.getStatuses()
+              .pipe(
+                  map(statuses => new fromActions.LoadContainerStatusesSuccess(statuses)),
+                  catchError((error) => {
+                      console.log(error);
+                      return of(new fromActions.LoadContainersFail());
+                  })
+              );
+      })
+    );
+
   @Effect()
     updateContainer$ = this.actions$.ofType(fromActions.UPDATE_CONTAINER).pipe(
       switchMap((action: fromActions.UpdateContainer) =>

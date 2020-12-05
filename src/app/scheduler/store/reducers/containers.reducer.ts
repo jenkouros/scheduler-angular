@@ -1,10 +1,11 @@
 import * as fromAction from '../actions/containers.action';
-import { Container } from '../../models/container.dto';
+import { Container, ContainerStatus } from '../../models/container.dto';
 import { SchedulerState } from '.';
 
 export interface ContainerState {
   containers: Container[];
   selectedContainers: number[];
+  containerStatuses: ContainerStatus[];
   loading: boolean;
   loaded: boolean;
 }
@@ -12,6 +13,7 @@ export interface ContainerState {
 export const initialState: ContainerState = {
   containers: [],
   selectedContainers: [],
+  containerStatuses: [],
   loaded: false,
   loading: false
 };
@@ -43,6 +45,20 @@ export function containerReducer(
         containers: containers
       };
     }
+    case fromAction.LOAD_CONTAINER_STATUSES: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case fromAction.LOAD_CONTAINER_STATUSES_SUCCESS: {
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        containerStatuses: [...action.payload]
+      };
+    }
     case fromAction.UPDATE_CONTAINER_SUCCESS: {
       if (!action.payload) {
         return {
@@ -55,6 +71,7 @@ export function containerReducer(
       const updatedContainers = state.containers.map((container, index) => {
         if (container.id === action.payload.id) {
             container.comment = action.payload.comment;
+            container.idContainerStatus = action.payload.idContainerStatus;
         }
         return container;
       });
@@ -126,3 +143,4 @@ function localeCompare(a: string, b: string) {
 }
 
 export const getSelectedContainers = (state: ContainerState) => state.selectedContainers;
+export const getContainerStatuses = (state: ContainerState) => state.containerStatuses;

@@ -1,10 +1,12 @@
 import { Action } from '@ngrx/store';
-import { Container } from '../../models/container.dto';
+import { Container, ContainerStatus } from '../../models/container.dto';
 import { ContainerPutRequest } from '../../models/event.model';
 
 export const LOAD_CONTAINERS = '[Containers] Load containers';
 export const LOAD_CONTAINERS_FAIL = '[Containers] Load containers Fail';
 export const LOAD_CONTAINERS_SUCCESS = '[Containers] Load containers Success';
+export const LOAD_CONTAINER_STATUSES = '[Containers] Load container statuses';
+export const LOAD_CONTAINER_STATUSES_SUCCESS = '[Containers] Load container statuses Success';
 export const UPDATE_CONTAINER = '[Containers] Update container';
 export const UPDATE_CONTAINER_SUCCESS = '[Containers] Update container Success';
 export const SELECT_CONTAINERS = '[Containers] Select containers';
@@ -31,6 +33,13 @@ export class LoadContainersFail implements Action {
 export class LoadContainersSuccess implements Action {
     readonly type = LOAD_CONTAINERS_SUCCESS;
     constructor(public payload: Container[]) {}
+}
+export class LoadContainerStatuses implements Action {
+    readonly type = LOAD_CONTAINER_STATUSES;
+}
+export class LoadContainerStatusesSuccess implements Action {
+    readonly type = LOAD_CONTAINER_STATUSES_SUCCESS;
+    constructor(public payload: ContainerStatus[]) {}
 }
 export class UpdateContainer implements Action {
   readonly type = UPDATE_CONTAINER;
@@ -69,6 +78,8 @@ export type ContainersAction
     = LoadContainers
     | LoadContainersFail
     | LoadContainersSuccess
+    | LoadContainerStatuses
+    | LoadContainerStatusesSuccess
     | UpdateContainer
     | UpdateContainerSuccess
     | SelectContainers

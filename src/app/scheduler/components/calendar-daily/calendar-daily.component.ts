@@ -6,7 +6,8 @@ import { PlannedEvent } from '../../models/event.model';
 import { PlanGridOperationHelper } from '../../models/plan-grid-operation.model';
 import { ContainerSelect } from './../../models/container.viewmodel';
 import { PlanContainerGrid } from './../../models/plan-container-grid.model';
-import { CalendarFacade } from './../../store/facade/calendar.facade';
+import { ContainerStatus } from '../../models/container.dto';
+import { ContainerFacade, CalendarFacade } from '../../store';
 
 @Component({
   selector: 'app-calendar-daily',
@@ -15,6 +16,7 @@ import { CalendarFacade } from './../../store/facade/calendar.facade';
 })
 export class CalendarDailyComponent extends AppComponentBase implements OnInit, OnDestroy {
   containers$: Observable<ContainerSelect[]>;
+  containerStatuses$: Observable<ContainerStatus[]>;
   containerTooltips: { [containerId: number]: string } = {};
   containerTooltipsSubscription: Subscription;
   containers: ContainerSelect[] = [];
@@ -43,7 +45,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     this.scheduler.instance.repaint();
   }
 
-  constructor(private calendarFacade: CalendarFacade) {
+  constructor(private calendarFacade: CalendarFacade, private containerFacade: ContainerFacade) {
     super();
     this.onAppointmentRemove = this.onAppointmentRemove.bind(this);
     this.onAppointmentAdd = this.onAppointmentAdd.bind(this);
@@ -69,6 +71,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
       this.containerTooltips = t);
     // this.selectedDeparment$ = this.store.pipe(select(FilterSelectors.selectedDepartment));
     this.containers$ = this.calendarFacade.selectedContainers$;
+    this.containerStatuses$ = this.containerFacade.containerStatuses$;
     this.planTasksSubscription = this.calendarFacade.events$.subscribe(e => {
       console.log(e);
       if (e) {
@@ -313,5 +316,11 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
 
   getTooltipDescription(containerId: number) {
     return this.containerTooltips[containerId];
+  }
+
+  contanerStatusSet(containerId: number, currentStatusId: number, clickedStatusId: number) {
+    if (currentStatusId !== clickedStatusId) {
+      this.containerFacade.updateContainerStatus(containerId, clickedStatusId);
+    }
   }
 }
