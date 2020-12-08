@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { PlannedEvent } from '../../models/event.model';
+import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 import { PlanGridOperation } from '../../models/plan-grid-operation.model';
 import * as ContainerActions from '../actions/containers.action';
 import * as PlanContainerGridActions from '../actions/plan-container-grid.action';
@@ -28,7 +28,7 @@ export class CalendarFacade {
     this.store.dispatch(new ContainerActions.LoadContainers());
   }
 
-  removePlanItem(planItem: PlannedEvent) {
+  removePlanItem(planItem: PlanContainerGrid) {
     // this.store.dispatch(new PlanItemActions.DeleteEvent(planItem));
   }
 

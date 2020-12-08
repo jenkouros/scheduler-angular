@@ -1,4 +1,4 @@
-<div id="section-to-print">
+
 <app-containers></app-containers>
 
 
@@ -10,7 +10,7 @@
         {{translate('Choose_Workplace')}}
     </div>
   </div>
-  <div #calendar class="myDivToPrint">
+  <div #calendar class="myDivToPrint" id="section-to-print">
     <dx-scheduler *ngIf="containers && containers.length"
       [firstDayOfWeek]="1"
       [useDropDownViewSwitcher]="false"
@@ -95,8 +95,11 @@
         <!-- <app-event [planTask]="model.appointmentData"></app-event> -->
       </div>
       <div *dxTemplate="let model of 'tooltip-template'">
-        <span>tooltip</span>
-        <!-- <app-event-tooltip [editable]="editable" (deletePlanTask)="onCalendarRemove(model.appointmentData)" [planTask]="model.appointmentData"></app-event-tooltip> -->
+        <app-event-tooltip
+          [editable]="editable"
+          (deletePlanTask)="onAppointmentRemove(model.appointmentData)"
+          [planItem]="model.appointmentData">
+        </app-event-tooltip>
       </div>
 
 
@@ -108,5 +111,4 @@
     </dx-scheduler>
   </div>
 
-</div>
 <!-- <app-event-info-dialog></app-event-info-dialog> -->

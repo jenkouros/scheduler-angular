@@ -46,5 +46,6 @@ export const appSettings = {
   PlanItems_ExcelExport: true,
   Planning_multiplyTimeWithQuantityFactor: true,
 
-  Planning_calendar_showContainerDescription: true
+  Planning_calendar_showContainerDescription: true,
+  PlanItem_Layout: 0
 };

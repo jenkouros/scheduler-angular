@@ -27,5 +27,6 @@ export const appSettings = {
   PlanItems_ExcelExport: false,
   Planning_multiplyTimeWithQuantityFactor: true,
 
-  Planning_calendar_showContainerDescription: true
+  Planning_calendar_showContainerDescription: true,
+  PlanItem_Layout: 0
 };

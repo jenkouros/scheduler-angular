@@ -52,15 +52,6 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   }
 
   printScreen() {
-    window.print();
-    // const divContents = (document as any).getElementById('myDivToPrint').innerHTML;
-    //    const printWindow: any = window.open('', '', 'height=200,width=400');
-    //    printWindow.document.write('<html><head><title>Print DIV Content</title>');
-    //    printWindow.document.write('</head><body >');
-    //    printWindow.document.write(divContents);
-    //    printWindow.document.write('</body></html>');
-    //    printWindow.document.close();
-    //    printWindow.print();
   }
 
   ngOnInit() {
@@ -112,8 +103,9 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
 
     this.calendarFacade.loadContainers();
     this.containersSubscription = this.containers$.subscribe(i => {
+      const reloadEvents = this.containers.length === 0;
       this.containers = i;
-      if (i.length === 1) {
+      if (reloadEvents) {
         setTimeout(() =>
           this.reloadCalendar()
         );
@@ -143,11 +135,11 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     e.appointmentElement.style.backgroundColor = e.appointmentData.color;
   }
 
-  onAppointmentRemove(planItem: PlannedEvent) {
+  onAppointmentRemove(planItem: PlanContainerGrid) {
     this.scheduler.instance.hideAppointmentTooltip();
-    if (!this.canUpdate(planItem)) {
-      return;
-    }
+    // if (!this.canUpdate(planItem)) {
+    //   return;
+    // }
 
     this.calendarFacade.removePlanItem(planItem);
     // let index = this.appointments.findIndex(i => i.preplanTask.id === planTaskCommon.preplanTask.id);

@@ -1,5 +1,6 @@
 import { PlanViewerItemComponent } from '../components/planner/plan-viewer/plan-viewer-item/plan-viewer-item.component';
 import { CalendarDailyComponent } from './calendar-daily/calendar-daily.component';
+import { EventTooltipComponent } from './calendar-daily/event-tooltip/event-tooltip.component';
 import { EventComponent } from './calendar-daily/event/event.component';
 import { CalendarEventTooltipComponent } from './calendar/event-tooltip/calendar-event-tooltip.component';
 import { EventTooltipOperationComponent } from './calendar/event-tooltip/operation/event-tooltip-operation.component';
@@ -90,10 +91,12 @@ export const components: any[] = [
     PlanGroupComponent,
     ItemCreateComponent,
     CalendarDailyComponent,
-    EventComponent
+    EventComponent,
+    EventTooltipComponent
 ];
 
 export * from './calendar-daily/calendar-daily.component';
+export * from './calendar-daily/event-tooltip/event-tooltip.component';
 export * from './calendar-daily/event/event.component';
 export * from './calendar/event-tooltip/calendar-event-tooltip.component';
 export * from './calendar/event-tooltip/operation/event-tooltip-operation.component';
@@ -135,6 +138,7 @@ export * from './search/items/items-search.component';
 export * from './search/planitems/planitems-search.component';
 export * from './search/search.component';
 export * from './sidebar/sidebar.component';
+
 
 
 

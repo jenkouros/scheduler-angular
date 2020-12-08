@@ -8,7 +8,7 @@
 
 
 ::ng-deep .dx-scheduler-work-space-vertical-group-table {
-  width: 130px !important;
+  width: 100px !important;
 }
 
 ::ng-deep .dx-scheduler-date-table-cell {
@@ -27,18 +27,26 @@
 }
 
 ::ng-deep .dx-scheduler-work-space-vertical-grouped[dx-group-column-count="1"].dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-scrollable {
-  margin-left: 130px !important;
+  margin-left: 100px !important;
 }
 
 ::ng-deep .dx-scheduler-work-space-vertical-grouped[dx-group-column-count="1"].dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-scrollable.dx-scrollable {
-  margin-left: 130px !important;
+  margin-left: 100px !important;
 }
 
 ::ng-deep .dx-scheduler-all-day-table-cell {
   height: 180px !important;
 }
 
-@media print {
+/* ::ng-deep .dx-scheduler-group-header {
+  page-break-after: always;
+}
+
+::ng-deep .dx-scheduler-all-day-table-row {
+  page-break-after: always;
+} */
+
+/* @media print {
   .myDivToPrint {
       background-color: white;
       height: 100%;
@@ -51,4 +59,4 @@
       font-size: 14px;
       line-height: 18px;
   }
-}
+} */

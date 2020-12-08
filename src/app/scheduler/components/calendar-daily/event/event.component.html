@@ -3,10 +3,19 @@
           <div class="progressInfo">45%</div>
   </div>                 -->
   <!-- <div class="plannerItem"> -->
-    <div class="py-1 pl-2 pr-1 d-flex appointment" [ngClass]="viewName">
+    <div class="py-1 pl-1 pr-1 d-flex appointment" [ngClass]="viewName">
       <div class="flex-grow-1" style="min-width: 0; overflow: hidden;">
         <div class="d-flex flex-column">
-          <div *ngIf="!settings.PlanItem_DisplayOperationFirst">
+          <div *ngIf="settings.PlanItem_Layout === 1">
+            <div class="white-text font-weight-bold">
+              {{ plannerItemData.item.itemCode }} | {{  plannerItemData.item.articleCode }}
+
+
+            </div>
+            <div>{{ plannerItemData.item.articleName }}</div>
+          </div>
+
+          <div *ngIf="settings.PlanItem_Layout === 0 && !settings.PlanItem_DisplayOperationFirst">
             <div class="white-text font-weight-bold">
               {{ plannerItemData.item.itemCode }} |
               {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.item.articleCode + ' - ' + plannerItemData.item.articleName : plannerItemData.item.articleName }}
@@ -14,7 +23,7 @@
             </div>
             <div>#{{ plannerItemData.operation.code }} {{ plannerItemData.operation.name}}</div>
           </div>
-          <div *ngIf="settings.PlanItem_DisplayOperationFirst">
+          <div *ngIf="settings.PlanItem_Layout === 0 && settings.PlanItem_DisplayOperationFirst">
             <div class="white-text font-weight-bold">
               #{{ plannerItemData.operation.code }} {{ plannerItemData.operation.name}}
             </div>

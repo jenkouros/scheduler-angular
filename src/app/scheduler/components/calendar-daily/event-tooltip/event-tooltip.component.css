@@ -1,0 +1,21 @@
+.dx-field {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.tooltip-title {
+  margin: 10px 0;
+  white-space: normal;
+}
+
+.tooltip-body {
+  padding: 0 5px;
+}
+
+.icon-delete {
+  font-size: 20px;
+}
+
+.icon-delete:hover {
+  color: #FF5722;
+}

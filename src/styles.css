@@ -96,10 +96,18 @@ hr.hrline {
     background-color: black !important;
     color: white;
 }
-
+@page {
+  size: A4;
+  margin: 0;
+}
 @media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
   main {
     margin-left: 0 !important;
+    margin-right: 0 !important;
   }
   body * {
     visibility: hidden;
@@ -109,9 +117,23 @@ hr.hrline {
     visibility: visible;
   }
   #section-to-print {
-    position: absolute;
-    left: 0;
+    /* position: absolute; */
+    /* left: 0;
     top: 0;
+    width: 21cm;
+    height: 29.7cm; */
+    /* width: 210mm;
+    height: 297mm; */
+    /* height: 100%;
+      width: 99%; */
+      position: absolute;
+      top: 0;
+      left: 0;
+      /* padding-right: 10px; */
   }
+
+  /* ::ng-deep #section-to-print {
+    transform: rotate(90deg);
+  } */
 }
 

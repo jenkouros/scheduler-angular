@@ -45,5 +45,6 @@ export const appSettings = {
   PlanItem_EnablePlanningOnAllWorkplaces: true,
   PlanItems_ExcelExport: true,
   Planning_multiplyTimeWithQuantityFactor: true,
-  Planning_calendar_showContainerDescription: false
+  Planning_calendar_showContainerDescription: false,
+  PlanItem_Layout: 1
 };
