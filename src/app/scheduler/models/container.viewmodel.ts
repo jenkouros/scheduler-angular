@@ -11,6 +11,7 @@ export class ContainerSelect extends Container implements Select {
         result.name = container.name;
         result.code = container.code;
         result.comment = container.comment;
+        result.idContainerStatus = container.idContainerStatus;
         result.containerSettings = container.containerSettings;
         result.selected = false;
         result.displayName = container.displayExpression;

@@ -47,3 +47,8 @@ export const getSelectedContainerIds = createSelector(
   getContainersState,
   fromFeature.getSelectedContainers
 );
+
+export const getStatuses = createSelector(
+  getContainersState,
+  fromFeature.getContainerStatuses
+);

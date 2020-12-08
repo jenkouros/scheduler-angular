@@ -75,8 +75,16 @@
             {{data.text}}
           </i>
           <div>
-            {{ data.data.comment }}
-            matej dej data!
+            <table>
+              <tr>
+                <td *ngFor="let status of (containerStatuses$ | async);" 
+                    [ngStyle]="{'border-color': status.color}" 
+                    [ngClass]="{'container-status':true, 'container-status-inactive':status.idContainerStatus !== data.data.idContainerStatus}" 
+                    (click)="contanerStatusSet(data.data.id ,data.data.idContainerStatus, status.idContainerStatus)">
+                      {{status.code}}
+                  </td>
+                </tr>
+            </table>
           </div>
 
           <dx-tooltip

@@ -527,7 +527,8 @@ export interface PlanItemSearch {
 
 export interface ContainerPutRequest {
     idContainer: number;
-    comment: string;
+    comment?: string;
+    idContainerStatus?: number;
   }
 
 function colorMapper(planItemStatus: PlanItemStatusEnum) {
