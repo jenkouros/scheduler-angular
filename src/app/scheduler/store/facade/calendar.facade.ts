@@ -3,12 +3,16 @@ import { select, Store } from '@ngrx/store';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 import { PlanGridOperation } from '../../models/plan-grid-operation.model';
 import * as ContainerActions from '../actions/containers.action';
+import * as EventActions from '../actions/events.action';
 import * as PlanContainerGridActions from '../actions/plan-container-grid.action';
 import * as PlanItemActions from '../actions/plan-container-grid.action';
 import * as ContainerSelectors from '../selectors/containers.selectors';
 import * as PlanItemSelectors from '../selectors/plan-container-grid.selectors';
 import { AppState } from './../../../store/app.reducers';
 import { CalendarFilter } from './../../models/calendar-filter.model';
+import { PlanItemStatusEnum } from './../../models/event.model';
+
+
 
 @Injectable()
 export class CalendarFacade {
@@ -20,6 +24,8 @@ export class CalendarFacade {
   //   notWorkingHoursEvents: { [idContainer: number]: PlanSchedule[] };
   // }> = this.store.pipe(select(PlanItemSelectors.getEvents));
   public containerTooltips$ = this.store.pipe(select(ContainerSelectors.getContainerTooltips));
+  public detailsUpdateDialogData$ = this.store.pipe(select(PlanItemSelectors.getUpdateTimeDialogData));
+  public toolbarFilter$ = this.store.pipe(select(PlanItemSelectors.filter));
 
   constructor(
     private store: Store<AppState>) {}
@@ -34,6 +40,10 @@ export class CalendarFacade {
 
   setPlanDate(planDate: Date) {
     // this.store.dispatch(new PlanItemActions.);
+  }
+
+  changeSequence(isUp: boolean, idPlanItem: number) {
+    this.store.dispatch(new PlanItemActions.ChangeSequence({isUp, idPlanItem}));
   }
 
   loadPlanItems(containerIds: number[], startDate: Date, endDate: Date) {
@@ -51,5 +61,23 @@ export class CalendarFacade {
     }));
   }
 
+  showDetails(id: number) {
+    this.store.dispatch(new EventActions.ShowPlanItemDetailPopup({id: id}));
+  }
 
+  setFilter(search: string, planned: boolean, running: boolean, finished: boolean) {
+    const statuses: number[] = [];
+    if (planned) {
+      statuses.push(PlanItemStatusEnum.Planned);
+    }
+    if (running) {
+      statuses.push(PlanItemStatusEnum.Running);
+    }
+    if (finished) {
+      statuses.push(PlanItemStatusEnum.Finished);
+      statuses.push(PlanItemStatusEnum.ExternalyClosed);
+    }
+
+    this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridFilter({search, statuses}));
+  }
 }

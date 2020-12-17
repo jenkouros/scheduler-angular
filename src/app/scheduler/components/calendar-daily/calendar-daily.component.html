@@ -1,4 +1,5 @@
 
+<app-process-toolbar (selectAction)="toolbarChange($event)" [toolbar]="toolbar"></app-process-toolbar>
 <app-containers></app-containers>
 
 
@@ -58,6 +59,10 @@
         [intervalCount]="1"
         maxAppointmentsPerCell="3"></dxi-view>
 
+      <dxi-view
+        type="agenda"
+        name="Agenda"
+        [intervalCount]="1"></dxi-view>
 
 
       <dxi-resource
@@ -77,9 +82,9 @@
           <div>
             <table>
               <tr>
-                <td *ngFor="let status of (containerStatuses$ | async);" 
-                    [ngStyle]="{'border-color': status.color}" 
-                    [ngClass]="{'container-status':true, 'container-status-inactive':status.idContainerStatus !== data.data.idContainerStatus}" 
+                <td *ngFor="let status of (containerStatuses$ | async);"
+                    [ngStyle]="{'border-color': status.color}"
+                    [ngClass]="{'container-status':true, 'container-status-inactive':status.idContainerStatus !== data.data.idContainerStatus}"
                     (click)="contanerStatusSet(data.data.id ,data.data.idContainerStatus, status.idContainerStatus)">
                       {{status.code}}
                   </td>
@@ -105,6 +110,7 @@
       <div *dxTemplate="let model of 'tooltip-template'">
         <app-event-tooltip
           [editable]="editable"
+          (changeSequence)="onChangeSequence($event.isUp, $event.idPlanItem)"
           (deletePlanTask)="onAppointmentRemove(model.appointmentData)"
           [planItem]="model.appointmentData">
         </app-event-tooltip>
@@ -120,3 +126,6 @@
   </div>
 
 <!-- <app-event-info-dialog></app-event-info-dialog> -->
+<app-calendar-event-tooltip></app-calendar-event-tooltip>
+<app-update-time-dialog [changeData]="dialogUpdateData$ | async" [visible]="dialogUpdateData$ | async"></app-update-time-dialog>
+

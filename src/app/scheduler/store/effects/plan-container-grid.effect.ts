@@ -65,7 +65,7 @@ export class PlanContainerGridEffect {
       this.planContainerGridService.updatePlanItem(payload.operation).pipe(
         mergeMap(items => {
           const actions: any[] = [
-            new fromActions.UpdateContainerGridSuccess({data: items, allowAdd: payload.allowAdd })
+            new fromActions.UpdateContainerGridSuccess({data: items, allowAdd: payload.allowAdd, order: false })
           ];
           if (payload.allowAdd) {
             actions.push(new preplanActions.LoadPreplanItems());
@@ -81,11 +81,21 @@ export class PlanContainerGridEffect {
     switchMap((action: fromActions.PlanContainerDialogGridUpdate) =>
       this.planContainerGridService.updatePlanItemSimple(action.payload.operation).pipe(
         mergeMap(items => [
-          new fromActions.UpdateContainerGridSuccess({data: items, allowAdd: false}),
+          new fromActions.UpdateContainerGridSuccess({data: items, allowAdd: false, order: false}),
           new fromEventActions.LoadEvent({ id: action.payload.idPlanItem }),
           new fromActions.HideUpdatePlanGridOperationDialog()
         ]),
         catchError(error => of(new fromActions.UpdateContainerGridFail()))
       )
     ));
+
+  @Effect()
+  changeSequence$ = this.actions$.pipe(
+    ofType(fromActions.PLAN_CONTAINER_GRID_CHANGE_SEQUENCE),
+    switchMap((action: fromActions.ChangeSequence) =>
+      this.planContainerGridService.changeSequence(action.payload.isUp, action.payload.idPlanItem).pipe(
+        map(x => new fromActions.UpdateContainerGridSuccess({data: x, allowAdd: false, order: true }))
+      ))
+  );
+
 }

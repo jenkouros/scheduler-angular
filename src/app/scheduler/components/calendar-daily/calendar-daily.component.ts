@@ -2,12 +2,15 @@ import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChil
 import { DxSchedulerComponent } from 'devextreme-angular';
 import { Observable, Subscription } from 'rxjs';
 import { AppComponentBase } from '../../../shared/app-component-base';
-import { PlannedEvent } from '../../models/event.model';
-import { PlanGridOperationHelper } from '../../models/plan-grid-operation.model';
-import { ContainerSelect } from './../../models/container.viewmodel';
-import { PlanContainerGrid } from './../../models/plan-container-grid.model';
 import { ContainerStatus } from '../../models/container.dto';
-import { ContainerFacade, CalendarFacade } from '../../store';
+import { PlannedEvent } from '../../models/event.model';
+import { PlanGridOperationChange, PlanGridOperationHelper } from '../../models/plan-grid-operation.model';
+import { CalendarFacade, ContainerFacade } from '../../store';
+import { Toolbar, ToolbarGroup, ToolbarItem, ToolbarItemStateEnum, ToolbarItemTypeEnum } from './../../../shared/components/toolbar/toolbar.model';
+import { ColorHelper } from './../../helpers/color.helper';
+import { ContainerSelect } from './../../models/container.viewmodel';
+import { PlanItemStatusEnum } from './../../models/event.model';
+import { PlanContainerGrid } from './../../models/plan-container-grid.model';
 
 @Component({
   selector: 'app-calendar-daily',
@@ -28,6 +31,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   appointments: PlanContainerGrid[] = [];
   currentDate$: Observable<Date>;
   selectedDeparment$: Observable<number>;
+  dialogUpdateData$: Observable<PlanGridOperationChange | undefined>;
   // @Input() preplanTasks: TaskCommon[] = [];
   // @Output() removePreplanTask = new EventEmitter<number>();
   // @Output() addPreplanTask = new EventEmitter<TaskCommon>();
@@ -37,6 +41,12 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   intervalId;
   cellDuration = 60;
   groupTooltipsState = {};
+  toolbar: Toolbar;
+  toolbarFilter: {
+    search: string;
+    statuses: number[]
+  };
+  toolbarFilterSubscription: Subscription;
 
   // prioritiesData: Container[] = [];
   @ViewChild(DxSchedulerComponent, {static: false}) scheduler: DxSchedulerComponent;
@@ -56,7 +66,75 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   printScreen() {
   }
 
+  toolbarChange(item: ToolbarItem) {
+    if (item.type === ToolbarItemTypeEnum.toggle) {
+      if (item.value) {
+        this.toolbarFilter.statuses.push(item.actionId);
+      } else {
+        const idx = this.toolbarFilter.statuses.findIndex(i => i === item.actionId);
+        this.toolbarFilter.statuses.splice(idx, 1);
+      }
+    } else if (item.type === ToolbarItemTypeEnum.text) {
+      this.toolbarFilter.search = item.value;
+    }
+    this.calendarFacade.setFilter(this.toolbarFilter.search,
+      this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Planned) > -1,
+      this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Running) > -1,
+      this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Finished) > -1);
+  }
+
+  getToolbar() {
+    return {
+      groups: [
+        {
+          items: [
+            {
+              actionId: -1,
+              altText: 'Search',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.text,
+              value: this.toolbarFilter.search
+            }
+          ] as ToolbarItem[],
+          sequenceNumber: 1,
+          location: 'before'
+        },
+        {
+          items: [
+            {
+              actionId: PlanItemStatusEnum.Planned,
+              altText: 'Planned',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.toggle,
+              value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Planned) > -1
+            },
+            {
+              actionId: PlanItemStatusEnum.Running,
+              altText: 'V izvajanju',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.toggle,
+              value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Running) > -1
+            },
+            {
+              actionId: PlanItemStatusEnum.Finished,
+              altText: 'Finished',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.toggle,
+              value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Finished) > -1
+            }
+          ] as ToolbarItem[],
+          sequenceNumber: 2,
+          location: 'after'
+        }
+      ] as ToolbarGroup[]
+    } as Toolbar;
+  }
+
   ngOnInit() {
+    this.toolbarFilterSubscription = this.calendarFacade.toolbarFilter$
+      .subscribe(f => this.toolbarFilter = {...f});
+    this.toolbar = this.getToolbar();
+    this.dialogUpdateData$ = this.calendarFacade.detailsUpdateDialogData$;
     this.currentDate$ = this.calendarFacade.currentDate$;
     this.containerTooltipsSubscription = this.calendarFacade.containerTooltips$.subscribe(t =>
       this.containerTooltips = t);
@@ -64,7 +142,6 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     this.containers$ = this.calendarFacade.selectedContainers$;
     this.containerStatuses$ = this.containerFacade.containerStatuses$;
     this.planTasksSubscription = this.calendarFacade.events$.subscribe(e => {
-      console.log(e);
       if (e) {
         this.appointments = e.map(i => {
           let endDate = new Date(i.operation.timeEnd);
@@ -119,6 +196,11 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     }
   }
 
+  onChangeSequence(isUp: boolean, idPlanItem: number) {
+    this.calendarFacade.changeSequence(isUp, idPlanItem);
+    this.scheduler.instance.hideAppointmentTooltip();
+  }
+
   ngOnDestroy() {
     if (this.planTasksSubscription) {
       this.planTasksSubscription.unsubscribe();
@@ -132,10 +214,14 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     if (this.containerTooltipsSubscription) {
       this.containerTooltipsSubscription.unsubscribe();
     }
+    if (this.toolbarFilterSubscription) {
+      this.toolbarFilterSubscription.unsubscribe();
+    }
   }
 
   renderAppointment(e) {
-    e.appointmentElement.style.backgroundColor = e.appointmentData.color;
+    e.appointmentElement.style.backgroundColor = ColorHelper.colorMapper(
+      e.appointmentData.operation.idPlanItemStatus);
   }
 
   onAppointmentRemove(planItem: PlanContainerGrid) {
@@ -173,6 +259,10 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   }
 
   reloadCalendar() {
+    if (!this.scheduler || !this.containers) {
+      return;
+    }
+
     this.calendarFacade.loadPlanItems(
       this.containers.map(i => i.id),
       this.scheduler.instance.getStartViewDate(),
@@ -198,7 +288,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
 
 
   onAppointmentAdd(e) {
-    console.log(e);
+    // console.log(e);
     // const index = this.preplanTasks.indexOf(e.fromData);
     // if (index >= 0) {
     //   const task = this.preplanTasks[index];
@@ -268,7 +358,9 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   }
 
   onAppointmentFormOpening($event) {
+    this.scheduler.instance.hideAppointmentTooltip();
     $event.cancel = true;
+    this.calendarFacade.showDetails($event.appointmentData.operation.idPlanItem);
     // this.store.dispatch(PlanTaskActions.showPlanTaskDialog({idTask: $event.appointmentData.task.taskId}));
     return false;
   }

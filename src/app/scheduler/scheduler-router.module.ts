@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FiltersComponent, PlannerComponent, SchedulerComponent } from './components';
+import { FiltersComponent, SchedulerComponent } from './components';
 import { CalendarDailyComponent } from './components/calendar-daily/calendar-daily.component';
 import { PlanContainerGridComponent } from './components/planner-grid/plan-container-grid/plan-container-grid.component';
 import { PlanItemGridComponent } from './components/planner-grid/plan-item-grid/plan-item-grid.component';
@@ -15,9 +15,9 @@ const schedulerRoutes: Routes = [
         // { path: 'planitemgrid', component: PlanGroupComponent },
         { path: 'planitemgrid', component: PlanItemGridComponent },
         { path: 'plancontainergrid', component: PlanContainerGridComponent },
-        { path: 'planner', component: PlannerComponent },
+        // { path: 'planner', component: PlannerComponent },
         { path: 'search', component: SearcherComponent },
-        { path: 'daily', component: CalendarDailyComponent },
+        { path: 'planner', component: CalendarDailyComponent },
         { path: '**', redirectTo: 'planitems' }
     ]}
 ];

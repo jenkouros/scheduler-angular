@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { ApplicationFacadeService } from './../../../../store/application/application-facade.service';
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DxDataGridComponent } from 'devextreme-angular';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
-import CustomStore from 'devextreme/data/custom_store';
-
 import DataSource from 'devextreme/data/data_source';
-import { Item } from '../../../models/item.dto';
-import { GridStoreConfiguration } from '../../../models/shared.dto';
-import { ItemServer } from '../../../models/server/item.servermodel';
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 import { appSettings } from '../../../../../environments/environment';
 import { AppComponentBase } from '../../../../shared/app-component-base';
-// import { appSettings } from ''
+import { Item } from '../../../models/item.dto';
+import { ItemServer } from '../../../models/server/item.servermodel';
+import { GridStoreConfiguration } from '../../../models/shared.dto';
+import { ApplicationFacadeService } from './../../../../store/application/application-facade.service';
+
+
 
 @Component({
   selector: 'app-item-list',
@@ -23,12 +25,30 @@ export class ItemListComponent extends AppComponentBase implements OnChanges {
   @Output() selectItem = new EventEmitter<Item>();
   @Output() hideItem = new EventEmitter<Item>();
   @Output() loadedItems = new EventEmitter<ItemServer[]>();
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
+  printMode = false;
   settings = appSettings;
   dataSource: DataSource | null;
 
   constructor(private applicationFacade: ApplicationFacadeService, private http: HttpClient) {
     super();
+  }
+
+  exportGrid(grid) {
+    const columnCount = this.dataGrid.instance.columnCount();
+    this.dataGrid.instance.columnOption(columnCount - 1, 'visible', false);
+    this.dataGrid.instance.columnOption(columnCount - 2, 'visible', false);
+    const doc = new jsPDF();
+    exportDataGridToPdf({
+        jsPDFDocument: doc,
+        component: grid.instance
+    }).then(() => {
+        const date = new Date();
+        doc.save(`SinaproScheduler_workorders_${date.getFullYear()}${date.getMonth()}${date.getDate()}.pdf`);
+        this.dataGrid.instance.columnOption(columnCount - 1, 'visible', true);
+        this.dataGrid.instance.columnOption(columnCount - 2, 'visible', true);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

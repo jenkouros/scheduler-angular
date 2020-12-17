@@ -25,6 +25,13 @@ export const PLAN_CONTAINER_GRID_CURRENT_SWITCH = '[PlanContainerGrid] Set plan 
 export const PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Show Time Update Dialog';
 export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Hide Time Update Dialog';
 
+export const PLAN_CONTAINER_GRID_FILTER = '[PlanContainerGrid] Set Filter';
+
+export class SetPlanContainerGridFilter implements Action {
+  readonly type = PLAN_CONTAINER_GRID_FILTER;
+  constructor(public payload: {search: string, statuses: number[]}) {}
+}
+
 export class LoadPlanContainerGrid implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID;
   constructor(public payload: CalendarFilter | undefined) {}
@@ -39,6 +46,12 @@ export class LoadPlanContainerGridFail implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID_FAIL;
 }
 
+export const PLAN_CONTAINER_GRID_CHANGE_SEQUENCE = '[PlanContainerGrid] Change plan item sequence';
+export class ChangeSequence implements Action {
+  readonly type = PLAN_CONTAINER_GRID_CHANGE_SEQUENCE;
+  constructor(public payload: { isUp: boolean, idPlanItem: number }) {}
+}
+
 // export class AutoplanItem implements Action {
 //   readonly type = AUTOPLAN_ITEM;
 //   constructor(public payload: ItemAutoplanRequest) {}
@@ -47,7 +60,11 @@ export class LoadPlanContainerGridFail implements Action {
 
 export class UpdateContainerGridSuccess implements Action {
   readonly type = UPDATE_CONTAINER_GRID_SUCCESS;
-  constructor(public payload: {data: PlanContainerGrid[], allowAdd: boolean}) {}
+  constructor(public payload: {
+    data: PlanContainerGrid[],
+    allowAdd: boolean,
+    order: boolean
+  }) {}
 }
 
 
@@ -128,4 +145,5 @@ export type PlanContainerGridAction =
   | SetInProgressWoSwitch
   | SetCurrentWoSwitch
   | SetShowArchiveSwitch
+  | SetPlanContainerGridFilter
   ;

@@ -1,64 +1,71 @@
-<dx-data-grid
-  [columnAutoWidth]="true"
-  [allowColumnResizing]="true"
-  columnResizingMode="nextColumn"
-  id="gridContainer"
-  [dataSource]="dataSource"
-  [showRowLines]="true"
-  [showBorders]="true"
-  [rowAlternationEnabled]="true">
+<dx-button id="exportButton"
+    icon="exportpdf"
+    text="Export to PDF"
+    (onClick)="exportGrid(grid)">
+</dx-button>
+<div id="section-to-print">
+  <dx-data-grid #grid
+    [columnAutoWidth]="true"
+    [allowColumnResizing]="true"
+    columnResizingMode="nextColumn"
+    id="gridContainer"
+    [dataSource]="dataSource"
+    [showRowLines]="true"
+    [showBorders]="true"
+    [rowAlternationEnabled]="true">
 
-  <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxo-remote-operations
-    [filtering]="true"
-    [sorting]="true"
-    [grouping]="false"
-    [paging]="true"
-    [summary]="false">
-  </dxo-remote-operations>
-  <dxo-load-panel [enabled]="false"></dxo-load-panel>
-  <dxo-paging [pageSize]="10"></dxo-paging>
-  <dxo-pager
-    [showPageSizeSelector]="true"
-    [allowedPageSizes]="[10, 15, 30]"
-    [showInfo]="true"
-    [showNavigationButtons]="true">
-  </dxo-pager>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-remote-operations
+      [filtering]="true"
+      [sorting]="true"
+      [grouping]="false"
+      [paging]="true"
+      [summary]="false">
+    </dxo-remote-operations>
+    <dxo-load-panel [enabled]="false"></dxo-load-panel>
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager
+      [showPageSizeSelector]="true"
+      [allowedPageSizes]="[10, 15, 30]"
+      [showInfo]="true"
+      [showNavigationButtons]="true">
+    </dxo-pager>
 
-  <dxi-column caption="{{translate('Workorder')}}">
-    <dxi-column dataField="name" dataType="string" caption="{{translate('Code')}}" cssClass="font-weight-500"></dxi-column>
-    <dxi-column dataField="itemProgresses[0].quantityPlanned" dataType="number" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
-    <dxi-column dataField="measurementUnit.code" dataType="string" caption="EM"></dxi-column>
-  </dxi-column>
-  <dxi-column caption="{{translate('Article')}}">
-    <dxi-column dataField="article.code" dataType="string" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
-    <dxi-column dataField="article.name" dataType="string" caption="{{translate('Name')}}" cssClass="font-weight-500"></dxi-column>
-  </dxi-column>
-  <dxi-column caption="ERP">
-    <dxi-column dataField="quantity" dataType="number" caption="{{translate('Quantity')}}"></dxi-column>
-    <dxi-column dataField="measurementUnit.code" dataType="string" caption="EM"></dxi-column>
-    <dxi-column dataField="importDate" dataType="date" caption="{{translate('Launched')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
-    <dxi-column dataField="limitDateFrom" dataType="date" caption="{{translate('Date_From')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
-    <dxi-column dataField="limitDateTo" dataType="date" caption="{{translate('Date_To')}}" cellTemplate="dateCellTemplate"></dxi-column>
-  </dxi-column>
+    <dxi-column caption="{{translate('Workorder')}}">
+      <dxi-column dataField="name" dataType="string" caption="{{translate('Code')}}" cssClass="font-weight-500"></dxi-column>
+      <dxi-column [visible]="settings.Item_EnableBatchPlanning" dataField="itemProgresses[0].quantityPlanned" dataType="number" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
+      <dxi-column [visible]="settings.Item_EnableBatchPlanning" dataField="measurementUnit.code" dataType="string" caption="EM"></dxi-column>
+    </dxi-column>
+    <dxi-column caption="{{translate('Article')}}">
+      <dxi-column dataField="article.code" dataType="string" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
+      <dxi-column dataField="article.name" dataType="string" caption="{{translate('Name')}}" cssClass="font-weight-500"></dxi-column>
+    </dxi-column>
+    <dxi-column caption="ERP">
+      <dxi-column dataField="quantity" dataType="number" caption="{{translate('Quantity')}}"></dxi-column>
+      <dxi-column dataField="measurementUnit.code" dataType="string" caption="EM"></dxi-column>
+      <dxi-column dataField="importDate" dataType="date" caption="{{translate('Launched')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
+      <dxi-column dataField="limitDateFrom" dataType="date" caption="{{translate('Date_From')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
+      <dxi-column dataField="limitDateTo" dataType="date" caption="{{translate('Date_To')}}" cellTemplate="dateCellTemplate"></dxi-column>
+    </dxi-column>
 
-    <dxi-column dataType="string" *ngIf="settings.Item_EnableHiddingItems" alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
-    <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
+      <dxi-column dataType="string" *ngIf="settings.Item_EnableHiddingItems" alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
+      <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
 
 
-  <div *dxTemplate="let cell of 'planCellTemplate'">
-    <a class="span-link" (click)="onSelectItem(cell.data)">{{translate('Plan')}}</a>
-  </div>
+    <div *dxTemplate="let cell of 'planCellTemplate'">
+      <a class="span-link" (click)="onSelectItem(cell.data)">{{translate('Plan')}}</a>
+    </div>
 
-  <div *dxTemplate="let cell of 'deleteCellTemplate'">
-    <a class="span-link" (click)="onDeleteItem(cell.data)">{{translate('Hide')}}</a>
-  </div>
+    <div *dxTemplate="let cell of 'deleteCellTemplate'">
+      <a class="span-link" (click)="onDeleteItem(cell.data)">{{translate('Hide')}}</a>
+    </div>
 
-  <div *dxTemplate="let cell of 'dateCellTemplate'">
-    {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
-  </div>
+    <div *dxTemplate="let cell of 'dateCellTemplate'">
+      {{ cell.displayValue | date:'mediumDate' }} {{ cell.displayValue | date:'shortTime' }}
+    </div>
 
-  <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
-    {{ cell.displayValue ? cell.displayValue : 0 }}
-  </div>
-</dx-data-grid>
+    <div *dxTemplate="let cell of 'quantityPlannedCellTemplate'">
+      {{ cell.displayValue ? cell.displayValue : 0 }}
+    </div>
+  </dx-data-grid>
+</div>

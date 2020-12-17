@@ -8,7 +8,15 @@ export const getPlanContainerGridState = createSelector(
 
 export const getPlanContainerGrid = createSelector(
   getPlanContainerGridState,
-  state => state.planContainerGrids
+  state => {
+    const search = state.filter.search.toLowerCase();
+    return state.planContainerGrids.filter(i =>
+      state.filter.statuses.includes(i.operation.idPlanItemStatus) &&
+      (search === '' ||
+       i.item.articleCode.toLowerCase().includes(search) ||
+       i.item.articleName.toLowerCase().includes(search) ||
+       i.item.itemCode.toLowerCase().includes(search)));
+  }
 );
 
 // export const selectedPlanItemGrid = createSelector(
@@ -59,4 +67,9 @@ export const currentWoSwitch = createSelector(
 export const planDate = createSelector(
   getPlanContainerGridState,
   state => state.planDate
+);
+
+export const filter = createSelector (
+  getPlanContainerGridState,
+  state => state.filter
 );

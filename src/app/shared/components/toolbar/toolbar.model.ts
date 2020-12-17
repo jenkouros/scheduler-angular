@@ -7,7 +7,8 @@ export enum ToolbarItemStateEnum {
 export enum ToolbarItemTypeEnum {
   button = 1,
   toggle,
-  date
+  date,
+  text
 }
 
 export enum ToolbarItemActionEnum {

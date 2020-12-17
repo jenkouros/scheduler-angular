@@ -87,4 +87,9 @@ export class PlanContainerGridService {
     };
     return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
   }
+
+  changeSequence(isUp: boolean, idPlanItem: number) {
+    return this.http.post<PlanContainerGrid[]>(environment.apiUrl +
+      `/plancontainergrid/changeSequence?idPlanItem=${idPlanItem}&isUp=${isUp}`, null);
+  }
 }

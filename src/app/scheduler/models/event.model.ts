@@ -484,6 +484,8 @@ export enum PlanItemStatusEnum {
     Running = 6,
     Finished = 7,
     Canceled = 8,
+    ExternalyClosed = 9,
+    Break = 10,
     Virtual = 99
 }
 

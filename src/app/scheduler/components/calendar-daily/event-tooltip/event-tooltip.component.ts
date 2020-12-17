@@ -10,10 +10,17 @@ export class EventTooltipComponent {
   @Input() planItem: PlanContainerGrid;
   @Input() editable = true;
   @Output() deletePlanTask = new EventEmitter();
+  @Output() changeSequence = new EventEmitter<{isUp: boolean, idPlanItem: number}>();
 
   onDeletePlanTask(e) {
     console.log(e);
     this.deletePlanTask.emit();
+    e.stopPropagation();
+    return false;
+  }
+
+  onChangeSequence(isUp: boolean, idPlanItem: number, e) {
+    this.changeSequence.emit({isUp: isUp, idPlanItem: idPlanItem});
     e.stopPropagation();
     return false;
   }

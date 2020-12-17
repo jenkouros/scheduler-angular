@@ -1,6 +1,7 @@
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
-import { PlanGridOperationChange } from '../../models/plan-grid-operation.model';
+import { PlanGridOperationChange, PlanGridOperationHelper } from '../../models/plan-grid-operation.model';
 import * as fromAction from '../actions/plan-container-grid.action';
+import { PlanItemStatusEnum } from './../../models/event.model';
 
 export interface PlanContainerGridState {
   loading: boolean;
@@ -14,6 +15,10 @@ export interface PlanContainerGridState {
   inProgressWoSwitch: boolean;
   currentWoSwitch: boolean;
   planDate: Date;
+  filter: {
+    search: string;
+    statuses: number[];
+  };
 }
 
 const loadLimitDate = new Date();
@@ -32,7 +37,11 @@ export const initialState: PlanContainerGridState = {
   inProgressWoSwitch: false,
   currentWoSwitch: false,
   showArchiveSwitch: false,
-  planDate: new Date()
+  planDate: new Date(),
+  filter: {
+    search: '',
+    statuses: [PlanItemStatusEnum.Running, PlanItemStatusEnum.Planned]
+  }
 };
 
 export function planItemGridReducer (
@@ -95,7 +104,11 @@ export function planItemGridReducer (
 
       // ADD NEW OPERATIONS - comment: don't add because filter
       if (action.payload.allowAdd && items.length > 0) {
-       updatedGridItems = updatedGridItems.concat(items);
+       updatedGridItems = [...items, ...updatedGridItems];
+      }
+
+      if (action.payload.order) {
+        updatedGridItems.sort(PlanGridOperationHelper.sort);
       }
 
       return {
@@ -188,7 +201,18 @@ export function planItemGridReducer (
         currentWoSwitch: action.payload
       };
     }
+
+    case fromAction.PLAN_CONTAINER_GRID_FILTER: {
+      return {
+        ...state,
+        filter: {
+          search: action.payload.search,
+          statuses: action.payload.statuses
+        }
+      };
+    }
   }
 
   return state;
 }
+

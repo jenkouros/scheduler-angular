@@ -1,6 +1,8 @@
 <div>
   <div>
     <h5 class="tooltip-title">{{ planItem.item.itemCode }}</h5>
+    <button (click)="onChangeSequence(true, planItem.operation.idPlanItem, $event)">Up</button>
+    <button (click)="onChangeSequence(false, planItem.operation.idPlanItem, $event)">Down</button>
     <!-- <i id="task-delete" *ngIf="editable" (click)="onDeletePlanTask($event)" class="icon-delete dx-icon-trash"></i> -->
   </div>
 

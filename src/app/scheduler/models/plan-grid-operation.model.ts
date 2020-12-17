@@ -1,5 +1,6 @@
 import { translate } from '../../shared/app-component-base';
 import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
+import { PlanContainerGrid } from './plan-container-grid.model';
 import { PreplanItem } from './preplanitem.dto';
 
 export interface ItemExecutionStatus {
@@ -38,6 +39,8 @@ export interface PlanGridOperation {
   idPlanItem: number;
   isLocked: boolean;
   options?: PlanItemCreateRequestOptions;
+  idPlanItemStatus: number;
+  planItemSequence: number;
 }
 
 export class PlanGridOperationHelper {
@@ -49,6 +52,25 @@ export class PlanGridOperationHelper {
       idPrePlanItem: preplanItem.id,
       idSubItem: preplanItem.subItem.id
     } as PlanGridOperation;
+  }
+
+  static sort(a: PlanContainerGrid, b: PlanContainerGrid) {
+    if (a.operation.planItemSequence && !b.operation.planItemSequence) {
+      return 1;
+    }
+    if (!a.operation.planItemSequence && b.operation.planItemSequence) {
+      return -1;
+    }
+    if (!a.operation.planItemSequence && !b.operation.planItemSequence) {
+      return 0;
+    }
+    if (a.operation.planItemSequence > b.operation.planItemSequence) {
+      return 1;
+    }
+    if (a.operation.planItemSequence < b.operation.planItemSequence) {
+      return -1;
+    }
+    return 0;
   }
 }
 

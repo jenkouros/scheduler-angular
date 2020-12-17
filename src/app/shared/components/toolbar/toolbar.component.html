@@ -22,28 +22,64 @@
 </div> -->
 
 <dx-toolbar>
-  <ng-container *ngFor="let group of toolbar.groups; let idx = index" >
+  <ng-container *ngFor="let group of toolbar.groups; let idx = index">
     <ng-container *ngFor="let item of group.items">
       <span *ngIf="item.state !== states.hidden">
-        <span *ngIf="item.type === types.button"
+        <span
+          *ngIf="item.type === types.button"
           (click)="onSelectAction(item)"
-          [ngClass]="item.iconClass"></span>
-
+          [ngClass]="item.iconClass"
+        ></span>
+        <!--
         <dxi-item
           *ngIf="item.type === types.toggle"
           [location]="group.location"
           widget="dxCheckBox"
           locateInMenu="auto"
           cssClass="toolbar-item-custom"
-          [options]="{ text: item.altText }">
+          [options]="{ text: item.altText, onValueChanged: onCheckboxToogle, data: item }">
+        </dxi-item> -->
+
+        <dxi-item
+          locateInMenu="auto"
+          cssClass="toolbar-item-custom"
+          [location]="group.location"
+          *ngIf="item.type === types.toggle"
+        >
+          <div *dxTemplate>
+            <dx-check-box
+              [text]="item.altText"
+              (onValueChanged)="onCheckboxToogle(item)"
+              [value]="item.value"
+            >
+            </dx-check-box>
+          </div>
+        </dxi-item>
+
+        <dxi-item
+
+          locateInMenu="auto"
+          cssClass="toolbar-item-custom"
+          [location]="group.location"
+          *ngIf="item.type === types.text"
+        >
+          <div *dxTemplate>
+            <dx-text-box
+              width="500px"
+              [placeholder]="item.altText"
+              (onValueChanged)="textEntered($event, item)"
+              [value]="item.value"
+            >
+            </dx-text-box>
+          </div>
         </dxi-item>
 
         <dxi-item
           [location]="group.location"
           *ngIf="item.type === types.date"
-          cssClass="toolbar-item-custom">
-            <app-datebox>
-            </app-datebox>
+          cssClass="toolbar-item-custom"
+        >
+          <app-datebox> </app-datebox>
         </dxi-item>
 
         <!-- <span *ngIf="item.type === types.toggle">
@@ -58,3 +94,4 @@
     </ng-container>
   </ng-container>
 </dx-toolbar>
+<hr>
