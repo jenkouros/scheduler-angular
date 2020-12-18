@@ -1,4 +1,4 @@
-import { Node, Edge, NodeDimension } from '@swimlane/ngx-graph';
+import { Edge, Node, NodeDimension } from '@swimlane/ngx-graph';
 
 export interface AuditNodeServer {
   planItemId: number;
@@ -13,6 +13,9 @@ export interface AuditNodeServer {
 export interface AuditTagServer {
   type: number;
   data: string;
+  timeStart: string;
+  timeEnd: string;
+  userId: number;
 }
 
 export interface AuditEdgeServer {
@@ -67,7 +70,9 @@ export class AuditModel {
             idPlanItem: n.planItemId,
             tags: n.tags.map(m => ({
               type: m.type,
-              data: m.data
+              data: m.data,
+              timeStart: m.timeStart,
+              timeEnd: m.timeEnd
             }))
           },
           dimension: {

@@ -8,8 +8,9 @@
         <div class="d-flex flex-column">
           <div *ngIf="!settings.PlanItem_DisplayOperationFirst">
             <div class="white-text font-weight-bold">
-              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }} |
-              {{ plannerItemData.itemName }}
+              {{ plannerItemData.itemName }} |
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }}
+
             </div>
             <div>#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
           </div>

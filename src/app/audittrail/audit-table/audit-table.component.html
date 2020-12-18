@@ -1,0 +1,24 @@
+<dx-data-grid id="gridContainer"
+    [dataSource]="source"
+    [remoteOperations]="false"
+    [rowAlternationEnabled]="true"
+    [showBorders]="true">
+
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager
+        [showPageSizeSelector]="true"
+        [allowedPageSizes]="[10, 25, 50, 100]"
+    ></dxo-pager>
+
+
+    <dxi-column dataField="changeTime" dataType="datetime"></dxi-column>
+    <dxi-column dataField="itemCode"></dxi-column>
+    <dxi-column dataField="planItemName"></dxi-column>
+
+    <dxi-column dataField="timeStart"></dxi-column>
+    <dxi-column dataField="timeEnd"></dxi-column>
+    <dxi-column dataField="changeType"></dxi-column>
+    <dxi-column dataField="relatedItemCode"></dxi-column>
+
+
+</dx-data-grid>

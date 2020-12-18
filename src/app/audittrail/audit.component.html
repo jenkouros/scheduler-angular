@@ -5,6 +5,9 @@
     <h5>Zgodovina sprememb</h5>
     <app-item-selector (selectItem)="getData($event.idItem)"></app-item-selector>
   </div>
+
+  <app-audit-table *ngIf="model" [auditModel]="model"></app-audit-table>
+
   <ng-container *ngIf="model">
     <div *ngFor="let auditGroup of model.auditGroups">
       <app-graph (nodeClicked)="getData($event)" [auditGroup]="auditGroup" [initialItemId]="model.itemId"></app-graph>
