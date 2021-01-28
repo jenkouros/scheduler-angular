@@ -199,7 +199,18 @@
         "PlanItemStatus6": "V niansiranju",
         "ItemStatus1": "Lansiran",
         "ItemStatus2": "Delno planiran",
-        "ItemStatus3": "Dokončno planiran"
+        "ItemStatus3": "Dokončno planiran",
+        "Overview": "Pregled",
+        "WeekPlan": "Teden",
+        "TwoWorkWeekPlan": "Dva delovna tedna",
+        "WorkWeekPlan": "Delovni teden",
+        "OperationCode":"Koda",
+        "Item_LastExecutionOperation": "Izvajanje",
+        "Item_LastExecutionOperationStatus": "Status",
+        "Item_LinkedItemCode": "Vezan nalog",
+        "Item_LinkedItemArticle": "Vezan artikel",
+        "GroupName": "Naziv skupine",
+        "NewGroup": "Nova skupina"
     },
     "sr-Latn": {
         "Add":	"Dodaj",
@@ -400,7 +411,19 @@
         "PlanItemStatus6": "U nijansiranju",
         "ItemStatus1": "Pokrenut",
         "ItemStatus2": "Delimično planirano",
-        "ItemStatus3": "Planirano"
+        "ItemStatus3": "Planirano",
+        "Overview": "Pregled",
+        "WeekPlan": "Week",
+        "TwoWorkWeekPlan": "2 work weeks",
+        "WorkWeekPlan": "Work week",
+        "OperationCode": "Kod",
+
+        "Item_LastExecutionOperation": "Skenirano",
+        "Item_LastExecutionOperationStatus": "Skeniran status",
+        "Item_LinkedItemCode": "Vezan nalog",
+        "Item_LinkedItemArticle": "Vezan proizvod",
+        "GroupName": "Naziv grupe",
+        "NewGroup": "Nova grupa"
     },
     "en": {
       "Add": "Add",
@@ -601,7 +624,18 @@
       "PlanItemStatus6": "Tinting",
       "ItemStatus1": "Launched",
       "ItemStatus2": "Partly planned",
-      "ItemStatus3": "Planned"
+      "ItemStatus3": "Planned",
+      "Overview": "Overview",
+      "WeekPlan": "Week",
+      "TwoWorkWeekPlan": "2 work weeks",
+      "WorkWeekPlan": "Work week",
+      "OperationCode":"Operation code",
+      "Item_LastExecutionOperation": "Scanned",
+      "Item_LastExecutionOperationStatus": "Scanned Status",
+      "Item_LinkedItemCode": "Linked workorder",
+      "Item_LinkedItemArticle": "Linked product",
+      "GroupName": "Group name",
+      "NewGroup": "New group"
     },
 
 
@@ -804,7 +838,17 @@
         "PlanItemStatus6": "Tönung",
         "ItemStatus1": "Terminiert",
         "ItemStatus2": "Teilweise geplant",
-        "ItemStatus3": "Geplant"
+        "ItemStatus3": "Geplant",
+        "Overview": "Überblick",
+        "WeekPlan": "Woche",
+        "TwoWorkWeekPlan": "2 Arbeitswochen",
+        "WorkWeekPlan": "Arbeitswoche",
+        "OperationCode":"Operationsnummer",
+        "Item_LastExecutionOperation": "Gescannt",
+        "Item_LastExecutionOperationStatus": "Gescannt Status",
+        "Item_LinkedItemCode": "Zugehöriger Arbeitsauftrag",
+        "Item_LinkedItemArticle": "Zugehöriges Produkt",
+        "GroupName": "Gruppenname",
+        "NewGroup": "Neue Gruppe"
     }
 }
-

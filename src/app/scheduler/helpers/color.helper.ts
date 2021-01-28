@@ -46,6 +46,8 @@ export class ColorHelper {
               return '#d41140';
           case PlanItemStatusEnum.Break:
               return '#dcb843';
+          case PlanItemStatusEnum.ExternalyClosed:
+              return '#8b8c8c';
       }
       return '#337ab7';
   }

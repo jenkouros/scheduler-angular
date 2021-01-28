@@ -12,7 +12,7 @@ export class ToolbarComponent {
   @Output() selectAction = new EventEmitter<ToolbarItem>();
   @Input() toolbar: Toolbar;
 
-  onSelectAction(item: ToolbarItem, value?: any) {
+  onSelectAction(item: ToolbarItem, value: any) {
     item.value = value;
     this.selectAction.emit(item);
   }

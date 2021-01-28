@@ -8,7 +8,9 @@
         <div class="d-flex flex-column">
           <div *ngIf="settings.PlanItem_Layout === 1">
             <div class="white-text font-weight-bold">
-              {{  plannerItemData.item.articleCode }} | {{ plannerItemData.item.itemCode }} ({{ plannerItemData.item.quantity }} {{ plannerItemData.item.quantityMeasurementUnit }})
+              {{  plannerItemData.item.articleCode }} | {{ plannerItemData.item.itemCode }} |
+              <ng-container *ngIf="plannerItemData.item.planGridItemStatusLogModel">{{ plannerItemData.item.planGridItemStatusLogModel.planItemName }}</ng-container>
+              ({{ plannerItemData.item.quantity }} {{ plannerItemData.item.quantityMeasurementUnit }})
             </div>
             <div>{{ plannerItemData.item.articleName }}</div>
           </div>

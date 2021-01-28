@@ -1,5 +1,5 @@
 import { translate } from '../../shared/app-component-base';
-import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
+import { PlanItemCreateRequestOptions, PlanItemStatusEnum, PlannedEventSimple } from './event.model';
 import { PlanContainerGrid } from './plan-container-grid.model';
 import { PreplanItem } from './preplanitem.dto';
 
@@ -118,6 +118,16 @@ export function getplanGridOperationExecutionColor(id) {
     return '#b1b1ff';
   } else if (id === 6) {
     return '#fbe8cc';
+  }
+}
+
+export function getplanGridOperationStatusColor(id) {
+if (id === PlanItemStatusEnum.Running) {
+    return '#ccfbcc';
+  } else if (id === PlanItemStatusEnum.Finished) {
+    return '#d6d6d6';
+  } else if (id === PlanItemStatusEnum.Break) {
+    return '#b1b1ff';
   }
 }
 

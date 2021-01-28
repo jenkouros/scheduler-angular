@@ -1,7 +1,5 @@
-
 <app-process-toolbar (selectAction)="toolbarChange($event)" [toolbar]="toolbar"></app-process-toolbar>
 <app-containers></app-containers>
-
 
 <!-- <button (click)="printScreen()">Print</button> -->
 
@@ -11,11 +9,11 @@
         {{translate('Choose_Workplace')}}
     </div>
   </div>
-  <div #calendar class="myDivToPrint" id="section-to-print">
+  <div #calendar class="myDivToPrint white-color" id="section-to-print">
     <dx-scheduler *ngIf="containers && containers.length"
       [firstDayOfWeek]="1"
       [useDropDownViewSwitcher]="false"
-      [currentView]="'Work week plan'"
+      [currentView]="translate('WorkWeekPlan')"
       id="scheduler"
       [groups]="['operation.idContainer']"
       [showCurrentTimeIndicator]="false"
@@ -28,6 +26,7 @@
       (onOptionChanged)="onOptionChanged($event)"
       appointmentTemplate="appointment-template"
       appointmentTooltipTemplate="tooltip-template"
+
       (onAppointmentRendered) = "renderAppointment($event)"
       [views]="['Week hours plan']"
       endDateExpr="operation.timeEnd"
@@ -37,7 +36,7 @@
       >
       <dxi-view
         type="week"
-        name="Week plan"
+        [name]="translate('WeekPlan')"
         groupOrientation="vertical"
         [cellDuration]="1440"
         [intervalCount]="1"
@@ -45,7 +44,7 @@
 
       <dxi-view
         type="workWeek"
-        name="2 Work week plan"
+        [name]="translate('TwoWorkWeekPlan')"
         groupOrientation="vertical"
         [cellDuration]="1440"
         [intervalCount]="2"
@@ -53,7 +52,7 @@
 
       <dxi-view
         type="workWeek"
-        name="Work week plan"
+        [name]="translate('WorkWeekPlan')"
         groupOrientation="vertical"
         [cellDuration]="1440"
         [intervalCount]="1"
@@ -73,7 +72,7 @@
         [allowMultiple]="false"></dxi-resource>
 
       <div *dxTemplate="let data of 'headerTemplate'">
-          <i
+          <i class="font16"
             (mouseenter)="toggleGroupTooltip(data, data.id)"
             (mouseleave)="toggleGroupTooltip(data, data.id)"
             [id]="'group-' + data.id">
@@ -96,7 +95,7 @@
             [visible]="isTooltipGroupVisible(data.id)"
                 [target]="'#group-' + data.id"
                 [closeOnOutsideClick]="false">
-                <div *dxTemplate="let dataT = data of 'content'">
+                <div class="font16" *dxTemplate="let dataT = data of 'content'">
                     {{ getTooltipDescription(data.id) }}
                 </div>
             </dx-tooltip>

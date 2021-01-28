@@ -1,20 +1,17 @@
-import { ItemServer, ItemBasicServer } from './../models/server/item.servermodel';
-import { ItemAutoplanRequest } from './../models/item-autoplan.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 // import { createStore } from 'devextreme-aspnet-data-nojquery';
 // import CustomStore from 'devextreme/data/custom_store';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { ApiResponse, ApiResponseResult } from '../../shared/shared.model';
-import { ItemHierarchyServer } from '../models/server/item.servermodel';
-import { ItemHierarchy, Item } from '../models/item.dto';
-import { map, catchError } from 'rxjs/operators';
-import { GridStoreConfiguration } from '../models/shared.dto';
-import { DictionaryHelper } from '../helpers/dictionary.helper';
-import { PlanItemGrid } from '../models/plan-item-grid-model';
 import { CreateItemInput } from '../components/item/item-create/item-create.model';
+import { DictionaryHelper } from '../helpers/dictionary.helper';
+import { ItemHierarchy } from '../models/item.dto';
+import { ItemHierarchyServer } from '../models/server/item.servermodel';
+import { GridStoreConfiguration } from '../models/shared.dto';
+import { ItemBasicServer } from './../models/server/item.servermodel';
+
 
 export class Test {
   constructor(private id: string, private value: number) {}
@@ -38,7 +35,8 @@ export class ItemsService {
 
   getItemsStoreConfiguration(
     idPlan: number,
-    filterDictionary: { [id: string]: number[] } | undefined
+    filterDictionary: { [id: string]: number[] } | undefined,
+    showPlanned: boolean
   ): GridStoreConfiguration {
     const dict = DictionaryHelper.stringify(filterDictionary);
     return {
@@ -47,7 +45,8 @@ export class ItemsService {
       loadParams: {
         idPlan: idPlan,
         ids: dict.ids,
-        values: dict.values
+        values: dict.values,
+        showPlanned: showPlanned
       }
     };
   }

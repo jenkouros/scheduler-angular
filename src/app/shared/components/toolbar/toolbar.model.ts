@@ -21,12 +21,14 @@ export enum ToolbarItemActionEnum {
 }
 
 export interface ToolbarItem {
+  icon?: string;
   actionId: number;
   iconClass: string;
   altText: string;
   state: ToolbarItemStateEnum;
   type: ToolbarItemTypeEnum;
   value?: any;
+  data?: any;
 }
 
 export interface ToolbarGroup {

@@ -19,7 +19,8 @@ export class PlanContainerGridService {
                         filterDictionary: { [id: string]: number[] } = {},
                         filterContainers: Container[] = [],
                         showArchive: boolean = false,
-                        calendarFilter: CalendarFilter | undefined) {
+                        calendarFilter: CalendarFilter | undefined,
+                        showNotPlannable: boolean) {
 
     const containers = filterContainers.map(i => i.id.toString());
     const dict = DictionaryHelper.stringify(filterDictionary);
@@ -36,7 +37,8 @@ export class PlanContainerGridService {
           'endDate': moment(calendarFilter.dateEnd).format(),
           'containerIds': calendarFilter.containerIds
         }
-        : undefined
+        : undefined,
+      'showNotPlannable': showNotPlannable
     };
     return this.http.post<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', params);
   }

@@ -9,15 +9,15 @@
                 <thead></thead>
                 <tbody>
                     <tr>
-                        <td class="pr-3">Priprava:</td>
+                        <td class="pr-3">{{ translate("Preparation") }}:</td>
                         <th>{{ convertTime(subItem.normativeTimePreparation) }}</th>
                     </tr>
                     <tr>
-                        <td class="pr-3">Izdelava:</td>
+                        <td class="pr-3">{{ translate("Execution") }}:</td>
                         <th>{{ convertTime(subItem.normativeTimeMachine * quantity) }}</th>
                     </tr>
                     <tr *ngIf="subItem.containers">
-                        <td class="pr-3">Stroj:</td>
+                        <td class="pr-3">{{ translate("Workplace") }}:</td>
                         <th><span class="badge badge-secondary mr-1 p-1" *ngFor="let container of subItem.containers">{{ container.displayExpression }}</span></th>
                     </tr>
                     <!-- <tr>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { faExclamationCircle, faExclamationTriangle, faLock } from '@fortawesome/free-solid-svg-icons';
 import { appSettings } from './../../../../../environments/environment';
 import { PlanItemStatusEnum } from './../../../models/event.model';
@@ -12,7 +12,7 @@ import { PlanContainerGrid } from './../../../models/plan-container-grid.model';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css']
 })
-export class EventComponent implements OnInit {
+export class EventComponent {
 
   statusEnum = PlanItemStatusEnum;
   settings = appSettings;
@@ -23,7 +23,8 @@ export class EventComponent implements OnInit {
   faExclamation = faExclamationCircle;
   constructor() { }
 
-  ngOnInit() {
-  }
+  // ngOnInit() {
+  //   console.log(this.plannerItemData);
+  // }
 
 }

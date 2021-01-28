@@ -38,7 +38,7 @@ export const appSettings = {
   Menu_Scheduler_Filters: true,
   Menu_Scheduler_Groups: true,
   Menu_TimeTables: true,
-  Item_EnableHiddingItems: true,
+  Item_EnableHiddingItems: false,
   Item_EnableBatchPlanning: false,
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
   PlanItem_DisplayArticleCode: true,  // article name otherwise

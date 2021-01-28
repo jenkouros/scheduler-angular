@@ -36,12 +36,13 @@ export class PlanContainerGridEffect {
       this.store.pipe(select(state => state.scheduler.filters)),
       this.store.pipe(select(state => state.plan.items.selectedId)),
       this.store.pipe(select(state => state.scheduler.planContainerGrid.containerGridLimitDate)),
-      this.store.pipe(select(state => state.scheduler.planContainerGrid.showArchiveSwitch))
+      this.store.pipe(select(state => state.scheduler.planContainerGrid.showArchiveSwitch)),
+      this.store.pipe(select(state => state.scheduler.planContainerGrid.filter.showNotPlannable))
     ),
-    switchMap(([action, filters, idPlan, limitDate, showArchive]) =>
+    switchMap(([action, filters, idPlan, limitDate, showArchive, showNotPlannable]) =>
 
       this.planContainerGridService.loadPlanContainerGrid(
-        idPlan, limitDate, filters.selectedEntities, filters.selectedContainers, showArchive, action.payload).pipe(
+        idPlan, limitDate, filters.selectedEntities, filters.selectedContainers, showArchive, action.payload, showNotPlannable).pipe(
         map(event => new fromActions.LoadPlanContainerGridSuccess(event)),
         catchError(error => of(new fromActions.LoadPlanContainerGridFail()))
       )

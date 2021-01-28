@@ -1,8 +1,4 @@
-<dx-button id="exportButton"
-    icon="exportpdf"
-    text="Export to PDF"
-    (onClick)="exportGrid(grid)">
-</dx-button>
+
 <div id="section-to-print">
   <dx-data-grid #grid
     [columnAutoWidth]="true"
@@ -12,8 +8,11 @@
     [dataSource]="dataSource"
     [showRowLines]="true"
     [showBorders]="true"
-    [rowAlternationEnabled]="true">
-
+    [rowAlternationEnabled]="true"
+    (onToolbarPreparing)="onToolbarPreparing($event)"
+    (onCellPrepared)="applyCellStyles($event)"
+    >
+    <dxo-export [enabled]="true"></dxo-export>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-remote-operations
       [filtering]="true"
@@ -31,10 +30,16 @@
       [showNavigationButtons]="true">
     </dxo-pager>
 
+
+
     <dxi-column caption="{{translate('Workorder')}}">
       <dxi-column dataField="name" dataType="string" caption="{{translate('Code')}}" cssClass="font-weight-500"></dxi-column>
       <dxi-column [visible]="settings.Item_EnableBatchPlanning" dataField="itemProgresses[0].quantityPlanned" dataType="number" cellTemplate="quantityPlannedCellTemplate" caption="{{translate('Planned')}}"></dxi-column>
       <dxi-column [visible]="settings.Item_EnableBatchPlanning" dataField="measurementUnit.code" dataType="string" caption="EM"></dxi-column>
+      <dxi-column [calculateCellValue]="getConnectedItemValue" [caption]="translate('Item_LinkedItemCode')"></dxi-column>
+      <!-- <dxi-column [calculateCellValue]="getConnectedArticleCode" [caption]="translate('Item_LinkedItemArticle')"></dxi-column> -->
+      <dxi-column [allowFiltering]="false" [visible]="printMode" dataField="itemStatusLog.planItemName" [caption]="translate('Item_LastExecutionOperation')"></dxi-column>
+      <dxi-column [visible]="printMode" [calculateCellValue]="getLastStatusName" [caption]="translate('Item_LastExecutionOperationStatus')"></dxi-column>
     </dxi-column>
     <dxi-column caption="{{translate('Article')}}">
       <dxi-column dataField="article.code" dataType="string" caption="{{translate('Code_2')}}" cssClass="font-weight-500"></dxi-column>
@@ -46,10 +51,11 @@
       <dxi-column dataField="importDate" dataType="date" caption="{{translate('Launched')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
       <dxi-column dataField="limitDateFrom" dataType="date" caption="{{translate('Date_From')}}" sortOrder="desc" cellTemplate="dateCellTemplate"></dxi-column>
       <dxi-column dataField="limitDateTo" dataType="date" caption="{{translate('Date_To')}}" cellTemplate="dateCellTemplate"></dxi-column>
+      <dxi-column *ngIf="settings.PlanItem_Layout === 1" [calculateCellValue]="getMrpValue" caption="MRP" ></dxi-column>
     </dxi-column>
 
-      <dxi-column dataType="string" *ngIf="settings.Item_EnableHiddingItems" alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
-      <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="planCellTemplate"></dxi-column>
+      <dxi-column dataType="string" *ngIf="!printMode && settings.Item_EnableHiddingItems" alignment="center" [allowFiltering]="false" dataField="" cellTemplate="deleteCellTemplate"></dxi-column>
+      <dxi-column dataType="string" alignment="center" dataField="" [visible]="!printMode" cellTemplate="planCellTemplate"></dxi-column>
 
 
     <div *dxTemplate="let cell of 'planCellTemplate'">

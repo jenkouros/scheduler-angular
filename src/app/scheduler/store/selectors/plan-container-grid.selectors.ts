@@ -73,3 +73,8 @@ export const filter = createSelector (
   getPlanContainerGridState,
   state => state.filter
 );
+
+export const selectShowNotPlannable = createSelector (
+  filter,
+  state => state.showNotPlannable
+);

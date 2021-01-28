@@ -1,6 +1,5 @@
-import { ProductServer, MeasurementUnitServer } from './shared.servermodel';
-import { SubItemContainerServer } from './preplanitem.servermodel';
 import { ContainerServer } from './container.servermodel';
+import { MeasurementUnitServer, ProductServer } from './shared.servermodel';
 
 export interface ItemServer {
     idItem: number;
@@ -15,6 +14,23 @@ export interface ItemServer {
     limitDateFrom: Date;
     limitDateTo: Date;
     importDate: Date;
+    fillingItems: string[];
+    connectedOrders: { code: string, articleCode: string }[];
+    itemStatusLog: ItemStatusLog;
+    // planItemStatuses: PlanItemStatusServer[];
+}
+
+// export interface PlanItemStatusServer {
+//     idPreplanItem: number;
+//     idPlanItem: number;
+//     name: string;
+//     idStatus: number;
+//     sequenceNumber: number;
+// }
+
+export interface ItemStatusLog {
+  planItemName: string;
+  idPlanItemStatus: number;
 }
 
 export interface ItemProgressServer {

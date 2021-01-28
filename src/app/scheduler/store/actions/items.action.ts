@@ -26,6 +26,14 @@ export const CREATE_ITEM_FAIL = '[Item] Create item fail';
 export const TOGGLE_SUB_ITEM_PLANNABLE = '[Item] Toggle sub item plannable';
 export const RESET_SUB_ITEM_PLANNABLE_STATE = '[Item] Reset sub item plannable state';
 
+export const TOGGLE_SHOW_PLANNED = '[Item] Toggle Show Planned';
+
+
+export class ToggleShowPlanned implements Action {
+  readonly type = TOGGLE_SHOW_PLANNED;
+  constructor(public payload: boolean) {}
+}
+
 export class CreateItem implements Action {
   readonly type = CREATE_ITEM;
   constructor(public payload: CreateItemInput) {}
@@ -41,7 +49,8 @@ export class CreateItemFail implements Action {
 }
 
 export class LoadItems implements Action {
-    readonly type = LOAD_ITEMS;
+  readonly type = LOAD_ITEMS;
+  constructor(public payload?: { showPlanned: boolean }) {}
 }
 
 export class HideItem implements Action {

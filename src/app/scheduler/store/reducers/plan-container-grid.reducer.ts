@@ -18,6 +18,7 @@ export interface PlanContainerGridState {
   filter: {
     search: string;
     statuses: number[];
+    showNotPlannable: boolean;
   };
 }
 
@@ -40,8 +41,9 @@ export const initialState: PlanContainerGridState = {
   planDate: new Date(),
   filter: {
     search: '',
-    statuses: [PlanItemStatusEnum.Running, PlanItemStatusEnum.Planned]
-  }
+    statuses: [PlanItemStatusEnum.Running, PlanItemStatusEnum.Planned],
+    showNotPlannable: false
+  },
 };
 
 export function planItemGridReducer (
@@ -207,7 +209,8 @@ export function planItemGridReducer (
         ...state,
         filter: {
           search: action.payload.search,
-          statuses: action.payload.statuses
+          statuses: action.payload.statuses,
+          showNotPlannable: action.payload.showNotPlannable
         }
       };
     }

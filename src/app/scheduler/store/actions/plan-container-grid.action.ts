@@ -29,7 +29,7 @@ export const PLAN_CONTAINER_GRID_FILTER = '[PlanContainerGrid] Set Filter';
 
 export class SetPlanContainerGridFilter implements Action {
   readonly type = PLAN_CONTAINER_GRID_FILTER;
-  constructor(public payload: {search: string, statuses: number[]}) {}
+  constructor(public payload: {search: string, statuses: number[], showNotPlannable: boolean}) {}
 }
 
 export class LoadPlanContainerGrid implements Action {

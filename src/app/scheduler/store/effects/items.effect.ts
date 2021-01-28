@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, tap, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
-import { Store, select } from '@ngrx/store';
-import { SchedulerState } from '../reducers';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { AppState } from '../../../store/app.reducers';
 import { ItemsService } from '../../services/items.service';
 import * as fromActions from '../actions';
-import { ItemServer } from '../../models/server/item.servermodel';
-import { Item } from '../../models/item.dto';
-import { AppState } from '../../../store/app.reducers';
 
 @Injectable()
 export class ItemsEffects {
@@ -20,12 +17,13 @@ export class ItemsEffects {
 
   @Effect()
   loadItemsStore$ = this.actions$.ofType(fromActions.LOAD_ITEMS).pipe(
+    map((action: fromActions.LoadItems) => action.payload),
     withLatestFrom(
       this.store.select(state => state.scheduler.filters.selectedEntities),
       this.store.select(state => state.plan.items.selectedId)
     ),
     map(([action, filters, idPlan]) => {
-      const storeConfiguration = this.itemService.getItemsStoreConfiguration(idPlan, filters);
+      const storeConfiguration = this.itemService.getItemsStoreConfiguration(idPlan, filters, !!action && action.showPlanned);
       return new fromActions.RegisterItemStore(storeConfiguration);
     })
   );

@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { environment } from '../../../environments/environment';
+import { translate } from '../../shared/app-component-base';
 import { TimeHelper } from '../helpers/time.helper';
 import { PlanItemResponseServer, PlannedEventServer, PlannedEventSimpleServer } from '../models/server/plannedevent.servermodel';
 import { PlanSchedule } from './planschedule.dto';
@@ -249,11 +250,11 @@ export class PlannedEvent {
 
     get statusDescription() {
         switch (this.idPlanItemStatus) {
-            case PlanItemStatusEnum.Running: return 'V izvajanju';
-            case PlanItemStatusEnum.Finished: return 'Zaključen';
-            case PlanItemStatusEnum.Canceled: return 'Preklican';
-            case PlanItemStatusEnum.Planned: return 'Planiran';
-            case PlanItemStatusEnum.Scheduled: return 'Planiran';
+            case PlanItemStatusEnum.Running: return translate('PlanItemStatus2');
+            case PlanItemStatusEnum.Finished: return translate('PlanItemStatus3');
+            case PlanItemStatusEnum.Canceled: return translate('PlanItemStatus5');
+            case PlanItemStatusEnum.Planned: return translate('PlanItemStatus1');
+            case PlanItemStatusEnum.Scheduled: return translate('PlanItemStatus1');
         }
         return '-';
     }

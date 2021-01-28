@@ -27,7 +27,7 @@
       <span *ngIf="item.state !== states.hidden">
         <span
           *ngIf="item.type === types.button"
-          (click)="onSelectAction(item)"
+          (click)="onSelectAction(item, undefined)"
           [ngClass]="item.iconClass"
         ></span>
         <!--
@@ -48,11 +48,27 @@
         >
           <div *dxTemplate>
             <dx-check-box
+              style="padding-top: 7px"
               [text]="item.altText"
               (onValueChanged)="onCheckboxToogle(item)"
               [value]="item.value"
             >
             </dx-check-box>
+          </div>
+        </dxi-item>
+
+        <dxi-item
+          locateInMenu="auto"
+          cssClass="toolbar-item-custom"
+          [location]="group.location"
+          *ngIf="item.type === types.button"
+        >
+          <div *dxTemplate>
+            <dx-button
+              [icon]="item.icon"
+              (click)="onSelectAction(item, undefined)"
+            >
+            </dx-button>
           </div>
         </dxi-item>
 

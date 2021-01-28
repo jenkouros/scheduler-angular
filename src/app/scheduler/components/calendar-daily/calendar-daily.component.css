@@ -42,13 +42,15 @@
   width: 150px;
 }
 
+
+
 .container-status {
   border: 3px solid;
   display: inline-block;
   border-radius: 6px 2px 6px 2px;
   margin: 5px;
   /* padding: 2px 5px 2px 5px; */
-  font-size: 0.9em;
+  font-size: 1em;
   width: 30px;
   text-align: center;
 }
@@ -62,6 +64,14 @@
   color: lightgray !important
 }
 
+
+@media print {
+  ::ng-deep .dx-scheduler-appointment {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    color: white !important;
+  }
+}
 
 /* ::ng-deep .dx-scheduler-group-header {
   page-break-after: always;
@@ -84,5 +94,11 @@
       padding: 15px;
       font-size: 14px;
       line-height: 18px;
+  }
+} */
+
+/* @media print {
+  .white-color {
+    color: white;
   }
 } */

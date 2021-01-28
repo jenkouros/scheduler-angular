@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 import { FilterTypeEnum } from '../../../models/filter.enum';
 import { GroupFilterViewModel } from '../../../models/groupfilter.dto';
 
@@ -7,7 +8,7 @@ import { GroupFilterViewModel } from '../../../models/groupfilter.dto';
   templateUrl: './group-edit.component.html',
   styleUrls: ['./group-edit.component.css']
 })
-export class GroupEditComponent implements OnInit, OnChanges {
+export class GroupEditComponent extends AppComponentBase implements OnInit, OnChanges {
   @Input() groupFilter: GroupFilterViewModel | null;
   @Output() applyEditGroupFilter = new EventEmitter<GroupFilterViewModel>();
   @Output() cancelEditGroupFilter = new EventEmitter();
@@ -16,6 +17,7 @@ export class GroupEditComponent implements OnInit, OnChanges {
   FilterTypeEnum: typeof FilterTypeEnum = FilterTypeEnum;
   groupName: string;
   constructor() {
+    super();
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
@@ -42,7 +44,7 @@ export class GroupEditComponent implements OnInit, OnChanges {
 
   onSubmit() {
     if (this.groupFilter) {
-      this.groupFilter.name = this.groupName || 'Nova skupina';
+      this.groupFilter.name = this.groupName || this.translate('NewGroup');
       this.applyEditGroupFilter.emit(this.groupFilter);
     }
   }

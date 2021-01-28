@@ -65,19 +65,21 @@ export class CalendarFacade {
     this.store.dispatch(new EventActions.ShowPlanItemDetailPopup({id: id}));
   }
 
-  setFilter(search: string, planned: boolean, running: boolean, finished: boolean) {
+  setFilter(search: string, planned: boolean, running: boolean, finished: boolean, showNotPlannable: boolean) {
     const statuses: number[] = [];
     if (planned) {
       statuses.push(PlanItemStatusEnum.Planned);
     }
     if (running) {
       statuses.push(PlanItemStatusEnum.Running);
+      statuses.push(PlanItemStatusEnum.Break);
+
     }
     if (finished) {
       statuses.push(PlanItemStatusEnum.Finished);
       statuses.push(PlanItemStatusEnum.ExternalyClosed);
     }
 
-    this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridFilter({search, statuses}));
+    this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridFilter({search, statuses, showNotPlannable}));
   }
 }

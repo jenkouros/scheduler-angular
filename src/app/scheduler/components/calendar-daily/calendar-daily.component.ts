@@ -44,9 +44,11 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   toolbar: Toolbar;
   toolbarFilter: {
     search: string;
-    statuses: number[]
+    statuses: number[],
+    showNotPlannable: boolean
   };
   toolbarFilterSubscription: Subscription;
+  showNotPlannedTracker: boolean;
 
   // prioritiesData: Container[] = [];
   @ViewChild(DxSchedulerComponent, {static: false}) scheduler: DxSchedulerComponent;
@@ -68,19 +70,35 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
 
   toolbarChange(item: ToolbarItem) {
     if (item.type === ToolbarItemTypeEnum.toggle) {
-      if (item.value) {
-        this.toolbarFilter.statuses.push(item.actionId);
-      } else {
-        const idx = this.toolbarFilter.statuses.findIndex(i => i === item.actionId);
-        this.toolbarFilter.statuses.splice(idx, 1);
+      if (item.actionId < 4) {
+        if (item.value) {
+          this.toolbarFilter.statuses.push(item.data);
+        } else {
+          const idx = this.toolbarFilter.statuses.findIndex(i => i === item.data);
+          this.toolbarFilter.statuses.splice(idx, 1);
+        }
+      } else if (item.actionId === 4) {
+        this.toolbarFilter.showNotPlannable = item.value;
       }
     } else if (item.type === ToolbarItemTypeEnum.text) {
       this.toolbarFilter.search = item.value;
+    } else if (item.type === ToolbarItemTypeEnum.button) {
+      this.reloadCalendar();
     }
     this.calendarFacade.setFilter(this.toolbarFilter.search,
       this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Planned) > -1,
       this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Running) > -1,
-      this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Finished) > -1);
+      this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Finished) > -1,
+      this.toolbarFilter.showNotPlannable);
+  }
+
+  print() {
+    // const width = this.scheduler.instance.option('width');
+    this.scheduler.instance.option('width', '210mm');
+    this.scheduler.instance.repaint();
+    window.print();
+    // this.scheduler.instance.option('width', '100%');
+    // this.scheduler.instance.repaint();
   }
 
   getToolbar() {
@@ -90,7 +108,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
           items: [
             {
               actionId: -1,
-              altText: 'Search',
+              altText: this.translate('Search'),
               state: ToolbarItemStateEnum.visible,
               type: ToolbarItemTypeEnum.text,
               value: this.toolbarFilter.search
@@ -102,28 +120,52 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
         {
           items: [
             {
-              actionId: PlanItemStatusEnum.Planned,
-              altText: 'Planned',
+              actionId: 4,
+              altText: this.translate('Overview'),
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.toggle,
+              value: this.toolbarFilter.showNotPlannable
+            },
+            {
+              actionId: -1,
+              altText: 'Refresh',
+              icon: 'refresh',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.button,
+              value: ''
+            }
+          ] as ToolbarItem[],
+          sequenceNumber: 2,
+          location: 'after'
+        },
+        {
+          items: [
+            {
+              actionId: 1,
+              data: PlanItemStatusEnum.Planned,
+              altText: this.translate('PlanItemStatus1'),
               state: ToolbarItemStateEnum.visible,
               type: ToolbarItemTypeEnum.toggle,
               value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Planned) > -1
             },
             {
-              actionId: PlanItemStatusEnum.Running,
-              altText: 'V izvajanju',
+              actionId: 2,
+              data: PlanItemStatusEnum.Running,
+              altText: this.translate('PlanItemStatus2'),
               state: ToolbarItemStateEnum.visible,
               type: ToolbarItemTypeEnum.toggle,
               value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Running) > -1
             },
             {
-              actionId: PlanItemStatusEnum.Finished,
-              altText: 'Finished',
+              actionId: 3,
+              data: PlanItemStatusEnum.Finished,
+              altText: this.translate('PlanItemStatus3'),
               state: ToolbarItemStateEnum.visible,
               type: ToolbarItemTypeEnum.toggle,
               value: this.toolbarFilter.statuses.findIndex(i => i === PlanItemStatusEnum.Finished) > -1
             }
           ] as ToolbarItem[],
-          sequenceNumber: 2,
+          sequenceNumber: 3,
           location: 'after'
         }
       ] as ToolbarGroup[]
@@ -132,7 +174,18 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
 
   ngOnInit() {
     this.toolbarFilterSubscription = this.calendarFacade.toolbarFilter$
-      .subscribe(f => this.toolbarFilter = {...f});
+      .subscribe(f => {
+        if (this.toolbarFilter && this.showNotPlannedTracker !== f.showNotPlannable) {
+          this.reloadCalendar();
+        }
+        this.toolbarFilter = {
+          search: f.search,
+          showNotPlannable: f.showNotPlannable,
+          statuses: [...f.statuses]
+        };
+
+        this.showNotPlannedTracker = f.showNotPlannable;
+      });
     this.toolbar = this.getToolbar();
     this.dialogUpdateData$ = this.calendarFacade.detailsUpdateDialogData$;
     this.currentDate$ = this.calendarFacade.currentDate$;
