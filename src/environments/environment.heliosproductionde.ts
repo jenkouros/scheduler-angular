@@ -1,5 +1,6 @@
 const serverUrl = 'http://10.9.22.106:9601';
 
+
 export const environment = {
     locale: 'de',
     production: true,

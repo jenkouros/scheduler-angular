@@ -82,4 +82,9 @@ export class CalendarFacade {
 
     this.store.dispatch(new PlanContainerGridActions.SetPlanContainerGridFilter({search, statuses, showNotPlannable}));
   }
+
+  deletePlanItem(planItemId: number) {
+    this.store.dispatch(new PlanContainerGridActions.DeletePlanitem({planItemId}));
+
+  }
 }

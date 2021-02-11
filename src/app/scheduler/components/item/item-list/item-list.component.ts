@@ -50,7 +50,7 @@ export class ItemListComponent extends AppComponentBase implements OnChanges {
       return;
     }
 
-    if (e.column.dataField === 'itemStatusLog.planItemName' && this.printMode && e.data.itemStatusLog) {
+    if (e.column.dataField === 'itemStatusLog.planItemName' && e.data.itemStatusLog) {
       e.cellElement.style.background = ColorHelper.colorMapper(e.data.itemStatusLog.idPlanItemStatus);
     }
     // console.log(e.column);
@@ -133,6 +133,14 @@ export class ItemListComponent extends AppComponentBase implements OnChanges {
             onClick: this.exportExcel.bind(this)
         }
       },
+      {
+        location: 'after',
+        widget: 'dxButton',
+        options: {
+          icon: 'columnchooser',
+          onClick: this.dataGrid.instance.showColumnChooser
+        }
+      }
     ];
 }
 

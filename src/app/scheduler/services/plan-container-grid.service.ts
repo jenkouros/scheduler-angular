@@ -94,4 +94,8 @@ export class PlanContainerGridService {
     return this.http.post<PlanContainerGrid[]>(environment.apiUrl +
       `/plancontainergrid/changeSequence?idPlanItem=${idPlanItem}&isUp=${isUp}`, null);
   }
+
+  deletePlanItem(planItemId: number) {
+    return this.http.delete<boolean>(environment.apiUrl + '/planitems?idPlanItem=' + planItemId);
+  }
 }

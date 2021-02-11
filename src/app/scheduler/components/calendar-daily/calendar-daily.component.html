@@ -11,7 +11,7 @@
   </div>
   <div #calendar class="myDivToPrint white-color" id="section-to-print">
     <dx-scheduler *ngIf="containers && containers.length"
-      [firstDayOfWeek]="1"
+      [firstDayOfWeek]="firstDayOfWeek"
       [useDropDownViewSwitcher]="false"
       [currentView]="translate('WorkWeekPlan')"
       id="scheduler"
@@ -26,13 +26,14 @@
       (onOptionChanged)="onOptionChanged($event)"
       appointmentTemplate="appointment-template"
       appointmentTooltipTemplate="tooltip-template"
-
+      (onAppointmentDeleting)="onAppointmentDeleting($event)"
       (onAppointmentRendered) = "renderAppointment($event)"
       [views]="['Week hours plan']"
       endDateExpr="operation.timeEnd"
       startDateExpr="operation.timeStart"
       [crossScrollingEnabled]="true"
       resourceCellTemplate="headerTemplate"
+      [height]="height"
       >
       <dxi-view
         type="week"
@@ -110,7 +111,7 @@
         <app-event-tooltip
           [editable]="editable"
           (changeSequence)="onChangeSequence($event.isUp, $event.idPlanItem)"
-          (deletePlanTask)="onAppointmentRemove(model.appointmentData)"
+          (deletePlanTask)="deletePlanItem(model.appointmentData)"
           [planItem]="model.appointmentData">
         </app-event-tooltip>
       </div>

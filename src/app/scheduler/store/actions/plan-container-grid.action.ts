@@ -26,10 +26,19 @@ export const PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG = '[PlanContainerGrid] 
 export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Hide Time Update Dialog';
 
 export const PLAN_CONTAINER_GRID_FILTER = '[PlanContainerGrid] Set Filter';
+export const PLAN_CONTAINER_GRID_DELETE_PLANITEM = '[PlanContainerGrid] Delete Plan Item';
+
+export const PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS = '[PlanContainerGrid] Delete PlanItem Success';
+export const PLAN_CONTAINER_PLANITEM_DELETE_FAIL = '[PlanContainerGrid] Delete PlanItem Fail';
 
 export class SetPlanContainerGridFilter implements Action {
   readonly type = PLAN_CONTAINER_GRID_FILTER;
   constructor(public payload: {search: string, statuses: number[], showNotPlannable: boolean}) {}
+}
+
+export class DeletePlanitem implements Action {
+  readonly type = PLAN_CONTAINER_GRID_DELETE_PLANITEM;
+  constructor(public payload: {planItemId: number}) {}
 }
 
 export class LoadPlanContainerGrid implements Action {
@@ -126,6 +135,13 @@ export class SetShowArchiveSwitch implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class DeletePlanItemSuccess implements Action {
+  readonly type = PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS;
+  constructor(public payload: {planItemId: number}) {}
+}
+export class DeletePlanItemFail implements Action {
+  readonly type = PLAN_CONTAINER_PLANITEM_DELETE_FAIL;
+}
 
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
@@ -146,4 +162,6 @@ export type PlanContainerGridAction =
   | SetCurrentWoSwitch
   | SetShowArchiveSwitch
   | SetPlanContainerGridFilter
+  | DeletePlanItemFail
+  | DeletePlanItemSuccess
   ;

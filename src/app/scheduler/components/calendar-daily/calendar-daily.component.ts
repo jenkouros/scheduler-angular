@@ -32,12 +32,13 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   currentDate$: Observable<Date>;
   selectedDeparment$: Observable<number>;
   dialogUpdateData$: Observable<PlanGridOperationChange | undefined>;
+  firstDayOfWeek = 1;
   // @Input() preplanTasks: TaskCommon[] = [];
   // @Output() removePreplanTask = new EventEmitter<number>();
   // @Output() addPreplanTask = new EventEmitter<TaskCommon>();
   @Input() autoReload = false;
   @Input() editable = true;
-  @Input() height = '700px';
+  @Input() height: number | string = window.innerHeight - 300;
   intervalId;
   cellDuration = 60;
   groupTooltipsState = {};
@@ -65,6 +66,10 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     this.onCalendarRemove = this.onCalendarRemove.bind(this);
   }
 
+  // getHeight() {
+  //   return window.innerHeight - 300;
+  // }
+
   printScreen() {
   }
 
@@ -79,6 +84,17 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
         }
       } else if (item.actionId === 4) {
         this.toolbarFilter.showNotPlannable = item.value;
+      } else if (item.actionId === 5) {
+        this.height = !item.value
+          ? window.innerHeight - 300
+          : '100%';
+        setTimeout(() => this.scheduler.instance.repaint(), 0);
+
+        if (!item.value) {
+          this.scheduler.instance.option('height', '100%');
+        } else {
+          this.scheduler.instance.option('height', window.innerHeight - 300);
+        }
       }
     } else if (item.type === ToolbarItemTypeEnum.text) {
       this.toolbarFilter.search = item.value;
@@ -101,6 +117,17 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     // this.scheduler.instance.repaint();
   }
 
+  deletePlanItem(planItem: PlanContainerGrid) {
+    this.scheduler.instance.deleteAppointment(planItem);
+    this.scheduler.instance.hideAppointmentTooltip();
+  }
+
+  onAppointmentDeleting(e) {
+    e.cancel = true;
+    // console.log(e);
+    this.calendarFacade.deletePlanItem(e.appointmentData.operation.idPlanItem);
+  }
+
   getToolbar() {
     return {
       groups: [
@@ -112,7 +139,14 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
               state: ToolbarItemStateEnum.visible,
               type: ToolbarItemTypeEnum.text,
               value: this.toolbarFilter.search
-            }
+            },
+            {
+              actionId: 5,
+              altText: 'Print height',
+              state: ToolbarItemStateEnum.visible,
+              type: ToolbarItemTypeEnum.toggle,
+              value: false
+            },
           ] as ToolbarItem[],
           sequenceNumber: 1,
           location: 'before'
@@ -299,7 +333,16 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   }
 
   onOptionChanged(e) {
+    // if (e.name === 'currentDate') {
+    //   this.scheduler.instance.option('firstDayOfWeek', e.value.getDay());
+    //   this.scheduler.instance.repaint();
+    // }
+
     if (e.name === 'currentDate' || e.name === 'resources' && e.value.length > 0) {
+      // this.firstDayOfWeek = e.value.getDay();
+      // this.scheduler.instance.repaint();
+
+
       setTimeout(() =>
         this.reloadCalendar()
       );
@@ -315,11 +358,14 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     if (!this.scheduler || !this.containers) {
       return;
     }
-
+    const startDate = this.scheduler.instance.getStartViewDate();
+    console.log(this.scheduler.instance.getStartViewDate());
+    console.log(this.scheduler.instance.getEndViewDate());
+    console.log( new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 14));
     this.calendarFacade.loadPlanItems(
       this.containers.map(i => i.id),
-      this.scheduler.instance.getStartViewDate(),
-      this.scheduler.instance.getEndViewDate()
+      startDate,
+      new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 14)
     );
   }
 

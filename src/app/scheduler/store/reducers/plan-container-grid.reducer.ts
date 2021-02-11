@@ -214,6 +214,19 @@ export function planItemGridReducer (
         }
       };
     }
+    case fromAction.PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS: {
+      const idx = state.planContainerGrids.findIndex(i =>
+        i.operation.idPlanItem === action.payload.planItemId);
+
+
+      return {
+        ...state,
+        planContainerGrids: [
+          ...state.planContainerGrids.slice(0, idx),
+          ...state.planContainerGrids.slice(idx + 1)
+        ]
+      };
+    }
   }
 
   return state;

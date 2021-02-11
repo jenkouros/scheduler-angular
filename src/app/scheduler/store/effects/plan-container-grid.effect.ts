@@ -49,6 +49,18 @@ export class PlanContainerGridEffect {
     )
   );
 
+  @Effect()
+  deletePlanItem$ = this.actions$.pipe(
+    ofType(fromActions.PLAN_CONTAINER_GRID_DELETE_PLANITEM),
+    map((action: fromActions.DeletePlanitem) => action),
+    mergeMap(action => this.planContainerGridService.deletePlanItem(action.payload.planItemId).pipe(
+      mergeMap(res => res
+        ? [new preplanActions.LoadPreplanItems(),
+          new fromActions.DeletePlanItemSuccess({planItemId: action.payload.planItemId})]
+        : [new fromActions.DeletePlanItemFail()]
+    )))
+  );
+
 
   // @Effect()
   // autoplanItem$ = this.actions$.ofType(fromActions.AUTOPLAN_ITEM).pipe(
