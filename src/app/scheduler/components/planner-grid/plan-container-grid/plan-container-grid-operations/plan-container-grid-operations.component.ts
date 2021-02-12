@@ -267,6 +267,36 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     }
   }
 
+  onExporting(e) {
+    console.log("onExporting")
+    e.component.columnOption("operation.name","visible",false);  
+    e.component.columnOption("item.quantityMeasurementUnit","visible",false);  
+    e.component.columnOption("operation.idPriority","visible",false);  
+    e.component.columnOption("operation.idUserStatus","visible",false);  
+    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",false);  
+    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",false);  
+    e.component.columnOption("operation.isLocked","visible",false);  
+    e.component.columnOption("operation.userDate","allowExporting",false);  
+    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",false);  
+    e.component.endUpdate(); 
+  }
+
+  onExported(e) {
+    console.log("onExported")
+    e.component.columnOption("operation.name","visible",true);  
+    e.component.columnOption("item.quantityMeasurementUnit","visible",true);  
+    e.component.columnOption("operation.idPriority","visible",true);  
+    e.component.columnOption("operation.idUserStatus","visible",true);  
+    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",true);  
+    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",true);  
+    e.component.columnOption("operation.isLocked","visible",true);  
+    e.component.columnOption("operation.userDate","allowExporting",true);  
+    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",true);  
+    e.component.endUpdate(); 
+  }
+
+
+
   customizeExportData(columns, rows) {
     // remove records with *NO_CODE* workplace
     for (let i = rows.length - 1; i >= 0; --i) {
@@ -297,6 +327,14 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     for (let i = truncateList.length - 1; i >= 0; --i) {
       rows.splice(truncateList[i], 1);
     }
+
+
+    columns.forEach(function(column) {
+        column.width = 80; //if portrait 60 / landscape 80
+        if(column.dataField == "operation.idContainer" || column.dataField == "item.articleName" || column.dataField == "operation.comment" ){
+          column.width = 165; //if portrait 120/ landscape 165
+        }
+    });
   }
 
   getLinkedItemsStatus = (row) => {

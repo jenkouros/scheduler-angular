@@ -4,6 +4,8 @@
   [dataSource]="gridItems"
   [showBorders]="true"
   [columnAutoWidth]="true"
+  (onExporting)="onExporting($event)"
+  (onExported)="onExported($event)"
   [customizeExportData]="customizeExportData"
   (onRowUpdating)="updateOperation($event)"
   [allowColumnReordering]="true"
