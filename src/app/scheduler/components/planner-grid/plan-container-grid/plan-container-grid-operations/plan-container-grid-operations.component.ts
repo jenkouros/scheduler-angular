@@ -296,7 +296,16 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   }
 
 
+  customizeExcelCell(options) {
+    var gridCell = options.gridCell;
+    if(!gridCell) {
+        return;
+    }
 
+    if(gridCell.rowType === "data") {
+      options.wrapTextEnabled = true;
+    }
+  }
   customizeExportData(columns, rows) {
     // remove records with *NO_CODE* workplace
     for (let i = rows.length - 1; i >= 0; --i) {
@@ -332,8 +341,19 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
     columns.forEach(function(column) {
         column.width = 80; //if portrait 60 / landscape 80
         if(column.dataField == "operation.idContainer" || column.dataField == "item.articleName" || column.dataField == "operation.comment" ){
-          column.width = 165; //if portrait 120/ landscape 165
+          column.width = 165; //if portrait 115/ landscape 165
         }
+
+        // Not needed if landscape
+        /*
+        // Not needed if landscape
+        if(column.dataField == "operation.comment" ){
+          column.width = 100; //if portrait 115/ landscape 165
+        }
+        if(column.dataField == "operation.timeStart" || column.dataField == "operation.timeEnd"  ){
+          column.width = 80; 
+        }
+        */
     });
   }
 
