@@ -1,50 +1,47 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as fromStore from '../../store';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { PreplanItem } from '../../models/preplanitem.dto';
-import { select } from '@ngrx/store';
-import { PreplanitemUiState } from '../../models/preplanItem.store';
-
 import * as fromPlanStore from '../../../plan/store';
+import { PreplanItem } from '../../models/preplanitem.dto';
+import { PreplanitemUiState } from '../../models/preplanItem.store';
+import * as fromStore from '../../store';
+
 @Component({
   selector: 'app-preplanitems',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <app-preplanitem-item
-      *ngFor="let preplanitem of (preplanitems$ | async) as preplanItems; let i = index"
-      [groupColorNumber]="
-        i > 0 && preplanItems[i - 1].item.name !== preplanitem.item.name
-          ? nextColorNumber
-          : i === 0
-          ? resetColorNumber()
-          : colorNumber
-      "
-      [preplanitem]="preplanitem"
-      (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
-      (reselectContainers)="onReselectContainers($event)"
-      (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)"
-      (showHidePreplanItemPopup)="onShowHidePreplanItemPopup($event)"
-    >
-    </app-preplanitem-item>
+  templateUrl: './preplanitems.component.html'
+  // template: `
+  //   <app-preplanitem-item
+  //     *ngFor="let preplanitem of (preplanitems$ | async) as preplanItems; let i = index"
+  //     [groupColorNumber]="
+  //       i > 0 && preplanItems[i - 1].item.name !== preplanitem.item.name
+  //         ? nextColorNumber
+  //         : i === 0
+  //         ? resetColorNumber()
+  //         : colorNumber
+  //     "
+  //     [preplanitem]="preplanitem"
+  //     (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
+  //     (reselectContainers)="onReselectContainers($event)"
+  //     (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)"
+  //     (showHidePreplanItemPopup)="onShowHidePreplanItemPopup($event)"
+  //   >
+  //   </app-preplanitem-item>
 
-    <app-preplanitem-delete-popup
-      [preplanItemUiState]="preplanItemsUiState$ | async"
-      (deleteBatch)="onDeleteBatch($event)"
-      (hideDeleteBatchPopup)="onHideDeleteBatchPopup()"
-    >
-    </app-preplanitem-delete-popup>
+  //   <app-preplanitem-delete-popup
+  //     [preplanItemUiState]="preplanItemsUiState$ | async"
+  //     (deleteBatch)="onDeleteBatch($event)"
+  //     (hideDeleteBatchPopup)="onHideDeleteBatchPopup()"
+  //   >
+  //   </app-preplanitem-delete-popup>
 
-    <app-preplanitem-hide-popup
-    [preplanItemUiState]="preplanItemsUiState$ | async"
-    (hidePreplanItem)="onHidePreplanItem($event)"
-    (hidePreplanItemHidePopup)="onHidePreplanItemHidePopup()"
-  >
-  </app-preplanitem-hide-popup>
-
-    <!-- <app-preplanitem-suggestion-popup>
-        </app-preplanitem-suggestion-popup> -->
-  `
+  //   <app-preplanitem-hide-popup
+  //   [preplanItemUiState]="preplanItemsUiState$ | async"
+  //   (hidePreplanItem)="onHidePreplanItem($event)"
+  //   (hidePreplanItemHidePopup)="onHidePreplanItemHidePopup()"
+  // >
+  // </app-preplanitem-hide-popup>
+  // `
 })
 export class PreplanItemsComponent implements OnInit {
   preplanitems$: Observable<PreplanItem[]>;
@@ -107,4 +104,19 @@ export class PreplanItemsComponent implements OnInit {
   onPrePlanItemPlanSuggestion(prePlanItemId: number) {
       this.store.dispatch(new fromStore.LoadPreplanItemsSuggestions(prePlanItemId));
   }
+
+  onListDragStart(e) {
+    e.cancel = true;
+  }
+
+  onItemDragStart(e) {
+      e.itemData = e.fromData;
+  }
+
+  onItemDragEnd(e) {
+      if (e.toData) {
+          e.cancel = true;
+      }
+  }
+
 }

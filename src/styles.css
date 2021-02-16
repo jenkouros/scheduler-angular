@@ -96,3 +96,41 @@ hr.hrline {
     background-color: black !important;
     color: white;
 }
+
+.font16 {
+  font-size: 16px;
+}
+
+@page {
+  size: A4;
+  margin: 20px;
+}
+
+
+@media print {
+
+  ::ng-deep .dx-scheduler-appointment {
+    color: green;
+  }
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+  main {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+
+  #section-to-print, #section-to-print * {
+    visibility: visible;
+  }
+  #section-to-print {
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+}

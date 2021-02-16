@@ -1,4 +1,5 @@
-const serverUrl = 'http://10.9.22.106:15001';
+const serverUrl = 'http://10.9.22.106:9601';
+
 
 export const environment = {
     locale: 'de',
@@ -6,7 +7,7 @@ export const environment = {
     apiUrl: `${serverUrl}/api`,
     signalRUrl: `${serverUrl}/containershub`,
     parallelOperations: false,
-    mode: 'test'
+    mode: 'prod'
 };
 
 export const appSettings = {
@@ -14,7 +15,7 @@ export const appSettings = {
   Menu_Scheduler: true,
   Menu_Scheduler_Items: true,
   Menu_Scheduler_Planner: true,
-  Menu_Scheduler_GridPlanner: true,
+  Menu_Scheduler_GridPlanner: false,
   Menu_Scheduler_Searcher: true,
   Menu_Scheduler_Filters: true,
   Menu_Scheduler_Groups: true,
@@ -22,8 +23,11 @@ export const appSettings = {
   Item_EnableHiddingItems: false,
   Item_EnableBatchPlanning: false,
   PlanItem_DisplayOperationFirst: false, // workorder otherwise
-  PlanItem_DisplayArticleCode: false,  // article name otherwise
+  PlanItem_DisplayArticleCode: true,  // article name otherwise
   PlanItem_EnablePlanningOnAllWorkplaces: true,
   PlanItems_ExcelExport: false,
-  Planning_multiplyTimeWithQuantityFactor: true
+  Planning_multiplyTimeWithQuantityFactor: true,
+
+  Planning_calendar_showContainerDescription: false,
+  PlanItem_Layout: 1
 };

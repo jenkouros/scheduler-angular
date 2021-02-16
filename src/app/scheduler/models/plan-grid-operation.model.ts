@@ -1,5 +1,7 @@
 import { translate } from '../../shared/app-component-base';
-import { PlanItemCreateRequestOptions, PlannedEventSimple } from './event.model';
+import { PlanItemCreateRequestOptions, PlanItemStatusEnum, PlannedEventSimple } from './event.model';
+import { PlanContainerGrid } from './plan-container-grid.model';
+import { PreplanItem } from './preplanitem.dto';
 
 export interface ItemExecutionStatus {
   operationName: string;
@@ -20,6 +22,7 @@ export interface PlanGridOperation {
   linkedItemExecutionStatus: LinkedItemExecutionStatus;
   parentLinkedItemStatus: ParentLinkedItemStatus;
   idPrePlanItem: number;
+  status: number;
   code: string;
   name: string;
   isPlanable: boolean;
@@ -36,6 +39,39 @@ export interface PlanGridOperation {
   idPlanItem: number;
   isLocked: boolean;
   options?: PlanItemCreateRequestOptions;
+  idPlanItemStatus: number;
+  planItemSequence: number;
+}
+
+export class PlanGridOperationHelper {
+  static createFromPrePlanItem(preplanItem: PreplanItem, start: Date, end: Date, idContainer: number) {
+    return {
+      timeEnd: end,
+      timeStart: start,
+      idContainer: idContainer,
+      idPrePlanItem: preplanItem.id,
+      idSubItem: preplanItem.subItem.id
+    } as PlanGridOperation;
+  }
+
+  static sort(a: PlanContainerGrid, b: PlanContainerGrid) {
+    if (a.operation.planItemSequence && !b.operation.planItemSequence) {
+      return 1;
+    }
+    if (!a.operation.planItemSequence && b.operation.planItemSequence) {
+      return -1;
+    }
+    if (!a.operation.planItemSequence && !b.operation.planItemSequence) {
+      return 0;
+    }
+    if (a.operation.planItemSequence > b.operation.planItemSequence) {
+      return 1;
+    }
+    if (a.operation.planItemSequence < b.operation.planItemSequence) {
+      return -1;
+    }
+    return 0;
+  }
 }
 
 export interface PlanGridOperationChange {
@@ -82,6 +118,16 @@ export function getplanGridOperationExecutionColor(id) {
     return '#b1b1ff';
   } else if (id === 6) {
     return '#fbe8cc';
+  }
+}
+
+export function getplanGridOperationStatusColor(id) {
+if (id === PlanItemStatusEnum.Running) {
+    return '#ccfbcc';
+  } else if (id === PlanItemStatusEnum.Finished) {
+    return '#d6d6d6';
+  } else if (id === PlanItemStatusEnum.Break) {
+    return '#b1b1ff';
   }
 }
 

@@ -8,6 +8,7 @@
 >
   <div *ngIf="planItemGrid$ | async as planItemGrid; else loading">
     <app-plan-item-grid-items
+      [editable]="true"
       [refreshContainerGrid]="true"
       id="itemGridContainer"
       [items]="[planItemGrid$ | async]"

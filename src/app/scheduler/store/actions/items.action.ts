@@ -1,9 +1,7 @@
-import { CreateItemInput } from './../../components/item/item-create/item-create.model';
-import { ItemAutoplanRequest } from './../../models/item-autoplan.model';
 import { Action } from '@ngrx/store';
-import { PaginationResponse } from '../../../shared/shared.model';
 import { Item, ItemHierarchy } from '../../models/item.dto';
 import { GridStoreConfiguration } from '../../models/shared.dto';
+import { CreateItemInput } from './../../components/item/item-create/item-create.model';
 
 export const LOAD_ITEMS = '[Item] Load workorders';
 export const LOAD_ITEMS_FAIL = '[Item] Load workorders Fail';
@@ -25,6 +23,16 @@ export const CREATE_ITEM = '[Item] Create item';
 export const CREATE_ITEM_SUCCESS = '[Item] Create item success';
 export const CREATE_ITEM_FAIL = '[Item] Create item fail';
 
+export const TOGGLE_SUB_ITEM_PLANNABLE = '[Item] Toggle sub item plannable';
+export const RESET_SUB_ITEM_PLANNABLE_STATE = '[Item] Reset sub item plannable state';
+
+export const TOGGLE_SHOW_PLANNED = '[Item] Toggle Show Planned';
+
+
+export class ToggleShowPlanned implements Action {
+  readonly type = TOGGLE_SHOW_PLANNED;
+  constructor(public payload: boolean) {}
+}
 
 export class CreateItem implements Action {
   readonly type = CREATE_ITEM;
@@ -41,7 +49,8 @@ export class CreateItemFail implements Action {
 }
 
 export class LoadItems implements Action {
-    readonly type = LOAD_ITEMS;
+  readonly type = LOAD_ITEMS;
+  constructor(public payload?: { showPlanned: boolean }) {}
 }
 
 export class HideItem implements Action {
@@ -94,6 +103,14 @@ export class HideCreateItemPopup implements Action {
   readonly type = HIDE_CREATE_ITEM_POPUP;
 }
 
+export class ToggleSubItemPlannable implements Action {
+  readonly type = TOGGLE_SUB_ITEM_PLANNABLE;
+  constructor(public payload: {id: number, value: boolean}) {}
+}
+
+export class ResetSubItemPlannableState implements Action {
+  readonly type = RESET_SUB_ITEM_PLANNABLE_STATE;
+}
 
 export type ItemActions =
     | LoadItems
@@ -109,4 +126,6 @@ export type ItemActions =
     | HideCreateItemPopup
     | CreateItemSuccess
     | CreateItem
+    | ResetSubItemPlannableState
+    | ToggleSubItemPlannable
 ;

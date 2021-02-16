@@ -1,6 +1,9 @@
 <button type="button"
     (click)="toggleContainer()"
     [ngClass]="{'btn': true, 'btn-primary': container.selected}">
-    <span>{{container.code}}</span><br>
-    <span style="font-size: small">{{ container.name }}</span>
+    <span>{{container.code}}</span>
+    <ng-container *ngIf="environment.Planning_calendar_showContainerDescription">
+      <br>
+      <span style="font-size: small">{{ container.name }}</span>
+    </ng-container>
 </button>

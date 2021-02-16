@@ -1,0 +1,104 @@
+::ng-deep .dx-scheduler-cell-sizes-vertical {
+  height: 60px;
+}
+
+::ng-deep .dx-scheduler-time-panel {
+  display: none;
+}
+
+
+::ng-deep .dx-scheduler-work-space-vertical-group-table {
+  width: 100px !important;
+}
+
+::ng-deep .dx-scheduler-date-table-cell {
+  width: 0;
+  height: 0;
+  border: none;
+  padding: 0;
+}
+
+::ng-deep .dx-scheduler-all-day-table-cell {
+  height: 120px;
+}
+
+::ng-deep .dx-scheduler-work-space-vertical-grouped .dx-scheduler-group-header-content {
+  padding: 5px;
+}
+
+::ng-deep .dx-scheduler-work-space-vertical-grouped[dx-group-column-count="1"].dx-scheduler-work-space-both-scrollbar .dx-scheduler-date-table-scrollable {
+  margin-left: 100px !important;
+}
+
+::ng-deep .dx-scheduler-work-space-vertical-grouped[dx-group-column-count="1"].dx-scheduler-work-space-both-scrollbar .dx-scheduler-header-scrollable.dx-scrollable {
+  margin-left: 100px !important;
+}
+
+::ng-deep .dx-scheduler-all-day-table-cell {
+  height: 180px !important;
+}
+
+::ng-deep .dx-scheduler-agenda .dx-scheduler-group-header-content {
+  width: 150px;
+}
+
+
+
+.container-status {
+  border: 3px solid;
+  display: inline-block;
+  border-radius: 6px 2px 6px 2px;
+  margin: 5px;
+  /* padding: 2px 5px 2px 5px; */
+  font-size: 1em;
+  width: 30px;
+  text-align: center;
+}
+
+.container-status:hover{
+  border-color: lightgray !important;
+}
+
+.container-status-inactive {
+  border-color:rgba(0, 0, 0, 0) !important;
+  color: lightgray !important
+}
+
+
+@media print {
+  ::ng-deep .dx-scheduler-appointment {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    color: white !important;
+  }
+}
+
+/* ::ng-deep .dx-scheduler-group-header {
+  page-break-after: always;
+}
+
+::ng-deep .dx-scheduler-all-day-table-row {
+  page-break-after: always;
+} */
+
+/* @media print {
+@media print {
+  .myDivToPrint {
+      background-color: white;
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      margin: 0;
+      padding: 15px;
+      font-size: 14px;
+      line-height: 18px;
+  }
+} */
+
+/* @media print {
+  .white-color {
+    color: white;
+  }
+} */

@@ -1,6 +1,7 @@
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
-import { PlanGridOperationChange } from '../../models/plan-grid-operation.model';
+import { PlanGridOperationChange, PlanGridOperationHelper } from '../../models/plan-grid-operation.model';
 import * as fromAction from '../actions/plan-container-grid.action';
+import { PlanItemStatusEnum } from './../../models/event.model';
 
 export interface PlanContainerGridState {
   loading: boolean;
@@ -13,6 +14,12 @@ export interface PlanContainerGridState {
   updateTimeDialogData: PlanGridOperationChange | undefined;
   inProgressWoSwitch: boolean;
   currentWoSwitch: boolean;
+  planDate: Date;
+  filter: {
+    search: string;
+    statuses: number[];
+    showNotPlannable: boolean;
+  };
 }
 
 const loadLimitDate = new Date();
@@ -30,7 +37,13 @@ export const initialState: PlanContainerGridState = {
   updateTimeDialogData: undefined,
   inProgressWoSwitch: false,
   currentWoSwitch: false,
-  showArchiveSwitch: false
+  showArchiveSwitch: false,
+  planDate: new Date(),
+  filter: {
+    search: '',
+    statuses: [PlanItemStatusEnum.Running, PlanItemStatusEnum.Planned],
+    showNotPlannable: false
+  },
 };
 
 export function planItemGridReducer (
@@ -66,10 +79,10 @@ export function planItemGridReducer (
         };
       }
 
-      const items = [...action.payload];
-      const updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
+      const items = [...action.payload.data];
+      let updatedGridItems = state.planContainerGrids.map((containerGrid, index) => {
         if (!containerGrid.operation.idPrePlanItem) {
-          const subItem = action.payload.find(i =>
+          const subItem = action.payload.data.find(i =>
             i.operation.idSubItem === containerGrid.operation.idSubItem);
           if (subItem) {
             const idx = items.findIndex(i =>
@@ -80,7 +93,7 @@ export function planItemGridReducer (
           return containerGrid;
         }
 
-        const operation = action.payload.find(i =>
+        const operation = action.payload.data.find(i =>
           i.operation.idPrePlanItem === containerGrid.operation.idPrePlanItem);
         if (operation) {
           const idx = items.findIndex(i =>
@@ -92,9 +105,13 @@ export function planItemGridReducer (
       });
 
       // ADD NEW OPERATIONS - comment: don't add because filter
-      // if (items.length > 0) {
-      //  updatedGridItems = updatedGridItems.concat(items);
-      // }
+      if (action.payload.allowAdd && items.length > 0) {
+       updatedGridItems = [...items, ...updatedGridItems];
+      }
+
+      if (action.payload.order) {
+        updatedGridItems.sort(PlanGridOperationHelper.sort);
+      }
 
       return {
         ...state,
@@ -187,7 +204,31 @@ export function planItemGridReducer (
       };
     }
 
+    case fromAction.PLAN_CONTAINER_GRID_FILTER: {
+      return {
+        ...state,
+        filter: {
+          search: action.payload.search,
+          statuses: action.payload.statuses,
+          showNotPlannable: action.payload.showNotPlannable
+        }
+      };
+    }
+    case fromAction.PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS: {
+      const idx = state.planContainerGrids.findIndex(i =>
+        i.operation.idPlanItem === action.payload.planItemId);
+
+
+      return {
+        ...state,
+        planContainerGrids: [
+          ...state.planContainerGrids.slice(0, idx),
+          ...state.planContainerGrids.slice(idx + 1)
+        ]
+      };
+    }
   }
 
   return state;
 }
+

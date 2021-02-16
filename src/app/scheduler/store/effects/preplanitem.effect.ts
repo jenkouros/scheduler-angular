@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
-import * as fromActions from '../actions';
-import { PreplanitemsService } from '../../services/preplanitems.service';
-import { map, catchError, switchMap, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppState } from '../../../store/app.reducers';
-import { Store, select } from '@ngrx/store';
+import { PreplanitemsService } from '../../services/preplanitems.service';
+import * as fromActions from '../actions';
 
 @Injectable()
 export class PreplanitemEffects {
@@ -33,11 +33,14 @@ export class PreplanitemEffects {
   );
 
   @Effect()
-  createPreplanitems$ = this.actions$.ofType(fromActions.CREATE_PREPLANITEMS).pipe(
+  createPreplanitems$ = this.actions$.pipe(
+    ofType(fromActions.CREATE_PREPLANITEMS),
     map((action: fromActions.CreatePreplanItems) => action),
-    withLatestFrom(this.store.select(state => state.plan.items.selectedId)),
-    switchMap(([action, idPlan]) => {
-      return this.preplanitemService.createPreplanitems(idPlan, action.payload).pipe(
+    withLatestFrom(
+      this.store.pipe(select(state => state.plan.items.selectedId)),
+      this.store.pipe(select(state => state.scheduler.items.subItemPlannableState))),
+    switchMap(([action, idPlan, subItemPlannableState]) => {
+      return this.preplanitemService.createPreplanitems(idPlan, action.payload, subItemPlannableState).pipe(
         mergeMap(filters => [new fromActions.LoadPreplanItems(), new fromActions.LoadItems()]), // MAYBE JUST ADD? TODO
         catchError(error => {
           console.log(error);

@@ -1,10 +1,10 @@
-import { PlanGroupComponent } from './components/planner-grid/plan-group-grid/plan-group/plan-group.component';
-import { PlanContainerGridComponent } from './components/planner-grid/plan-container-grid/plan-container-grid.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SchedulerComponent, FiltersComponent, PlannerComponent } from './components';
-import { ItemsComponent, SearcherComponent, GroupIndexComponent, GroupSelectComponent } from './containers';
+import { FiltersComponent, SchedulerComponent } from './components';
+import { CalendarDailyComponent } from './components/calendar-daily/calendar-daily.component';
+import { PlanContainerGridComponent } from './components/planner-grid/plan-container-grid/plan-container-grid.component';
 import { PlanItemGridComponent } from './components/planner-grid/plan-item-grid/plan-item-grid.component';
+import { GroupIndexComponent, GroupSelectComponent, ItemsComponent, SearcherComponent } from './containers';
 
 const schedulerRoutes: Routes = [
     { path: '', component: SchedulerComponent, children: [
@@ -15,8 +15,9 @@ const schedulerRoutes: Routes = [
         // { path: 'planitemgrid', component: PlanGroupComponent },
         { path: 'planitemgrid', component: PlanItemGridComponent },
         { path: 'plancontainergrid', component: PlanContainerGridComponent },
-        { path: 'planner', component: PlannerComponent },
+        // { path: 'planner', component: PlannerComponent },
         { path: 'search', component: SearcherComponent },
+        { path: 'planner', component: CalendarDailyComponent },
         { path: '**', redirectTo: 'planitems' }
     ]}
 ];

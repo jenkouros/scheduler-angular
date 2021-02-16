@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { CalendarFilter } from '../../models/calendar-filter.model';
 import { PlanContainerGrid } from '../../models/plan-container-grid.model';
 import { PlanGridOperation, PlanGridOperationChange } from '../../models/plan-grid-operation.model';
 import { PlannedEventSimple } from './../../models/event.model';
@@ -24,8 +25,25 @@ export const PLAN_CONTAINER_GRID_CURRENT_SWITCH = '[PlanContainerGrid] Set plan 
 export const PLAN_CONTAINER_GRID_SHOW_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Show Time Update Dialog';
 export const PLAN_CONTAINER_GRID_HIDE_TIME_UPDATE_DIALOG = '[PlanContainerGrid] Hide Time Update Dialog';
 
+export const PLAN_CONTAINER_GRID_FILTER = '[PlanContainerGrid] Set Filter';
+export const PLAN_CONTAINER_GRID_DELETE_PLANITEM = '[PlanContainerGrid] Delete Plan Item';
+
+export const PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS = '[PlanContainerGrid] Delete PlanItem Success';
+export const PLAN_CONTAINER_PLANITEM_DELETE_FAIL = '[PlanContainerGrid] Delete PlanItem Fail';
+
+export class SetPlanContainerGridFilter implements Action {
+  readonly type = PLAN_CONTAINER_GRID_FILTER;
+  constructor(public payload: {search: string, statuses: number[], showNotPlannable: boolean}) {}
+}
+
+export class DeletePlanitem implements Action {
+  readonly type = PLAN_CONTAINER_GRID_DELETE_PLANITEM;
+  constructor(public payload: {planItemId: number}) {}
+}
+
 export class LoadPlanContainerGrid implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID;
+  constructor(public payload: CalendarFilter | undefined) {}
 }
 
 export class LoadPlanContainerGridSuccess implements Action {
@@ -37,6 +55,12 @@ export class LoadPlanContainerGridFail implements Action {
   readonly type = LOAD_PLAN_CONTAINER_GRID_FAIL;
 }
 
+export const PLAN_CONTAINER_GRID_CHANGE_SEQUENCE = '[PlanContainerGrid] Change plan item sequence';
+export class ChangeSequence implements Action {
+  readonly type = PLAN_CONTAINER_GRID_CHANGE_SEQUENCE;
+  constructor(public payload: { isUp: boolean, idPlanItem: number }) {}
+}
+
 // export class AutoplanItem implements Action {
 //   readonly type = AUTOPLAN_ITEM;
 //   constructor(public payload: ItemAutoplanRequest) {}
@@ -45,7 +69,11 @@ export class LoadPlanContainerGridFail implements Action {
 
 export class UpdateContainerGridSuccess implements Action {
   readonly type = UPDATE_CONTAINER_GRID_SUCCESS;
-  constructor(public payload: PlanContainerGrid[]) {}
+  constructor(public payload: {
+    data: PlanContainerGrid[],
+    allowAdd: boolean,
+    order: boolean
+  }) {}
 }
 
 
@@ -60,7 +88,7 @@ export class UpdateContainerGridFail implements Action {
 
 export class PlanContainerGridUpdate implements Action {
   readonly type = PLAN_CONTAINER_GRID_UPDATE;
-  constructor(public payload: PlanGridOperation) {}
+  constructor(public payload: { operation: PlanGridOperation, allowAdd: boolean }) {}
 }
 
 export class PlanContainerDialogGridUpdate implements Action {
@@ -107,6 +135,13 @@ export class SetShowArchiveSwitch implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class DeletePlanItemSuccess implements Action {
+  readonly type = PLAN_CONTAINER_PLANITEM_DELETE_SUCCESS;
+  constructor(public payload: {planItemId: number}) {}
+}
+export class DeletePlanItemFail implements Action {
+  readonly type = PLAN_CONTAINER_PLANITEM_DELETE_FAIL;
+}
 
 export type PlanContainerGridAction =
   | LoadPlanContainerGrid
@@ -126,4 +161,7 @@ export type PlanContainerGridAction =
   | SetInProgressWoSwitch
   | SetCurrentWoSwitch
   | SetShowArchiveSwitch
+  | SetPlanContainerGridFilter
+  | DeletePlanItemFail
+  | DeletePlanItemSuccess
   ;
