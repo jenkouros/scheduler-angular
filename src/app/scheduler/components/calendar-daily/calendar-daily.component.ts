@@ -18,6 +18,8 @@ import { PlanContainerGrid } from './../../models/plan-container-grid.model';
   styleUrls: ['./calendar-daily.component.css']
 })
 export class CalendarDailyComponent extends AppComponentBase implements OnInit, OnDestroy {
+  visible = true;
+  isDailyPlan = false;
   containers$: Observable<ContainerSelect[]>;
   containerStatuses$: Observable<ContainerStatus[]>;
   containerTooltips: { [containerId: number]: string } = {};
@@ -50,6 +52,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   };
   toolbarFilterSubscription: Subscription;
   showNotPlannedTracker: boolean;
+  appointmentStorage: PlanContainerGrid[];
 
   // prioritiesData: Container[] = [];
   @ViewChild(DxSchedulerComponent, {static: false}) scheduler: DxSchedulerComponent;
@@ -69,6 +72,19 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   // getHeight() {
   //   return window.innerHeight - 300;
   // }
+
+
+  changePlanType() {
+    this.visible = false;
+    this.isDailyPlan = !this.isDailyPlan;
+    if (this.isDailyPlan) {
+      this.dailyAppointmentsMap();
+    } else {
+      this.hourlyAppoitmentsMap();
+    }
+    setTimeout(() => this.visible = true,  0);
+
+  }
 
   printScreen() {
   }
@@ -230,25 +246,32 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     this.containerStatuses$ = this.containerFacade.containerStatuses$;
     this.planTasksSubscription = this.calendarFacade.events$.subscribe(e => {
       if (e) {
-        this.appointments = e.map(i => {
-          let endDate = new Date(i.operation.timeEnd);
-          endDate = new Date(
-            endDate.getFullYear(),
-            endDate.getMonth(),
-            endDate.getDate() - 1,
-            23, 59, 59);
-          return {
-            ...i,
-            operation: {
-              ...i.operation,
-              timeEnd: endDate
-            },
-            item: {
-              ...i.item
-            },
-            allDay: true
-          };
-        });
+        this.appointmentStorage = e;
+        if (this.isDailyPlan) {
+          this.dailyAppointmentsMap();
+        } else {
+          this.hourlyAppoitmentsMap();
+        }
+
+        // this.appointments = e.map(i => {
+        //   let endDate = new Date(i.operation.timeEnd);
+        //   endDate = new Date(
+        //     endDate.getFullYear(),
+        //     endDate.getMonth(),
+        //     endDate.getDate() - 1,
+        //     23, 59, 59);
+        //   return {
+        //     ...i,
+        //     operation: {
+        //       ...i.operation,
+        //       timeEnd: endDate
+        //     },
+        //     item: {
+        //       ...i.item
+        //     },
+        //     allDay: true
+        //   };
+        // });
       }
     });
 
@@ -281,6 +304,43 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     if (this.autoReload) {
       this.intervalId = setInterval(() => this.reloadCalendar(), 30000);
     }
+  }
+
+  dailyAppointmentsMap() {
+    this.appointments = this.appointmentStorage.map(i => {
+      let endDate = new Date(i.operation.timeEnd);
+      endDate = new Date(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate() - 1,
+        23, 59, 59);
+      return {
+        ...i,
+        operation: {
+          ...i.operation,
+          timeEnd: endDate
+        },
+        item: {
+          ...i.item
+        },
+        allDay: true
+      };
+    });
+  }
+
+  hourlyAppoitmentsMap() {
+    this.appointments = this.appointmentStorage.map(i => {
+      return {
+        ...i,
+        operation: {
+          ...i.operation
+        },
+        item: {
+          ...i.item
+        },
+        allDay: false
+      };
+    });
   }
 
   onChangeSequence(isUp: boolean, idPlanItem: number) {
@@ -333,18 +393,22 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   }
 
   onOptionChanged(e) {
-    // if (e.name === 'currentDate') {
-    //   this.scheduler.instance.option('firstDayOfWeek', e.value.getDay());
-    //   this.scheduler.instance.repaint();
-    // }
+    if (e.name === 'currentDate') {
+
+      this.firstDayOfWeek = e.value.getDay();
+      this.visible = false;
+      setTimeout(() => {
+        this.visible = true;
+        // this.reloadCalendar();
+      }, 0);
+      // this.scheduler.instance.option('firstDayOfWeek', e.value.getDay());
+      // this.scheduler.instance.repaint();
+    }
 
     if (e.name === 'currentDate' || e.name === 'resources' && e.value.length > 0) {
-      // this.firstDayOfWeek = e.value.getDay();
-      // this.scheduler.instance.repaint();
-
 
       setTimeout(() =>
-        this.reloadCalendar()
+        this.reloadCalendar(), 100
       );
     }
 
@@ -372,10 +436,10 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
   private getAddDates(e, addDays: number = 0): { start: Date, end: Date } {
     const startDate = new Date(e.itemData.operation.timeStart);
     const endDate = new Date(e.itemData.operation.timeEnd);
-
-    startDate.setHours(0, 0, 0 , 0);
-    endDate.setHours(23, 59, 59); // TODO
-
+    if (this.isDailyPlan) {
+      startDate.setHours(0, 0, 0 , 0);
+      endDate.setHours(23, 59, 59); // TODO
+    }
     if (addDays && addDays > 0) {
       endDate.setDate(endDate.getDate() + addDays);
     }
@@ -449,7 +513,7 @@ export class CalendarDailyComponent extends AppComponentBase implements OnInit, 
     updatedPlanTask.operation.timeStart = e.newData.operation.timeStart;
     updatedPlanTask.operation.timeEnd = e.newData.operation.timeEnd;
     updatedPlanTask.operation.options = {
-      dayPlan: true
+      dayPlan: this.isDailyPlan
     };
     this.appointments.push(updatedPlanTask);
 

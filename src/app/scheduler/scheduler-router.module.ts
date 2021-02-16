@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FiltersComponent, SchedulerComponent } from './components';
-import { CalendarDailyComponent } from './components/calendar-daily/calendar-daily.component';
+import { CalendarDailyComponent, FiltersComponent, SchedulerComponent } from './components';
 import { PlanContainerGridComponent } from './components/planner-grid/plan-container-grid/plan-container-grid.component';
 import { PlanItemGridComponent } from './components/planner-grid/plan-item-grid/plan-item-grid.component';
 import { GroupIndexComponent, GroupSelectComponent, ItemsComponent, SearcherComponent } from './containers';

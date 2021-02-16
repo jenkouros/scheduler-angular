@@ -1,16 +1,19 @@
 <app-process-toolbar (selectAction)="toolbarChange($event)" [toolbar]="toolbar"></app-process-toolbar>
 <app-containers></app-containers>
 
+<button (click)="changePlanType()">change</button>
+
 <!-- <button (click)="printScreen()">Print</button> -->
 
-
+{{containers && containers.length }}
+{{  visible }}
   <div class="card" *ngIf="!containers || containers.length === 0">
     <div class="card-body">
         {{translate('Choose_Workplace')}}
     </div>
   </div>
   <div #calendar class="myDivToPrint white-color" id="section-to-print">
-    <dx-scheduler *ngIf="containers && containers.length"
+    <dx-scheduler [ngClass]="isDailyPlan ? 'daily-calendar' : 'hourly-calendar'" *ngIf="containers && containers.length && visible"
       [firstDayOfWeek]="firstDayOfWeek"
       [useDropDownViewSwitcher]="false"
       [currentView]="translate('WorkWeekPlan')"
@@ -35,29 +38,29 @@
       resourceCellTemplate="headerTemplate"
       [height]="height"
       >
-      <dxi-view
+      <dxi-view *ngIf="isDailyPlan"
         type="week"
         [name]="translate('WeekPlan')"
-        groupOrientation="vertical"
-        [cellDuration]="1440"
+        groupOrientation="isDailyPlan ? 'vertical' : 'horizontal'"
+        [cellDuration]="60"
         [intervalCount]="1"
-        maxAppointmentsPerCell="3"></dxi-view>
+        [maxAppointmentsPerCell]="isDailyPlan ? 3 : 'auto'"></dxi-view>
 
       <dxi-view
         type="workWeek"
         [name]="translate('TwoWorkWeekPlan')"
-        groupOrientation="vertical"
-        [cellDuration]="1440"
+        groupOrientation="isDailyPlan ? 'vertical' : 'horizontal'"
+        [cellDuration]="60"
         [intervalCount]="2"
-        maxAppointmentsPerCell="3"></dxi-view>
+        [maxAppointmentsPerCell]="isDailyPlan ? 3 : 'auto'"></dxi-view>
 
       <dxi-view
         type="workWeek"
         [name]="translate('WorkWeekPlan')"
-        groupOrientation="vertical"
-        [cellDuration]="1440"
+        [groupOrientation]="isDailyPlan ? 'vertical' : 'horizontal'"
+        [cellDuration]="60"
         [intervalCount]="1"
-        maxAppointmentsPerCell="3"></dxi-view>
+        [maxAppointmentsPerCell]="isDailyPlan ? 3 : 'auto'"></dxi-view>
 
       <dxi-view
         type="agenda"
