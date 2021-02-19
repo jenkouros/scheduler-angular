@@ -11,6 +11,7 @@
   [allowColumnReordering]="true"
   (onCellClick)="onCellClick($event)"
   [allowColumnResizing]="true"
+  [height]="getHeight()"
   (onRowValidating)="validatePlanGridRow($event)">
 
   <dxo-summary>

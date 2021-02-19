@@ -86,6 +86,10 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   }
 
 
+  getHeight(){
+    return window.innerHeight - 150;
+  }
+
   setTimeFilter(timeStartOperator, timeEndOperator, reset = false) {
     if (reset) {
       this.timeStartFilterOperation = null;
