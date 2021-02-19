@@ -23,6 +23,7 @@
   </dxo-summary>
 
   <dxo-export [enabled]="true" fileName="export" [customizeExcelCell]="customizeExcelCell" ></dxo-export>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
   <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
   <dxo-state-storing [enabled]="true" type="localStorage" storageKey="plan_container_grid_DevExtremeStorage"></dxo-state-storing>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -63,11 +64,11 @@
       [maxLength]="40"
     ></dx-text-box> -->
   </div>
-  <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false"></dxi-column>
-  <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false"></dxi-column>
+  <dxi-column dataField="item.itemCode" caption="{{translate('Workorder')}}" [allowEditing]="false" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="item.articleCode" caption="{{translate('Code_2')}}" [allowEditing]="false" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="item.articleName" caption="{{translate('Name')}}" [allowEditing]="false" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="item.quantity" caption="{{translate('Quantity')}}" [allowEditing]="false" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="item.quantityMeasurementUnit" caption="EM" [allowEditing]="false" [allowHeaderFiltering]="false"></dxi-column>
 
   <dxi-column
     sortOrder="asc"
@@ -76,6 +77,7 @@
     [caption]="translate('Start')"
     [(selectedFilterOperation)] = "timeStartFilterOperation"
     [(filterValue)]="timeStartFilterValue"
+    [allowHeaderFiltering]="false"
     [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
   </dxi-column>
   <dxi-column
@@ -83,6 +85,7 @@
     [caption]="translate('End')"
     [(selectedFilterOperation)] = "timeEndFilterOperation"
     [(filterValue)]="timeEndFilterValue"
+    [allowHeaderFiltering]="false"
     [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'">
   </dxi-column>
 
@@ -99,15 +102,18 @@
           displayExpr="Name"
           valueExpr="ID">
         </dxo-lookup>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
   </dxi-column>
-  <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
-  <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
-  <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true"></dxi-column>
-  <dxi-column dataField="operation.itemExecutionStatus.operationName" [caption]="translate('OrderStatus')"></dxi-column>
+  <dxi-column dataField="operation.userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="operation.comment" [caption]="translate('Comment')" [allowEditing]="true" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column [allowFiltering]="false" dataField="operation.isLocked" dataType="boolean" [caption]="translate('Locked')" [allowEditing]="true" [allowHeaderFiltering]="false"></dxi-column>
+  <dxi-column dataField="operation.itemExecutionStatus.operationName" [caption]="translate('OrderStatus')" [allowHeaderFiltering]="false"></dxi-column>
   <dxi-column dataField="operation.linkedItemExecutionStatus.status"
+    [allowHeaderFiltering]="false"
     [calculateCellValue]="getLinkedItemsStatus"
     [caption]="translate('Filling')"></dxi-column>
     <dxi-column dataField="operation.parentLinkedItemStatus.containerCode"
+    [allowHeaderFiltering]="false"
     [caption]="translate('Filling')"></dxi-column>
 
   <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
