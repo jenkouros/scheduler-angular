@@ -1,15 +1,16 @@
-import { PlanItemStatusEnum } from './../../../../models/event.model';
-import { Component, OnInit, Input } from '@angular/core';
-import { faLock, faLockOpen, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { PlannedEvent } from '../../../../models/event.model';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { faExclamationCircle, faExclamationTriangle, faLock } from '@fortawesome/free-solid-svg-icons';
 import { appSettings } from '../../../../../../environments/environment';
+import { PlannedEvent } from '../../../../models/event.model';
+import { PlanItemStatusEnum } from './../../../../models/event.model';
 
 @Component({
   selector: 'app-plan-viewer-item',
   templateUrl: './plan-viewer-item.component.html',
   styleUrls: ['./plan-viewer-item.component.css']
 })
-export class PlanViewerItemComponent implements OnInit {
+export class PlanViewerItemComponent implements OnInit, OnChanges {
+
 
   statusEnum = PlanItemStatusEnum;
   settings = appSettings;
@@ -22,5 +23,10 @@ export class PlanViewerItemComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.plannerItemData);
+  }
+
 
 }

@@ -73,7 +73,7 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
     }
   }
   form: FormGroup;
-  dayPlan = true;
+  @Input() dayPlan = true;
   dayPlanSubscription: Subscription;
 
   planItemChangeAllOptions = [
@@ -96,7 +96,10 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
 
-    this.dayPlanSubscription = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch)).subscribe(v => this.dayPlan = !v);
+    this.dayPlanSubscription = store.pipe(select(PlanContainerGridSelectors.planHoursSwitch)).subscribe(v => {
+      console.log(v);
+      this.dayPlan = !v;
+    });
 
     this.form = new FormGroup({
       planItemChange: new FormControl(1),
@@ -204,8 +207,17 @@ export class UpdateTimeDialogComponent extends AppComponentBase implements OnDes
         }));
         break;
       case OperationChangeOriginEnum.InfoDialog:
+        const op = this.changeData.operation as PlannedEventSimple;
+        if (!op.timeEnd) {
+          const end = this.getMoveDates().end;
+          op.timeEnd = end ? end : new Date();
+        }
+        if (!op.timeStartPreparation) {
+          const start = this.getMoveDates().start;
+          op.timeStartPreparation = start ? start : new Date();
+        }
         this.store.dispatch(new PlanContainerGridActions.PlanContainerDialogGridUpdate({
-          operation: this.changeData.operation as PlannedEventSimple,
+          operation: op,
           idPlanItem: this.changeData.planItemId ? this.changeData.planItemId : 0
         }));
         break;

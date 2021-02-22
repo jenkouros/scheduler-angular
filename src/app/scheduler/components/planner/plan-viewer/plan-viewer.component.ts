@@ -1,40 +1,21 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  Output,
-  EventEmitter,
-  OnChanges,
-  Input,
-  ChangeDetectionStrategy,
-  Renderer2,
-  HostListener
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, Output, Renderer2, ViewChild } from '@angular/core';
+import { faAlignCenter, faExclamationCircle, faExclamationTriangle, faLock, faSync, faTh } from '@fortawesome/free-solid-svg-icons';
 import { DxSchedulerComponent } from 'devextreme-angular';
 import { off, on } from 'devextreme/events';
-import { Container } from '../../../models/container.dto';
-import {
-  PlannedEvent,
-  PlanItemsLoadRequest,
-  PlannedEventMove,
-  PlanItemMoveStatusEnum,
-  PlannedEventNotWorkingHoursMove,
-  PlanItemStatusEnum,
-  PlanItemProgressEnum
-} from '../../../models/event.model';
 import * as moment from 'moment';
-import { ContainerSelect } from '../../../models/container.viewModel';
-import { PreplanItem } from '../../../models/preplanitem.dto';
-import * as fromSchedulerModel from '../../../models/planner.model';
-import { faLock, faExclamationTriangle, faExclamationCircle, faSync, faAlignCenter, faTh } from '@fortawesome/free-solid-svg-icons';
-import { SubItemContainer } from '../../../models/subitem.dto';
-import { TimeHelper } from '../../../helpers/time.helper';
-import { PlanSchedule } from '../../../models/planschedule.dto';
-import { ColorHelper } from '../../../helpers/color.helper';
-import { NotifyService } from '../../../../worktime/services';
 import { appSettings } from '../../../../../environments/environment';
 import { AppComponentBase } from '../../../../shared/app-component-base';
+import { NotifyService } from '../../../../worktime/services';
+import { ColorHelper } from '../../../helpers/color.helper';
+import { TimeHelper } from '../../../helpers/time.helper';
+import { Container } from '../../../models/container.dto';
+import { ContainerSelect } from '../../../models/container.viewModel';
+import { PlanItemMoveStatusEnum, PlanItemProgressEnum, PlanItemsLoadRequest, PlanItemStatusEnum, PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../../models/event.model';
+import * as fromSchedulerModel from '../../../models/planner.model';
+import { PlanSchedule } from '../../../models/planschedule.dto';
+import { PreplanItem } from '../../../models/preplanitem.dto';
+import { SubItemContainer } from '../../../models/subitem.dto';
+import { PlanGridOperationChange } from './../../../models/plan-grid-operation.model';
 
 @Component({
   selector: 'app-plan-viewer',
@@ -75,6 +56,7 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   @Output() loadTimeRealizationSuggestion = new EventEmitter<PlanItemsLoadRequest>();
   @Output() planItemReload = new EventEmitter<number[]>();
+  @Output() showPlanItemDetails = new EventEmitter<number>();
 
   notWorkingHoursResolveMode = 'movePlanItem';
   schedulerResources: any = [];
@@ -102,12 +84,14 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
   firstDayOfWeek = 1;
 
   offset: { top: number; left: number } = { top: 0, left: 0 };
+  @Input() timeUpdateDialog: PlanGridOperationChange | undefined;
 
-  constructor(private notifyService: NotifyService, private renderer: Renderer2) {
+  constructor(private notifyService: NotifyService, private renderer: Renderer2, private ref: ChangeDetectorRef) {
     super();
     this.drop = this.drop.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.scroll = this.scroll.bind(this);
+    this.onAdd = this.onAdd.bind(this);
   }
 
   ngOnChanges(changes): void {
@@ -192,6 +176,11 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     return true;
   }
 
+  showDetails(id: number) {
+    this.showPlanItemDetails.emit(id);
+    // this.store.dispatch(new PlanItemActions.ShowPlanItemDetailPopup({id: id}));
+  }
+
   /** DEVEXTREME EVENT HANDLERS */
   onAppointmentDeleting(e) {
     e.cancel = true;
@@ -203,6 +192,9 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
     if (!this.canEdit($event.appointmentData)) {
       return;
     }
+
+    this.showDetails($event.appointmentData.id);
+    return;
     if ($event.component.__tooltipTimeout) {
       clearTimeout($event.component.__tooltipTimeout);
     }
@@ -216,14 +208,15 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
 
   onAppointmentDblClick($event) {
     $event.cancel = true;
-    if (!this.canEdit($event.appointmentData)) {
-      return;
-    }
-    if ($event.component.__tooltipTimeout) {
-      clearTimeout($event.component.__tooltipTimeout);
-    }
-    this.planItemEditing = Object.assign(new PlannedEvent(), $event.appointmentData);
-    this.planItemEditMode = true;
+    return;
+    // if (!this.canEdit($event.appointmentData)) {
+    //   return;
+    // }
+    // if ($event.component.__tooltipTimeout) {
+    //   clearTimeout($event.component.__tooltipTimeout);
+    // }
+    // this.planItemEditing = Object.assign(new PlannedEvent(), $event.appointmentData);
+    // this.planItemEditMode = true;
   }
 
   onAppointmentUpdating(e) {
@@ -389,6 +382,39 @@ export class PlanViewerComponent extends AppComponentBase implements AfterViewIn
       return plannedEvent;
   }
 
+
+  onAdd(d) {
+    console.log(d);
+    const draggedData: PreplanItem = d.fromData;
+    if (!draggedData) { return false; }
+
+    const subItemContainers: SubItemContainer[] = this.getDroppedDataSubItemContainers(draggedData);
+    const preplanItem: PreplanItem = this.getDroppedDataPreplanItem(draggedData, subItemContainers);
+
+    const selectedContainer = this.selectedContainers.find(i => i.id === d.itemData.containerId);
+    if (!selectedContainer) {
+     this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
+       return false;
+    }
+    let selectedSubItemContainer = subItemContainers.find(subItemContainer => selectedContainer.id === subItemContainer.container.id);
+
+    if (selectedSubItemContainer === undefined) {
+       // check settings
+        if (appSettings.PlanItem_EnablePlanningOnAllWorkplaces) {
+          selectedSubItemContainer = this.createSubItemContainer(selectedContainer, subItemContainers);
+          preplanItem.containers.push(selectedSubItemContainer);
+        } else {
+          this.notifyService.notifyWarning('Na delovno mesto ni možno planirati operacije!');
+          return false;
+        }
+      }
+      this.planItemEditing = this.createPlanItem(preplanItem, selectedContainer, selectedSubItemContainer,
+        // cellData.startDate, cellData.endDate,
+        d.itemData.startDate, d.itemData.endDate,
+        subItemContainers);
+      this.planItemEditMode = true;
+      this.ref.detectChanges();
+  }
   drop(e) {
     e.preventDefault();
     e.stopPropagation();

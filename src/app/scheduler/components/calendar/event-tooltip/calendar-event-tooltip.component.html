@@ -1,4 +1,5 @@
 <app-popup
+  *ngIf="planItem$ | async as planItem"
   width="800px"
   height='auto'
   [hasConfirmBtn]="false"

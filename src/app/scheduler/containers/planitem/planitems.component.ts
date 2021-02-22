@@ -1,18 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import * as fromStore from '../../store';
-import {
-  PlannedEvent,
-  PlanItemsLoadRequest,
-  PlannedEventMove,
-  PlannedEventNotWorkingHoursMove
-} from '../../models/event.model';
-import { PreplanItem } from '../../models/preplanitem.dto';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ContainerSelect } from '../../models/container.viewModel';
-import { PlanSchedule } from '../../models/planschedule.dto';
-import { PreplanitemUiState } from '../../models/preplanItem.store';
 import * as fromPlanStore from '../../../plan/store';
+import { ContainerSelect } from '../../models/container.viewModel';
+import { PlanItemsLoadRequest, PlannedEvent, PlannedEventMove, PlannedEventNotWorkingHoursMove } from '../../models/event.model';
+import { PlanGridOperationChange } from '../../models/plan-grid-operation.model';
+import { PlanSchedule } from '../../models/planschedule.dto';
+import { PreplanItem } from '../../models/preplanitem.dto';
+import { PreplanitemUiState } from '../../models/preplanItem.store';
+import * as fromStore from '../../store';
+// import * as PlanItemActions from '../../../../store/actions/events.action';
+import * as PlanContainerGridSelectors from '../../store/selectors/plan-container-grid.selectors';
 
 @Component({
   selector: 'app-planitems',
@@ -32,6 +30,7 @@ export class PlanitemsComponent implements OnInit {
   timeUpdateRealizationSuggestion$: Observable<{ [idPlanItem: number]: PlannedEventMove } | null>;
   notWorkingHoursUpdateSuggestion$: Observable<PlannedEventNotWorkingHoursMove | null>;
   currentDate = new Date();
+  timeUpdateDialog$: Observable<PlanGridOperationChange | undefined>;
 
   private _containers: ContainerSelect[] = [];
   constructor(
@@ -51,6 +50,7 @@ export class PlanitemsComponent implements OnInit {
     this.selectedContainers$ = this.store.pipe(select(fromStore.getSelectedContainerSelectList));
     this.containers$ = this.store.pipe(select(fromStore.getContainerSelectList));
     this.planItems$ = this.store.pipe(select(fromStore.getEvents));
+    this.timeUpdateDialog$ = this.store.pipe(select(PlanContainerGridSelectors.getUpdateTimeDialogData));
 
     // this.selectedContainers$.subscribe(containers => {
     //     if (containers && containers.length > 0) {
@@ -177,5 +177,9 @@ export class PlanitemsComponent implements OnInit {
         ignoreStatusLimitation: true
       })
     );
+  }
+
+  onShowPlanItemDetails(id: number) {
+    this.store.dispatch(new fromStore.ShowPlanItemDetailPopup({id: id}));
   }
 }

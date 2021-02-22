@@ -8,7 +8,7 @@
     background-color: rgba(191, 191, 191, 0.6);
 }
 
-::ng-deep .dx-scheduler-appointment-content{    
+::ng-deep .dx-scheduler-appointment-content{
     padding: 0px;
     margin: 0px;
 }
@@ -28,13 +28,13 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 } */
 
 ::ng-deep .dx-scheduler-work-space-month .dx-scheduler-appointment-content {
-    padding: 0; 
+    padding: 0;
 }
 
 
 .cellDurationContainer{
     float: right;
-    width: 250px;    
+    width: 250px;
   }
 
 ::ng-deep .allowed {
@@ -48,7 +48,7 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
     margin: 2px;
     color: #fff;
     background-color: #087873;
-    border-color: #087873;   
+    border-color: #087873;
 }
 
 .btn-custom-primary:hover {
@@ -59,12 +59,12 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 }
 
 ::ng-deep .dx-scheduler-appointment-move {
-    background-color: #fff3cd;    
-    height: 10px !important;  
+    background-color: #fff3cd;
+    height: 10px !important;
     transition: 0.5s;
 }
 
-.toolbar {   
+.toolbar {
     margin-top: 5px;
     background-color: #f5f5f5;
     border-top:  1px dotted;
@@ -98,3 +98,20 @@ https://community.devexpress.com/blogs/aspnet/archive/2017/11/13/html5-javascrip
 ::ng-deep .dx-scheduler-group-header {
     overflow: hidden;
 }
+
+/* ::ng-deep .dx-tooltip-wrapper .dx-overlay-content .dx-popup-content {
+  max-height: 650px !important;
+  height: 600px !important;
+  width: 600px;
+  max-width: 650px !important;
+}
+::ng-deep .dx-scheduler-appointment-tooltip-wrapper > div.dx-overlay-content {
+    max-height: 650px !important;
+      height: 600px !important;
+      width: 600px;
+      max-width: 650px !important;
+  }
+
+::ng-deep .dx-item-content.dx-list-item-content {
+  width: 600px;
+} */

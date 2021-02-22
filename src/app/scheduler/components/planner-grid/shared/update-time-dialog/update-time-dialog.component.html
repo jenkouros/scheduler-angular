@@ -21,7 +21,8 @@
               formControlName="planItemChange">
                 <div *dxTemplate="let data of 'radio'">
                   {{ data.text }} <br>
-                  <strong *ngIf="data.start">{{ data.start | date }} - {{ data.end | date }}</strong>
+                  <strong *ngIf="data.start && dayPlan">{{ data.start | date }} - {{ data.end | date }}</strong>
+                  <strong *ngIf="data.start && !dayPlan">{{ data.start | date }} {{ data.start | date:'shortTime' }} - {{ data.end | date }} {{ data.end | date:'shortTime' }}</strong>
                 </div>
             </dx-radio-group>
         </div>

@@ -1,51 +1,51 @@
 
 <div *ngIf="groups">
-  <button class="btn btn-primary mb-2" 
-    [disabled]="!grid.selectedRowKeys.length"
+  <button class="btn btn-primary mb-2"
+    [disabled]="!grid.selectedRowKeys || !grid.selectedRowKeys.length"
     (click)="confirmGroupFilter()">
-    {{translate('Choose_Group')}} 
+    {{translate('Choose_Group')}}
   </button>
 
-    <button class="btn btn-primary mb-2 ml-1" 
-      [disabled]="!grid.selectedRowKeys.length"
+    <button class="btn btn-primary mb-2 ml-1"
+      [disabled]="!grid.selectedRowKeys || !grid.selectedRowKeys.length"
       (click)="onEditGroupFilter()">
-      {{translate('Edit')}} 
+      {{translate('Edit')}}
     </button>
 
-    <button class="btn btn-success mb-2 ml-1" 
+    <button class="btn btn-success mb-2 ml-1"
       (click)="onCreateGroupFilter()">
-      {{translate('Add')}} 
+      {{translate('Add')}}
     </button>
 
-  <dx-data-grid 
+  <dx-data-grid
     #grid
     [dataSource]="groups"
-    [showRowLines]="true" 
+    [showRowLines]="true"
     [showBorders]="true"
     [rowAlternationEnabled]="true"
     (onSelectionChanged)="onSelectionChange($event)">
-    <dxo-selection 
-      mode="multiple" 
+    <dxo-selection
+      mode="multiple"
       showCheckBoxesMode="always"
       [allowSelectAll]="false">
     </dxo-selection>
-  
+
     <dxi-column dataField="name" caption="{{translate('Group_Name')}}"></dxi-column>
     <dxi-column caption="{{translate('Workplaces')}}" cellTemplate="containerCellTemplate"></dxi-column>
     <dxi-column caption="{{translate('Filters')}}" cellTemplate="filterCellTemplate"></dxi-column>
-  
+
     <div *dxTemplate="let cell of 'containerCellTemplate'">
       <span class="badge badge-secondary mr-1 px-2 py-1" *ngFor="let container of cell.data.selectedContainers">{{ container.code }}</span>
     </div>
     <div *dxTemplate="let cell of 'filterCellTemplate'">
-      <div 
-        [ngClass]="{ 'mb-1': cell.data.filtersWithSelectedValue.length > 1 && idx !== cell.data.filtersWithSelectedValue.length - 1}" 
+      <div
+        [ngClass]="{ 'mb-1': cell.data.filtersWithSelectedValue.length > 1 && idx !== cell.data.filtersWithSelectedValue.length - 1}"
         *ngFor="let filter of cell.data.filtersWithSelectedValue; let idx = index">
         <strong>{{ filter.name }}: </strong>
         <span class="badge badge-secondary mr-1 px-2 py-1" *ngFor="let filterValues of filter.selectedValues">
           {{ filterValues.name }}
         </span>
-      </div> 
+      </div>
     </div>
   </dx-data-grid>
 </div>

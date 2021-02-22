@@ -6,6 +6,7 @@
       [planItemGetReponse]="planItems$ | async"
       [timeUpdateSuggestion]="timeUpdateSuggestion$ | async"
       [notWorkingHoursUpdateSuggestion]="notWorkingHoursUpdateSuggestion$ | async"
+      [timeUpdateDialog]="timeUpdateDialog$ | async"
       (planItemReload)="onPlanItemReload($event)"
       (removeBlankSpace)="onRemoveBlankSpace($event)"
       (toggleLock)="onToggleLock($event)"
@@ -21,6 +22,7 @@
       (resolveNotWorkingHours)="onResolveNotWorkingHours($event)"
       (clearNotWorkingHoursSuggestion)="onClearNotWorkingHoursSuggestion()"
       (loadTimeRealizationSuggestion)="onLoadTimeRealizationSuggestion($event)"
+      (showPlanItemDetails)="onShowPlanItemDetails($event)"
     >
     </app-plan-viewer>
     <app-realization-timeupdate-popup
