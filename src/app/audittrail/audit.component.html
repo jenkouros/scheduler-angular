@@ -6,7 +6,7 @@
     <app-item-selector (selectItem)="getData($event.idItem)"></app-item-selector>
   </div>
 
-  <app-audit-table *ngIf="model" [auditModel]="model"></app-audit-table>
+  <app-audit-table  [auditModel]="model"></app-audit-table>
 
   <ng-container *ngIf="model">
     <div *ngFor="let auditGroup of model.auditGroups">
