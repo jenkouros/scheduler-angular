@@ -3,7 +3,15 @@ export interface ContainerServer {
     code: string;
     name: string;
     comment: string;
+    idContainerStatus: number;
     settings: ContainerSettingsServer;
+}
+
+export interface ContainerStatusServer {
+  idContainerStatus: number;
+  code: string;
+  name: string;
+  color: string;
 }
 
 export interface ContainerSettingsServer {

@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { SubItem } from '../../../models/item.dto';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AppComponentBase } from '../../../../shared/app-component-base';
 import { TimeHelper } from '../../../helpers/time.helper';
+import { SubItem } from '../../../models/item.dto';
+import { ItemFacade } from './../../../store/facade/item.facade';
 
 
 @Component({
@@ -9,9 +11,13 @@ import { TimeHelper } from '../../../helpers/time.helper';
   styleUrls: ['./subitem.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SubItemComponent implements OnInit {
+export class SubItemComponent extends AppComponentBase implements OnInit {
   @Input() subItem: SubItem;
   @Input() quantity = 0;
+
+  constructor(private itemFacade: ItemFacade) {
+    super();
+  }
 
   ngOnInit() {
   }
@@ -19,5 +25,8 @@ export class SubItemComponent implements OnInit {
   convertTime(minutes: number) {
     return TimeHelper.convertMinutesIntoString(minutes);
   }
-
+  toggleIsPlannable(e) {
+    this.subItem.plannable = !this.subItem.plannable;
+    this.itemFacade.toggleSubItemPlannable(this.subItem.id, this.subItem.plannable);
+  }
 }

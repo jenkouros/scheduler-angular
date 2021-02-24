@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
-import * as fromFeature from '../reducers';
 import { ContainerSelect } from '../../models/container.viewModel';
+import * as fromFeature from '../reducers';
 
 export const getContainersState = createSelector(
   fromFeature.getSchedulerState,
@@ -32,7 +32,23 @@ export const getSelectedContainerSelectList = createSelector(
   }
 );
 
+export const getContainerTooltips = createSelector(
+  getSelectedContainerSelectList,
+  (containerSelectList: ContainerSelect[]) => {
+    const dict: {[id: number]: string} = {};
+    return containerSelectList.reduce(function(map, obj) {
+      map[obj.id] = obj.name;
+      return map;
+  }, {});
+  }
+);
+
 export const getSelectedContainerIds = createSelector(
   getContainersState,
   fromFeature.getSelectedContainers
+);
+
+export const getStatuses = createSelector(
+  getContainersState,
+  fromFeature.getContainerStatuses
 );

@@ -1,4 +1,4 @@
-import { EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
@@ -21,7 +21,7 @@ import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action'
 //   selector: 'app-plan-container-grid-operations',
 //   templateUrl: './plan-container-grid-operations.component.html',
 // })
-export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnDestroy {
+export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnInit, OnDestroy {
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
@@ -36,6 +36,9 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   timeStartFilterValue: any = new Date();
   timeEndFilterOperation: any;
   timeEndFilterValue: any;
+
+  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
+  executionStatuses: {ID: number, Name: string}[]; // = planGridOperationExecution;
 
   @Input() set datasource(grid: PlanContainerGrid[]) {
     this.gridItems = grid;
@@ -70,13 +73,16 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
 
   }
 
-  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
-  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+
 
   // filterValue: Array<any> = ['item.itemCode', '<>', '44088904'];
   // applyFilter (filterExpression) {
   //     this.filterValue = filterExpression;
   // }
+
+  ngOnInit() {
+    this.executionStatuses = planGridOperationExecution;
+  }
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -188,7 +194,11 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       }
     } else if (updatedOperation.idPrePlanItem && updatedOperation.containerCode) {
       this.updateItem.emit();
-      this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate(updatedOperation));
+      this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate({
+        operation: updatedOperation,
+        allowAdd: false
+      }));
+
     }
 
   }

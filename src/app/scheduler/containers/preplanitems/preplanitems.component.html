@@ -1,0 +1,72 @@
+<!-- THIS IS USED IN DAILY PLAN - native drag and drop -->
+
+<dx-draggable
+            id="list"
+            data="dropArea"
+            group="draggingGroupName"
+            (onDragStart)="onListDragStart($event)"
+          >
+            <dx-draggable
+
+              [clone]="true"
+              group="draggingGroupName"
+              [data]="preplanitem"
+              (onDragStart)="onItemDragStart($event)"
+              (onDragEnd)="onItemDragEnd($event)"
+              *ngFor="let preplanitem of (preplanitems$ | async) as preplanItems; let i = index"
+            >
+            <app-preplanitem-item
+
+            [groupColorNumber]="
+              i > 0 && preplanItems[i - 1].item.name !== preplanitem.item.name
+                ? nextColorNumber
+                : i === 0
+                ? resetColorNumber()
+                : colorNumber
+            "
+            [preplanitem]="preplanitem"
+            (prePlanItemPlanSuggestion)="onPrePlanItemPlanSuggestion($event)"
+            (reselectContainers)="onReselectContainers($event)"
+            (showDeleteBatchPopup)="onShowDeleteBatchPopup($event)"
+            (showHidePreplanItemPopup)="onShowHidePreplanItemPopup($event)"
+          >
+          </app-preplanitem-item>
+
+          <app-preplanitem-delete-popup
+            [preplanItemUiState]="preplanItemsUiState$ | async"
+            (deleteBatch)="onDeleteBatch($event)"
+            (hideDeleteBatchPopup)="onHideDeleteBatchPopup()"
+          >
+          </app-preplanitem-delete-popup>
+
+          <app-preplanitem-hide-popup
+          [preplanItemUiState]="preplanItemsUiState$ | async"
+          (hidePreplanItem)="onHidePreplanItem($event)"
+          (hidePreplanItemHidePopup)="onHidePreplanItemHidePopup()"
+        >
+        </app-preplanitem-hide-popup>
+
+
+              <!-- <div
+                fxLayout="row"
+                fxLayoutGap="10px"
+                (dblclick)="showPreplanTaskDetails(prePlanTask.task.taskId)"
+              >
+                <div fxFlex class="event-info">
+                  <div class="event-name">{{ prePlanTask.task.taskName }}</div>
+                  <div class="event-metadata">
+                    {{ prePlanTask.task.documentCode }}
+                  </div>
+                </div>
+                <div fxFlex="25px">
+                  <div
+                    *ngIf="prePlanTask.task.comment"
+                    class="dx-icon dx-icon-comment icon-comment"
+                  ></div>
+                  <div class="icon-samples-count">
+                    {{ prePlanTask.task.samplesCount }}
+                  </div>
+                </div>
+              </div> -->
+            </dx-draggable>
+          </dx-draggable>

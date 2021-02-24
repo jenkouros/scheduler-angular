@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContainerFacade } from '../store';
 
 
 @Component({
@@ -6,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './scheduler.component.html'
 })
 export class SchedulerComponent implements OnInit {
-  constructor() { }
+  constructor(private containerFacade: ContainerFacade) { }
 
   ngOnInit() {
+    this.containerFacade.loadContainerStatuses();
   }
+
 
 }

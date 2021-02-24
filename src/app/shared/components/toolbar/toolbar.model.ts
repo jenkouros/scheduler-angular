@@ -7,7 +7,8 @@ export enum ToolbarItemStateEnum {
 export enum ToolbarItemTypeEnum {
   button = 1,
   toggle,
-  date
+  date,
+  text
 }
 
 export enum ToolbarItemActionEnum {
@@ -20,12 +21,14 @@ export enum ToolbarItemActionEnum {
 }
 
 export interface ToolbarItem {
+  icon?: string;
   actionId: number;
   iconClass: string;
   altText: string;
   state: ToolbarItemStateEnum;
   type: ToolbarItemTypeEnum;
   value?: any;
+  data?;
 }
 
 export interface ToolbarGroup {

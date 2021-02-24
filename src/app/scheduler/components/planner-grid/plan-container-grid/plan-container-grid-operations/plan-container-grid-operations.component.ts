@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
@@ -15,7 +15,7 @@ import { PlanItemCreateRequest } from './../../../../models/event.model';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
 import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
-import { getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationExecution, planGridOperationPriorities } from './../../../../models/plan-grid-operation.model';
+import { getplanGridOperationExecutionColor, getPlanGridOperationExecutionStatuses, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationPriorities } from './../../../../models/plan-grid-operation.model';
 import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
 
 @Component({
@@ -23,7 +23,7 @@ import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action'
   templateUrl: './plan-container-grid-operations.component.html',
   styleUrls: ['./plan-container-grid-operations.component.css']
 })
-export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnDestroy {
+export class PlanContainerGridOperationsComponent extends AppComponentBase implements OnInit, OnDestroy {
   gridItems: PlanContainerGrid[] = [];
   planHoursSwitch$: Observable<boolean>;
   planHours: boolean;
@@ -74,12 +74,17 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
   }
 
   priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
-  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+  executionStatuses: {ID: number, Name: string}[]; // = planGridOperationExecution;
 
   // filterValue: Array<any> = ['item.itemCode', '<>', '44088904'];
   // applyFilter (filterExpression) {
   //     this.filterValue = filterExpression;
   // }
+
+
+  ngOnInit() {
+    this.executionStatuses = getPlanGridOperationExecutionStatuses();
+  }
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -195,7 +200,12 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
       }
     } else if (updatedOperation.idPrePlanItem && updatedOperation.containerCode) {
       this.updateItem.emit();
-      this.store.dispatch(new PlanContainerGridActions.PlanContainerGridUpdate(updatedOperation));
+      this.store.dispatch(
+        new PlanContainerGridActions.PlanContainerGridUpdate({
+          operation: updatedOperation,
+          allowAdd: false
+        })
+      );
     }
 
   }
@@ -273,30 +283,30 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
 
   onExporting(e) {
     console.log("onExporting")
-    e.component.columnOption("operation.name","visible",false);  
-    e.component.columnOption("item.quantityMeasurementUnit","visible",false);  
-    e.component.columnOption("operation.idPriority","visible",false);  
-    e.component.columnOption("operation.idUserStatus","visible",false);  
-    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",false);  
-    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",false);  
-    e.component.columnOption("operation.isLocked","visible",false);  
-    e.component.columnOption("operation.userDate","allowExporting",false);  
-    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",false);  
-    e.component.endUpdate(); 
+    e.component.columnOption("operation.name","visible",false);
+    e.component.columnOption("item.quantityMeasurementUnit","visible",false);
+    e.component.columnOption("operation.idPriority","visible",false);
+    e.component.columnOption("operation.idUserStatus","visible",false);
+    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",false);
+    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",false);
+    e.component.columnOption("operation.isLocked","visible",false);
+    e.component.columnOption("operation.userDate","allowExporting",false);
+    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",false);
+    e.component.endUpdate();
   }
 
   onExported(e) {
     console.log("onExported")
-    e.component.columnOption("operation.name","visible",true);  
-    e.component.columnOption("item.quantityMeasurementUnit","visible",true);  
-    e.component.columnOption("operation.idPriority","visible",true);  
-    e.component.columnOption("operation.idUserStatus","visible",true);  
-    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",true);  
-    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",true);  
-    e.component.columnOption("operation.isLocked","visible",true);  
-    e.component.columnOption("operation.userDate","allowExporting",true);  
-    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",true);  
-    e.component.endUpdate(); 
+    e.component.columnOption("operation.name","visible",true);
+    e.component.columnOption("item.quantityMeasurementUnit","visible",true);
+    e.component.columnOption("operation.idPriority","visible",true);
+    e.component.columnOption("operation.idUserStatus","visible",true);
+    e.component.columnOption("operation.linkedItemExecutionStatus.status","visible",true);
+    e.component.columnOption("operation.itemExecutionStatus.operationName","visible",true);
+    e.component.columnOption("operation.isLocked","visible",true);
+    e.component.columnOption("operation.userDate","allowExporting",true);
+    e.component.columnOption("operation.parentLinkedItemStatus.containerCode","allowExporting",true);
+    e.component.endUpdate();
   }
 
 
@@ -355,7 +365,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
           column.width = 100; //if portrait 115/ landscape 165
         }
         if(column.dataField == "operation.timeStart" || column.dataField == "operation.timeEnd"  ){
-          column.width = 80; 
+          column.width = 80;
         }
         */
     });

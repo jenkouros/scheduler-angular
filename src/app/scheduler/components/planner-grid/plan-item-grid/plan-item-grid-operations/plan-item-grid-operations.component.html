@@ -39,7 +39,7 @@
   </dxi-column>
   <dxi-column dataField="userDate" [caption]="translate('Date')" [dataType]="(planHoursSwitch$ | async) ? 'datetime' : 'date'"></dxi-column>
   <dxi-column dataField="comment" [caption]="translate('Comment')" [allowEditing]="true"></dxi-column>
-  <dxi-column dataField="isLocked" [caption]="translate('Locked')" dataType="boolean" [allowEditing]="true"></dxi-column>
+  <dxi-column width="70px" dataField="isLocked" [caption]="translate('Locked')" dataType="boolean" [allowEditing]="true"></dxi-column>
 
 </dx-data-grid>
 

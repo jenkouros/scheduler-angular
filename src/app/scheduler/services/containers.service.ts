@@ -1,13 +1,13 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { ContainerServer } from '../models/server/container.servermodel';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Container } from '../models/container.dto';
+import { Injectable } from '@angular/core';
+import { Observable, throwError as observableThrowError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { map, catchError } from 'rxjs/operators';
-import { ContainerEvents, ContainerPutRequest } from '../models/event.model';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
+import { Container, ContainerStatus } from '../models/container.dto';
+import { ContainerEvents, ContainerPutRequest } from '../models/event.model';
+import { ContainerServer } from '../models/server/container.servermodel';
 
 @Injectable()
 export class ContainersService {
@@ -30,6 +30,16 @@ export class ContainersService {
             catchError((error: any) => observableThrowError(error.json))
             );
     }
+
+    getStatuses(): Observable<ContainerStatus[]> {
+      return this.http
+          .get<ContainerStatus[]>(environment.apiUrl + '/containers/status')
+          .pipe(
+              map((response) => {
+                  return response.map(s => ContainerStatus.fromServer(s));
+              })
+          );
+  }
 
     removeContainersBlankSpace(containerIds: number[]) {
         return this.http.post(environment.apiUrl + '/containers/removeBlankSpace', containerIds);

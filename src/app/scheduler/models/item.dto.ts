@@ -1,12 +1,6 @@
-import {
-    ItemHierarchyServer,
-    ItemServer,
-    SubItemServer,
-    ItemHierarchyAlternativeServer,
-    ItemProgressServer} from './server/item.servermodel';
-import { MeasurementUnit, Product } from './shared.dto';
-import { SubItemContainer } from './subitem.dto';
 import { Container } from './container.dto';
+import { ItemHierarchyAlternativeServer, ItemHierarchyServer, ItemProgressServer, ItemServer, SubItemServer } from './server/item.servermodel';
+import { MeasurementUnit, Product } from './shared.dto';
 
 
 export class Item {
@@ -22,35 +16,69 @@ export class Item {
     limitDateFrom: Date;
     limitDateTo: Date;
     importDate: Date;
-
+    connectedOrders: { code: string, articleCode: string }[];
+    // planItemStatuses: PlanItemStatus[];
+    itemStatusLog: ItemStatusLog;
     static fromServer(planItemServer: ItemServer) {
-        const result = new Item();
-        result.code = planItemServer.code;
-        result.name = planItemServer.name;
-        result.idItem = planItemServer.idItem;
-        result.quantity = planItemServer.quantity;
-        // result.quantityBatch = planItemServer.quantityBatch;
-        // result.quantityPlanned = planItemServer.quantityPlanned;
-        result.itemProgresses = planItemServer.itemProgresses.map(ItemProgress.fromServer);
-        result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
-        result.article = Product.fromServer(planItemServer.article);
-        result.limitDateFrom = planItemServer.limitDateFrom;
-        result.limitDateTo = planItemServer.limitDateTo;
-        result.importDate = planItemServer.importDate;
-        return result;
+      const result = new Item();
+      result.connectedOrders = planItemServer.connectedOrders;
+      result.code = planItemServer.code;
+      result.name = planItemServer.name;
+      result.idItem = planItemServer.idItem;
+      result.quantity = planItemServer.quantity;
+      // result.quantityBatch = planItemServer.quantityBatch;
+      // result.quantityPlanned = planItemServer.quantityPlanned;
+      result.itemProgresses = planItemServer.itemProgresses.map(ItemProgress.fromServer);
+      result.measurementUnit = MeasurementUnit.fromServer(planItemServer.measurementUnit);
+      result.article = Product.fromServer(planItemServer.article);
+      // result.planItemStatuses = planItemServer.planItemStatuses
+      //   ? planItemServer.planItemStatuses.map(PlanItemStatus.fromServer)
+      //   : [];
+      result.limitDateFrom = planItemServer.limitDateFrom;
+      result.limitDateTo = planItemServer.limitDateTo;
+      result.importDate = planItemServer.importDate;
+      if (planItemServer.itemStatusLog) {
+        const status = new ItemStatusLog();
+        status.idPlanItemStatus = planItemServer.itemStatusLog.idPlanItemStatus;
+        status.planItemName = planItemServer.itemStatusLog.planItemName;
+        result.itemStatusLog = status;
+      }
+      return result;
     }
 }
 
 export class ItemProgress {
-    idPlan: number;
-    quantityPlanned: number;
-    static fromServer(serverData: ItemProgressServer) {
-        const result = new ItemProgress();
-        result.idPlan = serverData.idPlan;
-        result.quantityPlanned = serverData.quantityPlanned;
-        return result;
-    }
+  idPlan: number;
+  quantityPlanned: number;
+  static fromServer(serverData: ItemProgressServer) {
+    const result = new ItemProgress();
+    result.idPlan = serverData.idPlan;
+    result.quantityPlanned = serverData.quantityPlanned;
+    return result;
+  }
 }
+
+export class ItemStatusLog {
+  planItemName: string;
+  idPlanItemStatus: number;
+}
+
+// export class PlanItemStatus {
+//   idPreplanItem: number;
+//   idPlanItem: number;
+//   name: string;
+//   idStatus: number;
+//   sequenceNumber: number;
+//   static fromServer(serverData: PlanItemStatusServer) {
+//     const result = new PlanItemStatus();
+//     result.idPreplanItem = serverData.idPreplanItem;
+//     result.idPlanItem = serverData.idPlanItem;
+//     result.name = serverData.name;
+//     result.idStatus = serverData.idStatus;
+//     result.sequenceNumber = serverData.sequenceNumber;
+//     return result;
+//   }
+// }
 
 export class ItemHierarchy {
     idPlanItem: number;

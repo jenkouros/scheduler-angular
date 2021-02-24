@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as fromStore from '../../store';
-import { Store, select } from '@ngrx/store';
+import * as fromPlanStore from '../../../plan/store';
 import { Item } from '../../models/item.dto';
 import { ItemServer } from '../../models/server/item.servermodel';
 import { GridStoreConfiguration } from '../../models/shared.dto';
+import * as fromStore from '../../store';
 
-import * as fromPlanStore from '../../../plan/store';
 
 @Component({
   selector: 'app-items',
@@ -20,6 +20,7 @@ import * as fromPlanStore from '../../../plan/store';
             (loadedItems)="onLoadedItems($event)"
             (selectItem)="onSelectItem($event)"
             (hideItem)="onHideItem($event)"
+            (showPlanned)="onToggleShowPlanned($event)"
           >
           </app-item-list>
         </div>
@@ -49,11 +50,15 @@ export class ItemsComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadItemsSuccess(items.map(i => Item.fromServer(i))));
   }
 
-    onSelectItem(item: Item) {
-        this.store.dispatch(new fromStore.LoadItemHierarchy({item: item, addToList: false}));
-        this.store.dispatch(new fromStore.ShowItemPopup());
-    }
-    onHideItem(item: Item) {
-        this.store.dispatch(new fromStore.HideItem(item.idItem));
-    }
+  onSelectItem(item: Item) {
+      this.store.dispatch(new fromStore.LoadItemHierarchy({item: item, addToList: false}));
+      this.store.dispatch(new fromStore.ShowItemPopup());
+  }
+  onHideItem(item: Item) {
+      this.store.dispatch(new fromStore.HideItem(item.idItem));
+  }
+
+  onToggleShowPlanned(showPlanned: boolean) {
+    this.store.dispatch(new fromStore.LoadItems({showPlanned: showPlanned}));
+  }
 }

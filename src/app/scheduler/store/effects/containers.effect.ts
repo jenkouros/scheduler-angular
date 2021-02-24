@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import * as fromActions from '../actions';
-import {
-  switchMap,
-  map,
-  catchError,
-  withLatestFrom,
-  mergeMap,
-  tap,
-  take
-} from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import { ContainerEvents } from '../../models/event.model';
-import { ContainersService } from '../../services/containers.service';
-import { AppState } from '../../../store/app.reducers';
-import { SignalRService } from '../../services/signalr.service';
+import {
+  catchError, map, switchMap,
+
+
+
+
+
+  take, tap, withLatestFrom
+} from 'rxjs/operators';
 import { getSelectedContainerSelectList } from '..';
-import { ContainerSelect } from '../../models/container.viewModel';
+import { AppState } from '../../../store/app.reducers';
+import { ContainersService } from '../../services/containers.service';
+import { SignalRService } from '../../services/signalr.service';
+import * as fromActions from '../actions';
 
 @Injectable()
 export class ContainersEffects {
@@ -43,6 +41,20 @@ export class ContainersEffects {
         );
     })
   );
+
+  @Effect()
+  loadStatuses$ = this.actions$.ofType(fromActions.LOAD_CONTAINER_STATUSES).pipe(
+      switchMap(action => {
+          return this.containersService.getStatuses()
+              .pipe(
+                  map(statuses => new fromActions.LoadContainerStatusesSuccess(statuses)),
+                  catchError((error) => {
+                      console.log(error);
+                      return of(new fromActions.LoadContainersFail());
+                  })
+              );
+      })
+    );
 
   @Effect()
     updateContainer$ = this.actions$.ofType(fromActions.UPDATE_CONTAINER).pipe(

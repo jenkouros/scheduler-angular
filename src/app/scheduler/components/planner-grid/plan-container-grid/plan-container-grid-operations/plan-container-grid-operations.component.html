@@ -23,6 +23,8 @@
     </dxi-group-item>
   </dxo-summary>
 
+  <dxo-load-panel [enabled]="false"></dxo-load-panel>
+
   <dxo-export [enabled]="true" fileName="export" [customizeExcelCell]="customizeExcelCell" ></dxo-export>
   <dxo-header-filter [visible]="true"></dxo-header-filter>
   <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
@@ -115,7 +117,7 @@
     [caption]="translate('Filling')"></dxi-column>
     <dxi-column dataField="operation.parentLinkedItemStatus.containerCode"
     [allowHeaderFiltering]="false"
-    [caption]="translate('Filling')"></dxi-column>
+    [caption]="translate('Production')"></dxi-column>
 
   <!-- <dxi-column dataType="string" alignment="center" dataField="" cellTemplate="showDetailCellTemplate"></dxi-column> -->
 

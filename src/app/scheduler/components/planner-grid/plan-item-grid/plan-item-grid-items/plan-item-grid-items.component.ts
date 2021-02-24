@@ -20,6 +20,7 @@ export class PlanItemGridItemsComponent extends AppComponentBase {
   @Input() expandDetails = false;
   @Input() refreshContainerGrid = false;
   @Input() loader = false;
+  @Input() baseItemId: number | undefined = undefined;
   @ViewChild(DxDataGridComponent, { static: false }) grid: DxDataGridComponent;
 
   constructor() {

@@ -9,8 +9,7 @@
           <div *ngIf="!settings.PlanItem_DisplayOperationFirst">
             <div class="white-text font-weight-bold">
               {{ plannerItemData.itemName }} |
-              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode : plannerItemData.articleName }}
-
+              {{ settings.PlanItem_DisplayArticleCode ? plannerItemData.articleCode + ' - ' + plannerItemData.articleName : plannerItemData.articleName }}
             </div>
             <div>#{{ plannerItemData.subItemCode }} {{ plannerItemData.subItemName}}</div>
           </div>

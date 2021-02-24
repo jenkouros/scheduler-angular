@@ -1,20 +1,23 @@
 <div class="card text-dark" [ngClass]="subItem.plannable ? 'bg-kolektor-light' : ''">
     <div class="card-body p-2">
         <h6 class="card-title mb-1">{{ subItem.code }} - {{ subItem.name }}</h6>
+        <dx-check-box class="plannable-checkbox"
+          (onValueChanged)="toggleIsPlannable($event)"
+          [value]="subItem.plannable"></dx-check-box>
         <div class="card-text" *ngIf="subItem.plannable">
             <table>
                 <thead></thead>
                 <tbody>
                     <tr>
-                        <td class="pr-3">Priprava:</td>
+                        <td class="pr-3">{{ translate("Preparation") }}:</td>
                         <th>{{ convertTime(subItem.normativeTimePreparation) }}</th>
                     </tr>
                     <tr>
-                        <td class="pr-3">Izdelava:</td>
+                        <td class="pr-3">{{ translate("Execution") }}:</td>
                         <th>{{ convertTime(subItem.normativeTimeMachine * quantity) }}</th>
                     </tr>
                     <tr *ngIf="subItem.containers">
-                        <td class="pr-3">Stroj:</td>
+                        <td class="pr-3">{{ translate("Workplace") }}:</td>
                         <th><span class="badge badge-secondary mr-1 p-1" *ngFor="let container of subItem.containers">{{ container.displayExpression }}</span></th>
                     </tr>
                     <!-- <tr>

@@ -56,7 +56,7 @@ export class PlanContainerGridComponent extends AppComponentBase {
     this.currentWoSwitch$ = this.store.pipe(select(PlanContainerGridSelectors.currentWoSwitch));
     this.limitDate$ = store.pipe(select(PlanContainerGridSelectors.limitContainerGridLoadDate));
     this.planContainerGrid$ = store.pipe(select(PlanContainerGridSelectors.getPlanContainerGrid));
-    this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid()));
+    this.limitDate$.subscribe(i => store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid(undefined)));
 
 
     // this.selectedPlanItemGrid$ = store.pipe(select(PlanContainerGridSelectors.selectedPlanItemGrid));
@@ -89,7 +89,7 @@ export class PlanContainerGridComponent extends AppComponentBase {
 
   showArchiveSwitchEvent(e) {
     this.store.dispatch(new PlanContainerGridActions.SetShowArchiveSwitch(e.value));
-    this.store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid());
+    this.store.dispatch(new PlanContainerGridActions.LoadPlanContainerGrid(undefined));
   }
 
   createToolbar() {

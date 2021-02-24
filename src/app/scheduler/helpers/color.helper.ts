@@ -1,3 +1,5 @@
+import { PlanItemStatusEnum } from "../models/event.model";
+
 export class ColorHelper {
 
     static getGradient(data: {startMarginProcent: number, durationMarginProcent: number}[],
@@ -33,5 +35,20 @@ export class ColorHelper {
 
         return '#' + RR + GG + BB;
     }
+    static colorMapper(planItemStatus: PlanItemStatusEnum) {
+      switch (planItemStatus) {
+          case PlanItemStatusEnum.Running:
+              return '#6cb56c';
+          case PlanItemStatusEnum.Finished:
+              return '#8b8c8c';
+          case PlanItemStatusEnum.Canceled:
+              return '#d41140';
+          case PlanItemStatusEnum.Break:
+              return '#dcb843';
+          case PlanItemStatusEnum.ExternalyClosed:
+              return '#8b8c8c';
+      }
+      return '#337ab7';
+  }
 }
 

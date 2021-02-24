@@ -9,7 +9,12 @@ export interface PlanGridItem {
   published: Date;
   lastUpdate: Date;
   itemExecutionStatus: number;
-  priority: number;
+  planGridItemStatusLogModel: PlanGridItemStatusLog;
+}
+
+export interface PlanGridItemStatusLog {
+  idPlanItemStatus: number;
+  planItemName: string;
 }
 
 export enum LinkedItemStatusEnum {

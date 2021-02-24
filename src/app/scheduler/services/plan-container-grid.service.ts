@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { DictionaryHelper } from '../helpers/dictionary.helper';
+import { CalendarFilter } from '../models/calendar-filter.model';
 import { Container } from '../models/container.dto';
 import { PlanItemCreateRequest, PlanItemMoveStatusEnum } from '../models/event.model';
 import { PlanContainerGrid } from '../models/plan-container-grid.model';
@@ -17,7 +18,9 @@ export class PlanContainerGridService {
                         limitDate: Date,
                         filterDictionary: { [id: string]: number[] } = {},
                         filterContainers: Container[] = [],
-                        showArchive: boolean = false) {
+                        showArchive: boolean = false,
+                        calendarFilter: CalendarFilter | undefined,
+                        showNotPlannable: boolean) {
 
     const containers = filterContainers.map(i => i.id.toString());
     const dict = DictionaryHelper.stringify(filterDictionary);
@@ -27,7 +30,15 @@ export class PlanContainerGridService {
       'values': dict.values,
       'dateLimit': moment(limitDate).format(),
       'containers': containers,
-      'showArchive': showArchive
+      'showArchive': showArchive,
+      'calendarFilter': calendarFilter
+        ? {
+          'startDate': moment(calendarFilter.dateStart).format(),
+          'endDate': moment(calendarFilter.dateEnd).format(),
+          'containerIds': calendarFilter.containerIds
+        }
+        : undefined,
+      'showNotPlannable': showNotPlannable
     };
     return this.http.post<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', params);
   }
@@ -77,5 +88,14 @@ export class PlanContainerGridService {
       options: options
     };
     return this.http.put<PlanContainerGrid[]>(environment.apiUrl + '/plancontainergrid', planningItem);
+  }
+
+  changeSequence(isUp: boolean, idPlanItem: number) {
+    return this.http.post<PlanContainerGrid[]>(environment.apiUrl +
+      `/plancontainergrid/changeSequence?idPlanItem=${idPlanItem}&isUp=${isUp}`, null);
+  }
+
+  deletePlanItem(planItemId: number) {
+    return this.http.delete<boolean>(environment.apiUrl + '/planitems?idPlanItem=' + planItemId);
   }
 }

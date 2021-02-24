@@ -26,6 +26,7 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
   @Input() containers: ContainerSelect[];
   @Input() refreshContainerGrid = false;
   @Input() loader = false;
+  @Input() baseItemId: number | undefined = undefined;
   // containers$: Observable<ContainerSelect[]>;
   planHoursSwitchSubscription: Subscription;
   planHours: boolean;
@@ -73,9 +74,10 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
       ...e.newData
     } as PlanGridOperation;
 
-    updatedOperation.options = {
+    updatedOperation.options = { // not relevant - is setted in popup
       dayPlan: !this.planHours,
-      fixPlanItem: true
+      fixPlanItem: true,
+      idBaseItem: this.baseItemId
     };
 
     if (e.oldData && e.oldData.idPrePlanItem &&

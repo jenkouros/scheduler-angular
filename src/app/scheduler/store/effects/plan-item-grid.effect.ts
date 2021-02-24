@@ -70,7 +70,11 @@ export class PlanItemGridEffect {
           ] as any[];
 
           if (action.payload.returnOperationGridModel) {
-            actions.push(new fromPlanContainerGridActions.UpdateContainerGridSuccess(items.planContainerGridModel));
+            actions.push(new fromPlanContainerGridActions.UpdateContainerGridSuccess({
+              data: items.planContainerGridModel,
+              allowAdd: false,
+              order: false
+            }));
           }
 
           return actions;
@@ -95,7 +99,11 @@ export class PlanItemGridEffect {
     switchMap(([action, filters]) =>
       this.planItemGridService.updatePlanItem(action.payload, filters.selectedEntities, filters.selectedContainers).pipe(
         mergeMap(items => [
-          new containerGridActions.UpdateContainerGridSuccess(items.planContainerGridModel),
+          new containerGridActions.UpdateContainerGridSuccess({
+            data: items.planContainerGridModel,
+            allowAdd: false,
+            order: false
+          }),
           new containerGridActions.HideUpdatePlanGridOperationDialog(),
           new fromActions.UpdateItemGridSuccess(items.planItemGridModel)
         ]),
