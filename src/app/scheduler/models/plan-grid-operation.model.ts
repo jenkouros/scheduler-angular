@@ -92,20 +92,14 @@ export enum OperationChangeOriginEnum {
   ItemGrid
 }
 
-export const planGridOperationPriorities = [
+export function getPlanGridOperationPriorities() {
+  return [
     { ID: 0, Name: translate('normal') },
     { ID: 1, Name: translate('low') },
     { ID: 2, Name: translate('high') }
   ];
+}
 
-  export const planGridOperationExecution = [
-  { ID: 1, Name: translate('PlanItemStatus1') },
-  { ID: 2, Name: translate('PlanItemStatus2') },
-  { ID: 3, Name: translate('PlanItemStatus3') },
-  { ID: 4, Name: translate('PlanItemStatus4') },
-  { ID: 5, Name: translate('PlanItemStatus5') },
-  { ID: 6, Name: translate('PlanItemStatus6') }
-];
 
 export function getPlanGridOperationExecutionStatuses(){
   return [

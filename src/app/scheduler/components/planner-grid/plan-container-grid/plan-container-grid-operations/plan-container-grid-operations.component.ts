@@ -15,7 +15,7 @@ import { PlanItemCreateRequest } from './../../../../models/event.model';
 import { ItemAutoplanRequest } from './../../../../models/item-autoplan.model';
 import { PlanContainerGrid } from './../../../../models/plan-container-grid.model';
 import { LinkedItemStatusEnum } from './../../../../models/plan-grid-item-model';
-import { getplanGridOperationExecutionColor, getPlanGridOperationExecutionStatuses, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationPriorities } from './../../../../models/plan-grid-operation.model';
+import { getplanGridOperationExecutionColor, getPlanGridOperationExecutionStatuses, getPlanGridOperationPriorities, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange } from './../../../../models/plan-grid-operation.model';
 import { AutoplanItem } from './../../../../store/actions/plan-item-grid.action';
 
 @Component({
@@ -73,7 +73,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
 
   }
 
-  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
+  priorities: {ID: number, Name: string}[] = getPlanGridOperationPriorities();
   executionStatuses: {ID: number, Name: string}[]; // = planGridOperationExecution;
 
   // filterValue: Array<any> = ['item.itemCode', '<>', '44088904'];
@@ -241,6 +241,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
         break;
       }
       case 'operation.linkedItemExecutionStatus.status': {
+        if (!e.data.operation.linkedItemExecutionStatus) { return; }
         if (LinkedItemStatusEnum.Finished === e.data.operation.linkedItemExecutionStatus.status) {
           e.cellElement.style.background = '#d6d6d6';
         } else if (LinkedItemStatusEnum.Running === e.data.operation.linkedItemExecutionStatus.status) {
@@ -249,6 +250,7 @@ export class PlanContainerGridOperationsComponent extends AppComponentBase imple
         break;
       }
       case 'operation.parentLinkedItemStatus.containerCode': {
+        if (!e.data.operation.parentLinkedItemStatus) { return; }
         if (LinkedItemStatusEnum.Finished === e.data.operation.parentLinkedItemStatus.status) {
           e.cellElement.style.background = '#d6d6d6';
         } else if (LinkedItemStatusEnum.Running === e.data.operation.parentLinkedItemStatus.status) {

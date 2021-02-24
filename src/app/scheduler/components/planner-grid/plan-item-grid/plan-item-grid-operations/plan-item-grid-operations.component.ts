@@ -3,7 +3,11 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppComponentBase } from '../../../../../shared/app-component-base';
 import { PlanGridItem } from '../../../../models/plan-grid-item-model';
-import { getplanGridOperationExecutionColor, getplanGridOperationPriorityColor, OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange, planGridOperationExecution, planGridOperationPriorities } from '../../../../models/plan-grid-operation.model';
+import {
+  getplanGridOperationExecutionColor, getPlanGridOperationExecutionStatuses,
+  getPlanGridOperationPriorities, getplanGridOperationPriorityColor,
+  OperationChangeOriginEnum, PlanGridOperation, PlanGridOperationChange
+} from '../../../../models/plan-grid-operation.model';
 import * as PlanItemActions from '../../../../store/actions/events.action';
 import * as PlanContainerGridActions from '../../../../store/actions/plan-container-grid.action';
 import * as PlanContainerGridSelectors from '../../../../store/selectors/plan-container-grid.selectors';
@@ -30,8 +34,8 @@ export class PlanItemGridOperationsComponent extends AppComponentBase implements
   // containers$: Observable<ContainerSelect[]>;
   planHoursSwitchSubscription: Subscription;
   planHours: boolean;
-  priorities: {ID: number, Name: string}[] = planGridOperationPriorities;
-  executionStatuses: {ID: number, Name: string}[] = planGridOperationExecution;
+  priorities: {ID: number, Name: string}[] = getPlanGridOperationPriorities();
+  executionStatuses: {ID: number, Name: string}[] = getPlanGridOperationExecutionStatuses();
   timeUpdateDialog$: Observable<PlanGridOperationChange | undefined>;
 
 
