@@ -51,7 +51,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.25",
+    "@angular-devkit/build-angular": "~14.2.8",
     "@angular-devkit/core": "^0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
     "@angular/cli": "^8.3.26",
@@ -63,7 +63,7 @@
     "@types/node": "^10.5.7",
     "codelyzer": "^5.0.1",
     "devextreme-intl": "^18.2.14",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.5",
